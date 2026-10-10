@@ -96,7 +96,7 @@ flowchart LR
 - **AI Skill・プロンプトアセット (`.agents/skills/`, `prompts/`)**:
   - MBB（マッキンゼー、BCG等）標準に準拠したスライド論理構成プロンプト。
   - AIエージェント向け実行手順定義（Skill）。
-- **設計図書体系 (`oss/main/docs/`)**:
+- **設計図書体系 (`docs/`)**:
   - 本憲章を含む、IPA標準に準拠した仕様書群およびObsidian相互リンク網。
 
 ### 3.2 非対象範囲 (Out-of-Scope)

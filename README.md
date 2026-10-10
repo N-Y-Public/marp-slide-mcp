@@ -19,12 +19,17 @@ Markdown から洗練されたビジネス標準デザインのプレゼンテ�
 ## ディレクトリ構成
 
 ```
-oss/main/
+marp-slide-mcp/
 ├─ README.md                     # 本ドキュメント
 ├─ LICENSE                       # ライセンス
 ├─ package.json                  # ビルドスクリプト・依存関係定義
+├─ package-lock.json             # 依存関係ロックファイル
 ├─ tsconfig.json                 # TypeScript 設定ファイル
 ├─ marp.config.js                # 目次自動生成・静的リサイズ対応カスタムエンジン
+├─ docker-compose.yml            # 開発コンテナ環境定義
+├─ dev.ps1 / dev.sh              # 開発コンテナ管理・実行スクリプト
+├─ .devcontainer/                # Dev Container 定義（Node 22 / Chromium / Noto CJK）
+├─ .agents/                      # AI エージェント用 Skill 定義（marp-slides）
 ├─ docs/                         # IPA標準準拠・Obsidian対応 設計図書体系
 │  ├─ README.md                  # 設計図書統合インデックス & トレーサビリティ
 │  ├─ 00_project_charter/        # プロジェクト憲章・コーディング規約

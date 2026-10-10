@@ -86,7 +86,7 @@ classDiagram
 ## 2. ディレクトリおよびファイル構造設計
 
 ```
-oss/main/
+marp-slide-mcp/
 ├── .agents/skills/marp-slides/     # AIエージェント用実行定義
 │   ├── SKILL.md                    # エージェント行動規範・ワークフロー
 │   ├── references/                 # 参照ガイド（テーマ・レイアウト規約）
