@@ -1,0 +1,62 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build Outputs & Temporary Files
+build/
+dist/
+output/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*_temp.html
+*.tsbuildinfo
+
+# Marp & Slide Generated Outputs (Local preview/exports)
+slides/*.pdf
+slides/*.pptx
+slides/*.html
+slides/*.png
+slides/*.jpeg
+!slides/.gitkeep
+
+# Environment variables & secrets (CRITICAL for OSS / Privacy)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.crt
+
+# IDE & OS Specific
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
+
+# VS Code / Antigravity IDE
+# Keep workspace settings and extensions, ignore local user state
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.vscode/*.local.json
+.history/
+
+# Testing & Coverage
+coverage/
+.nyc_output/
+
+# Docker local data (if any mounts write to host)
+.docker/
+docker-data/

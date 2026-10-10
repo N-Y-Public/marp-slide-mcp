@@ -1,0 +1,21 @@
+services:
+  app:
+    build:
+      context: .devcontainer
+      dockerfile: Dockerfile
+    image: marp-slide-mcp-dev:latest
+    container_name: marp-slide-mcp-app
+    restart: unless-stopped
+    volumes:
+      - .:/workspaces/marp-slide-mcp:cached
+    working_dir: /workspaces/marp-slide-mcp
+    user: node
+    environment:
+      - LANG=ja_JP.UTF-8
+      - LC_ALL=ja_JP.UTF-8
+      - CHROME_PATH=/usr/bin/chromium
+      - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false
+      - PUPPETEER_ARGS=--no-sandbox --disable-setuid-sandbox
+      - NODE_ENV=development
+    init: true
+    command: /bin/sh -c "while sleep 1000; do :; done"

@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# OSS Privacy & Security Guard Pre-Commit Hook
+# Prevents exposing personal email addresses and local Windows paths in commits.
+# ==============================================================================
+
+set -e
+
+# 1. Verify Git author email
+AUTHOR_EMAIL=$(git config user.email || true)
+REQUIRED_DOMAIN="users.noreply.github.com"
+
+if [[ -z "$AUTHOR_EMAIL" ]]; then
+    echo "❌ [Pre-Commit Error] Git user.email is not set!"
+    echo "   Please configure your public GitHub noreply email:"
+    echo "   git config user.email 330902043+N-Y-Public@users.noreply.github.com"
+    exit 1
+fi
+
+if [[ "$AUTHOR_EMAIL" != *"$REQUIRED_DOMAIN"* ]]; then
+    echo "❌ [Pre-Commit Error] Personal/private email detected: $AUTHOR_EMAIL"
+    echo "   This is a public OSS repository. Only GitHub noreply emails are allowed."
+    echo "   Please run:"
+    echo "   git config user.email 330902043+N-Y-Public@users.noreply.github.com"
+    exit 1
+fi
+
+# 2. Check staged changes for forbidden local Windows user paths
+FORBIDDEN_PATTERN="[Cc]:[/\\\\][Uu]sers[/\\\\]"
+STAGED_DIFF=$(git diff --cached -U0)
+
+if echo "$STAGED_DIFF" | grep -qE "^\+[^\+].*$FORBIDDEN_PATTERN"; then
+    echo "❌ [Pre-Commit Error] Forbidden local path detected in staged files!"
+    echo "   Staged diff contains absolute host path matching '$FORBIDDEN_PATTERN'."
+    echo "   Please replace local absolute paths with relative paths before committing."
+    echo ""
+    echo "$STAGED_DIFF" | grep -E "^\+[^\+].*$FORBIDDEN_PATTERN" | head -n 5
+    exit 1
+fi
+
+exit 0

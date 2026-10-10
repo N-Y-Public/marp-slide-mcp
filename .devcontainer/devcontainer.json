@@ -1,0 +1,39 @@
+{
+  "name": "Marp Slide Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+  "runArgs": [
+    "--init"
+  ],
+  "containerEnv": {
+    "LANG": "ja_JP.UTF-8",
+    "LC_ALL": "ja_JP.UTF-8",
+    "PUPPETEER_ARGS": "--no-sandbox --disable-setuid-sandbox"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "marp-team.marp-vscode",
+        "bierner.markdown-mermaid",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ],
+      "settings": {
+        "files.eol": "\n",
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "markdown.marp.themes": [
+          "./themes/business-slide-theme.css"
+        ],
+        "markdown.marp.html": "all",
+        "markdown.marp.diagnostics.slideContentOverflow": true,
+        "markdown.marp.enableHtml": true,
+        "markdown.marp.chromePath": "/usr/bin/chromium"
+      }
+    }
+  },
+  "postCreateCommand": "git config --global --add safe.directory /workspaces/marp-slide-mcp && (test -f package.json && npm install || true)",
+  "remoteUser": "node"
+}
