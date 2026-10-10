@@ -1,0 +1,97 @@
+/*
+ * @theme theme-colors
+ * スライド用カラーパレット定義ファイル
+ * 
+ * 使い方 1 (全体テーマカラーの変更):
+ * スライドの Markdown の <style> タグ内で以下のように定義します。
+ * <style>
+ *   :root {
+ *     --primary-color: var(--color-corporate-blue);
+ *   }
+ * </style>
+ * 
+ * 使い方 2 (クラスによるページ単位またはデッキ単位の指定):
+ * <!-- _class: theme-corporate-blue --> または <!-- class: theme-corporate-blue -->
+ */
+
+/* ルート要素（全体）に対するCSS変数（カラーパレット）を宣言します */
+:root {
+  /* ==========================================================================
+     カラーパレット定義 (HEXコード一覧)
+     ========================================================================== */
+
+  /* コーポレート・ブルー (信頼感・ビジネス向けカラー) */
+  --color-corporate-blue: #1f497d;
+
+  /* ディープ・ネイビー (重厚感・フォーマル向けカラー) */
+  --color-deep-navy: #002060;
+
+  /* エメラルド・グリーン (成長・エコ・テクノロジー向けカラー) */
+  --color-emerald-green: #2e7d32;
+
+  /* フォレスト・ティール (知性的・落ち着きのあるカラー) */
+  --color-forest-teal: #00695c;
+
+  /* バーガンディ / ワインレッド (情熱・インパクトのあるカラー) */
+  --color-wine-red: #881b34;
+
+  /* チャコール・グレー (シンプル・モダン・モノトーンカラー) */
+  --color-charcoal-gray: #424242;
+
+  /* ウォーム・アンバー (親しみやすさ・クリエイティブなカラー) */
+  --color-warm-amber: #b26a00;
+}
+
+/* ==========================================================================
+   テーマ切り替え用ユーティリティクラス
+   スライド（section）にクラスを付与することで、ページごとに色を切り替えることも可能です。
+   ========================================================================== */
+
+/* コーポレート・ブルー適用クラス（セクション個別または全体適用） */
+section.theme-corporate-blue,
+:root:has(section.theme-corporate-blue) {
+  /* テーマカラーをコーポレートブルーに上書きします */
+  --primary-color: var(--color-corporate-blue) !important;
+}
+
+/* ディープ・ネイビー適用クラス（セクション個別または全体適用） */
+section.theme-deep-navy,
+:root:has(section.theme-deep-navy) {
+  /* テーマカラーをディープネイビーに上書きします */
+  --primary-color: var(--color-deep-navy) !important;
+}
+
+/* エメラルド・グリーン適用クラス（セクション個別または全体適用） */
+section.theme-emerald-green,
+:root:has(section.theme-emerald-green) {
+  /* テーマカラーをエメラルドグリーンに上書きします */
+  --primary-color: var(--color-emerald-green) !important;
+}
+
+/* フォレスト・ティール適用クラス（セクション個別または全体適用） */
+section.theme-forest-teal,
+:root:has(section.theme-forest-teal) {
+  /* テーマカラーをフォレストティールに上書きします */
+  --primary-color: var(--color-forest-teal) !important;
+}
+
+/* ワインレッド適用クラス（セクション個別または全体適用） */
+section.theme-wine-red,
+:root:has(section.theme-wine-red) {
+  /* テーマカラーをワインレッドに上書きします */
+  --primary-color: var(--color-wine-red) !important;
+}
+
+/* チャコール・グレー適用クラス（セクション個別または全体適用） */
+section.theme-charcoal-gray,
+:root:has(section.theme-charcoal-gray) {
+  /* テーマカラーをチャコールグレーに上書きします */
+  --primary-color: var(--color-charcoal-gray) !important;
+}
+
+/* ウォーム・アンバー適用クラス（セクション個別または全体適用） */
+section.theme-warm-amber,
+:root:has(section.theme-warm-amber) {
+  /* テーマカラーをウォームアンバーに上書きします */
+  --primary-color: var(--color-warm-amber) !important;
+}

@@ -1,0 +1,39 @@
+Custom License with SaaS Restriction (Source-Available)
+
+Copyright (c) 2026 Marp Business Theme Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+LIMITATION ON HOSTED SAAS / CLOUD SERVICES:
+Notwithstanding the permissions above, you may NOT offer, host, operate, or make available
+the functionality of the Software (or any derivative work) as a Software-as-a-Service (SaaS),
+hosted cloud service, web application, or paid remote API (including, without limitation,
+via a Model Context Protocol (MCP) server or network endpoint) where third-party users or
+customers pay fees, subscriptions, or monetary compensation to access or generate presentation
+slides through the service, without prior explicit written authorization from the copyright holders.
+
+PERMITTED USES INCLUDE (BUT ARE NOT LIMITED TO):
+1. Professional Services & Maintenance: You MAY charge fees for system integration, installation,
+   configuration, consulting, technical support, and ongoing maintenance services for environments,
+   deployments, or systems that incorporate the Software.
+2. Internal & Commercial Presentation Use: You and your organization MAY use the Software to create
+   any presentation slides, documents, or deliverables for commercial projects, client deliverables,
+   sales, and internal business operations without restriction.
+3. Modification & Distribution: You MAY modify the code, create derivative works, and distribute the
+   Software, provided that such distribution complies with this License and is not hosted as a SaaS product.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 100" width="960" height="100">
+  <defs>
+    <!-- 明るい市松タイル（40x40ユニットの中に20x20の市松） -->
+    <pattern id="ichimatsu-light" width="40" height="40" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="20" height="20" fill="#ffffff" />
+      <rect x="20" y="20" width="20" height="20" fill="#ffffff" />
+    </pattern>
+
+    <!-- 暗い市松タイル（交互に配置される20x20の市松） -->
+    <pattern id="ichimatsu-dark" width="40" height="40" patternUnits="userSpaceOnUse">
+      <rect x="20" y="0" width="20" height="20" fill="#000000" />
+      <rect x="0" y="20" width="20" height="20" fill="#000000" />
+    </pattern>
+
+    <!-- 左から右へコントラストを減衰させるグラデーションマスク（明るいタイル用） -->
+    <linearGradient id="fade-light" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25" />
+      <stop offset="30%" stop-color="#ffffff" stop-opacity="0.14" />
+      <stop offset="65%" stop-color="#ffffff" stop-opacity="0.04" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.0" />
+    </linearGradient>
+
+    <!-- 左から右へコントラストを減衰させるグラデーションマスク（暗いタイル用） -->
+    <linearGradient id="fade-dark" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18" />
+      <stop offset="30%" stop-color="#ffffff" stop-opacity="0.09" />
+      <stop offset="65%" stop-color="#ffffff" stop-opacity="0.02" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.0" />
+    </linearGradient>
+
+    <mask id="mask-light">
+      <rect width="960" height="100" fill="url(#fade-light)" />
+    </mask>
+
+    <mask id="mask-dark">
+      <rect width="960" height="100" fill="url(#fade-dark)" />
+    </mask>
+  </defs>
+
+  <!-- ベース背景色（コーポレートブルー #1f497d） -->
+  <rect width="960" height="100" fill="#1f497d" />
+
+  <!-- 市松模様（暗部レイヤー：左側で深みのある陰影） -->
+  <rect width="960" height="100" fill="url(#ichimatsu-dark)" mask="url(#mask-dark)" />
+
+  <!-- 市松模様（明部レイヤー：左側でハイライト、右へ向かって自然にフェードアウト） -->
+  <rect width="960" height="100" fill="url(#ichimatsu-light)" mask="url(#mask-light)" />
+
+  <!-- 下部の装飾境界ライン（1pxの繊細なアクセント） -->
+  <line x1="0" y1="99.5" x2="960" y2="99.5" stroke="#16375f" stroke-width="1" />
+</svg>

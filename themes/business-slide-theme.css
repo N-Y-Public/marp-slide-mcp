@@ -1,0 +1,1999 @@
+/*
+ * @theme business-slide
+ * @size 4:3 960px 720px
+ * @size 16:9 1280px 720px
+ */
+
+/* VS Code風（ライトテーマ）のシンタックスハイライトを読み込む */
+@import url('./vendor/vs.min.css');
+
+/*
+  0. テーマカラー・共通CSS変数の定義
+  スライド全体の基調となるテーマカラーを設定します。
+  外部のスタイルシートやMarkdown内の<style>タグから --primary-color または --theme-color を上書きすることで、
+  主張欄、フッター帯、吹き出しなどの色がすべて自動で連動して変更されます。
+*/
+:root {
+  /* 基底となるテーマカラー（未指定時はデフォルトのコーポレートブルー #1f497d を使用） */
+  --primary-color: var(--theme-color, #1f497d);
+
+  /* 会話の吹き出し背景色（テーマカラーに白を混ぜて自動生成） */
+  --bubble-bg-color: color-mix(in srgb, var(--primary-color) 40%, white);
+
+  /* 吹き出し内の文字色（読みやすい濃いグレー） */
+  --bubble-text-color: #222222;
+
+  /*
+    表紙バナー画像の指定（CSS変数）
+    デフォルト値として標準の banner.svg を Data URI (Base64) で埋め込むことで、
+    スライドがどのディレクトリ階層に配置されても外部ファイルパスに依存せず100%確実に表示されます。
+    外部スタイルシートやMarkdown内の<style>タグ、MCPサーバーから上書き・差し替えが可能です。
+    バナーを非表示にする場合は --banner-image: none; を指定します。
+  */
+  --banner-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NjAgMTAwIiB3aWR0aD0iOTYwIiBoZWlnaHQ9IjEwMCI+CiAgPGRlZnM+CiAgICA8IS0tIOaYjuOCi+OBhOW4guadvuOCv+OCpOODq++8iDQweDQw44Om44OL44OD44OI44Gu5Lit44GrMjB4MjDjga7luILmnb7vvIkgLS0+CiAgICA8cGF0dGVybiBpZD0iaWNoaW1hdHN1LWxpZ2h0IiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiNmZmZmZmYiIC8+CiAgICAgIDxyZWN0IHg9IjIwIiB5PSIyMCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjZmZmZmZmIiAvPgogICAgPC9wYXR0ZXJuPgoKICAgIDwhLS0g5pqX44GE5biC5p2+44K/44Kk44Or77yI5Lqk5LqS44Gr6YWN572u44GV44KM44KLMjB4MjDjga7luILmnb7vvIkgLS0+CiAgICA8cGF0dGVybiBpZD0iaWNoaW1hdHN1LWRhcmsiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CiAgICAgIDxyZWN0IHg9IjIwIiB5PSIwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiMwMDAwMDAiIC8+CiAgICAgIDxyZWN0IHg9IjAiIHk9IjIwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiMwMDAwMDAiIC8+CiAgICA8L3BhdHRlcm4+CgogICAgPCEtLSDlt6bjgYvjgonlj7PjgbjjgrPjg7Pjg4jjg6njgrnjg4jjgpLmuJvoobDjgZXjgZvjgovjgrDjg6njg4fjg7zjgrfjg6fjg7Pjg57jgrnjgq/vvIjmmI7jgovjgYTjgr/jgqTjg6vnlKjvvIkgLS0+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImZhZGUtbGlnaHQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjI1IiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjMwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjE0IiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjY1JSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjA0IiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMC4wIiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KCiAgICA8IS0tIOW3puOBi+OCieWPs+OBuOOCs+ODs+ODiOODqeOCueODiOOCkua4m+ihsOOBleOBm+OCi+OCsOODqeODh+ODvOOCt+ODp+ODs+ODnuOCueOCr++8iOaal+OBhOOCv+OCpOODq+eUqO+8iSAtLT4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZmFkZS1kYXJrIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMC4xOCIgLz4KICAgIDxzdG9wIG9mZnNldD0iMzAlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjAuMDkiIC8+CiAgICAgIDxzdG9wIG9mZnNldD0iNjUlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjAuMDIiIC8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjAiIC8+CiAgICA8L2xpbmVhckdyYWRpZW50PgoKICAgIDxtYXNrIGlkPSJtYXNrLWxpZ2h0Ij4KICAgICAgPHJlY3Qgd2lkdGg9Ijk2MCIgaGVpZ2h0PSIxMDAiIGZpbGw9InVybCgjZmFkZS1saWdodCkiIC8+CiAgICA8L21hc2s+CgogICAgPG1hc2sgaWQ9Im1hc2stZGFyayI+CiAgICAgIDxyZWN0IHdpZHRoPSI5NjAiIGhlaWdodD0iMTAwIiBmaWxsPSJ1cmwoI2ZhZGUtZGFyaykiIC8+CiAgICA8L21hc2s+CiAgPC9kZWZzPgoKICA8IS0tIOODluODvOOCueODpuODg+OCr+OCq+ODqeODvO+8iOOCs+ODvOODneODrOODvOODiOODluODq+ODvCAjMWY0OTdk77yJIC0tPgogIDxyZWN0IHdpZHRoPSI5NjAiIGhlaWdodD0iMTAwIiBmaWxsPSIjMWY0OTdkIiAvPgoKICA8IS0tIOW4guadvuaooeanmO+8iOaal+mDqOODrOOCpOODpOODvO+8muW3puWBtOOBp+ODm+OCr+OBq+OBrueEtuOBquW9se+8iSAtLT4KICA8cmVjdCB3aWR0aD0iOTYwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNpY2hpbWF0c3UtZGFyaykiIG1hc2s9InVybCgjbWFzay1kYXJrKSIgLz4KCiAgPCEtLSDluILmnb7mooHnp5jvvIjmmI7pg6jODrOOCpOODpOODvO+8muW3puWBtOOBp+ODj+OCpOODqeOCpOODiOOAgeWPs+OBuOWQkeOBi+OBo+OBpuiHqueEtuOBq+ODleOCp+ODvOODieOCouOCpuODiO+8iSAtLT4KICA8cmVjdCB3aWR0aD0iOTYwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNpY2hpbWF0c3UtbGlnaHQpIiBtYXNrPSJ1cmwoI21hc2stbGlnaHQpIiAvPgoKICA8IS0tIOS4i+mDqOOBruijhemjvuWig+eVjOODqeOCpOODs++8iDFweOOBrue5iue0sOOBquOCouOCr+OCu+ODs+ODiO+8iSAtLT4KICA8bGluZSB4MT0iMCIgeTE9Ijk5LjUiIHgyPSI5NjAiIHkyPSI5OS41IiBzdHJva2U9IiMxNjM3NWYiIHN0cm9rZS13aWR0aD0iMSIgLz4KPC9zdmc+Cg==');
+}
+
+/*
+  1. 基本設定
+  スライド全体に関わる共通の設定を記述します。
+*/
+
+/*
+  @page ルールは、印刷時やPDF出力時のページサイズとマージンを定義します。
+  （ページサイズは Marp の @size ディレクティブにより 4:3 または 16:9 が自動設定されます）
+*/
+@page {
+  margin: 0;
+}
+
+/*
+  section タグは、Marpにおいて「スライド1枚」を表すコンテナです。
+  ここに記述したスタイルが、スライドのデフォルトの見た目になります。
+*/
+section {
+  /* スライドの幅・高さは Marp の @size（4:3: 960x720, 16:9: 1280x720）に従います */
+  height: 720px;
+  /* paddingやborderをwidth/heightに含める設定です（レイアウト崩れを防ぎます） */
+  box-sizing: border-box;
+  /* フォント（書体）を指定します。メイリオやYu Gothicなど、日本語が見やすいフォントを優先します */
+  font-family: 'Meiryo', 'Yu Gothic', sans-serif;
+  /* 基本の文字色を黒 (#000000) に設定します */
+  color: #000000;
+  /* 基本の文字サイズを 18ポイント に設定します */
+  font-size: 18pt;
+  /* 行の高さを文字サイズの1.5倍に設定し、読みやすくします */
+  line-height: 1.5;
+  /* マージン（外側の余白）をなくします */
+  margin: 0;
+  /* 要素をブロック要素として表示します */
+  display: block;
+  /* 子要素を絶対配置(absolute)するための基準点とします */
+  position: relative;
+
+  /*
+     本文開始位置の確保 (Reference: 230px)
+     上部に大きな余白(230px)を設けることで、ヘッダーやタイトル領域と本文が重ならないようにします。
+     !important は、他のスタイル設定よりも優先させるための記述です。
+  */
+  padding: 230px 40px 50px 40px !important;
+
+  /*
+     背景色およびフッター帯の設定
+     スライド下部40px（680px〜720px）にテーマカラーのフッター帯を描画します。
+     linear-gradient を使用することで、CSS変数 --primary-color に連動して帯の色が自動で変わります。
+  */
+  background: linear-gradient(to bottom, #ffffff 0px, #ffffff 680px, var(--primary-color) 680px, var(--primary-color) 720px) !important;
+}
+
+/*
+   2. 見出しタグ自体の非表示
+
+   このテーマでは、Markdownの見出し（# タイトル、## サブタイトルなど）を
+   そのまま表示せず、「レイアウトの目印（アンカー）」として使用します。
+   そのため、h1～h5タグ自体は見えないように隠します。
+
+   実際の文字は、見出しタグの「次の要素」として記述された内容を表示させます。
+*/
+section h1,
+section h2,
+section h3,
+section h4,
+section h5,
+section h6 {
+  /* 要素を見えなくしますが、DOM（文書構造）上には残します */
+  visibility: hidden;
+  /* 文書の通常の流れから外し、絶対配置にします */
+  position: absolute;
+  /* 幅を0にします */
+  width: 0;
+  /* 高さを0にします */
+  height: 0;
+  /* はみ出した部分を隠します */
+  overflow: hidden;
+  /* 余白を0にします */
+  margin: 0;
+  /* 内側の余白を0にします */
+  padding: 0;
+  /* 枠線をなしにします */
+  border: none;
+  /* マウスイベント（クリックなど）を無効にします */
+  pointer-events: none;
+}
+
+/*
+   3. タイトルページ (Page 1) のレイアウト
+
+   ここでは `section[data-marpit-pagination="1"]` というセレクタを使っています。
+   これは「ページ番号が1であるスライド」を意味します。
+
+   なぜ `section:first-child`（最初の要素）を使わないかというと、
+   MarpでSVG形式でエクスポートする際、各スライドが個別のコンテナに入ってしまい、
+   「すべてのスライドが first-child（最初の要素）」と判定されてしまう問題があるためです。
+   ページ番号属性を使うことで、確実に1ページ目だけを指定できます。
+*/
+
+/*
+   タイトルページのコンテナ設定 (Flexbox化)
+*/
+section[data-marpit-pagination="1"] {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+  padding: 0 !important;
+}
+
+/*
+   バナー画像 (banner.svg) の配置
+   タイトルページの最上部に表示します。
+*/
+section[data-marpit-pagination="1"]::before {
+  content: "" !important;
+  display: block !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100px !important;
+  background-image: var(--banner-image) !important;
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat !important;
+  background-position: top center !important;
+  z-index: 5 !important;
+  pointer-events: none !important;
+}
+
+/*
+   h1 content: メインタイトル
+   Flexboxアイテムとして配置し、マージンで位置を調整します。
+*/
+section[data-marpit-pagination="1"]>h1+* {
+  /* 絶対配置を解除し、Flexアイテムにします */
+  position: static !important;
+  /* 上から250pxの位置に配置（バナーの下） */
+  margin-top: 250px !important;
+  /* 左から50pxの位置に配置 */
+  margin-left: 50px !important;
+  /* 幅を左右余白50pxずつを除いた幅に設定します（4:3なら860px、16:9なら1180px） */
+  width: calc(100% - 100px) !important;
+  /* テキストを左揃えにします */
+  text-align: left !important;
+  /* 文字サイズを36ポイント（大見出し用）にします */
+  font-size: 36pt !important;
+  /* 文字を太字にします */
+  font-weight: bold !important;
+  /* 文字色を黒にします */
+  color: #000000 !important;
+  /* 背景を透明にします */
+  background: transparent !important;
+  /* 余白をリセットした上でmargin-top/leftを使用 */
+  margin-right: 0 !important;
+  margin-bottom: 0 !important;
+  /* 重なり順を10に設定し、他の要素より前面に出るようにします */
+  z-index: 10 !important;
+
+  /* 見出しタグ自体は隠れていますが、その内容は見えるようにします */
+  visibility: visible !important;
+  /* マウス操作を有効にします */
+  pointer-events: auto !important;
+}
+
+/*
+   h2 content: サブタイトル
+   メインタイトルの直下に相対配置されます。
+*/
+section[data-marpit-pagination="1"]>h2+* {
+  position: static !important;
+  /* メインタイトルとの間隔 */
+  margin-top: 20px !important;
+  margin-left: 50px !important;
+  width: calc(100% - 100px) !important;
+  text-align: left !important;
+  font-size: 20pt !important;
+  color: #555555 !important;
+  background: transparent !important;
+  margin-right: 0 !important;
+  margin-bottom: 0 !important;
+  z-index: 10 !important;
+
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/*
+   h3 content 1つ目: 図書番号
+   サブタイトルの下に配置され、右寄せにします。
+*/
+section[data-marpit-pagination="1"]>h3:first-of-type+* {
+  position: static !important;
+  /* 横幅いっぱいに広げてテキスト配置で制御 */
+  align-self: stretch !important;
+  width: auto !important;
+  text-align: right !important;
+  padding-right: 50px !important;
+  margin-top: 50px !important;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  font-size: 14pt !important;
+  color: #000000 !important;
+  margin-bottom: 0 !important;
+  box-sizing: border-box !important;
+
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/*
+   h3 content 2つ目: 所属・氏名
+   図書番号の下に配置され、左寄せにします。
+*/
+section[data-marpit-pagination="1"]>h3:last-of-type+* {
+  position: static !important;
+  /* Flexbox内で左寄せ */
+  align-self: flex-start !important;
+  margin-top: 20px !important;
+  margin-left: 50px !important;
+  width: auto !important;
+  text-align: left !important;
+  font-size: 16pt !important;
+  color: #000000 !important;
+  margin-right: 0 !important;
+  margin-bottom: 0 !important;
+
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/*
+   h4 content: 作成日・日付
+   所属・氏名の下に配置され、左寄せにします。
+*/
+section[data-marpit-pagination="1"]>h4+* {
+  position: static !important;
+  /* Flexbox内で左寄せ */
+  align-self: flex-start !important;
+  margin-top: 15px !important;
+  margin-left: 50px !important;
+  width: auto !important;
+  text-align: left !important;
+  font-size: 14pt !important;
+  color: #000000 !important;
+  margin-right: 0 !important;
+  margin-bottom: 0 !important;
+
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/*
+   h4 content 内の画像中央寄せ
+   通常ページの本文エリアに配置された画像は中央寄せにします。
+   ただし、ヘッダー内のロゴ画像は除外します。
+*/
+section:not([data-marpit-pagination="1"])>*:not(header) img {
+  display: block !important;
+  margin: 0 auto !important;
+}
+
+
+/*
+   4. 通常ページ (Page 2以降) のレイアウト
+
+   `:not([data-marpit-pagination="1"])` は「1ページ目ではないスライド」
+   つまり2ページ目以降のすべてのスライドを対象にします。
+*/
+
+/*
+   h4 content: メインコンテンツ
+   ここにスライドの主な内容（本文、画像など）が入ります。
+   絶対配置は指定されておらず、sectionのpaddingに従って配置されます。
+*/
+section:not([data-marpit-pagination="1"])>h4+* {
+  /* 表示設定 */
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/*
+   h5 content: フッター/出典
+   スライド右下に表示される出典元などのテキストです。
+*/
+section:not([data-marpit-pagination="1"])>h5+* {
+  /* 絶対配置にします */
+  position: absolute !important;
+  /* 下から50pxの位置に配置します */
+  bottom: 50px !important;
+  /* 右から20pxの位置に配置します */
+  right: 20px !important;
+  /* 幅は自動 */
+  width: auto !important;
+  /* 右揃えにします */
+  text-align: right !important;
+  /* 文字サイズを11ポイント（小さめ）にします */
+  font-size: 11pt !important;
+  /* 文字色は黒 */
+  color: #000000 !important;
+  /* 背景透明 */
+  background: transparent !important;
+  /* 重なり順は10 */
+  z-index: 10 !important;
+  /* 余白なし */
+  margin: 0 !important;
+  /* ブロック要素 */
+  display: block !important;
+
+  /* 表示設定 */
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/*
+   5. ページ番号
+   `section::after` 擬似要素を使って、スライドの右下にページ番号を表示します。
+   Marpは `paginate: true` の場合、ここにページ番号を出力します。
+*/
+section::after {
+  /* 絶対配置にします */
+  position: absolute !important;
+  /* 下から11pxの位置に配置します */
+  bottom: 11px !important;
+  /* 右から20pxの位置に配置します */
+  right: 20px !important;
+  /* 文字色を白にします（フッター帯の上に表示されるため） */
+  color: #ffffff !important;
+  /* 文字サイズを19pxにします */
+  font-size: 19px !important;
+  /* 太字にします */
+  font-weight: bold !important;
+  /* フォントをArialなどに設定します */
+  font-family: Arial, sans-serif !important;
+  /* 背景透明 */
+  background: transparent !important;
+  /* 内側余白なし */
+  padding: 0 !important;
+  /* 外側余白なし */
+  margin: 0 !important;
+  /* 最前面（z-index: 100）に表示します */
+  z-index: 100 !important;
+  /* 行の高さを1にします */
+  line-height: 1 !important;
+  /* 右揃え */
+  text-align: right !important;
+}
+
+/*
+   タイトルページではページ番号を消す
+   表紙にページ番号は不要なため、非表示にします。
+*/
+section[data-marpit-pagination="1"]::after {
+  /* 表示しない */
+  display: none !important;
+}
+
+/*
+   6. フッター文字列 (h6)
+   Markdownで `######` で指定された文字列をフッターに配置します。
+*/
+
+/*
+   h6 content 1つ目: コピーライト (左下)
+   Markdownで `###### コピーライト` と書いた要素です。
+*/
+section>h6:nth-of-type(1)+* {
+  position: absolute !important;
+  bottom: 12px !important;
+  left: 20px !important;
+  width: auto !important;
+  text-align: left !important;
+  font-size: 12px !important;
+  color: #ffffff !important;
+  font-family: Arial, sans-serif !important;
+  background: transparent !important;
+  margin: 0 !important;
+  z-index: 20 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/*
+   h6 content 2つ目: 機密表示 (右下)
+   Markdownで `###### 機密表示` と書いた要素です。
+*/
+section>h6:nth-of-type(2)+* {
+  position: absolute !important;
+  bottom: 8px !important;
+  right: 70px !important;
+  width: auto !important;
+  text-align: right !important;
+  font-size: 19px !important;
+  font-weight: bold !important;
+  color: red !important;
+  font-family: Arial, sans-serif !important;
+  background: transparent !important;
+  margin: 0 !important;
+  z-index: 20 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/*
+   7. ヘッダーロゴ (header)
+   Marpの `header` ディレクティブで指定されたロゴ画像の配置設定。
+*/
+
+/* 共通設定 */
+header {
+  position: absolute !important;
+  z-index: 100 !important;
+  background: transparent !important;
+  pointer-events: none !important;
+  display: block !important;
+  visibility: visible !important;
+}
+
+/* 画像サイズの制限 */
+header img {
+  max-height: 50px !important;
+  width: auto !important;
+  display: block !important;
+  visibility: visible !important;
+}
+
+/* タイトルページ: 右下（フッター直上） */
+section[data-marpit-pagination="1"]>header {
+  top: auto !important;
+  bottom: 50px !important;
+  left: auto !important;
+  right: 20px !important;
+}
+
+/* 通常ページ: 右上 */
+section:not([data-marpit-pagination="1"])>header {
+  top: 5px !important;
+  bottom: auto !important;
+  left: auto !important;
+  right: 20px !important;
+}
+
+/*
+   8. Wide Content Layout
+   主張パート（灰色帯）を削除し、本文エリアを広くしたレイアウトです。
+   <!-- _class: wide-content --> で適用します。
+*/
+
+/* H2コンテンツ（灰色帯・主張）の非表示 */
+section.wide-content h2,
+section.wide-content>h2+*,
+section.wide-content>h2+ul,
+section.wide-content>h2+ol {
+  display: none !important;
+}
+
+/* 本文エリアの開始位置調整 */
+section.wide-content {
+  padding-top: 120px !important;
+}
+
+/* H3コンテンツ（図表タイトル）の位置変更 */
+section.wide-content h3,
+section.wide-content>h3+* {
+  top: 60px !important;
+}
+
+/*
+   9. Conversation Content Layout
+   会話形式のレイアウトを定義します。
+   <!-- _class: conversation-content --> で適用されます。
+   ※ CSS変数は先頭の :root で定義されています。
+*/
+
+/* 本文エリアの調整などは通常ページレイアウトを完全に継承するため、ここでは会話専用のフレックスコンテナの部分のみを定義します。 */
+
+/*
+   フレックスボックスコンテナ: 会話のタイムライン
+*/
+section.conversation-content>h4+ul,
+section.conversation-content>h4+ol {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 20px !important;
+  /* 各発言(li)の間隔 */
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin-top: 20px !important;
+}
+
+/*
+   各発言 (li要素) = 吹き出しの本体
+*/
+section.conversation-content>h4+ul>li,
+section.conversation-content>h4+ol>li {
+  position: relative !important;
+  max-width: calc(85% - 100px) !important;
+  background-color: var(--bubble-bg-color) !important;
+  color: var(--bubble-text-color) !important;
+  padding: 15px 20px !important;
+  border-radius: 15px !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) !important;
+  margin: 0 !important;
+  font-size: 16pt !important;
+  display: block !important;
+}
+
+/* 奇数行 (人物A / 左側配置) */
+section.conversation-content>h4+ul>li:nth-of-type(odd),
+section.conversation-content>h4+ol>li:nth-of-type(odd) {
+  align-self: flex-start !important;
+  margin-left: 100px !important;
+}
+
+/* 偶数行 (人物B / 右側配置) */
+section.conversation-content>h4+ul>li:nth-of-type(even),
+section.conversation-content>h4+ol>li:nth-of-type(even) {
+  align-self: flex-end !important;
+  margin-right: 100px !important;
+}
+
+/* 奇数行（左側配置）の画像設定 */
+section.conversation-content>h4+ul>li:nth-of-type(odd) img,
+section.conversation-content>h4+ol>li:nth-of-type(odd) img {
+  position: absolute !important;
+  top: 0px !important;
+  left: -100px !important;
+  width: 80px !important;
+  height: 80px !important;
+  border-radius: 5px !important;
+  object-fit: contain !important;
+  background-color: transparent !important;
+}
+
+/* 偶数行（右側配置）の画像設定 */
+section.conversation-content>h4+ul>li:nth-of-type(even) img,
+section.conversation-content>h4+ol>li:nth-of-type(even) img {
+  position: absolute !important;
+  top: 0px !important;
+  right: -100px !important;
+  width: 80px !important;
+  height: 80px !important;
+  border-radius: 5px !important;
+  object-fit: contain !important;
+  background-color: transparent !important;
+}
+
+/* デフォルトアイコンの配置とデザイン (画像がない場合) */
+section.conversation-content>h4+ul>li:not(:has(img))::before,
+section.conversation-content>h4+ol>li:not(:has(img))::before {
+  content: "" !important;
+  display: block !important;
+  position: absolute !important;
+  top: 0px !important;
+  width: 80px !important;
+  height: 80px !important;
+  border-radius: 5px !important;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg==') !important;
+  background-size: 70% !important;
+  background-repeat: no-repeat !important;
+  background-position: center bottom !important;
+  background-color: #bbbbbb !important;
+}
+
+/* デフォルトアイコンの配置位置 (左側) */
+section.conversation-content>h4+ul>li:nth-of-type(odd):not(:has(img))::before,
+section.conversation-content>h4+ol>li:nth-of-type(odd):not(:has(img))::before {
+  left: -100px !important;
+}
+
+/* デフォルトアイコンの配置位置 (右側) */
+section.conversation-content>h4+ul>li:nth-of-type(even):not(:has(img))::before,
+section.conversation-content>h4+ol>li:nth-of-type(even):not(:has(img))::before {
+  right: -100px !important;
+}
+
+/* ----------- 発言者の名前表示（アイコン下）ここから追加分 ----------- */
+/* 
+   箇条書き内で最初に指定された太字（**名前** = strong 要素）を名札として扱います。
+*/
+section.conversation-content>h4+ul>li>strong:first-of-type,
+section.conversation-content>h4+ol>li>strong:first-of-type {
+  position: absolute !important;
+  top: 85px !important;
+  /* アイコン(80px)の下＋少し余白 */
+  width: 90px !important;
+  /* アイコン幅より少し広めに確保 */
+  text-align: center !important;
+  font-size: 10pt !important;
+  line-height: 1.2 !important;
+  color: #555555 !important;
+  word-wrap: break-word !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+/* 奇数行（左側配置）の名前位置 */
+section.conversation-content>h4+ul>li:nth-of-type(odd)>strong:first-of-type,
+section.conversation-content>h4+ol>li:nth-of-type(odd)>strong:first-of-type {
+  left: -105px !important;
+  /* アイコンの中央に揃える (アイコンのleft -100px - 追加幅5px) */
+}
+
+/* 偶数行（右側配置）の名前位置 */
+section.conversation-content>h4+ul>li:nth-of-type(even)>strong:first-of-type,
+section.conversation-content>h4+ol>li:nth-of-type(even)>strong:first-of-type {
+  right: -105px !important;
+}
+
+/* ---------------------------------------------------- */
+
+/* 吹き出しの中の p タグや div タグのリセット */
+section.conversation-content>h4+ul>li>p,
+section.conversation-content>h4+ol>li>p,
+section.conversation-content>h4+ul>li>div,
+section.conversation-content>h4+ol>li>div {
+  background-color: transparent !important;
+  color: inherit !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  display: inline !important;
+}
+
+/*
+   吹き出しのしっぽ（左側）
+*/
+section.conversation-content>h4+ul>li:nth-of-type(odd)::after,
+section.conversation-content>h4+ol>li:nth-of-type(odd)::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 20px !important;
+  left: -15px !important;
+  width: 0 !important;
+  height: 0 !important;
+  border-style: solid !important;
+  border-width: 10px 15px 10px 0 !important;
+  border-color: transparent var(--bubble-bg-color) transparent transparent !important;
+}
+
+/*
+   吹き出しのしっぽ（右側）
+*/
+section.conversation-content>h4+ul>li:nth-of-type(even):after,
+section.conversation-content>h4+ol>li:nth-of-type(even):after {
+  content: "" !important;
+  position: absolute !important;
+  top: 20px !important;
+  right: -15px !important;
+  width: 0 !important;
+  height: 0 !important;
+  border-style: solid !important;
+  border-width: 10px 0 10px 15px !important;
+  border-color: transparent transparent transparent var(--bubble-bg-color) !important;
+}
+
+/*
+   10. TOC Layout
+   目次スライドのレイアウトを定義します。
+   <!-- _class: toc --> で適用されます。
+*/
+
+/* H2コンテンツ（灰色帯・主張）の非表示 */
+section.toc h2,
+section.toc>h2+*,
+section.toc>h2+ul,
+section.toc>h2+ol {
+  display: none !important;
+}
+
+/* 目次タイトルの左配置（目次リストの left: 50px と位置を揃える） */
+section.toc>h1~*:not(h1, h2, h3, h4, h5, h6, ul, ol):not(h2 ~ *, h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) {
+  left: 50px !important;
+  width: calc(100% - 100px) !important;
+}
+
+/* 目次のリスト (ul) の設定 */
+section.toc>ul,
+section.toc>ol {
+  position: absolute !important;
+  top: 95px !important;
+  left: 50px !important;
+  width: calc(100% - 100px) !important;
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  z-index: 10 !important;
+  display: block !important;
+  line-height: 1.45 !important;
+}
+
+/* 目次の各項目 (li) の設定 */
+section.toc>ul>li.toc-item,
+section.toc>ol>li.toc-item {
+  display: block !important;
+  margin-bottom: 4px !important;
+  width: 100% !important;
+}
+
+/* 
+   目次項目のPタグをFlexboxコンテナにします。
+   これにより、タイトル(左)、ドットリーダー線(中央)、ページ番号(右)を
+   横一直線に並ベ、隙間を自動で埋めるレイアウトが簡単に作れます。
+*/
+section.toc>ul>li.toc-item>p,
+section.toc>ol>li.toc-item>p {
+  display: flex !important;
+  align-items: baseline !important;
+  /* テキストのベースライン（下端）を揃える */
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 
+   目次タイトルリンク (左側に配置)
+   Flexbox内の要素の並び順を `order: 0` で一番左に指定しています。
+*/
+section.toc>ul>li.toc-item>p>a,
+section.toc>ol>li.toc-item>p>a {
+  order: 0 !important;
+  text-decoration: none !important;
+  color: #000000 !important;
+
+  /* 
+     文字数に応じた自動リサイズ（最小14px、最大26px）
+     JavaScriptで計算された文字数(--char-count)を使って文字サイズを調整し、
+     長いタイトルでも１行に収まるように枠内に押し込みます。
+  */
+  font-size: clamp(14px, calc(800px / var(--char-count, 20)), 26px) !important;
+
+  /* 
+     万が一計算を超えて長過ぎる場合は「...」で省略記号を出します。
+  */
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  flex-shrink: 0 !important;
+  /* タイトル部分が縮まないように保護 */
+  max-width: 85% !important;
+}
+
+/* 
+   ドットリーダー線 (中央・タイトルの末尾とページ番号の間) 
+   擬似要素(::after)を使って、HTMLにない要素をCSSだけで作り出します。
+   flex-grow: 1 を指定することで、タイトルとページ番号の間の「余った空間すべて」を
+   この線が自動的に埋めてくれる（伸びる）仕組みになっています。
+*/
+section.toc>ul>li.toc-item>p:after,
+section.toc>ol>li.toc-item>p:after {
+  content: "" !important;
+  order: 1 !important;
+  /* Flexbox内で2番目（中央）に配置 */
+  flex-grow: 1 !important;
+  /* 空きスペースを全吸収して伸びる役割 */
+  border-bottom: 3px dotted #999999 !important;
+  /* ドット線を下線として描画 */
+  margin: 0 15px !important;
+
+  /* 文字のベースラインに合わせるための微調整 */
+  position: relative !important;
+  top: -6px !important;
+}
+
+/* 
+   ページ番号 (右側に配置) 
+   order: 2 で一番右に配置されます。
+*/
+section.toc>ul>li.toc-item>p>span.toc-page,
+section.toc>ol>li.toc-item>p>span.toc-page {
+  order: 2 !important;
+  font-size: 24px !important;
+  font-weight: bold !important;
+  color: #000000 !important;
+  flex-shrink: 0 !important;
+  /* ページ番号は絶対に縮まないように保護 */
+}
+
+/*
+   10-2. マルチカラムレイアウト（2段組・画像横並びレイアウト）
+   Issue #44（複数画像並列）および Issue #45（2段組レイアウト）に対応します。
+   
+   【使用可能なクラス】
+   - <!-- _class: columns-2 --> : 本文をスライド中央で左右2等分割する2段組
+   - <!-- _class: images-2 -->  : 画像を2枚横並びで配置（縦横比維持・自動最大化・中央揃えキャプション）
+   - <!-- _class: images-3 -->  : 画像を3枚横並びで配置
+   - <!-- _class: images-4 -->  : 画像を4枚横並びで配置
+   - <!-- _class: images-row -->: 画像を要素数に応じて等分割横並び配置
+   
+   ※ wide-content と併用可能: <!-- _class: wide-content columns-2 -->
+*/
+
+/* --- A. 共通マルチカラム基盤 (Grid Container) --- */
+section.columns-2 > h4 + ul,
+section.columns-2 > h4 + ol,
+section.layout-2col > h4 + ul,
+section.layout-2col > h4 + ol,
+section[class*="images-"] > h4 + ul,
+section[class*="images-"] > h4 + ol {
+  display: grid !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 410px !important; /* 通常スライドの本文エリア有効高さ（フッター帯との干渉防止） */
+  max-height: 410px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+  box-sizing: border-box !important;
+  gap: 24px !important;
+  align-items: stretch !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+/* wide-content 併用時の高さ拡張 */
+section.wide-content.columns-2 > h4 + ul,
+section.wide-content.columns-2 > h4 + ol,
+section.wide-content.layout-2col > h4 + ul,
+section.wide-content.layout-2col > h4 + ol,
+section.wide-content[class*="images-"] > h4 + ul,
+section.wide-content[class*="images-"] > h4 + ol {
+  height: 520px !important; /* ワイドコンテンツの本文エリア有効高さ */
+  max-height: 520px !important;
+}
+
+/* --- B. カラム数定義 --- */
+section.columns-2 > h4 + ul,
+section.columns-2 > h4 + ol,
+section.layout-2col > h4 + ul,
+section.layout-2col > h4 + ol,
+section.images-2 > h4 + ul,
+section.images-2 > h4 + ol {
+  grid-template-columns: repeat(2, 1fr) !important;
+}
+
+section.images-3 > h4 + ul,
+section.images-3 > h4 + ol {
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 18px !important;
+}
+
+section.images-4 > h4 + ul,
+section.images-4 > h4 + ol {
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 14px !important;
+}
+
+section.images-row > h4 + ul,
+section.images-row > h4 + ol {
+  grid-auto-flow: column !important;
+  grid-auto-columns: 1fr !important;
+}
+
+/* --- C. 【Issue #45】2段組レイアウト (columns-2 / layout-2col) --- */
+section.columns-2 > h4 + ul > li,
+section.columns-2 > h4 + ol > li,
+section.layout-2col > h4 + ul > li,
+section.layout-2col > h4 + ol > li {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  font-size: 16pt !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* 2段組内の子要素スタイル */
+section.columns-2 > h4 + ul > li > *,
+section.columns-2 > h4 + ol > li > *,
+section.layout-2col > h4 + ul > li > *,
+section.layout-2col > h4 + ol > li > * {
+  max-width: 100% !important;
+}
+
+/* 2段組内の箇条書きリスト */
+section.columns-2 > h4 + ul > li ul,
+section.columns-2 > h4 + ol > li ul,
+section.layout-2col > h4 + ul > li ul,
+section.layout-2col > h4 + ol > li ul {
+  list-style: disc !important;
+  padding-left: 24px !important;
+  margin: 0 0 10px 0 !important;
+}
+
+section.columns-2 > h4 + ul > li ol,
+section.columns-2 > h4 + ol > li ol,
+section.layout-2col > h4 + ul > li ol,
+section.layout-2col > h4 + ol > li ol {
+  list-style: decimal !important;
+  padding-left: 24px !important;
+  margin: 0 0 10px 0 !important;
+}
+
+/* 2段組内のMermaid図 */
+section.columns-2 > h4 + ul > li .mermaid,
+section.columns-2 > h4 + ol > li .mermaid,
+section.layout-2col > h4 + ul > li .mermaid,
+section.layout-2col > h4 + ol > li .mermaid {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: auto 0 !important;
+}
+
+section.columns-2 > h4 + ul > li .mermaid svg,
+section.columns-2 > h4 + ol > li .mermaid svg,
+section.layout-2col > h4 + ul > li .mermaid svg,
+section.layout-2col > h4 + ol > li .mermaid svg {
+  max-width: 100% !important;
+  max-height: 100% !important;
+  height: auto !important;
+}
+
+/* 2段組内のコードブロック */
+section.columns-2 > h4 + ul > li pre,
+section.columns-2 > h4 + ol > li pre,
+section.layout-2col > h4 + ul > li pre,
+section.layout-2col > h4 + ol > li pre {
+  max-height: 100% !important;
+  font-size: 13pt !important;
+  overflow: auto !important;
+  margin: 0 !important;
+}
+
+/* 2段組内の画像 */
+section.columns-2 > h4 + ul > li img,
+section.columns-2 > h4 + ol > li img,
+section.layout-2col > h4 + ul > li img,
+section.layout-2col > h4 + ol > li img {
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  margin: auto !important;
+}
+
+/* --- D. 【Issue #44】画像横並びレイアウト (images-*) --- */
+section[class*="images-"] > h4 + ul > li,
+section[class*="images-"] > h4 + ol > li {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  text-align: center !important;
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+/* li 直下の p 要素：画像とキャプションを縦並びで中央配置（直下にキャプションを配置） */
+section[class*="images-"] > h4 + ul > li > p,
+section[class*="images-"] > h4 + ol > li > p {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  gap: 8px !important;
+}
+
+/* 画像スタイル：縦横比維持・キャプション分を除いた利用可能領域内で最大化 */
+section[class*="images-"] > h4 + ul > li img,
+section[class*="images-"] > h4 + ol > li img {
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: calc(100% - 2.6em) !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  flex: 0 1 auto !important;
+}
+
+/* 画像にキャプションがない場合は100%使用 */
+section[class*="images-"] > h4 + ul > li:not(:has(strong)):not(:has(em)):not(:has(span)) img {
+  max-height: 100% !important;
+}
+
+/* キャプション（タイトル）：画像の直下に左右中心を揃えて配置 */
+section[class*="images-"] > h4 + ul > li,
+section[class*="images-"] > h4 + ol > li,
+section[class*="images-"] > h4 + ul > li > p,
+section[class*="images-"] > h4 + ol > li > p {
+  text-align: center !important;
+  font-size: 14pt !important;
+  font-weight: bold !important;
+  color: #222222 !important;
+  line-height: 1.25 !important;
+  word-break: break-word !important;
+}
+
+section[class*="images-"] > h4 + ul > li > strong,
+section[class*="images-"] > h4 + ol > li > strong,
+section[class*="images-"] > h4 + ul > li > p > strong,
+section[class*="images-"] > h4 + ol > li > p > strong {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  font-size: 14pt !important;
+  font-weight: bold !important;
+  color: #222222 !important;
+  line-height: 1.25 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  flex: 0 0 auto !important;
+}
+
+/* 3枚並び・4枚並び時のキャプションフォント自動縮小 */
+section.images-3 > h4 + ul > li,
+section.images-3 > h4 + ol > li,
+section.images-3 > h4 + ul > li > p,
+section.images-3 > h4 + ol > li > p,
+section.images-3 > h4 + ul > li > strong,
+section.images-3 > h4 + ol > li > strong,
+section.images-3 > h4 + ul > li > p > strong,
+section.images-3 > h4 + ol > li > p > strong {
+  font-size: 12pt !important;
+}
+
+section.images-4 > h4 + ul > li,
+section.images-4 > h4 + ol > li,
+section.images-4 > h4 + ul > li > p,
+section.images-4 > h4 + ol > li > p,
+section.images-4 > h4 + ul > li > strong,
+section.images-4 > h4 + ol > li > strong,
+section.images-4 > h4 + ul > li > p > strong,
+section.images-4 > h4 + ol > li > p > strong {
+  font-size: 10.5pt !important;
+}
+
+/*
+   11. 自動リサイズ・オーバーフロー対策（第3版：本文テキストとの共存対応）
+
+   本文エリアの実寸
+     通常ページ    : 幅 880px × 高さ 440px
+     wide-content : 幅 880px × 高さ 550px
+*/
+
+/* ---- 11-0. 本文テキスト量の判定（共通基盤） ---------------------------- */
+
+/*
+   仕組み:
+     「本文ブロック数」と「改行(<br>)の数」をそれぞれ独立した変数に立て、
+     calc() で合算して密度スコア --txt-w を求めます。
+     変数ごとにルールを分けているため、詳細度の競合が原理的に起きません。
+
+     スコア1 = 倍率1.0（表や画像だけのスライド）
+     スコアが1増えるごとに 10% ずつ縮小し、下限は 50% です。
+
+   重要:
+     このブロックの中に他のルールを入れ子にしないでください。
+     変数の初期値(0)が失われると calc() 全体が無効になり、
+     font-size が親から継承されて表やコードが巨大化します。
+*/
+section:not([data-marpit-pagination="1"]) {
+  /* 本文ブロック数（初期値。必ず 0 を宣言しておくこと） */
+  --b2: 0;
+  --b3: 0;
+  --b4: 0;
+  --b5: 0;
+
+  /* 段落内の改行数（初期値。必ず 0 を宣言しておくこと） */
+  --r1: 0;
+  --r2: 0;
+  --r3: 0;
+  --r4: 0;
+
+  /*
+     var() の第2引数はフォールバック値です。
+     万が一いずれかの初期値が失われても 0 として扱われ、
+     レイアウト全体が崩れないようにする保険です。
+  */
+  --txt-w: calc(1 + var(--b2, 0) + var(--b3, 0) + var(--b4, 0) + var(--b5, 0) + var(--r1, 0) + var(--r2, 0) + var(--r3, 0) + var(--r4, 0));
+
+  --txt-scale: clamp(0.5, calc(1 - (var(--txt-w, 1) - 1) * 0.1), 1);
+}
+
+/* 本文ブロック数のカウント（h5/h6 以降のフッター類は数えません） */
+section:not([data-marpit-pagination="1"]):has(> h4 + :not(h5, h6, script, style, link) + :not(h5, h6, script, style, link)) {
+  --b2: 1;
+}
+
+section:not([data-marpit-pagination="1"]):has(> h4 + :not(h5, h6, script, style, link) + :not(h5, h6, script, style, link) + :not(h5, h6, script, style, link)) {
+  --b3: 1;
+}
+
+section:not([data-marpit-pagination="1"]):has(> h4 + :not(h5, h6, script, style, link) + :not(h5, h6, script, style, link) + :not(h5, h6, script, style, link) + :not(h5, h6, script, style, link)) {
+  --b4: 1;
+}
+
+section:not([data-marpit-pagination="1"]):has(> h4 + :not(h5, h6, script, style, link) + :not(h5, h6, script, style, link) + :not(h5, h6, script, style, link) + :not(h5, h6, script, style, link) + :not(h5, h6, script, style, link)) {
+  --b5: 1;
+}
+
+/* 段落内の改行数のカウント（フッター類は集計から除外します） */
+section:not([data-marpit-pagination="1"]):has(> h4 ~ p:not(h5 ~ *, h6 ~ *) br) {
+  --r1: 1;
+}
+
+section:not([data-marpit-pagination="1"]):has(> h4 ~ p:not(h5 ~ *, h6 ~ *) br ~ br) {
+  --r2: 1;
+}
+
+section:not([data-marpit-pagination="1"]):has(> h4 ~ p:not(h5 ~ *, h6 ~ *) br ~ br ~ br) {
+  --r3: 1;
+}
+
+section:not([data-marpit-pagination="1"]):has(> h4 ~ p:not(h5 ~ *, h6 ~ *) br ~ br ~ br ~ br) {
+  --r4: 1;
+}
+
+
+/* 手動で倍率を上書きしたい場合: <!-- _class: dense --> 等 */
+section.roomy {
+  --txt-scale: 1 !important;
+}
+
+section.dense {
+  --txt-scale: 0.75 !important;
+}
+
+section.denser {
+  --txt-scale: 0.6 !important;
+}
+
+section.densest {
+  --txt-scale: 0.5 !important;
+}
+
+
+/* ---- 11-1. 本文テキストの自動縮小 -------------------------------------- */
+
+/*
+   :not(h5 ~ *, h6 ~ *) について
+     h5（出典）や h6（コピーライト・機密表示）より後ろにある要素を除外します。
+     以前は個別に打ち消していましたが、詳細度で本文ルールに負けていたため、
+     最初からマッチさせない方式に変更しました。
+     本文は h4 の直後、h5/h6 より前に置く前提です（テーマの想定どおりの順序）。
+*/
+section:not([data-marpit-pagination="1"])>h4~p:not(h5 ~ *, h6 ~ *),
+section:not([data-marpit-pagination="1"])>h4~ul:not(h5 ~ *, h6 ~ *),
+section:not([data-marpit-pagination="1"])>h4~ol:not(h5 ~ *, h6 ~ *),
+section:not([data-marpit-pagination="1"])>h4~blockquote:not(h5 ~ *, h6 ~ *) {
+  font-size: calc(18pt * var(--txt-scale)) !important;
+  line-height: 1.5 !important;
+  margin-top: calc(0.7em * var(--txt-scale)) !important;
+  margin-bottom: calc(0.7em * var(--txt-scale)) !important;
+}
+
+/*
+   フッター類（h5 出典 / h6 コピーライト・機密表示）は
+   セクション4・6の元の指定をそのまま使うため、ここでは何も上書きしません。
+*/
+
+
+/* ---- 11-2. 表の自動サイズ調整 ------------------------------------------ */
+
+section table {
+  --tbl-fs-rows: 28pt;
+  --tbl-fs-cols: 28pt;
+  --tbl-pad: 6px 10px;
+  --tbl-lh: 1.4;
+
+  max-width: 100% !important;
+  width: 100% !important;
+  table-layout: auto !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  margin: 0 auto !important;
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+  box-sizing: border-box !important;
+
+  /* 行数・列数で決めたサイズに、本文との共存倍率を掛けます */
+  font-size: calc(min(var(--tbl-fs-rows), var(--tbl-fs-cols)) * var(--txt-scale)) !important;
+  line-height: var(--tbl-lh) !important;
+}
+
+section table:has(tbody tr:nth-child(3)) {
+  --tbl-fs-rows: 24pt;
+}
+
+section table:has(tbody tr:nth-child(4)) {
+  --tbl-fs-rows: 22pt;
+}
+
+section table:has(tbody tr:nth-child(5)) {
+  --tbl-fs-rows: 20pt;
+}
+
+section table:has(tbody tr:nth-child(6)) {
+  --tbl-fs-rows: 18pt;
+  --tbl-pad: 4px 8px;
+}
+
+section table:has(tbody tr:nth-child(7)) {
+  --tbl-fs-rows: 16pt;
+  --tbl-lh: 1.35;
+}
+
+section table:has(tbody tr:nth-child(9)) {
+  --tbl-fs-rows: 13pt;
+  --tbl-lh: 1.3;
+  --tbl-pad: 3px 8px;
+}
+
+section table:has(tbody tr:nth-child(11)) {
+  --tbl-fs-rows: 11pt;
+  --tbl-lh: 1.25;
+  --tbl-pad: 2px 6px;
+}
+
+section table:has(tbody tr:nth-child(14)) {
+  --tbl-fs-rows: 9pt;
+  --tbl-lh: 1.2;
+  --tbl-pad: 2px 5px;
+}
+
+section table:has(tbody tr:nth-child(18)) {
+  --tbl-fs-rows: 7.5pt;
+  --tbl-lh: 1.15;
+  --tbl-pad: 1px 4px;
+}
+
+section table:has(thead th:nth-child(3)) {
+  --tbl-fs-cols: 24pt;
+}
+
+section table:has(thead th:nth-child(4)) {
+  --tbl-fs-cols: 20pt;
+}
+
+section table:has(thead th:nth-child(5)) {
+  --tbl-fs-cols: 12pt;
+}
+
+section table:has(thead th:nth-child(6)) {
+  --tbl-fs-cols: 11pt;
+}
+
+section table:has(thead th:nth-child(7)) {
+  --tbl-fs-cols: 10pt;
+}
+
+section table:has(thead th:nth-child(8)) {
+  --tbl-fs-cols: 9pt;
+}
+
+section table:has(thead th:nth-child(10)) {
+  --tbl-fs-cols: 7.5pt;
+}
+
+section.wide-content table:has(tbody tr:nth-child(6)) {
+  --tbl-fs-rows: 20pt;
+}
+
+section.wide-content table:has(tbody tr:nth-child(7)) {
+  --tbl-fs-rows: 18pt;
+}
+
+section.wide-content table:has(tbody tr:nth-child(9)) {
+  --tbl-fs-rows: 15pt;
+}
+
+section.wide-content table:has(tbody tr:nth-child(11)) {
+  --tbl-fs-rows: 13pt;
+}
+
+section.wide-content table:has(tbody tr:nth-child(14)) {
+  --tbl-fs-rows: 11pt;
+}
+
+section.wide-content table:has(tbody tr:nth-child(18)) {
+  --tbl-fs-rows: 9pt;
+}
+
+section table th,
+section table td {
+  padding: var(--tbl-pad) !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  border: 1px solid #cccccc !important;
+  box-sizing: border-box !important;
+  vertical-align: middle !important;
+}
+
+section table th {
+  font-weight: bold !important;
+  background-color: color-mix(in srgb, var(--primary-color) 15%, #ffffff) !important;
+  border-bottom: 2px solid var(--primary-color) !important;
+  color: #000000 !important;
+}
+
+section table td {
+  background-color: #ffffff !important;
+}
+
+/* 表だけを手動調整したい場合 */
+section.table-xl table {
+  --tbl-fs-rows: 28pt !important;
+  --tbl-fs-cols: 28pt !important;
+}
+
+section.table-lg table {
+  --tbl-fs-rows: 22pt !important;
+  --tbl-fs-cols: 22pt !important;
+}
+
+section.table-md table {
+  --tbl-fs-rows: 18pt !important;
+  --tbl-fs-cols: 18pt !important;
+}
+
+section.table-sm table {
+  --tbl-fs-rows: 13pt !important;
+  --tbl-fs-cols: 13pt !important;
+}
+
+section.table-xs table {
+  --tbl-fs-rows: 10pt !important;
+  --tbl-fs-cols: 10pt !important;
+  --tbl-pad: 2px 5px !important;
+  --tbl-lh: 1.2 !important;
+}
+
+section.table-xxs table {
+  --tbl-fs-rows: 8pt !important;
+  --tbl-fs-cols: 8pt !important;
+  --tbl-pad: 1px 4px !important;
+  --tbl-lh: 1.15 !important;
+}
+
+
+/* ---- 11-3. コードブロックの自動サイズ調整 ------------------------------ */
+
+/*
+   注意: コードの行数はCSSから数えられないため、基準値＋手動クラスで制御します。
+   基準 14pt は約14行（折り返し込み）まで収まる想定です。
+*/
+section pre {
+  --code-fs-base: 14pt;
+
+  max-width: 100% !important;
+  font-size: calc(var(--code-fs-base) * var(--txt-scale)) !important;
+  line-height: 1.35 !important;
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  padding: 10px !important;
+  box-sizing: border-box !important;
+  margin: calc(0.6em * var(--txt-scale)) 0 !important;
+  background: #f5f5f5 !important;
+  border: 1px solid #dddddd !important;
+  border-radius: 4px !important;
+}
+
+section pre code {
+  font-size: inherit !important;
+  line-height: inherit !important;
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  display: block !important;
+  background: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+section.code-lg pre {
+  --code-fs-base: 18pt !important;
+}
+
+section.code-sm pre {
+  --code-fs-base: 11pt !important;
+}
+
+section.code-xs pre {
+  --code-fs-base: 9pt !important;
+}
+
+section.code-xxs pre {
+  --code-fs-base: 7pt !important;
+}
+
+section code {
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  box-decoration-break: clone !important;
+  -webkit-box-decoration-break: clone !important;
+}
+
+section :not(pre)>code {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+  padding: 0.1em 0.35em !important;
+  border-radius: 3px !important;
+}
+
+
+/* ---- 11-4. 画像の自動フィット（フレックスによる厳密な残余割り当て） ---- */
+
+/*
+   画像を含むスライドだけを縦フレックスにします。
+   画像段落に flex:1 と min-height:0 を与えることで、
+   テキストが消費した残りの高さがそのまま画像の上限になります。
+   段階指定ではなく厳密なフィットです。
+*/
+section:not([data-marpit-pagination="1"]):has(> h4 ~ p > img) {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+}
+
+/* テキスト段落など、画像以外の要素は自然な高さのまま（フッター類は対象外） */
+section:not([data-marpit-pagination="1"]):has(> h4 ~ p > img)>h4~*:not(:has(> img)):not(h5, h6):not(h5 ~ *, h6 ~ *) {
+  flex: 0 0 auto !important;
+}
+
+/* 画像を含む段落が残余スペースを受け取ります */
+section:not([data-marpit-pagination="1"])>h4~p:has(> img) {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: calc(0.5em * var(--txt-scale)) 0 !important;
+}
+
+section:not([data-marpit-pagination="1"])>h4~p:has(> img)>img {
+  max-width: 100% !important;
+  max-height: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+  margin: 0 auto !important;
+}
+
+/* フレックス化しないスライド用のフォールバック上限 */
+section:not([data-marpit-pagination="1"]) img {
+  max-width: 100% !important;
+  max-height: 440px !important;
+  object-fit: contain !important;
+}
+
+section.wide-content img {
+  max-height: 550px !important;
+}
+
+/* ヘッダーロゴは上記の影響を受けないよう再指定 */
+section:not([data-marpit-pagination="1"]) header img,
+section.wide-content header img {
+  max-height: 50px !important;
+  max-width: none !important;
+  width: auto !important;
+}
+
+/* =====================================================================
+   12. 領域グルーピングと自動フォントフィッティング（v2）
+
+   設計:
+     ・帯（主張）の背景は section::before で描き、要素から切り離す
+     ・「ある見出しから次の見出しまでの全ブロック」を1つの領域として扱う
+     ・各領域の固定高さと検出行数から、収まる最大フォントサイズを算出する
+     ・本文量（--txt-scale）とは完全に独立。本文が多くても見出しは縮まない
+
+   算出式: font-size = clamp(下限, 領域高 ÷ (行数 × 行間), 上限)
+   ===================================================================== */
+
+/* ---- 12-0. 変数（このブロックに他のルールを入れ子にしないこと） -------
+   初期値が失われると calc() が無効化され、font-size が section の 18pt を
+   継承して巨大化します（以前発生した不具合と同じ原因です）。
+*/
+section:not([data-marpit-pagination="1"]) {
+  /* --- タイトル領域: top 1px 〜 帯 top 65px --- */
+  --h1-box: 58px;
+  --h1-lh: 1.25;
+  --h1-lines: 1;
+  --h1-fs-max: 20pt;
+  --h1-fs-min: 11pt;
+  --h1-fs: clamp(var(--h1-fs-min, 11pt),
+      calc(var(--h1-box, 58px) / (var(--h1-lines, 1) * var(--h1-lh, 1.25))),
+      var(--h1-fs-max, 20pt));
+
+  /* --- 主張（帯）領域: 110px − 上下パディング --- */
+  --cl-p: 0;
+  --cl-b1: 0;
+  --cl-b2: 0;
+  --cl-b3: 0;
+  --cl-b4: 0;
+  --cl-l1: 0;
+  --cl-l2: 0;
+  --cl-l3: 0;
+  --cl-l4: 0;
+  --cl-l5: 0;
+  --cl-l6: 0;
+  --cl-l7: 0;
+  --cl-l8: 0;
+
+  /* 折り返し余裕。短い主張は上限で頭打ちになるため副作用はありません。
+     日本語の長文が多い資料では 2 まで上げてください。 */
+  --h2-wrap: 1;
+
+  --h2-lines: max(1, calc(var(--cl-p, 0) + var(--cl-b1, 0) + var(--cl-b2, 0) + var(--cl-b3, 0) + var(--cl-b4, 0) + var(--cl-l1, 0) + var(--cl-l2, 0) + var(--cl-l3, 0) + var(--cl-l4, 0) + var(--cl-l5, 0) + var(--cl-l6, 0) + var(--cl-l7, 0) + var(--cl-l8, 0) + var(--h2-wrap, 0)));
+  --h2-box: 100px;
+  --h2-lh: 1.4;
+  --h2-fs-max: 18pt;
+  --h2-fs: clamp(8px,
+      calc(var(--h2-box, 100px) / (var(--h2-lines, 1) * var(--h2-lh, 1.4))),
+      var(--h2-fs-max, 18pt));
+
+  /* --- 図表タイトル領域: top 180px 〜 本文開始 230px --- */
+  --h3-box: 46px;
+  --h3-lh: 1.3;
+  --h3-lines: 1;
+  --h3-fs-max: 18pt;
+  --h3-fs-min: 10pt;
+  --h3-fs: clamp(var(--h3-fs-min, 10pt),
+      calc(var(--h3-box, 46px) / (var(--h3-lines, 1) * var(--h3-lh, 1.3))),
+      var(--h3-fs-max, 18pt));
+}
+
+/* wide-content は帯がないため領域寸法が変わります */
+section:not([data-marpit-pagination="1"]).wide-content {
+  --h1-box: 52px;
+  --h3-box: 56px;
+}
+
+
+/* ---- 12-1. 行数カウント（Markdown の改行 <br> と li の数） ------------ */
+
+/* タイトル */
+section:not([data-marpit-pagination="1"]):has(> h1 ~ *:not(h2 ~ *, h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) br) {
+  --h1-lines: 2;
+}
+
+section:not([data-marpit-pagination="1"]):has(> h1 ~ *:not(h2 ~ *, h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) br ~ br) {
+  --h1-lines: 3;
+}
+
+/* 主張: 段落の有無と、段落内の明示的な改行 */
+section:not([data-marpit-pagination="1"]):has(> h2 ~ :is(p, blockquote):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *)) {
+  --cl-p: 1;
+}
+
+section:not([data-marpit-pagination="1"]):has(> h2 ~ :is(p, blockquote):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) br) {
+  --cl-b1: 1;
+}
+
+section:not([data-marpit-pagination="1"]):has(> h2 ~ :is(p, blockquote):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) br ~ br) {
+  --cl-b2: 1;
+}
+
+section:not([data-marpit-pagination="1"]):has(> h2 ~ :is(p, blockquote):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) br ~ br ~ br) {
+  --cl-b3: 1;
+}
+
+section:not([data-marpit-pagination="1"]):has(> h2 ~ :is(p, blockquote):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) br ~ br ~ br ~ br) {
+  --cl-b4: 1;
+}
+
+/* 主張: 箇条書きの項目数 */
+section:not([data-marpit-pagination="1"]):has(> h2 ~ :is(ul, ol):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) > li:nth-child(1)) {
+  --cl-l1: 1;
+}
+
+section:not([data-marpit-pagination="1"]):has(> h2 ~ :is(ul, ol):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) > li:nth-child(2)) {
+  --cl-l2: 1;
+}
+
+section:not([data-marpit-pagination="1"]):has(> h2 ~ :is(ul, ol):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) > li:nth-child(3)) {
+  --cl-l3: 1;
+}
+
+section:not([data-marpit-pagination="1"]):has(> h2 ~ :is(ul, ol):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) > li:nth-child(4)) {
+  --cl-l4: 1;
+}
+
+section:not([data-marpit-pagination="1"]):has(> h2 ~ :is(ul, ol):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) > li:nth-child(5)) {
+  --cl-l5: 1;
+}
+
+section:not([data-marpit-pagination="1"]):has(> h2 ~ :is(ul, ol):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) > li:nth-child(6)) {
+  --cl-l6: 1;
+}
+
+section:not([data-marpit-pagination="1"]):has(> h2 ~ :is(ul, ol):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) > li:nth-child(7)) {
+  --cl-l7: 1;
+}
+
+section:not([data-marpit-pagination="1"]):has(> h2 ~ :is(ul, ol):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) > li:nth-child(8)) {
+  --cl-l8: 1;
+}
+
+/* 図表タイトル */
+section:not([data-marpit-pagination="1"]):has(> h3 ~ *:not(h4 ~ *, h5 ~ *, h6 ~ *) br) {
+  --h3-lines: 2;
+}
+
+
+/* ---- 12-2. 帯の背景を section::before に分離 --------------------------
+   これにより、帯の中身が何ブロックあっても背景は 1 枚の矩形になります。
+*/
+section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc):has(> h2 + *:not(h1, h2, h3, h4, h5, h6))::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 65px !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 110px !important;
+  background-color: var(--primary-color) !important;
+  z-index: 40 !important;
+  pointer-events: none !important;
+}
+
+
+/* ---- 12-3. タイトル領域（h1 から次の見出しまでの全ブロック） ---------- */
+section:not([data-marpit-pagination="1"])>h1~*:not(h1, h2, h3, h4, h5, h6, ul, ol):not(h2 ~ *, h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) {
+  position: absolute !important;
+  top: 32.5px !important;
+  transform: translateY(-50%) !important;
+  left: 20px !important;
+  width: calc(100% - 40px) !important;
+
+  /* セクション4 の height:33px を明示的に打ち消します（今回の不具合の原因） */
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: var(--h1-box, 58px) !important;
+
+  /* 行の途中で切らず、行単位で打ち切ります（超過時は末尾に … が出ます） */
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: var(--h1-lines, 1) !important;
+  line-clamp: var(--h1-lines, 1) !important;
+  overflow: hidden !important;
+
+  font-size: var(--h1-fs) !important;
+  line-height: var(--h1-lh, 1.25) !important;
+  font-weight: bold !important;
+  color: #000000 !important;
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 5 !important;
+  overflow-wrap: anywhere !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/* 2 ブロック目以降も同じ上下中央揃えを維持 */
+section:not([data-marpit-pagination="1"])>h1~*:not(h1, h2, h3, h4, h5, h6, ul, ol):not(h2 ~ *, h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *):not(h1 + *) {
+  top: 32.5px !important;
+  bottom: auto !important;
+  transform: translateY(-50%) !important;
+}
+
+/* wide-content のタイトル領域（0px〜60px）の中央に合わせる */
+section:not([data-marpit-pagination="1"]).wide-content>h1~*:not(h1, h2, h3, h4, h5, h6, ul, ol):not(h2 ~ *, h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) {
+  top: 30px !important;
+}
+
+
+/* ---- 12-4. 主張領域（h2 から次の見出しまでの全ブロック） --------------
+   ここが今回の本丸です。段落・箇条書き・引用が何個続いても、
+   すべて帯の中に配置されます。
+*/
+
+/* 共通の見た目 */
+section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc)>h2~*:not(h1, h2, h3, h4, h5, h6):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) {
+  position: absolute !important;
+  left: 0 !important;
+  width: 100% !important;
+  padding: 0 20px !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  background: transparent !important;
+  color: #ffffff !important;
+  font-size: var(--h2-fs) !important;
+  line-height: var(--h2-lh, 1.4) !important;
+  max-height: var(--h2-box, 100px) !important;
+  overflow: hidden !important;
+  overflow-wrap: anywhere !important;
+  z-index: 50 !important;
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/* 箇条書きの体裁 */
+section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc)>h2~ :is(ul, ol):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) {
+  padding-left: 3em !important;
+  padding-top: 0 !important;
+  list-style-position: outside !important;
+}
+
+section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc)>h2~ :is(ul, ol):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *)>li {
+  color: #ffffff !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+  margin: 0 !important;
+}
+
+/* (a) 主張が 1 ブロックだけ → 帯の中央（従来どおりの見え方） */
+section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc)>h2+*:not(h1, h2, h3, h4, h5, h6):is(:has(+ h3), :has(+ h4), :has(+ h5), :has(+ h6), :last-child) {
+  top: 120px !important;
+  bottom: auto !important;
+  transform: translateY(-50%) !important;
+}
+
+/* (b) 複数ある場合の先頭ブロック → 帯の上端に寄せる */
+section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc)>h2+*:not(h1, h2, h3, h4, h5, h6):not(:has(+ h3)):not(:has(+ h4)):not(:has(+ h5)):not(:has(+ h6)):not(:last-child) {
+  top: 70px !important;
+  bottom: auto !important;
+  transform: none !important;
+}
+
+/* (c) 末尾ブロック → 帯の下端に寄せる */
+section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc)>h2~*:not(h1, h2, h3, h4, h5, h6):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *):not(h2 + *):is(:has(+ h3), :has(+ h4), :has(+ h5), :has(+ h6), :last-child) {
+  top: auto !important;
+  bottom: 550px !important;
+  transform: none !important;
+}
+
+/* (d) 中間ブロック（3 ブロック以上のとき） → 帯の中央 */
+section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc)>h2~*:not(h1, h2, h3, h4, h5, h6):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *):not(h2 + *):not(:has(+ h3)):not(:has(+ h4)):not(:has(+ h5)):not(:has(+ h6)):not(:last-child) {
+  top: 120px !important;
+  bottom: auto !important;
+  transform: translateY(-50%) !important;
+}
+
+
+/* ---- 12-5. 図表タイトル領域（h3 から h4 までの全ブロック） ------------ */
+section:not([data-marpit-pagination="1"])>h3~*:not(h1, h2, h3, h4, h5, h6):not(h4 ~ *, h5 ~ *, h6 ~ *) {
+  position: absolute !important;
+  top: 180px !important;
+  left: 0 !important;
+  width: 100% !important;
+  padding: 0 40px !important;
+  box-sizing: border-box !important;
+
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: var(--h3-box, 46px) !important;
+
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: var(--h3-lines, 1) !important;
+  line-clamp: var(--h3-lines, 1) !important;
+  overflow: hidden !important;
+
+  text-align: center !important;
+  font-size: var(--h3-fs) !important;
+  line-height: var(--h3-lh, 1.3) !important;
+  font-weight: bold !important;
+  margin: 0 !important;
+  z-index: 5 !important;
+  background: transparent !important;
+  overflow-wrap: anywhere !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+section:not([data-marpit-pagination="1"])>h3~*:not(h1, h2, h3, h4, h5, h6):not(h4 ~ *, h5 ~ *, h6 ~ *):not(h3 + *) {
+  top: auto !important;
+  bottom: 490px !important;
+}
+
+section:not([data-marpit-pagination="1"]).wide-content>h3~*:not(h1, h2, h3, h4, h5, h6):not(h4 ~ *, h5 ~ *, h6 ~ *) {
+  top: 60px !important;
+}
+
+
+
+/* ---- 12-6. 手動オーバーライド ------------------------------------------
+   折り返しで行数が増える場合に、実際の行数を伝えます。
+   例: <!-- _class: title-2 claim-5 fig-2 -->
+*/
+section.title-1 {
+  --h1-lines: 1 !important;
+}
+
+section.title-2 {
+  --h1-lines: 2 !important;
+}
+
+section.title-3 {
+  --h1-lines: 3 !important;
+}
+
+section.claim-1 {
+  --h2-lines: 1 !important;
+}
+
+section.claim-2 {
+  --h2-lines: 2 !important;
+}
+
+section.claim-3 {
+  --h2-lines: 3 !important;
+}
+
+section.claim-4 {
+  --h2-lines: 4 !important;
+}
+
+section.claim-5 {
+  --h2-lines: 5 !important;
+}
+
+section.claim-6 {
+  --h2-lines: 6 !important;
+}
+
+section.claim-7 {
+  --h2-lines: 7 !important;
+}
+
+section.claim-8 {
+  --h2-lines: 8 !important;
+}
+
+section.fig-1 {
+  --h3-lines: 1 !important;
+}
+
+section.fig-2 {
+  --h3-lines: 2 !important;
+}
+
+section.fig-3 {
+  --h3-lines: 3 !important;
+}
+
+
+/* ---- 12-7. Mermaid ダイアグラム ----------------------------------------
+   前提DOM: <div class="mermaid"><svg>…</svg></div>
+   ```mermaid フェンスを 1ページ目のローダースクリプトが変換します。
+   ---------------------------------------------------------------------- */
+
+section:not([data-marpit-pagination="1"]) {
+  --mmd-max-h: 440px;
+}
+
+section:not([data-marpit-pagination="1"]).wide-content {
+  --mmd-max-h: 550px;
+}
+
+/* (a) 変換前のソースコードを隠します。
+      描画完了までの一瞬コードが見えるのを防ぎます。
+      図が出ない原因を調べたいときは、この1ブロックだけコメントアウトすると
+      生のMermaid記法が確認でき、フェンスが認識されているか判別できます。 */
+section :is(pre, marp-pre):has(> code.language-mermaid:not([data-mermaid-failed])) {
+  visibility: hidden !important;
+  position: absolute !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* (b) 図のコンテナ */
+section:not([data-marpit-pagination="1"]) .mermaid {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  max-height: var(--mmd-max-h, 440px) !important;
+  margin: calc(0.5em * var(--txt-scale)) auto !important;
+  padding: 0 !important;
+  background: transparent !important;
+  overflow: hidden !important;
+  text-align: center !important;
+}
+
+/* Mermaid図の文字サイズ基準。継承の起点だけを整え、
+   SVG内部の個別要素へは干渉しない（mermaid 自身の計算値を尊重する） */
+section .mermaid,
+section .mermaid svg {
+  font-size: 14px !important;
+  font-family: 'Meiryo', 'Yu Gothic', sans-serif !important;
+  line-height: 1.2 !important;
+}
+
+
+/* (c) 生成されたSVG本体。
+      mermaid は svg に style="max-width:NNNpx" をインライン付与しますが、
+      作者スタイルシートの !important はインラインスタイルより優先されるため
+      確実に打ち消せます。viewBox 付きSVGは縦横比を保って縮小されます。 */
+section:not([data-marpit-pagination="1"]) .mermaid>svg {
+  display: block !important;
+  /* width は宣言しない。mermaid の width 属性を自然サイズとして活かす */
+  height: auto !important;
+  /* 縮小時に縦横比を維持 */
+  max-width: 100% !important;
+  /* 880px を超えたときだけ縮む */
+  max-height: 100% !important; 
+  /* 100% → 実寸に変更 */
+  margin: 0 auto !important;
+}
+
+
+/* (d) 図を含むスライドを縦フレックス化し、
+      テキストが消費した残りの高さをそのまま図の上限にします（11-4 と同じ設計） */
+section:not([data-marpit-pagination="1"]):has(> h4 ~ .mermaid) {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+}
+
+section:not([data-marpit-pagination="1"])>h4~.mermaid {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+
+section:not([data-marpit-pagination="1"]):has(> h4 ~ .mermaid)>h4~*:not(.mermaid):not(h5, h6):not(h5 ~ *, h6 ~ *) {
+  flex: 0 0 auto !important;
+}
+
+/* (e) 手動調整用クラス   <!-- _class: mermaid-sm --> */
+section.mermaid-sm .mermaid {
+  max-height: calc(var(--mmd-max-h, 440px) * 0.75) !important;
+}
+
+section.mermaid-xs .mermaid {
+  max-height: calc(var(--mmd-max-h, 440px) * 0.55) !important;
+}
+
+/* (f) ローダースクリプト等がブロック数カウントに混入しないようにします */
+section>script,
+section>style,
+section>link {
+  display: none !important;
+}

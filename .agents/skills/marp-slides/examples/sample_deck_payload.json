@@ -1,0 +1,43 @@
+{
+  "filenamePrefix": "enterprise_dx_strategy",
+  "size": "16:9",
+  "themeColor": "#1f497d",
+  "logoPath": "../slides/N-Y-Public_Logo.jpg",
+  "titleSlide": {
+    "mainTitle": "エンタープライズDX推進戦略",
+    "subTitle": "2026-2028年度 中期デジタル変革計画",
+    "bookNo": "DXS-2026-001",
+    "author": "デジタルイノベーション本部 / 戦略企画部",
+    "date": "2026年9月1日",
+    "copyright": "© 2026 N-Y-Public",
+    "confidentiality": "CONFIDENTIAL"
+  },
+  "normalSlides": [
+    {
+      "pageTitle": "エグゼクティブサマリ",
+      "claim": "全社業務プロセスの自動化とデータ駆動型経営により、3年で営業利益率+4.5ptを目指す",
+      "chartTitle": "中期DX戦略の3大柱と定量目標",
+      "twoColumns": {
+        "leftContent": "### 3大推進柱\n- **1. コア業務のAI自律化**\n  定型業務の90%自動化を達成\n- **2. 全社データレイク統合**\n  リアルタイムな経営意思決定基盤の構築\n- **3. デジタル新規事業創出**\n  SaaS/プラットフォーム型収益の確立",
+        "rightContent": "### 2028年度 定量目標\n- **営業利益率**: 現行 8.2% → **12.7%**\n- **業務工数削減**: 年間 **120,000時間**\n- **DX新規売上比率**: 全体売上の **25%**\n- **IT投資対効果 (ROI)**: **320%**"
+      },
+      "source": "出所: 経営戦略会議 審議決定資料"
+    },
+    {
+      "pageTitle": "ターゲットアーキテクチャ",
+      "claim": "クラウドネイティブ基盤とMCPエージェント連携により、俊敏性と安全性を両立する",
+      "chartTitle": "次世代システム構成図",
+      "classes": ["mermaid-sm"],
+      "bodyContent": "```mermaid\nflowchart TD\n    subgraph Channels[顧客・社員接点]\n      Web[Webポータル] & Mobile[モバイルアプリ] & Agent[自律型AIエージェント]\n    end\n    subgraph Integration[統合API / イベントハブ]\n      Gateway[API Gateway] <--> EventBus[Kafka / Event Grid]\n    end\n    subgraph Core[基幹・データ基盤]\n      ERP[(次世代ERP)] & DataLake[(全社統合データレイク)]\n    end\n    Channels --> Gateway\n    EventBus --> Core\n```",
+      "source": "出所: エンタープライズアーキテクチャ標準ガイドライン"
+    },
+    {
+      "pageTitle": "ソリューション比較評価",
+      "claim": "拡張性とTCOの観点から、オープンスタンダードに準拠した統合プラットフォームを採用",
+      "chartTitle": "基盤選定候補の比較マトリクス",
+      "classes": ["table-sm"],
+      "bodyContent": "| 評価項目 | 提案基盤 (採用) | 従来型パッケージ | スクラッチ開発 |\n| :--- | :--- | :--- | :--- |\n| **導入スピード** | ◎ (最短3ヶ月) | ○ (6〜12ヶ月) | × (18ヶ月以上) |\n| **3年累計TCO** | ◎ (最適化) | △ (ライセンス高) | × (保守コスト大) |\n| **AI/MCP親和性** | ◎ (ネイティブ対応) | × (連携困難) | ○ (個別開発) |\n| **セキュリティ** | ◎ (ゼロトラスト準拠) | ○ (境界防御) | △ (個別検証要) |",
+      "source": "出所: IT推進委員会 評価スコアシート"
+    }
+  ]
+}

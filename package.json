@@ -1,0 +1,27 @@
+{
+  "name": "marp-business-theme",
+  "version": "1.0.0",
+  "description": "Standard business presentation theme and tools for Marp",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js",
+    "build:pdf": "marp slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.md --theme-set themes/business-slide-theme.css --output slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.pdf --allow-local-files",
+    "build:pptx": "marp slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.md --theme-set themes/business-slide-theme.css --output slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.pptx --allow-local-files",
+    "build:pptx-custom": "node pptx_converter/convert.js slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.md slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.pptx",
+    "pdf": "marp --theme-set themes/business-slide-theme.css --allow-local-files",
+    "pptx": "marp --theme-set themes/business-slide-theme.css --allow-local-files"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@marp-team/marp-cli": "^3.4.0",
+    "@types/node": "^22.0.0",
+    "pptxgenjs": "^4.0.1",
+    "puppeteer": "^24.36.1",
+    "typescript": "^5.5.0"
+  },
+  "license": "SEE LICENSE IN LICENSE"
+}
