@@ -248,10 +248,30 @@ npm run build
 ```
 ビルドが成功すると、`build/index.js` が生成されます。
 
-### 2. クライアント設定（例: Claude Desktop）
+### 2. クライアント設定と外部プロジェクトからの汎用利用
 
-Claude Desktop の設定ファイル（`claude_desktop_config.json`）の `mcpServers` に本サーバーを登録します。
+本 MCP サーバーは、本リポジトリ専用のスライド作成ツールとしてだけでなく、**「PC 内の共通スライド生成エンジン」として、他の任意のリポジトリ（Web アプリケーション、業務システム、仕様書リポジトリ等）から汎用的に呼び出す**ことが可能です。
 
+本リポジトリを PC 上の共通ディレクトリ（例: `~/tools/marp-slide-mcp` や `C:\tools\marp-slide-mcp` 等）に配置してビルド（`npm run build`）しておけば、どのプロジェクトを開いているときでも、AI アシスタントを通じてスライドの生成・編集・高精度 PDF 出力を行えます。
+
+#### 2.1 AI クライアントへの登録
+
+##### ① Cursor での設定（プロジェクト別、またはグローバル）
+作業中プロジェクトのルートに `.cursor/mcp.json` を配置するか、Cursor の設定（Settings > Features > MCP）から登録します：
+
+```json
+{
+  "mcpServers": {
+    "marp-slide-mcp": {
+      "command": "node",
+      "args": ["<本リポジトリの絶対パス>/build/index.js"]
+    }
+  }
+}
+```
+
+##### ② Claude Desktop での設定（全プロジェクト共通）
+Claude Desktop の設定ファイル（`claude_desktop_config.json`）の `mcpServers` に本サーバーを登録します：
 - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
 
@@ -266,19 +286,46 @@ Claude Desktop の設定ファイル（`claude_desktop_config.json`）の `mcpSe
 }
 ```
 
+##### ③ Docker 経由での実行（ホスト側に Node.js / Chromium を構築しない場合）
+```json
+{
+  "mcpServers": {
+    "marp-slide-mcp": {
+      "command": "docker",
+      "args": [
+        "compose",
+        "-f", "<本リポジトリの絶対パス>/docker-compose.yml",
+        "run", "--rm", "-T", "app",
+        "node", "build/index.js"
+      ]
+    }
+  }
+}
+```
+
+#### 2.2 外部プロジェクトでの運用 Tips と成果物の扱い
+
+1. **成果物（Markdown・PDF）の保存場所**:
+   - `generate_slide_deck` 等で新規作成されたスライドは、MCP サーバーの配置ディレクトリ配下（`slides/<fileId>/`）に出力され、チャット上で絶対パスが返却されます。
+   - 作業中のプロジェクト内に配置したい場合は、AI に「**生成された Markdown と PDF をこのプロジェクトの `docs/slides/` にコピーして**」と指示することで、即座にプロジェクト内に取り込むことができます。
+
+2. **作業中プロジェクト内の既存 Markdown を PDF 化する**:
+   - `export_to_pdf` ツールの `markdownPath` 引数に、作業中プロジェクト内の Markdown ファイルの絶対パス（または相対パス）を渡すことで、本リポジトリの高品質ビジネステーマを適用した PDF および HTML を直接コンパイル・出力できます。
+   - 例: `export_to_pdf(markdownPath: "/path/to/my-project/docs/presentation.md")`
+
 ### 3. 提供されるツール一覧
 
 本 MCP サーバーは以下の 7 つのツールを提供します：
 
 | ツール名 | 説明 | 主要引数 |
 | :--- | :--- | :--- |
-| `generate_slide_deck` | テーマとレイアウト規約に準拠した Marp スライド Markdown を一括新規作成します。 | `filename`, `title`, `slides` (配列: layout, title, message, body等), `primaryColor` |
-| `get_slide_deck` | 既存のスライド Markdown を読み込み、フロントマターや各スライド要素を解析して返します。 | `filePath` |
-| `insert_slide` | 指定したスライドファイルの特定インデックス位置に新しいスライドを挿入します。 | `filePath`, `index`, `slide` (オブジェクト) |
-| `update_slide` | 指定したインデックスのスライド内容（タイトル、メッセージ、本文等）を更新します。 | `filePath`, `index`, `slide` (オブジェクト) |
-| `delete_slide` | 指定したインデックスのスライドを削除します。 | `filePath`, `index` |
-| `update_deck_settings` | デッキ全体の設定（テーマカラー `--primary-color`、比率 `size`、表紙バナー等）を更新します。 | `filePath`, `primaryColor`, `size`, `bannerImage` |
-| `export_to_pdf` | Marp CLI を内部で呼び出して、指定したスライド Markdown を PDF に変換・出力します。 | `filePath`, `outputPath` (任意) |
+| `generate_slide_deck` | テーマとレイアウト規約に準拠した Marp スライド Markdown および PDF を一括新規作成します。 | `titleSlide`, `normalSlides`, `size`, `themeColor`, `logoPath`, `filenamePrefix` |
+| `get_slide_deck` | 既存のスライド構成（各ページ番号、タイトル、主張、本文、クラス、バナー設定等）を取得します。 | `fileId` |
+| `insert_slide` | 指定したページ番号の直後に新しいスライドを1枚挿入し、PDF/HTMLを再ビルドします。 | `fileId`, `insertAfterPage`, `newSlide` |
+| `update_slide` | 指定したページ番号のスライド内容を更新し、PDF/HTMLを再ビルドします。 | `fileId`, `targetPageNumber`, `updatedSlide` |
+| `delete_slide` | 指定したページ番号のスライドを削除し、PDF/HTMLを再ビルドします。 | `fileId`, `targetPageNumber` |
+| `update_deck_settings` | デッキ全体の設定（比率、ロゴ、バナー、テーマカラー、表紙情報）を更新します。 | `fileId`, `size`, `logoPath`, `banner`, `themeColor`, `titleSlide` |
+| `export_to_pdf` | 指定したスライドIDまたはMarkdownファイルからPDF（およびHTML）を出力します。 | `fileId`, `markdownPath` |
 
 ### 4. AI プロンプトテンプレート
 
