@@ -124,7 +124,7 @@ header: '![](N-Y-Public_Logo.jpg)'
 ---
 
 <style>
-@import '../themes/business-slide-theme.css';
+@import '../../themes/business-slide-theme.css';
 </style>
 ```
 
@@ -303,15 +303,23 @@ Claude Desktop の設定ファイル（`claude_desktop_config.json`）の `mcpSe
 }
 ```
 
+> [!TIP]
+> 外部プロジェクトのパスから直接ファイルを読み書きしたい場合は、ホストの Node.js による直接実行（① または ②）を推奨します。Docker 経由の場合はコンテナ外のファイルパスにアクセスできないため、MCP サーバー内蔵の `fileId` による管理をご利用ください。
+
 #### 2.2 外部プロジェクトでの運用 Tips と成果物の扱い
 
-1. **成果物（Markdown・PDF）の保存場所**:
-   - `generate_slide_deck` 等で新規作成されたスライドは、MCP サーバーの配置ディレクトリ配下（`slides/<fileId>/`）に出力され、チャット上で絶対パスが返却されます。
-   - 作業中のプロジェクト内に配置したい場合は、AI に「**生成された Markdown と PDF をこのプロジェクトの `docs/slides/` にコピーして**」と指示することで、即座にプロジェクト内に取り込むことができます。
+1. **成果物（PDF・HTML）の取り込み**:
+   - `generate_slide_deck` 等で新規作成されたスライド一式は、MCP サーバーの配置ディレクトリ配下（`slides/<fileId>/`）に出力され、チャット上で絶対パスが返却されます。
+   - 完成したプレゼン資料（`.pdf` や `.html`）を作業中プロジェクトに取り込みたい場合は、AI に「**生成された PDF をこのプロジェクトの docs/ にコピーして**」と指示してご活用ください。
+   > [!NOTE]
+   > 生成される Markdown は本リポジトリのテーマ（`themes/business-slide-theme.css`）への相対参照（`../../themes/...`）を含むため、Markdown 単体を作業プロジェクトにコピーして Marp プレビューを開くとスタイルが崩れる場合があります。スライドの追加・修正・再ビルドは、本 MCP ツール（`update_slide`, `insert_slide` 等）経由で行うことを推奨します。
 
-2. **作業中プロジェクト内の既存 Markdown を PDF 化する**:
-   - `export_to_pdf` ツールの `markdownPath` 引数に、作業中プロジェクト内の Markdown ファイルの絶対パス（または相対パス）を渡すことで、本リポジトリの高品質ビジネステーマを適用した PDF および HTML を直接コンパイル・出力できます。
-   - 例: `export_to_pdf(markdownPath: "/path/to/my-project/docs/presentation.md")`
+2. **既存スライドの再出力と直接変換（export_to_pdf）**:
+   - 本 MCP ツールで過去に作成したスライドは、発行された `fileId` を指定することで、いつでも最新の PDF/HTML を再出力可能です。
+   - 作業中プロジェクト内の既存 Markdown を直接 PDF 化したい場合は、以下の条件を満たす必要があります：
+     - **Node.js ローカル実行**: MCP サーバーがホストマシンの Node.js で起動していること（Docker 実行時はホスト側の別ディレクトリへのアクセスが制限されます）。
+     - **テーマ・構文準拠**: Markdown のフロントマターに `theme: business-slide` が指定され、かつ本テーマのアンカー構文（`# ページタイトル`, `## ページ主張` 等）に準拠していること。
+     - 例: `export_to_pdf(markdownPath: "/path/to/my-project/docs/presentation.md")`
 
 ### 3. 提供されるツール一覧
 
