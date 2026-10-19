@@ -47,11 +47,32 @@ switch ($Command.ToLower()) {
     "exec" {
         docker compose exec app @RemainingArgs
     }
+    "unlock-worktrees" {
+        Write-Host "🔓 Releasing branch locks on all secondary worktrees (detaching HEAD)..." -ForegroundColor Cyan
+        $wtLines = git worktree list --porcelain
+        $currentPath = ""
+        $count = 0
+        $isFirst = $true
+        foreach ($line in $wtLines) {
+            if ($line -match "^worktree (.+)$") {
+                $currentPath = $matches[1]
+                if ($isFirst) {
+                    $isFirst = $false
+                    continue
+                }
+                Write-Host "  -> Detaching HEAD in: $currentPath" -ForegroundColor Yellow
+                git -C $currentPath checkout --detach --quiet
+                $count++
+            }
+        }
+        Write-Host "✅ $count worktree(s) detached. All branch locks are now released for Antigravity IDE." -ForegroundColor Green
+    }
     default {
         Write-Host "Available commands:" -ForegroundColor Green
-        Write-Host "  .\dev.ps1 start         - Start container in background"
-        Write-Host "  .\dev.ps1 stop          - Stop container"
-        Write-Host "  .\dev.ps1 status        - Check container status"
-        Write-Host "  .\dev.ps1 run <cmd>     - Run command inside container"
+        Write-Host "  .\dev.ps1 start            - Start container in background"
+        Write-Host "  .\dev.ps1 stop             - Stop container"
+        Write-Host "  .\dev.ps1 status           - Check container status"
+        Write-Host "  .\dev.ps1 run <cmd>        - Run command inside container"
+        Write-Host "  .\dev.ps1 unlock-worktrees - Release branch locks across worktrees for IDE checkout"
     }
 }

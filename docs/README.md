@@ -88,21 +88,37 @@ graph TD
 | **03. 詳細** | [`03_detail_design/02_internal_interface_specification.md`](03_detail_design/02_internal_interface_specification.md) | `DOC-DD-002` | 内部関数シグネチャ（`INT-FN-xxx`）、Marpエンジン拡張API、DOM解析仕様 |
 | **03. 詳細** | [`03_detail_design/03_program_specification.md`](03_detail_design/03_program_specification.md) | `DOC-DD-003` | `index.ts`, `marp.config.js`, `convert.js`, `theme.css` 各プログラムのアルゴリズム詳細 |
 
+### 2.1 IPA共通フレーム2013 × PBI駆動アジャイル 標準テンプレート (`docs/templates/`)
+
+PBI起点の新規機能開発・仕様変更・バグ修正時に各工程のAIスキル（`.agents/skills/ipa-*`）が参照・差分更新する標準テンプレート一式：
+
+| 工程分類 | テンプレートファイル | テンプレートID | 対応スキル |
+| :--- | :--- | :--- | :--- |
+| **PBI定義 (起点)** | [`templates/98_pbi_template.md`](templates/98_pbi_template.md) | `TPL-PBI-098` | `ipa-pbi-orchestrator` |
+| **業務要件定義** | [`templates/01_business_requirements.md`](templates/01_business_requirements.md) | `TPL-REQ-BIZ-001` | `ipa-requirements-analyst` |
+| **機能要件定義** | [`templates/02_functional_requirements.md`](templates/02_functional_requirements.md) | `TPL-REQ-FNC-002` | `ipa-requirements-analyst` |
+| **非機能要件定義** | [`templates/03_non_functional_requirements.md`](templates/03_non_functional_requirements.md) | `TPL-REQ-NFR-003` | `ipa-requirements-analyst` |
+| **システム方式設計** | [`templates/04_system_architecture.md`](templates/04_system_architecture.md) | `TPL-ARC-SYS-004` | `ipa-system-architect` |
+| **ソフトウェア詳細設計** | [`templates/05_software_design.md`](templates/05_software_design.md) | `TPL-DES-SWD-005` | `ipa-detail-designer` |
+| **テスト仕様・成績書** | [`templates/06_test_specification.md`](templates/06_test_specification.md) | `TPL-TST-SPC-006` | `ipa-qa-engineer` |
+| **要件追跡表 (RTM)** | [`templates/99_traceability_matrix.md`](templates/99_traceability_matrix.md) | `TPL-RTM-MAT-099` | `ipa-traceability-validator` |
+
 ---
 
 ## 3. 完全トレーサビリティマトリクス (Traceability Matrix)
 
-要件から基本設計、詳細設計、実装コードに至るまでの完全なトレーサビリティを以下に示す。
+PBI（プロダクトバックログ）から要件、基本設計、詳細設計、実装コードに至るまでの完全なトレーサビリティを以下に示す。
 
-| 要件ID (`REQ`) | 基本設計 機能ID (`FNC`) | 外部I/F (`EXT`) | モジュールID (`MOD`) | 内部I/F (`INT`) | プログラムID (`PRG`) | 主要実装ソースコード |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `REQ-FNC-001`<br>(ビジネス標準テーマ) | `FNC-001`<br>(スライドスタイリング) | — | `MOD-THM-001` | — | `PRG-THM-001` | `themes/business-slide-theme.css`<br>`themes/theme-colors.css` |
-| `REQ-FNC-002`<br>(自律要素リサイズ) | `FNC-002`<br>(自動リサイズ機構) | — | `MOD-THM-001`<br>`MOD-ENG-001` | — | `PRG-THM-001`<br>`PRG-ENG-001` | `themes/business-slide-theme.css`<br>`marp.config.js` |
-| `REQ-FNC-003`<br>(構造化レイアウト) | `FNC-003`<br>(2段組/画像/会話) | `EXT-MCP-001` | `MOD-THM-001`<br>`MOD-SRV-001` | `INT-FN-001` | `PRG-THM-001`<br>`PRG-SRV-001` | `themes/business-slide-theme.css`<br>`src/index.ts` |
-| `REQ-FNC-004`<br>(目次完全自動生成) | `FNC-004`<br>(目次プラグイン) | — | `MOD-ENG-001` | `INT-ENG-001`<br>`INT-ENG-002` | `PRG-ENG-001` | `marp.config.js` (`marp_toc`) |
-| `REQ-FNC-005`<br>(ネイティブPPTX変換) | `FNC-005`<br>(DOM解析変換) | `EXT-CLI-002`<br>`EXT-LIB-002`<br>`EXT-LIB-003` | `MOD-PPT-001` | `INT-DOM-001`<br>`INT-DOM-002`<br>`INT-DOM-003` | `PRG-PPT-001` | `pptx_converter/convert.js` |
-| `REQ-FNC-006`<br>(MCPサーバー連携) | `FNC-006`<br>(スライド操作API) | `EXT-MCP-001`〜<br>`EXT-MCP-007` | `MOD-SRV-001` | `INT-FN-001`〜<br>`INT-FN-005` | `PRG-SRV-001` | `src/index.ts` |
-| `REQ-FNC-007`<br>(AI協調プロンプト) | `FNC-007`<br>(MBBプロンプト&Skill) | `EXT-CFG-002` | — | — | — | `.agents/skills/marp-slides/`<br>`prompts/mcp_slide_generator.md` |
+| `PBI_ID` | 要件ID (`REQ`) | 基本設計 機能ID (`FNC`) | 外部I/F (`EXT`) | モジュールID (`MOD`) | 内部I/F (`INT`) | プログラムID (`PRG`) | 主要実装ソースコード |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `PBI-000` | `REQ-FNC-001`<br>(ビジネス標準テーマ) | `FNC-001`<br>(スライドスタイリング) | — | `MOD-THM-001` | — | `PRG-THM-001` | `themes/business-slide-theme.css`<br>`themes/theme-colors.css` |
+| `PBI-000` | `REQ-FNC-002`<br>(自律要素リサイズ) | `FNC-002`<br>(自動リサイズ機構) | — | `MOD-THM-001`<br>`MOD-ENG-001` | — | `PRG-THM-001`<br>`PRG-ENG-001` | `themes/business-slide-theme.css`<br>`marp.config.js` |
+| `PBI-000` | `REQ-FNC-003`<br>(構造化レイアウト) | `FNC-003`<br>(2段組/画像/会話) | `EXT-MCP-001` | `MOD-THM-001`<br>`MOD-SRV-001` | `INT-FN-001` | `PRG-THM-001`<br>`PRG-SRV-001` | `themes/business-slide-theme.css`<br>`src/index.ts` |
+| `PBI-000` | `REQ-FNC-004`<br>(目次完全自動生成) | `FNC-004`<br>(目次プラグイン) | — | `MOD-ENG-001` | `INT-ENG-001`<br>`INT-ENG-002` | `PRG-ENG-001` | `marp.config.js` (`marp_toc`) |
+| `PBI-000` | `REQ-FNC-005`<br>(ネイティブPPTX変換) | `FNC-005`<br>(DOM解析変換) | `EXT-CLI-002`<br>`EXT-LIB-002`<br>`EXT-LIB-003` | `MOD-PPT-001` | `INT-DOM-001`<br>`INT-DOM-002`<br>`INT-DOM-003` | `PRG-PPT-001` | `pptx_converter/convert.js` |
+| `PBI-000`<br>`PBI-001` | `REQ-FNC-006`<br>(MCPサーバー連携) | `FNC-006`<br>(スライド操作API) | `EXT-MCP-001`〜<br>`EXT-MCP-007` | `MOD-SRV-001` | `INT-FN-001`〜<br>`INT-FN-005` | `PRG-SRV-001` | `src/index.ts` |
+| `PBI-000` | `REQ-FNC-007`<br>(AI協調プロンプト) | `FNC-007`<br>(MBBプロンプト&Skill) | `EXT-CFG-002` | — | — | — | `.agents/skills/marp-slides/`<br>`prompts/mcp_slide_generator.md` |
+| `PBI-002` | `REQ-FNC-008`<br>(GitHub MCP連携・PAT分離) | `FNC-008`<br>(PAT分離・検証ゲート) | `EXT-MCP-008` | `MOD-INF-001` | — | `PRG-INF-001` | `docker-compose.yml`<br>`.agents/mcp_config.json`<br>`.env.example` |
 
 ---
 

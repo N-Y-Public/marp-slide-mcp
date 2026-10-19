@@ -17,5 +17,18 @@ services:
       - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false
       - PUPPETEER_ARGS=--no-sandbox --disable-setuid-sandbox
       - NODE_ENV=development
+      - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PAT_MARP_SLIDE_MCP:-${GITHUB_PERSONAL_ACCESS_TOKEN:-}}
+    env_file:
+      - path: .env
+        required: false
     init: true
     command: /bin/sh -c "while sleep 1000; do :; done"
+
+  github-mcp:
+    image: ghcr.io/github/github-mcp-server:latest
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PAT_MARP_SLIDE_MCP:-${GITHUB_PERSONAL_ACCESS_TOKEN:-}}
+

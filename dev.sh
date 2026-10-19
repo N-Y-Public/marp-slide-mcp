@@ -35,6 +35,14 @@ case "$COMMAND" in
     marp)
         docker compose run --rm app npx @marp-team/marp-cli "$@"
         ;;
+    unlock-worktrees)
+        echo "🔓 Releasing branch locks on all secondary worktrees (detaching HEAD)..."
+        git worktree list --porcelain | grep '^worktree ' | cut -d' ' -f2- | tail -n +2 | while read -r wt; do
+            echo "  -> Detaching HEAD in: $wt"
+            git -C "$wt" checkout --detach --quiet 2>/dev/null || true
+        done
+        echo "✅ All secondary worktree branch locks released for Antigravity IDE."
+        ;;
     *)
         echo "Available commands:"
         echo "  ./dev.sh build            - Build Docker image"
@@ -43,5 +51,6 @@ case "$COMMAND" in
         echo "  ./dev.sh run <cmd>        - Run command in container"
         echo "  ./dev.sh npm <args>       - Run npm inside container"
         echo "  ./dev.sh marp <args>      - Run marp inside container"
+        echo "  ./dev.sh unlock-worktrees - Release branch locks across worktrees for IDE checkout"
         ;;
 esac

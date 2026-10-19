@@ -1,0 +1,32 @@
+{
+  "mcpServers": {
+    "marp-slide-mcp": {
+      "command": "docker",
+      "args": [
+        "compose",
+        "run",
+        "--rm",
+        "-T",
+        "app",
+        "node",
+        "build/index.js"
+      ],
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
+    "github-mcp-server": {
+      "command": "docker",
+      "args": [
+        "compose",
+        "run",
+        "--rm",
+        "-T",
+        "github-mcp"
+      ],
+      "env": {
+        "GITHUB_PAT_MARP_SLIDE_MCP": "${env:GITHUB_PAT_MARP_SLIDE_MCP}"
+      }
+    }
+  }
+}

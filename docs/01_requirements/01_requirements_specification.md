@@ -67,6 +67,7 @@ flowchart TD
 | **REQ-FNC-005** | ネイティブPPTX変換機能 | DOM解析とPptxGenJSによる編集可能PowerPointオブジェクトへの出力 | 高 (Must) |
 | **REQ-FNC-006** | MCPサーバー連携機能 | AIエージェントからスライド作成・編集・出力を実行するMCP Tools群 | 高 (Must) |
 | **REQ-FNC-007** | AI協調プロンプト＆Skill資産 | MBB品質のスライド構成をAIに指示・実行させるプロンプトとSkillの提供 | 中 (Should) |
+| **REQ-FNC-008** | GitHub MCP連携・PAT分離機能 | リポジトリ専用環境変数バインドおよび事前アカウント検証ゲートによる安全なGitHub連携 | 高 (Must) |
 
 ---
 
@@ -114,6 +115,12 @@ flowchart TD
 - **REQ-FNC-007-01 (MBB標準プロンプト)**: ワンスライド・ワンメッセージ、ピラミッド原則、文字数制限（タイトル60文字、主張250文字等）を遵守させるプロンプトテンプレートの提供。
 - **REQ-FNC-007-02 (エージェントSkill)**: AIエージェントが自律的にMCPツールを選択・実行するためのワークフロールール定義（SKILL.md）の提供。
 
+### REQ-FNC-008: GitHub MCP連携およびリポジトリ別PAT完全分離機能
+- **REQ-FNC-008-01 (リポジトリ単位のPAT分離)**: ホスト環境変数 `GITHUB_PAT_MARP_SLIDE_MCP` を最優先でロードし、別プロジェクトのPATとの混線や漏洩を物理的に防止すること。
+- **REQ-FNC-008-02 (OSSポータビリティ担保)**: 第三者がクローンした際にホスト環境を汚さず動作可能とするため、`.env.example` の提供および標準環境変数 `GITHUB_PERSONAL_ACCESS_TOKEN` / `.env` への多段フォールバックを実装すること。
+- **REQ-FNC-008-03 (揮発性ワンショット実行)**: `docker compose run --rm -T` により必要な都度起動し、処理終了後はコンテナを自動破棄して常駐ゾンビ化を防止すること。
+- **REQ-FNC-008-04 (事前アカウント検証ゲート)**: GitHub外部書き込み操作（Issue/PR作成等）の実行直前に、必ず `get_me` を実行して認証ユーザー名（`login === "N-Y-Public"`）を機械照合し、不一致時は即座に処理を中断すること。
+
 ---
 
 ## 5. 非機能要件一覧 (Non-Functional Requirements)
@@ -150,6 +157,7 @@ mindmap
 | **REQ-NFR-MNT-01** | 保守性 | すべてのTypeScript/JavaScriptコードにおいて「全行直上平易コメント」を徹底し、コード意図の透明性を100%とすること。 | ソースコード全行レビュー |
 | **REQ-NFR-POR-01** | 移植性 | Node.js 22環境のDocker Dev Container上で、ホストOS（Windows/Linux/macOS）を問わず完全に同一のビルド結果が得られること。 | コンテナ内ビルド検証 |
 | **REQ-NFR-SEC-01** | セキュリティ | リポジトリ内に開発者個人の実名、ホスト固有の絶対パス（`/path/to/...` や `C:\path\to\...`）、秘密鍵、認証情報を一切含めないこと。 | 静的テキストスキャン検証 |
+| **REQ-NFR-SEC-02** | セキュリティ | PAT（パーソナルアクセストークン）の平文をディスク（.env等）に書き込まず、OS環境変数から直接メモリ注入することで漏洩リスクを最小化すること。 | 静的スキャンおよびファイル存在検証 |
 
 ---
 
@@ -176,6 +184,7 @@ mindmap
 | `REQ-FNC-005` | ネイティブPPTX変換 | `FNC-005` / `EXT-CLI-002` | `pptx_converter/convert.js` |
 | `REQ-FNC-006` | MCPサーバー連携 | `FNC-006` / `EXT-MCP-001`〜`007` | `src/index.ts` |
 | `REQ-FNC-007` | AIプロンプト＆Skill | `FNC-007` | `.agents/skills/marp-slides/`, `prompts/` |
+| `REQ-FNC-008` | GitHub MCP連携・PAT分離 | `FNC-008` | `MOD-INF-001` (`docker-compose.yml`, `.agents/mcp_config.json`) |
 
 ---
 

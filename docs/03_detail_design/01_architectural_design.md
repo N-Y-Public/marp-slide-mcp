@@ -80,6 +80,7 @@ classDiagram
 | **MOD-ENG-001** | カスタム Marp エンジン | `marp.config.js` | 目次自動生成プラグイン、Markdown-itトークン走査、静的リサイズ |
 | **MOD-PPT-001** | PPTX カスタムコンバーター | `pptx_converter/convert.js` | PuppeteerによるDOM計測、PptxGenJSオブジェクト変換 |
 | **MOD-THM-001** | ビジネステーマスタイル | `themes/business-slide-theme.css` | 見出しアンカー非表示・絶対配置、自動リサイズ、レイアウト定義 |
+| **MOD-INF-001** | GitHub MCP連携インフラ | `docker-compose.yml`, `.agents/mcp_config.json` | リポジトリ専用PAT環境変数バインド、揮発性ワンショット実行統制 |
 
 ---
 

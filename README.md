@@ -303,6 +303,36 @@ Claude Desktop の設定ファイル（`claude_desktop_config.json`）の `mcpSe
 }
 ```
 
+#### 2.3 GitHub MCP 連携と PAT 完全分離アーキテクチャ
+
+本リポジトリは、GitHub MCP サーバー（`ghcr.io/github/github-mcp-server`）を利用した Issue/PR の自動管理に対応しています。
+ホスト側のグローバル設定に依存した常駐コンテナによる PAT 混線や誤起票を防ぐため、**リポジトリ単位の PAT 完全分離 ＆ 揮発性ワンショット実行** を採用しています。
+
+##### ① PAT（パーソナルアクセストークン）の設定方法
+
+用途に合わせて以下のいずれかの方式を選択できます（`.gitignore` により `.env` は Git 管理外のため安全です）：
+
+1. **推奨方式（環境変数直読み・ディスク非保存）**:
+   OS（Windows / Linux / macOS）のユーザー環境変数に、本リポジトリ専用の環境変数を設定します：
+   ```bash
+   # Windows (PowerShell) の場合
+   [Environment]::SetEnvironmentVariable('GITHUB_PAT_MARP_SLIDE_MCP', 'ghp_your_token', 'User')
+
+   # Linux / macOS (bash / zsh) の場合
+   export GITHUB_PAT_MARP_SLIDE_MCP="ghp_your_token"
+   ```
+   - **メリット**: ディスク上に平文トークンを一切保存せず、別プロジェクトの PAT とも変数名レベルで物理的に分離されます。
+
+2. **OSS クローン方式（.env ファイル利用）**:
+   リポジトリ直下のテンプレートから `.env` を作成して設定します：
+   ```bash
+   cp .env.example .env
+   # .env 内の GITHUB_PERSONAL_ACCESS_TOKEN にトークンを記述
+   ```
+
+##### ② 安全装置（Pre-Execution Identity Gate）
+AI エージェントが GitHub への書き込み操作（Issue/PR 作成、コメント等）を行う直前に、必ず `get_me` ツールを実行して認証ユーザー名（`login === "N-Y-Public"`）を機械照合します。不一致時は直ちに処理を中断し、別アカウントによる誤爆を物理的に防止します。
+
 > [!TIP]
 > 外部プロジェクトのパスから直接ファイルを読み書きしたい場合は、ホストの Node.js による直接実行（① または ②）を推奨します。Docker 経由の場合はコンテナ外のファイルパスにアクセスできないため、MCP サーバー内蔵の `fileId` による管理をご利用ください。
 
