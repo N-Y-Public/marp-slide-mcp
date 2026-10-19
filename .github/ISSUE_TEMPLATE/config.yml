@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "📖 設計図書体系・ドキュメント (Docs Hub)"
+    url: "https://github.com/N-Y-Public/marp-slide-mcp/tree/main/docs"
+    about: "システムの設計思想、IPA共通フレーム準拠の要件・方式・詳細設計書はこちらから参照できます。"
+  - name: "🔒 セキュリティ脆弱性の報告"
+    url: "https://github.com/N-Y-Public/marp-slide-mcp/security/advisories"
+    about: "公開Issueではなく、プライベートなセキュリティ窓口から脆弱性を報告してください。"

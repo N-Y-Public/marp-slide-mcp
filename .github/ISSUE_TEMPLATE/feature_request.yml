@@ -1,0 +1,43 @@
+name: "✨ 機能要望・改善提案 (Feature Request)"
+description: "新機能の追加、既存機能の拡張、または改善提案"
+title: "feat: [提案する機能の概要を記述]"
+labels: ["feature"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        機能要望や改善提案ありがとうございます。
+        本プロジェクトでは PBI（Product Backlog Item）駆動で機能追加を管理しています。提案の背景（Why）と具体的な要求（What）をお聞かせください。
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: "関連する課題・背景 (Why & Who)"
+      description: "現在どのような課題や不便がありますか？ 誰にとっての機能ですか？"
+      placeholder: "例: スライド作成者として、発表者用ノート（Speaker Notes）をMarkdown内に記述してPDF/PPTX出力時にも保持したい。"
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: "提案する解決策・機能仕様 (What)"
+      description: "どのような機能や変更を希望しますか？"
+      placeholder: "例: Marpの <!-- _footer: ... --> や <!-- notes: ... --> 構文をMCPツールで指定可能にし、PPTX変換時にもノートセクションへ自動転送する。"
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "検討した代替案"
+      description: "他に検討した回避策や代替手段があれば記載してください。"
+      placeholder: "例: 現状はスライド本文の末尾に小さなフォントで注記を記載しているが、スライドが煩雑になってしまう。"
+
+  - type: checkboxes
+    id: guidelines_checklist
+    attributes:
+      label: "コントリビューション確認"
+      options:
+        - label: "CONTRIBUTING.md を確認し、設計書更新やDocker開発環境の要件を理解しました。"
+          required: false

@@ -121,6 +121,11 @@ flowchart TD
 - **REQ-FNC-008-03 (揮発性ワンショット実行)**: `docker compose run --rm -T` により必要な都度起動し、処理終了後はコンテナを自動破棄して常駐ゾンビ化を防止すること。
 - **REQ-FNC-008-04 (事前アカウント検証ゲート)**: GitHub外部書き込み操作（Issue/PR作成等）の実行直前に、必ず `get_me` を実行して認証ユーザー名（`login === "N-Y-Public"`）を機械照合し、不一致時は即座に処理を中断すること。
 
+### REQ-FNC-009: 業界標準GitHubテンプレートおよびエージェント運用支援機能
+- **REQ-FNC-009-01 (GitHub Issue Forms & PR Template)**: バグ報告（`bug_report.yml`）、機能要望（`feature_request.yml`）、ドキュメント改善（`documentation.yml`）の各入力フォームを提供し、空Issue作成（`blank_issues_enabled: false`）を防止すること。また、PR作成時に変更内容や機密・パス除外チェックリストを提示する標準PRテンプレート（`pull_request_template.md`）を提供すること。
+- **REQ-FNC-009-02 (2層分離コントリビューション規約)**: 外部コントリビューターが特定のアカウント名を強要されることなく各自のGitHubアカウント・クレジットで開発参加できるよう、`CONTRIBUTING.md` を配備し、ブランチ命名規則（`{種別}/{アカウントまたはAI名}/issue-{番号}/{説明}`）を明確化すること。
+- **REQ-FNC-009-03 (AIエージェント運用支援スキル `github-workflows`)**: AIエージェントがIssue起票・ブランチ命名・PR作成を行う際に、テンプレート読み込み、規約準拠ブランチ名導出、およびGit設定（noreplyメール利用推奨案内）を自動支援するスキルを提供すること。
+
 ---
 
 ## 5. 非機能要件一覧 (Non-Functional Requirements)

@@ -1,0 +1,36 @@
+name: "📚 ドキュメント改善 (Documentation Improvement)"
+description: "設計書、README、APIドキュメント、コメント等の修正・改善提案"
+title: "docs: [ドキュメント改善の概要を記述]"
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ドキュメントの改善提案ありがとうございます。
+        本プロジェクトは IPA共通フレーム2013（SLCP-JCF2013）に準拠した詳細な設計図書体系（`docs/`）を有しています。
+
+  - type: textarea
+    id: target_docs
+    attributes:
+      label: "対象ドキュメント"
+      description: "修正または追加が必要なドキュメントのパスやセクションを記載してください。"
+      placeholder: "例: README.md, docs/02_basic_design/02_external_interface_specification.md"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "改善内容・変更提案"
+      description: "現状の記述の課題や、どのように改善すべきかを記載してください。"
+      placeholder: "例: 外部プロジェクトからnpmパッケージとして取り込む際の手順にDocker起動オプションの説明が不足しているため追記する。"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: privacy_checklist
+    attributes:
+      label: "セキュリティ・プライバシー確認"
+      options:
+        - label: "提案文面に個人実名、ホスト絶対パス、認証情報が含まれていないことを確認しました。"
+          required: true

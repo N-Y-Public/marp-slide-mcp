@@ -119,6 +119,7 @@ PBI（プロダクトバックログ）から要件、基本設計、詳細設�
 | `PBI-000`<br>`PBI-001` | `REQ-FNC-006`<br>(MCPサーバー連携) | `FNC-006`<br>(スライド操作API) | `EXT-MCP-001`〜<br>`EXT-MCP-007` | `MOD-SRV-001` | `INT-FN-001`〜<br>`INT-FN-005` | `PRG-SRV-001` | `src/index.ts` |
 | `PBI-000` | `REQ-FNC-007`<br>(AI協調プロンプト) | `FNC-007`<br>(MBBプロンプト&Skill) | `EXT-CFG-002` | — | — | — | `.agents/skills/marp-slides/`<br>`prompts/mcp_slide_generator.md` |
 | `PBI-002` | `REQ-FNC-008`<br>(GitHub MCP連携・PAT分離) | `FNC-008`<br>(PAT分離・検証ゲート) | `EXT-MCP-008` | `MOD-INF-001` | — | `PRG-INF-001` | `docker-compose.yml`<br>`.agents/mcp_config.json`<br>`.env.example` |
+| `PBI-003` | `REQ-FNC-009`<br>(GitHub標準テンプレート・運用スキル) | `FNC-009`<br>(Issue/PR/ブランチ運用支援) | `EXT-DOC-001` | `MOD-SKL-001` | — | `PRG-SKL-001` | `.github/`<br>`CONTRIBUTING.md`<br>`.agents/skills/github-workflows/` |
 
 ---
 

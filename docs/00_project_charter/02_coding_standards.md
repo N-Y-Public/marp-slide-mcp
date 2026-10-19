@@ -152,6 +152,7 @@ section.toc > ul {
 | **CSS クラス名** | `kebab-case` | `.wide-content`, `.columns-2`, `.conversation-content` |
 | **CSS カスタムプロパティ** | `--kebab-case` | `--primary-color`, `--banner-image` |
 | **MCP ツール名** | `snake_case` (小文字) | `generate_slide_deck`, `export_to_pdf` |
+| **Git ブランチ名** | `{種別}/{アカウント名またはAI名}/issue-{番号}/{説明}` | `feat/alice/issue-2/github-standard-templates`<br>`feat/antigravity-2.0/issue-2/github-standard-templates` |
 
 ---
 
@@ -185,3 +186,4 @@ section.toc > ul {
 - [[01_architectural_design|構造設計書]]: モジュール構造および設計パターン
 - [[03_program_specification|プログラム仕様書]]: 各実装モジュールの詳細ロジック
 - [[../README|設計図書統合インデックス]]: 設計図書体系の全体マップ
+- [CONTRIBUTING.md](../../CONTRIBUTING.md): コントリビューション規約およびブランチ運用・コミットガイドライン

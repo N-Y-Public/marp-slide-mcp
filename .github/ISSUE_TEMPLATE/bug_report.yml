@@ -1,0 +1,65 @@
+name: "🐛 バグ報告 (Bug Report)"
+description: "システムの不具合、エラー、レイアウト崩れ等の報告"
+title: "fix: [短い概要を記述]"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        バグの報告ありがとうございます。問題の迅速な調査・再現のため、可能な限り詳細な情報をご記入ください。
+        > [!IMPORTANT]
+        > 本リポジトリは公開OSSです。ログやコード内に**個人情報、プライベートなメールアドレス、ホスト固有の絶対パス（`/home/...` や `C:\path\to\...`）、APIキー等の機密情報**が含まれていないことを必ずご確認ください。
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "問題の概要"
+      description: "発生している不具合の概要を簡潔に記載してください。"
+      placeholder: "例: 2段組レイアウトで長いコードブロックを配置した際、右側の画像と重なって表示される。"
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: "再現手順"
+      description: "不具合が再現する最小限の手順を番号付きで記載してください。"
+      placeholder: |
+        1. `docker compose run --rm app npm run start` でMCPサーバーを起動
+        2. 以下のMarkdownまたはJSONパラメータを送信
+        3. エラーが発生、またはレイアウトが崩れる
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: "期待される挙動"
+      description: "本来どう動作すべきだったかを記載してください。"
+      placeholder: "例: 自動リサイズ機構が働き、はみ出さずに適切に縮小表示されること。"
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual_logs
+    attributes:
+      label: "エラーログ・コンソール出力"
+      description: "関連するエラーメッセージやスタックトレースがあれば貼り付けてください（絶対パスやトークンは `<repo>` や `***` 等にマスクしてください）。"
+      render: shell
+
+  - type: input
+    id: environment
+    attributes:
+      label: "動作環境"
+      description: "OS、Dockerの有無、Node.jsバージョン等を記載してください。"
+      placeholder: "例: Windows 11 (Docker Compose) / Node.js 22 LTS / Antigravity 2.0"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: privacy_checklist
+    attributes:
+      label: "セキュリティ・プライバシー確認"
+      options:
+        - label: "ログや添付内容に個人実名、ホスト絶対パス、パスワード、秘密鍵、トークン等の機密情報が含まれていないことを確認しました。"
+          required: true

@@ -29,6 +29,7 @@ tags:
 | **EXT-CLI-001〜003** | コマンドライン I/F | 開発者、CI/CDパイプライン、Docker | CLI Arguments, Environment Variables, Exit Codes |
 | **EXT-LIB-001〜003** | 外部ライブラリ連携 I/F | Marp Core, Puppeteer, PptxGenJS | Node.js JavaScript/TypeScript API |
 | **EXT-CFG-001〜002** | 設定ファイル I/F | VS Code, AI クライアント | JSON 設定ファイル |
+| **EXT-DOC-001** | GitHub テンプレート・規約 I/F | 外部コントリビューター、AI エージェント | GitHub Issue Forms (YAML), PR Template, CONTRIBUTING.md |
 
 ---
 
