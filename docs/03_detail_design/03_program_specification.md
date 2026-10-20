@@ -102,10 +102,11 @@ flowchart TD
 ```
 
 ### 3.2 複数スライド分割およびページ番号シフト論理
-1. **スライド分割閾値**: 1スライドあたり最大 12 項目。
-2. 収集された `headings.length > 12` の場合、12項目ごとに `marpit_slide_open`（クラス `toc` 継承）および `marpit_slide_close` を生成。
-3. 目次スライドが `N` 枚増加した場合（`totalAddedSlides = Math.ceil(headings.length / 12)`）、目次以降のスライドの実ページ番号は `+(totalAddedSlides - 1)` シフトされる。
-4. リンク先アンカーおよび表示ページ番号にシフト値を反映し、リンク不整合を完全に防止。
+1. **フック登録位置**: `md.core.ruler.after('marpit_directives_parse', 'marp_toc', ...)` により、`marpit_inline_svg`・`marpit_directives_apply`・`marpit_header_and_footer`・`marpit_collect` の前段で実行する（`state.inlineMode` 時はスキップ）。
+2. **スライド分割閾値**: 1スライドあたり最大 12 項目（`ITEMS_PER_SLIDE = 12`）。
+3. 収集された `headings.length > 12` の場合、12項目ごとに `marpit_slide_open`（クラス `toc`・ディレクティブ継承、`meta.marpitSlideElement = 1`、`id` 属性設定）および `marpit_slide_close`（`meta.marpitSlideElement = -1`）を生成し、元の目次スライド内のヘッダー/フッターおよび `h6`（コピーライト・機密指定）トークンを全目次ページへ複製注入する。
+4. 目次スライドが `N` 枚に分割された場合（`totalAddedSlides = Math.ceil(headings.length / 12)`）、目次以降の全スライドの `meta.marpitSlide`・`meta.marpitSlideTotal`・`id` 属性および実ページ番号（`data-marpit-pagination`）は `+(totalAddedSlides - 1)` シフトされる。
+5. リンク先アンカー（`href="#N"`）および表示ページ番号（`.toc-page`）にシフト値を反映し、後続の `marpit_inline_svg` によるSVGページ分割およびリンク整合性を完全に担保する。
 
 ---
 

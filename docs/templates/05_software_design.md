@@ -107,7 +107,7 @@ erDiagram
 #### 内部関数インターフェース一覧
 | 関数ID | 関数名 | 引数 (型) | 戻り値 (型) | 処理概要・例外仕様 |
 | :--- | :--- | :--- | :--- | :--- |
-| **INT-FN-001** | `resolveSlideContent` | `slide: NormalSlide` | `{ bodyContent: string; classes: string[] }` | `twoColumns` 指定時は `columns-2` クラスを付与し箇条書き2列に整形。`imageGrid` 指定時は `images-2`〜`4` を付与。 |
+| **INT-FN-001** | `resolveSlideContent` | `slide: NormalSlide` | `{ bodyContent: string; classes: string[] }` | `twoColumns` 指定時は `columns-2` クラスを付与し箇条書き2列に整形。`imageGrid` 指定時は `images-2`〜`4` を付与。`pageTitle` が `"目次"`（または `"Table of Contents"`）かつ本文が空の場合は `toc` クラスを自動補完。 |
 | **INT-FN-002** | `generateMarpMarkdown` | `deck: SlideDeck` | `string` | フロントマター、テーマ色CSS変数、表紙スライド、通常スライド群を `---` 区切りで結合し完全なMarp Markdownを生成。 |
 | **INT-FN-003** | `parseMarpMarkdown` | `content: string` | `{ frontmatter: Record<string, unknown>; slides: SlideRaw[] }` | 既存Markdownからフロントマターと各ページの生テキスト・構造を抽出。不正構文時は `ERR-VAL-001` 相当の例外を送出。 |
 | **INT-FN-004** | `exportSlideToPdf` | `markdownPath: string` | `Promise<string>` | Chromiumパスを4段階解決し、Marp CLIを実行してPDFを生成。対象不在時は `ERR-NOT-002`、未定義例外は `ERR-SYS-999` 受け皿で捕捉。 |
@@ -124,12 +124,12 @@ erDiagram
 #### 内部関数・スタイル処理仕様
 | 関数/ルールID | 名称 | 入力 | 出力 | 処理論理・境界条件 |
 | :--- | :--- | :--- | :--- | :--- |
-| **INT-ENG-001** | `marp_toc` プラグイン | Markdown-it `state.tokens` | 目次注入・分割済み `state.tokens` | 1. 全スライドのH1/直下段落からタイトルを収集（表紙・目次除外）。<br>2. 12項目を超える場合は新規目次スライドを自動分割挿入し後続ページ番号を補正。<br>3. 元の `<header>` ロゴトークンを保持して再注入。 |
+| **INT-ENG-001** | `marp_toc` プラグイン | Markdown-it `state.tokens` | 目次注入・分割済み `state.tokens` | 1. `marpit_directives_parse` 直後に実行し、全スライドのH1/直下段落からタイトルを収集（表紙・目次除外）。<br>2. 12項目を超える場合は独立した目次スライド（`marpitSlideElement: 1/-1`, `id` 属性付与）を自動分割生成し、後続スライドの `marpitSlide`・`marpitSlideTotal`・`id` 属性をシフト補正。<br>3. 元のヘッダー/フッターおよび `h6`（コピーライト・機密指定）トークンを全目次ページへ保持・再注入。 |
 | **INT-THM-001** | 見出しアンカー＆自動リサイズCSS | Marp HTMLセクション | 絶対配置・縮小済みDOM | `h1`〜`h5` 自体を非表示化し直後要素を配置。表（`.table-sm`/`.table-xs`）、コード、Mermaid SVG、画像を本文枠内に収める。 |
 
 #### 単体テスト観点 (`TEST-UT-002` の根拠)
-- 正常系: `<!-- _class: toc -->` スライドに通常スライドのタイトル一覧とページ番号リンクが生成され、ヘッダーロゴが維持されること。
-- 境界値: 通常スライド12枚（1ページ目次）と13枚（2ページ目次に自動分割）の境界でページ番号ズレが0件であること。
+- 正常系: `<!-- _class: toc -->` スライドに通常スライドのタイトル一覧とページ番号リンクが生成され、ヘッダーロゴおよびフッター（コピーライト・機密指定）が維持されること。
+- 境界値: 通常スライド12枚（1ページ目次）と13枚以上（例: 15枚＝表紙込み17ページ以上で2ページ目次に自動分割）の境界で、2ページ目以降の目次が独立した `<svg data-marpit-svg>` として生成され、ページ番号・アンカーIDのズレが0件であること。
 
 ---
 

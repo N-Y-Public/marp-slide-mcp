@@ -20,8 +20,10 @@ export default {
     
     // Markdown-itのプラグインを登録してMarpの変換処理を拡張します
     marp.use((md) => {
-      // 1. 目次（TOC）スライドの自動生成ルールをパーサーに追加します
-      md.core.ruler.push('marp_toc', (state) => {
+      // 1. 目次（TOC）スライドの自動生成ルールをディレクティブ解析直後（SVGラッパーや属性適用より前）に追加します
+      md.core.ruler.after('marpit_directives_parse', 'marp_toc', (state) => {
+        // インラインモード（ヘッダー・フッター内部のパース時など）の場合は処理をスキップします
+        if (state.inlineMode) return;
         // パース対象の全トークン配列を取得します
         const tokens = state.tokens;
         // 目次スライドの開始位置インデックスを初期化します
@@ -128,6 +130,8 @@ export default {
         if (tocStartIndex !== -1 && tocEndIndex !== -1 && headings.length > 0) {
           // 元の目次スライドに含まれるヘッダー・フッタートークン（ロゴ画像等）を抽出して保持する配列です
           const preservedTokens = [];
+          // 元の目次スライドに含まれるh6フッタートークン（コピーライト・機密指定）を保持する配列です
+          const preservedFooterH6Tokens = [];
           // 目次スライド内のトークンを走査します
           for (let k = tocStartIndex + 1; k < tocEndIndex; k++) {
             // ヘッダーまたはフッターの開始タグを検出した場合
@@ -135,11 +139,22 @@ export default {
               // 対応する終了タグのタイプを判定します
               const closeType = tokens[k].type === 'marpit_header_open' ? 'marpit_header_close' : 'marpit_footer_close';
               // 終了タグに到達するまでトークンを走査・保存します
-              while (k <= tocEndIndex) {
+              while (k < tocEndIndex) {
                 // トークンを保存配列に追加します
                 preservedTokens.push(tokens[k]);
                 // 終了タグに到達した場合はループを抜けます
                 if (tokens[k].type === closeType) break;
+                // インデックスを進めます
+                k++;
+              }
+            // h6見出し（コピーライト・機密指定アンカー）の開始タグを検出した場合
+            } else if (tokens[k].type === 'heading_open' && tokens[k].tag === 'h6') {
+              // h6見出し終了タグおよび直後の段落終了タグまでを一塊として保存します
+              while (k < tocEndIndex) {
+                // トークンをh6フッター保存配列に追加します
+                preservedFooterH6Tokens.push(tokens[k]);
+                // 直後の段落終了タグ（paragraph_close）に到達したら1組の抽出を完了します
+                if (tokens[k].type === 'paragraph_close') break;
                 // インデックスを進めます
                 k++;
               }
@@ -177,29 +192,46 @@ export default {
           }
           
           // 目次によって生成される総スライド数を取得します
-          let totalAddedSlides = chunks.length;
+          const totalAddedSlides = chunks.length;
+          // 元の目次スライド開始トークンを退避します
+          const origTocOpen = tokens[tocStartIndex];
+          // 元の目次スライド終了トークンを退避します
+          const origTocClose = tokens[tocEndIndex];
+          // 元の目次スライドの0始まりスライドインデックスを取得します
+          const baseSlideIndex = origTocOpen.meta && origTocOpen.meta.marpitSlide !== undefined ? origTocOpen.meta.marpitSlide : 1;
+          // 元のデッキ全体の総スライド数を取得します
+          const baseSlideTotal = origTocOpen.meta && origTocOpen.meta.marpitSlideTotal !== undefined ? origTocOpen.meta.marpitSlideTotal : 1;
           // 新しく挿入するトークンを保持する配列です
           const newTokens = [];
           
           // 分割したチャンクごとに目次スライド用トークンを組み立てます
           chunks.forEach((chunk, chunkIndex) => {
+            // この目次チャンクの0始まりスライドインデックスを算出します
+            const currentSlideIndex = baseSlideIndex + chunkIndex;
+            // 目次分割後の新しい総スライド数を算出します
+            const updatedSlideTotal = baseSlideTotal + (totalAddedSlides - 1);
             // 新しいスライド開始トークンを生成します
             const slideOpen = new state.Token('marpit_slide_open', 'section', 1);
             // ブロック要素としてマークします
             slideOpen.block = true;
-            // 元の目次スライドの属性をディープコピーして引き継ぎます
-            Object.assign(slideOpen, JSON.parse(JSON.stringify(tokens[tocStartIndex])));
-            // メタデータが存在する場合はページ番号を更新します
-            if (slideOpen.meta) {
-              // チャンク番号に応じてページ番号を加算します
-              slideOpen.meta.marpitSlide = tokens[tocStartIndex].meta.marpitSlide + chunkIndex;
-              // 全体ページ総数にも追加スライド数を反映します
-              slideOpen.meta.marpitSlideTotal += (totalAddedSlides - 1);
-            }
+            // 元の目次スライドの属性配列をディープコピーして引き継ぎます
+            slideOpen.attrs = origTocOpen.attrs ? origTocOpen.attrs.map(attr => [...attr]) : [];
+            // スライドのアンカーID属性をページ番号（1始まり）に設定します
+            slideOpen.attrSet('id', String(currentSlideIndex + 1));
+            // 元のソースマップ情報を引き継ぎます
+            slideOpen.map = origTocOpen.map ? [...origTocOpen.map] : [0, 1];
+            // メタデータをディープコピーして引き継ぎます
+            slideOpen.meta = origTocOpen.meta ? JSON.parse(JSON.stringify(origTocOpen.meta)) : {};
+            // チャンク番号に応じて0始まりスライドインデックスを設定します
+            slideOpen.meta.marpitSlide = currentSlideIndex;
+            // 全体ページ総数に追加スライド数を反映します
+            slideOpen.meta.marpitSlideTotal = updatedSlideTotal;
+            // Marpitのinline_svgおよびcollectプラグインが独立スライド開始と認識するフラグを設定します
+            slideOpen.meta.marpitSlideElement = 1;
             // トークン配列に追加します
             newTokens.push(slideOpen);
 
-            // 元スライドのヘッダー・フッタートークンを注入してロゴ等を維持します
+            // 元スライドのヘッダー・フッタートークンが存在する場合は注入します
             preservedTokens.forEach(t => {
               // 複製したトークンを新規トークン列に追加します
               newTokens.push(cloneToken(t));
@@ -280,7 +312,7 @@ export default {
               // トークン配列に追加します
               newTokens.push(pOpen);
               
-              // 複数スライド分割時のシフトを考慮したページ番号
+              // 複数スライド分割時のシフトを考慮したページ番号を算出します
               const targetPage = h.page + (totalAddedSlides - 1);
 
               // 段落内のインラインテキストコンテナを作成します
@@ -338,36 +370,61 @@ export default {
             ulClose.block = true;
             // トークン配列に追加します
             newTokens.push(ulClose);
+
+            // 元スライドにh6フッター要素（コピーライト・機密指定）が存在する場合は各目次ページに複製注入します
+            preservedFooterH6Tokens.forEach(t => {
+              // 複製したh6関連トークンを追加します
+              newTokens.push(cloneToken(t));
+            });
             
             // 目次スライド section の終了タグを作成します
             const slideClose = new state.Token('marpit_slide_close', 'section', -1);
             // ブロック要素としてマークします
             slideClose.block = true;
-            // 元のセクション終了タグの属性を引き継ぎます
-            Object.assign(slideClose, JSON.parse(JSON.stringify(tokens[tocEndIndex])));
+            // 元のセクション終了タグの属性配列を引き継ぎます
+            slideClose.attrs = origTocClose.attrs ? origTocClose.attrs.map(attr => [...attr]) : null;
+            // 元のセクション終了タグのメタデータをディープコピーして引き継ぎます
+            slideClose.meta = origTocClose.meta ? JSON.parse(JSON.stringify(origTocClose.meta)) : {};
+            // チャンク番号に応じて0始まりスライドインデックスを更新します
+            slideClose.meta.marpitSlide = currentSlideIndex;
             // メタ情報の総ページ数を更新します
-            if (slideClose.meta && slideClose.meta.marpitSlideTotal) {
-              // 増加したスライド数を反映します
-              slideClose.meta.marpitSlideTotal += (totalAddedSlides - 1);
-            }
+            slideClose.meta.marpitSlideTotal = updatedSlideTotal;
+            // Marpitのinline_svgおよびcollectプラグインが独立スライド終了と認識するフラグを設定します
+            slideClose.meta.marpitSlideElement = -1;
             // トークン配列に追加します
             newTokens.push(slideClose);
           });
           
+          // 目次スライドより前のスライド（表紙等）についても総スライド数メタデータを更新します
+          for (let i = 0; i < tocStartIndex; i++) {
+            // スライド開始または終了タグでmarpitSlideTotalを持つ場合
+            if ((tokens[i].type === 'marpit_slide_open' || tokens[i].type === 'marpit_slide_close') && tokens[i].meta && tokens[i].meta.marpitSlideTotal !== undefined) {
+              // 増加した目次スライド数を加算します
+              tokens[i].meta.marpitSlideTotal += (totalAddedSlides - 1);
+            }
+          }
+
           // 元の目次スライドのトークン位置に、生成した新トークン群を置換挿入します
           tokens.splice(tocStartIndex, tocEndIndex - tocStartIndex + 1, ...newTokens);
           
-          // 目次スライド以降の後続スライドについて、ページ番号のメタデータをシフトします
+          // 目次スライド以降の後続スライドについて、ページ番号のメタデータとアンカーID属性をシフトします
           for (let i = tocStartIndex + newTokens.length; i < tokens.length; i++) {
-            // スライド開始タグのページ番号を調整します
+            // スライド開始タグのページ番号とid属性を調整します
             if (tokens[i].type === 'marpit_slide_open' && tokens[i].meta && tokens[i].meta.marpitSlide !== undefined) {
               // スライド番号を加算します
               tokens[i].meta.marpitSlide += (totalAddedSlides - 1);
               // 総スライド数を加算します
               tokens[i].meta.marpitSlideTotal += (totalAddedSlides - 1);
+              // セクションのアンカーID属性をシフト後のページ番号（1始まり）に更新します
+              tokens[i].attrSet('id', String(tokens[i].meta.marpitSlide + 1));
             }
-            // スライド終了タグの総ページ数を調整します
+            // スライド終了タグのスライド番号と総ページ数を調整します
             if (tokens[i].type === 'marpit_slide_close' && tokens[i].meta && tokens[i].meta.marpitSlideTotal !== undefined) {
+              // スライド番号が存在する場合は加算します
+              if (tokens[i].meta.marpitSlide !== undefined) {
+                // スライド番号を加算します
+                tokens[i].meta.marpitSlide += (totalAddedSlides - 1);
+              }
               // 総スライド数を加算します
               tokens[i].meta.marpitSlideTotal += (totalAddedSlides - 1);
             }

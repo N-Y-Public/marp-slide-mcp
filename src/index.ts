@@ -218,6 +218,18 @@ function resolveSlideContent(slide: z.infer<typeof NormalSlideSchema>): { bodyCo
     }).join("\n\n");
   }
 
+  // ページタイトルの前後空白を除去して小文字化した文字列を取得します
+  const normalizedTitle = slide.pageTitle.trim().toLowerCase();
+  // ページタイトルが目次に該当するか判定します
+  const isTocTitle = normalizedTitle === "目次" || normalizedTitle === "table of contents";
+  // 本文および構造化コンテンツがすべて空であるか判定します
+  const isBodyEmpty = !body.trim() && !slide.twoColumns && (!slide.imageGrid || slide.imageGrid.length === 0);
+  // 目次タイトルかつ本文が空で、tocクラスが未指定の場合は自動付与します
+  if (isTocTitle && isBodyEmpty && !classes.includes("toc")) {
+    // 自動目次生成用のtocクラスを追加します
+    classes.push("toc");
+  }
+
   // 解決された本文とクラス配列を返却します
   return { bodyContent: body, classes };
 }

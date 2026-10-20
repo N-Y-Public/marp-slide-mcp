@@ -58,7 +58,9 @@ tags:
   3. `slide.imageGrid` が存在する場合:
      - 枚数（2〜4）に応じたクラス `images-${count}` を追加。
      - 各画像を `- ![<alt>](<imagePath>)\n  **<caption>**` 形式に整形して結合。
-  4. いずれも指定がない場合は `slide.bodyContent` をそのまま採用。
+  4. いずれも指定がなく、本文（`bodyContent`）が空で `slide.pageTitle` が `"目次"` または `"Table of Contents"`（大文字小文字不問）の場合:
+     - `classes` に `"toc"` が未含有であれば自動的に `"toc"` を追加し、Marpエンジンの目次自動生成を確実に発動させる。
+  5. 上記以外の場合は `slide.bodyContent` をそのまま採用。
 
 ### 2.2 INT-FN-002: `generateMarpMarkdown`
 - **シグネチャ**:
@@ -119,29 +121,29 @@ tags:
   - `marp.use()` を介して Markdown-it プラグイン（`marp_toc`）を登録。
 
 ### 3.2 INT-ENG-002: Markdown-it コアルール `marp_toc`
-- **フック位置**: `md.core.ruler.push('marp_toc', (state) => { ... })`
+- **フック位置**: `md.core.ruler.after('marpit_directives_parse', 'marp_toc', (state) => { ... })`（`marpit_inline_svg`・`marpit_directives_apply`・`marpit_header_and_footer`・`marpit_collect` の直前に実行。`state.inlineMode` 時は即時リターン）
 - **トークン操作仕様**:
 
 ```mermaid
 flowchart TD
-    A[Token Stream 走査開始] --> B{トークン種別の判定}
+    A[Token Stream 走査開始<br>after marpit_directives_parse] --> B{トークン種別の判定}
     B -- marpit_slide_open --> C[現在のスライド番号を加算<br>toc クラスの検出]
     B -- heading_open (h1) --> D{目次スライド以外?}
     D -- Yes --> E[H1インラインテキスト取得<br>直下paragraph_openからタイトル取得<br>headings 配列へ追加]
     D -- No --> F[スキップ]
     B -- 全トークン走査完了 --> G{目次スライド存在 & headings >= 1?}
-    G -- Yes --> H[元スライドからヘッダーロゴ抽出<br>目次トークン列を新規生成<br>ドットリーダー線 & リンク付与<br>tokens.splice で置換]
+    G -- Yes --> H[元スライドからヘッダー・フッターh6抽出<br>12項目ごとに独立スライドトークン生成<br>marpitSlideElement & id属性付与<br>後続スライドの番号・idシフト補正]
     G -- No --> I[何もしない]
 ```
 
 1. **タイトル取得のフォールバック優先順位**:
    - `paragraph_open` の直後のインラインテキスト（`<br>` を空白に置換）。
    - 見出しタグ `h1` の直後のインラインテキスト。
-2. **ヘッダーロゴの保持**:
-   - 元の目次スライド領域に存在する `marpit_header_open` 〜 `marpit_header_close` のトークンを抽出し、生成される目次スライドの先頭に注入。
+2. **ヘッダーロゴおよびフッター（`h6`）の保持**:
+   - `marpit_directives_parse` 直後に実行するため、各目次スライドの `marpit_slide_open.meta.marpitDirectives` が後続の `marpit_header_and_footer` に引き継がれ、全目次ページに `<header>`（ロゴ画像等）および `<footer>` が自動生成される。また既に存在する `marpit_header_open` / `marpit_footer_open` トークンおよび元の目次スライド内の `h6`（コピーライト・機密指定）＋直後段落トークンも抽出し、分割された全目次スライドへ複製注入する。
 3. **複数ページ分割とページ番号オフセット**:
-   - 目次が12項目を超える場合、12項目ごとに `marpit_slide_open` を挿入。
-   - 後続スライドのリンク先および表示ページ番号に `+(totalAddedSlides - 1)` を加算補正。
+   - 目次が12項目を超える場合、12項目ごとに独立した `marpit_slide_open`（`meta.marpitSlideElement = 1`, `id` 属性設定）〜 `marpit_slide_close`（`meta.marpitSlideElement = -1`）を生成。
+   - 後続スライドのリンク先、表示ページ番号、および後続 `marpit_slide_open` / `marpit_slide_close` の `meta.marpitSlide`・`meta.marpitSlideTotal`・`id` 属性に `+(totalAddedSlides - 1)` を加算補正し、`marpit_inline_svg` および `marpit_directives_apply` によるSVGページ分割とページ番号付与を100%整合させる。
 
 ---
 
