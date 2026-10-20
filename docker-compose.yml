@@ -18,6 +18,8 @@ services:
       - PUPPETEER_ARGS=--no-sandbox --disable-setuid-sandbox
       - NODE_ENV=development
       - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PAT_MARP_SLIDE_MCP:-${GITHUB_PERSONAL_ACCESS_TOKEN:-}}
+      - EXPECTED_GITHUB_LOGIN=${EXPECTED_GITHUB_LOGIN:-}
+      - EXPECTED_GITHUB_ID=${EXPECTED_GITHUB_ID:-}
     env_file:
       - path: .env
         required: false

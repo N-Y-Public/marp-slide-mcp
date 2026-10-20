@@ -75,6 +75,8 @@ flowchart TB
 | **FNC-005** | 高度PowerPoint変換 | `REQ-FNC-005` | レンダリングDOM解析による編集可能PPTXオブジェクト出力 |
 | **FNC-006** | MCPスライド操作サービス | `REQ-FNC-006` | Stdioプロトコルによるデッキ生成・編集・PDF出力API |
 | **FNC-007** | AI協調支援 | `REQ-FNC-007` | MBB標準プロンプトおよびエージェント向け実行Skill |
+| **FNC-008** | GitHub MCP連携・PAT分離 | `REQ-FNC-008` | リポジトリ専用環境変数バインドおよび動的前検証ゲートによる安全なGitHub連携 |
+| **FNC-009** | GitHub標準テンプレート・運用支援 | `REQ-FNC-009` | 2層分離コントリビューション規約、標準Issue/PRテンプレート、ブランチ運用スキル |
 
 ---
 
@@ -139,6 +141,21 @@ flowchart TB
    - `delete_slide`: スライド削除。
    - `update_deck_settings`: 設定一括更新。
    - `export_to_pdf`: PDF変換・保存。
+
+### 3.7 FNC-008: GitHub MCP連携・PAT分離機能
+1. **リポジトリ別PAT完全分離**:
+   - ホスト環境変数 `GITHUB_PAT_MARP_SLIDE_MCP` を優先ロードし、別プロジェクトのPATとの混線を防止。
+   - OSSクローン利用時の多段フォールバック（`GITHUB_PERSONAL_ACCESS_TOKEN` / `.env`）をサポート。
+2. **動的事前アカウント検証ゲート (Pre-Execution Identity Gate)**:
+   - 外部書き込み処理（Issue/PR作成、コメント等）直前に `get_me` を実行し、環境変数 `EXPECTED_GITHUB_LOGIN`（未設定時はメンテナーデフォルト `N-Y-Public`）と照合。
+   - 不一致時または取得失敗時は即座に処理を中断（ABORT）し、外部発信事故を物理遮断。
+
+### 3.8 FNC-009: 業界標準GitHubテンプレートおよびエージェント運用支援機能
+1. **GitHub Issue Forms & PR Template**:
+   - バグ報告、機能要望、ドキュメント改善の各フォームおよび機密・絶対パス除外チェックリスト付きPRテンプレートを提供。
+2. **2層分離コントリビューション規約**:
+   - 外部コントリビューターが特定のアカウント名を強要されることなく、各自のGitHubアカウント・クレジットで開発参加可能。
+   - 規約準拠ブランチ命名（`{種別}/{アカウントまたはAI名}/issue-{番号}/{説明}`）の強制。
 
 ---
 

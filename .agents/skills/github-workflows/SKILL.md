@@ -73,6 +73,15 @@ git config user.email "<id>+<username>@users.noreply.github.com"
 - 実施した検証エビデンス（Docker内ビルド `npm run build`、RTM検査 `verify_rtm.py` の実行結果）。
 - コントリビューター確認事項（ホスト絶対パス除外、機密情報除外、全行直上平易コメント規則の自己確認チェックリスト）。
 
+### 2.5 事前アカウント検証ゲート (Pre-Execution Identity Gate)
+AIエージェントがGitHubへの外部書き込み操作（Issue/PR作成、コメント等）を行う直前に、必ず `get_me` を実行して認証ユーザー名を検証する安全装置。
+
+- **照合プロトコル**:
+  - 期待ログイン名: `process.env.EXPECTED_GITHUB_LOGIN || "N-Y-Public"`
+  - 期待ID: `process.env.EXPECTED_GITHUB_ID`（指定時のみ照合、未指定かつ期待ログイン名がデフォルト `N-Y-Public` の場合は `330902043`）
+- **判定**: `login === EXPECTED_GITHUB_LOGIN`。不一致時または取得失敗時は即座に処理を中断（ABORT）し、外部書き込みを阻止。
+- **外部環境設定**: 外部コントリビューターが自身の環境でAIエージェントにGitHub操作を行わせる場合は、環境変数 `EXPECTED_GITHUB_LOGIN` に自身のGitHubアカウント名を設定する。
+
 ---
 
 ## 3. エージェント自動実行ガイドライン

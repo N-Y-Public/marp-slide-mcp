@@ -77,6 +77,19 @@ docker compose run --rm app python3 .agents/skills/ipa-traceability-validator/sc
 - **機密情報の排除**:
   - APIキー、トークン（PAT）、パスワード、秘密鍵、`.env` ファイルを絶対にコミットしないでください。
 
+### 3.3 AIエージェント利用時の安全装置（Pre-Execution Identity Gate）
+本リポジトリで自律AIエージェント（Antigravity, Cursor等）にGitHub操作を行わせる場合、エージェントは外部書き込み前に必ず `get_me` で認証アカウントを検証します。
+- **各自環境での設定**:
+  外部コントリビューターが開発を行う場合は、環境変数 `EXPECTED_GITHUB_LOGIN`（および任意で `EXPECTED_GITHUB_ID`）にご自身のGitHubユーザー名を設定してください。
+  ```bash
+  # Windows (PowerShell)
+  [Environment]::SetEnvironmentVariable('EXPECTED_GITHUB_LOGIN', 'your-github-username', 'User')
+
+  # Linux / macOS (bash / zsh)
+  export EXPECTED_GITHUB_LOGIN="your-github-username"
+  ```
+- **未設定時の挙動**: 未指定時はメンテナーデフォルト（`N-Y-Public`）として照合されるため、外部開発者環境では外部書き込み操作が安全に遮断（ABORT）されます。
+
 ---
 
 ## 4. PBI駆動アジャイル × IPA品質ゲート

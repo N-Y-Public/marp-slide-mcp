@@ -331,7 +331,19 @@ Claude Desktop の設定ファイル（`claude_desktop_config.json`）の `mcpSe
    ```
 
 ##### ② 安全装置（Pre-Execution Identity Gate）
-AI エージェントが GitHub への書き込み操作（Issue/PR 作成、コメント等）を行う直前に、必ず `get_me` ツールを実行して認証ユーザー名（`login === "N-Y-Public"`）を機械照合します。不一致時は直ちに処理を中断し、別アカウントによる誤爆を物理的に防止します。
+本リポジトリの開発 AI エージェントには、GitHub への外部書き込み操作（Issue/PR 作成、コメント等）を行う直前に、必ず `get_me` ツールを実行して認証ユーザー名を機械照合する安全装置が組み込まれています。
+
+- **メンテナー環境（デフォルト動作）**:
+  環境変数が未指定の場合、誤コミットや意図しない個人アカウント混入を防止するため、リポジトリメンテナー名義（`login === "N-Y-Public"`, `id === 330902043`）と自動照合されます。不一致時や未認証時は直ちに処理を中断（ABORT）します。
+- **外部コントリビューター・クローン環境での利用**:
+  第三者が自身の PAT を設定して開発・操作を行う場合は、環境変数 `EXPECTED_GITHUB_LOGIN`（および任意で `EXPECTED_GITHUB_ID`）に**ご自身の GitHub ユーザー名**を設定してください。AI エージェントは指定されたアカウント名と照合を行い、特定アカウント名を強制されることなく、安全装置の保護のもとで自立して開発へ参加できます（詳細は [CONTRIBUTING.md](CONTRIBUTING.md) 参照）。
+  ```bash
+  # Windows (PowerShell) の場合
+  [Environment]::SetEnvironmentVariable('EXPECTED_GITHUB_LOGIN', 'your-github-username', 'User')
+
+  # Linux / macOS (bash / zsh) の場合
+  export EXPECTED_GITHUB_LOGIN="your-github-username"
+  ```
 
 > [!TIP]
 > 外部プロジェクトのパスから直接ファイルを読み書きしたい場合は、ホストの Node.js による直接実行（① または ②）を推奨します。Docker 経由の場合はコンテナ外のファイルパスにアクセスできないため、MCP サーバー内蔵の `fileId` による管理をご利用ください。

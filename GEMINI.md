@@ -62,8 +62,10 @@ docker compose run --rm app <command>
 
 4. **Pre-Execution Identity Gate (GitHub Operations)**:
    - Before executing any mutating GitHub operations (creating issues, PRs, comments, branches, or pushes) via GitHub MCP tools or GitHub API, all AI agents **MUST** first execute `get_me` to verify the authenticated user identity.
-   - Enforced Identity Criterion: `login === "N-Y-Public"` and `id === 330902043`.
-   - If `login` does NOT match `N-Y-Public` or the check fails, the agent MUST immediately abort the operation and report the identity mismatch blocker to the user. Never perform GitHub write operations under unverified or mismatched accounts.
+   - Enforced Identity Criterion:
+     - Expected Account Login: `process.env.EXPECTED_GITHUB_LOGIN || "N-Y-Public"`.
+     - Expected Account ID: If `EXPECTED_GITHUB_ID` is set, verify `id.toString() === process.env.EXPECTED_GITHUB_ID`. If unset and the login is the default `"N-Y-Public"`, enforce `id === 330902043`.
+   - If `login` does NOT match the expected account or the check fails, the agent MUST immediately abort the operation and report the identity mismatch blocker to the user. Never perform GitHub write operations under unverified or mismatched accounts.
 
 ---
 

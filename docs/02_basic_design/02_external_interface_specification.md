@@ -26,6 +26,7 @@ tags:
 | I/F ID | カテゴリ | 相手先システム / クライアント | プロトコル / 形式 |
 | :--- | :--- | :--- | :--- |
 | **EXT-MCP-001〜007** | MCP Tools I/F | Claude Desktop, Cursor, Antigravity | JSON-RPC 2.0 over Stdio (Model Context Protocol) |
+| **EXT-MCP-008** | GitHub MCP Tools I/F | GitHub MCP Server (ワンショット実行) | JSON-RPC 2.0 over Docker Stdio (`get_me`, `create_issue` 等) |
 | **EXT-CLI-001〜003** | コマンドライン I/F | 開発者、CI/CDパイプライン、Docker | CLI Arguments, Environment Variables, Exit Codes |
 | **EXT-LIB-001〜003** | 外部ライブラリ連携 I/F | Marp Core, Puppeteer, PptxGenJS | Node.js JavaScript/TypeScript API |
 | **EXT-CFG-001〜002** | 設定ファイル I/F | VS Code, AI クライアント | JSON 設定ファイル |
@@ -154,6 +155,13 @@ flowchart LR
   - `filePath`: `string` (必須: 変換対象Markdownファイルパス)
   - `outputPath`: `string` (任意: 出力先PDFファイルパス。未指定時は拡張子を `.pdf` に置換)
 - **出力**: 出力先PDFファイルの絶対/相対パスおよび成功ステータス。
+
+### 2.8 EXT-MCP-008: GitHub MCP Tools I/F & Pre-Execution Identity Gate
+- **概要**: `docker compose run --rm -T github-mcp` 経由で提供される公式 GitHub MCP サーバーツール群。AIエージェントによる自動Issue/PR管理をサポート。
+- **事前検証プロトコル (Pre-Execution Identity Gate)**:
+  - 外部書き込み操作（`create_issue`, `create_pull_request`, `add_issue_comment` 等）を実行する前に、必ず `get_me` を実行。
+  - 照合条件: `get_me` の返却する `login` が期待アカウント名（環境変数 `EXPECTED_GITHUB_LOGIN`、未設定時はデフォルト `N-Y-Public`）と一致すること。
+  - 照合失敗時の振る舞い: 不一致またはAPIエラー時は直ちに処理を中断（ABORT）し、外部変更の実行を阻止。
 
 ---
 
