@@ -6,11 +6,11 @@
   "scripts": {
     "build": "tsc",
     "start": "node build/index.js",
-    "build:pdf": "marp slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.md --theme-set themes/business-slide-theme.css --output slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.pdf --allow-local-files",
-    "build:pptx": "marp slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.md --theme-set themes/business-slide-theme.css --output slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.pptx --allow-local-files",
+    "build:pdf": "marp slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.md --theme-set themes/business-slide-theme.css --output slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.pdf --allow-local-files --no-stdin",
+    "build:pptx": "marp slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.md --theme-set themes/business-slide-theme.css --output slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.pptx --allow-local-files --no-stdin",
     "build:pptx-custom": "node pptx_converter/convert.js slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.md slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.pptx",
-    "pdf": "marp --theme-set themes/business-slide-theme.css --allow-local-files",
-    "pptx": "marp --theme-set themes/business-slide-theme.css --allow-local-files"
+    "pdf": "marp --theme-set themes/business-slide-theme.css --allow-local-files --no-stdin",
+    "pptx": "marp --theme-set themes/business-slide-theme.css --allow-local-files --no-stdin"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.1",

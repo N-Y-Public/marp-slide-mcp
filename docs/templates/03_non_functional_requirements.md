@@ -33,12 +33,12 @@ tags:
 
 | 要件ID | 大分類 (IPA 6大項目) | 中分類 | 要件内容・目標数値（要求レベル） | 設定根拠 | 検証基準・確認手段 |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **REQ-NFR-001** | **1. 可用性**<br>(Availability) | 障害時継続性・フォールバック | Chromiumバイナリパス（`CHROME_PATH`）が未指定の場合でも、4段階の自動探索（環境変数→Puppeteer内蔵→キャッシュ→Linux標準パス）により自動解決し、変換停止を防止すること。 | 環境差異によるビルド失敗を防ぐため（プロジェクト合意） | `CHROME_PATH` 未指定状態でのPDF/PPTXビルド成功確認（`TEST-ST-001`） |
+| **REQ-NFR-001** | **1. 可用性**<br>(Availability) | 障害時継続性・フォールバック | Chromiumバイナリパス（`CHROME_PATH`）が未指定の場合でも4段階の自動探索により解決し、さらにMarp CLI非対話実行時のstdin待機デッドロック防止（`--no-stdin`）およびサンドボックス解除（`CHROME_NO_SANDBOX=1`）により変換停止を防止すること。 | 環境差異や非対話パイプ実行によるビルドハングを防ぐため（PBI-007合意） | `CHROME_PATH` 未指定状態およびDocker内でのPDF/PPTXビルド成功確認（`TEST-ST-001`, `TEST-IT-006`） |
 | **REQ-NFR-002** | **2. 性能・拡張性**<br>(Performance & Scalability) | レスポンス・処理時間 | 20ページ規模のスライドデッキにおいて、PDF生成処理が **30秒以内**、ネイティブPPTX変換処理が **60秒以内**（p95）に完了すること。 | 対話型AIエージェントからの呼び出しでタイムアウトしない上限値 | Dockerコンテナ内でのベンチマーク計測（`TEST-ST-002`） |
 | **REQ-NFR-003** | **3. 運用・保守性**<br>(Operability & Maintainability) | 保守容易性・可読性 | 全TypeScript/JavaScript/CSSソースコードにおいて **「全行直上平易コメント規則」** を100%適用し、入力検証にZodスキーマを用いて不正入力時の原因特定を即座に行えること。 | `docs/00_project_charter/02_coding_standards.md` 規定 | コードレビューおよび異常系JSON投入テスト（`TEST-UT-001`） |
 | **REQ-NFR-004** | **4. 移行性**<br>(Migration) | 資産ポータビリティ | 生成成果物は標準Markdown（`.md`）、PDF（`.pdf`）、OfficeオープンXML（`.pptx`）の3形式で出力可能とし、特定SaaSへのベンダーロックインを発生させないこと。 | プロジェクト憲章のオープン＆ロックインフリー原則 | 生成された `.md`, `.pdf`, `.pptx` の互換性検証（`TEST-ST-002`） |
 | **REQ-NFR-005** | **5. セキュリティ**<br>(Security) | 機密保護・PII排除・入力検証 | リポジトリおよび生成ログ内に個人実名、ホスト固有の絶対パス（`/Users/...`, `C:\path\to\...` 等）、秘密鍵・`.env` を **0件** とし、`.githooks/pre-commit` で機械的に遮断すること。 | OSS公開リポジトリのプライバシー保護最優先事項（Q-09） | 静的テキストスキャンおよびGitフック検証（`TEST-ST-003`） |
-| **REQ-NFR-006** | **6. システム環境・エコロジー**<br>(System Environment) | 移植性・環境再現性 | Docker Dev Container（Node.js 22 LTS + Chromium + `fonts-noto-cjk`）上で、ホストOS（Windows / macOS / Linux）に依存せず100%同一のビルド・描画結果が得られること。 | `AGENTS.md` 第1項 Docker環境限定実行原則 | Docker Compose経由でのビルド・変換一貫性テスト（`TEST-ST-001`） |
+| **REQ-NFR-006** | **6. システム環境・エコロジー**<br>(System Environment) | 移植性・環境再現性 | Docker Dev Container（Node.js 22 LTS + Chromium + `fonts-noto-cjk`）上で、非対話パイプ環境でのstdin待機ハングやサンドボックス制約なく、ホストOS（Windows / macOS / Linux）に依存せず100%同一のビルド・描画結果が得られること。 | `AGENTS.md` 第1項 Docker環境限定実行原則および非対話実行安定性担保 | Docker Compose経由でのビルド・変換一貫性テスト（`TEST-ST-001`, `TEST-IT-006`） |
 
 ---
 
@@ -47,6 +47,7 @@ tags:
 ### 2.1 可用性・信頼性設計 (`REQ-NFR-001`)
 - **プロセス保護**: MCPサーバー（Stdio通信）において、単一ツール呼び出しの失敗（不正なMarkdown構文やファイルI/Oエラー）がプロセス全体のクラッシュを引き起こさないよう、`try / catch` による共通エラーハンドリングで保護する。
 - **一時ファイルの確実なクリーンアップ**: PDF/PPTX変換時に生成される中間HTMLファイル（`*_temp.html` 等）は、`finally` ブロックで確実に削除し、ディスク領域のリークを防止する。
+- **Marp CLI 非対話実行およびブラウザサンドボックス統制 (PBI-007)**: Docker Compose や CI などの非対話パイプ環境において、Marp CLI が stdin 入力待ち（`get-stdin`）でハングすることを防ぐため、`package.json` のスクリプトに `--no-stdin` を明示する。また、コンテナ環境特有のサンドボックス制約を回避するため、環境変数 `CHROME_NO_SANDBOX=1` を Dockerfile および compose 構成に配備し、Puppeteer / Chromium 起動時引数への伝播を保証する。
 
 ### 2.2 性能・拡張性設計 (`REQ-NFR-002`)
 - **スライド規模上限**: 1デッキあたり最大100ページ、目次自動分割は1ページあたり12項目を基準とし、超過時は自動的に複数目次ページへ分割する。

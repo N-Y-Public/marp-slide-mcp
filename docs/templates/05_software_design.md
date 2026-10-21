@@ -94,8 +94,8 @@ erDiagram
 
 | モジュールID | 実設計サブシステムID | モジュール名称 | 物理ファイルパス | 対応要件ID | 責務概要 |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **MOD-001** | `MOD-SRV-001` | MCP スライド制御・生成モジュール | `src/index.ts` | `REQ-F-001`<br>`REQ-NFR-001`<br>`REQ-NFR-003`<br>`REQ-NFR-005` | MCP Stdio通信、Zod入力検証、スライドCRUD、Markdown生成・構文解析、PDF出力呼び出し |
-| **MOD-002** | `MOD-ENG-001`<br>`MOD-THM-001` | Marp カスタムエンジン・テーマモジュール | `marp.config.js`<br>`themes/business-slide-theme.css` | `REQ-F-002`<br>`REQ-NFR-006` | 見出しアンカーCSS絶対配置、自動リサイズ制御、Markdown-itトークン走査による自動目次生成・ページ分割 |
+| **MOD-001** | `MOD-SRV-001` | MCP スライド制御・生成モジュール | `src/index.ts` | `REQ-F-001`<br>`REQ-NFR-001`<br>`REQ-NFR-003`<br>`REQ-NFR-005`<br>`REQ-NFR-006` | MCP Stdio通信、Zod入力検証、スライドCRUD、Markdown生成・構文解析、PDF出力呼び出し（`CHROME_NO_SANDBOX` 保証） |
+| **MOD-002** | `MOD-ENG-001`<br>`MOD-THM-001` | Marp カスタムエンジン・テーマモジュール | `marp.config.js`<br>`themes/business-slide-theme.css` | `REQ-F-002`<br>`REQ-NFR-001`<br>`REQ-NFR-006` | 見出しアンカーCSS絶対配置、自動リサイズ制御、Markdown-itトークン走査による自動目次生成・ページ分割、Marp CLI非対話実行安定化 |
 | **MOD-003** | `MOD-PPT-001` | ネイティブ PPTX DOM変換モジュール | `pptx_converter/convert.js` | `REQ-F-003`<br>`REQ-NFR-001`<br>`REQ-NFR-002`<br>`REQ-NFR-004` | PuppeteerによるヘッドレスHTML描画、DOM座標・計算済みスタイル抽出、PptxGenJSによる編集可能オブジェクト出力 |
 
 ---
@@ -110,7 +110,7 @@ erDiagram
 | **INT-FN-001** | `resolveSlideContent` | `slide: NormalSlide` | `{ bodyContent: string; classes: string[] }` | `twoColumns` 指定時は `columns-2` クラスを付与し箇条書き2列に整形。`imageGrid` 指定時は `images-2`〜`4` を付与。`pageTitle` が `"目次"`（または `"Table of Contents"`）かつ本文が空の場合は `toc` クラスを自動補完。 |
 | **INT-FN-002** | `generateMarpMarkdown` | `deck: SlideDeck` | `string` | フロントマター、テーマ色CSS変数、表紙スライド、通常スライド群を `---` 区切りで結合し完全なMarp Markdownを生成。 |
 | **INT-FN-003** | `parseMarpMarkdown` | `content: string` | `{ frontmatter: Record<string, unknown>; slides: SlideRaw[] }` | 既存Markdownからフロントマターと各ページの生テキスト・構造を抽出。不正構文時は `ERR-VAL-001` 相当の例外を送出。 |
-| **INT-FN-004** | `exportSlideToPdf` | `markdownPath: string` | `Promise<string>` | Chromiumパスを4段階解決し、Marp CLIを実行してPDFを生成。対象不在時は `ERR-NOT-002`、未定義例外は `ERR-SYS-999` 受け皿で捕捉。 |
+| **INT-FN-004** | `exportSlideToPdf` | `markdownPath: string` | `Promise<string>` | Chromiumパスを4段階解決し、`CHROME_NO_SANDBOX=1` を保証した上でMarp CLIを実行してPDFを生成。対象不在時は `ERR-NOT-002`、未定義例外は `ERR-SYS-999` 受け皿で捕捉。 |
 
 #### 単体テスト観点 (`TEST-UT-001` の根拠)
 - 正常系: `generateMarpMarkdown` が表紙と通常スライドの見出しアンカー（`#`〜`######`）を正しい順序で出力すること。

@@ -37,8 +37,8 @@ tags:
 
 | 指標項目 | 計画値 (Target) | 実測値 (Actual) | 差分 / 判定 | 備考・対応QCD基準 |
 | :--- | :--- | :--- | :---: | :--- |
-| **総テストケース数（実施 / 総数）** | 11 / 11 件 | 11 / 11 件 | 0 件 (PASS) | 単体3件・結合4件・総合4件 |
-| **合格 / 不合格 / スキップ件数** | 合格 11 / 不合格 0 / スキップ 0 | 合格 11 / 不合格 0 / スキップ 0 | PASS | Critical / Must 残存 0件 (`Q-02`) |
+| **総テストケース数（実施 / 総数）** | 12 / 12 件 | 12 / 12 件 | 0 件 (PASS) | 単体3件・結合5件・総合4件 |
+| **合格 / 不合格 / スキップ件数** | 合格 12 / 不合格 0 / スキップ 0 | 合格 12 / 不合格 0 / スキップ 0 | PASS | Critical / Must 残存 0件 (`Q-02`) |
 | **テスト消化率** | 100.0% | 100.0% | 0.0% (PASS) | `D-01`（完了定義 0/100原則） |
 | **トレーサビリティ断絶件数** | 0 件 | 0 件 | 0 件 (PASS) | `verify_rtm.py` 検証済 (`Q-03`) |
 | **エラーコード網羅率** | 100.0% (5/5 行) | 100.0% (5/5 行) | 0.0% (PASS) | `ERR-VAL-001`〜`ERR-SYS-999` (`Q-06`) |
@@ -67,6 +67,7 @@ tags:
 | **TEST-IT-003** | `REQ-F-001` | `MOD-001` | 正常系<br>(テンプレート構文・PR整合) | 1. `.github/ISSUE_TEMPLATE/*.yml` の構文妥当性および `blank_issues_enabled: false` を検証する。<br>2. `.github/pull_request_template.md` に関連Issue、検証内容、機密除外チェックリストが含まれ、特定のAuthor名を強要していないことを確認する。 | 1. 各YAMLが有効な構文を持ち、必須項目が定義されていること。<br>2. PRテンプレートが標準項目を満たし、コントリビューター自身のクレジットを尊重していること。 | PASS |
 | **TEST-IT-004** | `REQ-NFR-005` | `MOD-001` | 正常系・準正常系<br>(動的アカウント検証・規約整合) | 1. `README.md` と `CONTRIBUTING.md` における事前アカウント検証ゲート（Pre-Execution Identity Gate）の記述を照合し、メンテナー環境（デフォルト `N-Y-Public` / ID: `330902043`）と外部環境（`EXPECTED_GITHUB_LOGIN`）の仕様整合性を確認する。<br>2. `AGENTS.md`, `GEMINI.md`, `ipa-process-gate.md`, `github-workflows/SKILL.md` の検証ロジックにおいて、期待値一致時に書き込み許可、不一致・未認証時に直ちに処理中断（ABORT）する仕様を検証する。 | 1. `README.md` の外部利用手順に特定名義の強制がなく、`CONTRIBUTING.md` との記述・仕様矛盾が0件であること。<br>2. 期待アカウント名（`EXPECTED_GITHUB_LOGIN`）と `get_me` の戻り値が一致する場合は書き込みが許可され、不一致時または取得失敗時は外部書き込みが物理遮断されること。 | PASS |
 | **TEST-IT-005** | `REQ-NFR-005` | `MOD-001` | 正常系・準正常系<br>(Worktreeブランチ自動是正・初期化統制) | 1. `AGENTS.md`, `GEMINI.md`, `ipa-process-gate.md`, `github-workflows/SKILL.md` において、タスク開始時プロトコル（Task Initiation Protocol）および Worktree ブランチ自動是正手順（`git branch -m`）が明文化されていることを検証する。<br>2. Antigravity 2.0 の自動採番等により規約外ブランチ名（`resolve_issue_eight` 等）が割り当てられた際、エージェントが規約準拠ブランチ名（`fix/antigravity-2.0/issue-8/worktree-branch-naming-compliance`）へ即座に是正するアルゴリズムと運用手順を検証する。 | 1. タスク開始時プロトコルおよびWorktreeディレクトリ命名規約が各規約・エージェント指示書に定義されていること。<br>2. 規約外ブランチ名からの自動是正手順（`git branch -m`）が明文化され、記述矛盾が0件であること。 | PASS |
+| **TEST-IT-006** | `REQ-NFR-001`<br>`REQ-NFR-006` | `MOD-001`<br>`MOD-002` | 正常系・非対話安定性<br>(Marp CLI非対話ハング防止・サンドボックス解除) | 1. Dockerコンテナ環境（`docker compose run --rm app`）において `npm run build:pdf` を実行する。<br>2. Dockerコンテナ環境において `npm run build:pptx` を実行する。<br>3. `package.json`, `docker-compose.yml`, `.devcontainer/Dockerfile`, `src/index.ts` において `--no-stdin` および `CHROME_NO_SANDBOX=1` が配備されていることを確認する。 | 1. Marp CLI が stdin 入力待ちでハングすることなく、約30秒以内に `slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.pdf` が正常に出力され終了コード0で完了すること。<br>2. PPTX 出力が正常に完了し終了コード0となること。<br>3. 非対話パイプ環境でのデッドロック要因およびサンドボックス制約によるプロセス停止が0件であること。 | PASS |
 
 ---
 

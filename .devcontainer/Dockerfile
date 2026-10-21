@@ -72,6 +72,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ENV LANG=ja_JP.UTF-8 \
     LC_ALL=ja_JP.UTF-8 \
     CHROME_PATH=/usr/bin/chromium \
+    CHROME_NO_SANDBOX=1 \
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false \
     PUPPETEER_ARGS="--no-sandbox --disable-setuid-sandbox"
 

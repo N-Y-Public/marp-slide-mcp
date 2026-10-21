@@ -116,9 +116,9 @@ PBI（プロダクトバックログ）から要件、基本設計、詳細設�
 | `PBI-000` | `REQ-FNC-003`<br>(構造化レイアウト) | `FNC-003`<br>(2段組/画像/会話) | `EXT-MCP-001` | `MOD-THM-001`<br>`MOD-SRV-001` | `INT-FN-001` | `PRG-THM-001`<br>`PRG-SRV-001` | `themes/business-slide-theme.css`<br>`src/index.ts` |
 | `PBI-000`<br>`PBI-004` | `REQ-FNC-004`<br>(目次完全自動生成) | `FNC-004`<br>(目次プラグイン) | — | `MOD-ENG-001`<br>`MOD-SRV-001` | `INT-ENG-001`<br>`INT-ENG-002`<br>`INT-FN-001` | `PRG-ENG-001`<br>`PRG-SRV-001` | `marp.config.js` (`marp_toc`)<br>`src/index.ts` |
 | `PBI-000` | `REQ-FNC-005`<br>(ネイティブPPTX変換) | `FNC-005`<br>(DOM解析変換) | `EXT-CLI-002`<br>`EXT-LIB-002`<br>`EXT-LIB-003` | `MOD-PPT-001` | `INT-DOM-001`<br>`INT-DOM-002`<br>`INT-DOM-003` | `PRG-PPT-001` | `pptx_converter/convert.js` |
-| `PBI-000`<br>`PBI-001`<br>`PBI-004` | `REQ-FNC-006`<br>(MCPサーバー連携) | `FNC-006`<br>(スライド操作API) | `EXT-MCP-001`〜<br>`EXT-MCP-007` | `MOD-SRV-001` | `INT-FN-001`〜<br>`INT-FN-005` | `PRG-SRV-001` | `src/index.ts` |
+| `PBI-000`<br>`PBI-001`<br>`PBI-004`<br>`PBI-007` | `REQ-FNC-006`<br>(MCPサーバー連携) | `FNC-006`<br>(スライド操作API) | `EXT-MCP-001`〜<br>`EXT-MCP-007` | `MOD-SRV-001` | `INT-FN-001`〜<br>`INT-FN-005` | `PRG-SRV-001` | `src/index.ts` |
 | `PBI-000` | `REQ-FNC-007`<br>(AI協調プロンプト) | `FNC-007`<br>(MBBプロンプト&Skill) | `EXT-CFG-002` | — | — | — | `.agents/skills/marp-slides/`<br>`prompts/mcp_slide_generator.md` |
-| `PBI-002`<br>`PBI-005` | `REQ-FNC-008`<br>(GitHub MCP連携・PAT分離・動的検証) | `FNC-008`<br>(PAT分離・動的検証ゲート) | `EXT-MCP-008` | `MOD-INF-001` | — | `PRG-INF-001` | `docker-compose.yml`<br>`.agents/mcp_config.json`<br>`.env.example` |
+| `PBI-002`<br>`PBI-005`<br>`PBI-007` | `REQ-FNC-008`<br>(GitHub MCP連携・PAT分離・動的検証) | `FNC-008`<br>(PAT分離・動的検証ゲート) | `EXT-MCP-008` | `MOD-INF-001` | — | `PRG-INF-001` | `docker-compose.yml`<br>`.agents/mcp_config.json`<br>`.env.example` |
 | `PBI-003`<br>`PBI-006` | `REQ-FNC-009`<br>(GitHub標準テンプレート・運用スキル) | `FNC-009`<br>(Issue/PR/ブランチ運用支援) | `EXT-DOC-001` | `MOD-SKL-001` | — | `PRG-SKL-001` | `.github/`<br>`CONTRIBUTING.md`<br>`.agents/skills/github-workflows/` |
 
 ---

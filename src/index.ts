@@ -20,6 +20,12 @@ import puppeteer from "puppeteer";
 // @ts-ignore
 import marpConfig from "../marp.config.js";
 
+// Marp CLI および Headless Chromium のサンドボックス制約回避フラグを確実に有効化します
+if (!process.env.CHROME_NO_SANDBOX) {
+  // 環境変数 CHROME_NO_SANDBOX を 1 に設定します
+  process.env.CHROME_NO_SANDBOX = "1";
+}
+
 // CHROME_PATH が未設定の場合は Puppeteer のブラウザパスまたはシステム Chromium を自動補完します
 if (!process.env.CHROME_PATH) {
   // Puppeteer 内蔵のブラウザパス取得を試みます
@@ -417,6 +423,8 @@ async function renderMarkdownToHtmlAndPdf(mdFilepath: string, htmlFilepath: stri
     "--pdf",
     // 出力先ファイルパス引数
     "--output", pdfFilepath,
+    // 非対話実行時の標準入力待機を防止するオプションです
+    "--no-stdin",
   ]);
 
   // 2. HTML出力 (Marp CLI を安全に実行)
@@ -433,6 +441,8 @@ async function renderMarkdownToHtmlAndPdf(mdFilepath: string, htmlFilepath: stri
     "--allow-local-files",
     // 出力先ファイルパス引数
     "--output", htmlFilepath,
+    // 非対話実行時の標準入力待機を防止するオプションです
+    "--no-stdin",
   ]);
 }
 
