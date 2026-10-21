@@ -144,6 +144,10 @@ flowchart TD
 3. **複数ページ分割とページ番号オフセット**:
    - 目次が12項目を超える場合、12項目ごとに独立した `marpit_slide_open`（`meta.marpitSlideElement = 1`, `id` 属性設定）〜 `marpit_slide_close`（`meta.marpitSlideElement = -1`）を生成。
    - 後続スライドのリンク先、表示ページ番号、および後続 `marpit_slide_open` / `marpit_slide_close` の `meta.marpitSlide`・`meta.marpitSlideTotal`・`id` 属性に `+(totalAddedSlides - 1)` を加算補正し、`marpit_inline_svg` および `marpit_directives_apply` によるSVGページ分割とページ番号付与を100%整合させる。
+4. **長文タイトルの自動折り返し・見切れ防止仕様**:
+   - `themes/business-slide-theme.css` の目次リンク（`section.toc>ul>li.toc-item>p>a`）において、`white-space: normal !important;`, `overflow-wrap: anywhere !important;`, `word-break: break-word !important;` を適用し、タイトルが長文の場合でも省略記号（`...`）で見切れず複数行に折り返されるようにする。
+   - Flexboxコンテナ（`li.toc-item>p`）の `align-items: baseline` と連動し、複数行タイトルの最終行のベースラインにドットリーダー線（`p:after`）およびページ番号（`span.toc-page`）が整然と配置される。
+   - `max-width: calc(100% - 100px)` により、ドットリーダー線とページ番号のための描画幅を確保する。
 
 ---
 

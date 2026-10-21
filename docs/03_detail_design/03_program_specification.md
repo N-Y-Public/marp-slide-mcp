@@ -107,6 +107,7 @@ flowchart TD
 3. 収集された `headings.length > 12` の場合、12項目ごとに `marpit_slide_open`（クラス `toc`・ディレクティブ継承、`meta.marpitSlideElement = 1`、`id` 属性設定）および `marpit_slide_close`（`meta.marpitSlideElement = -1`）を生成し、元の目次スライド内のヘッダー/フッターおよび `h6`（コピーライト・機密指定）トークンを全目次ページへ複製注入する。
 4. 目次スライドが `N` 枚に分割された場合（`totalAddedSlides = Math.ceil(headings.length / 12)`）、目次以降の全スライドの `meta.marpitSlide`・`meta.marpitSlideTotal`・`id` 属性および実ページ番号（`data-marpit-pagination`）は `+(totalAddedSlides - 1)` シフトされる。
 5. リンク先アンカー（`href="#N"`）および表示ページ番号（`.toc-page`）にシフト値を反映し、後続の `marpit_inline_svg` によるSVGページ分割およびリンク整合性を完全に担保する。
+6. **長文タイトルの自動折り返し・見切れ防止**: `themes/business-slide-theme.css` において目次項目の `<a>` 要素に `white-space: normal`, `overflow-wrap: anywhere`, `word-break: break-word` を指定し、スライド幅（1280px）に対してタイトルが長い場合でも省略記号で切り捨てず複数行へ折り返し、Flexboxのベースライン整列により最終行末尾にドットリーダー線とページ番号を連結する。
 
 ---
 

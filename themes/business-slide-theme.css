@@ -750,32 +750,34 @@ section.toc>ol>li.toc-item>p {
   padding: 0 !important;
 }
 
-/* 
-   目次タイトルリンク (左側に配置)
-   Flexbox内の要素の並び順を `order: 0` で一番左に指定しています。
-*/
+/* 目次タイトルリンク (左側に配置) */
 section.toc>ul>li.toc-item>p>a,
+/* 番号付きリスト形式の目次タイトルリンクにも同一スタイルを適用します */
 section.toc>ol>li.toc-item>p>a {
+  /* Flexbox内の要素の並び順を先頭（一番左）に指定します */
   order: 0 !important;
+  /* リンク下線を非表示にして視認性を高めます */
   text-decoration: none !important;
+  /* タイトルテキストの文字色を黒に設定します */
   color: #000000 !important;
+  /* 複数行に折り返された際の行間を自然な間隔（1.35倍）に設定します */
+  line-height: 1.35 !important;
 
-  /* 
-     文字数に応じた自動リサイズ（最小14px、最大26px）
-     JavaScriptで計算された文字数(--char-count)を使って文字サイズを調整し、
-     長いタイトルでも１行に収まるように枠内に押し込みます。
-  */
+  /* 文字数に応じた自動リサイズ（最小14px、最大26px）を適用します */
   font-size: clamp(14px, calc(800px / var(--char-count, 20)), 26px) !important;
 
-  /* 
-     万が一計算を超えて長過ぎる場合は「...」で省略記号を出します。
-  */
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  flex-shrink: 0 !important;
-  /* タイトル部分が縮まないように保護 */
-  max-width: 85% !important;
+  /* 1行に収まらない長いタイトルを自動で複数行に折り返します (Issue #10対応) */
+  white-space: normal !important;
+  /* 日本語および英単語の任意の境界で枠外にはみ出さず安全に折り返します */
+  overflow-wrap: anywhere !important;
+  /* 単語単位での折り返しをブラウザ互換性のために併用指定します */
+  word-break: break-word !important;
+  /* 省略記号による切り捨てを解除し全文を表示させます */
+  text-overflow: clip !important;
+  /* タイトル全体のボックスが親要素に合わせて適切に伸縮できるようにします */
+  flex-shrink: 1 !important;
+  /* ドットリーダー線とページ番号の表示スペースを右端に確保するため最大幅を設定します */
+  max-width: calc(100% - 100px) !important;
 }
 
 /* 
@@ -784,19 +786,26 @@ section.toc>ol>li.toc-item>p>a {
    flex-grow: 1 を指定することで、タイトルとページ番号の間の「余った空間すべて」を
    この線が自動的に埋めてくれる（伸びる）仕組みになっています。
 */
+/* 箇条書きリスト内のドットリーダー線疑似要素 */
 section.toc>ul>li.toc-item>p:after,
+/* 番号付きリスト内のドットリーダー線疑似要素 */
 section.toc>ol>li.toc-item>p:after {
+  /* 疑似要素の内容を空文字として初期化します */
   content: "" !important;
+  /* Flexbox内で2番目（中央）に配置します */
   order: 1 !important;
-  /* Flexbox内で2番目（中央）に配置 */
+  /* 空きスペースを全吸収して横に伸びる役割を指定します */
   flex-grow: 1 !important;
-  /* 空きスペースを全吸収して伸びる役割 */
+  /* タイトルが長文でもドットリーダー線が完全に消失しないよう最低限の幅（30px）を確保します */
+  min-width: 30px !important;
+  /* ドット線を下線としてグレー色（#999999）で描画します */
   border-bottom: 3px dotted #999999 !important;
-  /* ドット線を下線として描画 */
+  /* タイトル末尾およびページ番号との左右余白を15pxずつ設けます */
   margin: 0 15px !important;
 
-  /* 文字のベースラインに合わせるための微調整 */
+  /* 文字のベースラインに合わせるための相対配置を指定します */
   position: relative !important;
+  /* ベースライン位置に合わせてドット線を上方向に6px微調整します */
   top: -6px !important;
 }
 
@@ -804,14 +813,22 @@ section.toc>ol>li.toc-item>p:after {
    ページ番号 (右側に配置) 
    order: 2 で一番右に配置されます。
 */
+/* 箇条書きリスト内のページ番号要素 */
 section.toc>ul>li.toc-item>p>span.toc-page,
+/* 番号付きリスト内のページ番号要素 */
 section.toc>ol>li.toc-item>p>span.toc-page {
+  /* Flexbox内で一番右（末尾）に配置します */
   order: 2 !important;
+  /* ページ番号の文字サイズを24pxに設定します */
   font-size: 24px !important;
+  /* ページ番号の文字の太さを太字（bold）に設定します */
   font-weight: bold !important;
+  /* ページ番号の文字色を黒に設定します */
   color: #000000 !important;
+  /* ページ番号が横幅不足で縮小されないように保護します */
   flex-shrink: 0 !important;
-  /* ページ番号は絶対に縮まないように保護 */
+  /* ページ番号の数字自体が折り返されないよう1行に固定します */
+  white-space: nowrap !important;
 }
 
 /*

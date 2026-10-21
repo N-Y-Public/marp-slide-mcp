@@ -97,6 +97,7 @@ flowchart TD
 - **REQ-FNC-004-02 (目次レイアウトとドットリーダー)**: タイトルとページ番号の間にドットリーダー線を自動描画し、ページ番号をクリック可能なハイパーリンクとすること。
 - **REQ-FNC-004-03 (ヘッダー・フッター記述保持)**: 元の目次スライドに任意で定義されたヘッダーディレクティブ（ロゴ画像やテキスト等）およびフッター見出しアンカー（`######` コピーライト・機密指定）が存在する場合、それを消去することなく全目次スライドに継承描画すること。
 - **REQ-FNC-004-04 (複数ページ自動分割)**: 目次項目が上限（1スライドあたり12項目）を超過した場合（表紙込み15ページ／17ページ以上の多数ページ構成時）、`marpit_inline_svg` 処理前に独立した目次スライド（`目次 (続き)`）を自動生成し、以降の全スライドのページ番号（`id` 属性および `data-marpit-pagination`）と目次リンク先を正確にシフト調整すること。
+- **REQ-FNC-004-05 (長文タイトルの自動折り返し・見切れ防止)**: 各通常スライドのタイトルが長い場合（全角25文字以上など）であっても、省略記号（`...`）で見切ることなく自動で複数行に折り返して全文を描画し、タイトルの最終行の右端にドットリーダー線（`border-bottom: 3px dotted`）およびページ番号（`span.toc-page`）を整然と配置すること。また、複数項目が折り返された場合でも、スライド下部のフッター帯（680px〜720px）と干渉せずスライド表示領域内に収めること。
 
 ### REQ-FNC-005: ネイティブPPTX変換機能
 - **REQ-FNC-005-01 (編集可能オブジェクト化)**: 単なる画像貼り付けではなく、テキストをPowerPointのテキストボックス、図形をオートシェイプ、表をPowerPointテーブルとして忠実に再現出力すること。
@@ -187,7 +188,7 @@ mindmap
 | `REQ-FNC-001` | ビジネス標準テーマ | `FNC-001` / `LAY-001`〜`003` | `themes/business-slide-theme.css` |
 | `REQ-FNC-002` | 自律的要素リサイズ | `FNC-002` / `LAY-004` | `themes/business-slide-theme.css`, `marp.config.js` |
 | `REQ-FNC-003` | 構造化レイアウトクラス | `FNC-003` / `LAY-005`〜`008` | `themes/business-slide-theme.css`, `src/index.ts` |
-| `REQ-FNC-004` | 目次完全自動生成 | `FNC-004` / `LAY-002` | `marp.config.js` (`marp_toc`) |
+| `REQ-FNC-004` | 目次完全自動生成 | `FNC-004` / `LAY-002` | `marp.config.js` (`marp_toc`), `themes/business-slide-theme.css` |
 | `REQ-FNC-005` | ネイティブPPTX変換 | `FNC-005` / `EXT-CLI-002` | `pptx_converter/convert.js` |
 | `REQ-FNC-006` | MCPサーバー連携 | `FNC-006` / `EXT-MCP-001`〜`007` | `src/index.ts` |
 | `REQ-FNC-007` | AIプロンプト＆Skill | `FNC-007` | `.agents/skills/marp-slides/`, `prompts/` |
