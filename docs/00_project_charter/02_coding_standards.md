@@ -153,6 +153,7 @@ section.toc > ul {
 | **CSS カスタムプロパティ** | `--kebab-case` | `--primary-color`, `--banner-image` |
 | **MCP ツール名** | `snake_case` (小文字) | `generate_slide_deck`, `export_to_pdf` |
 | **Git ブランチ名** | `{種別}/{アカウント名またはAI名}/issue-{番号}/{説明}` | `feat/alice/issue-2/github-standard-templates`<br>`feat/antigravity-2.0/issue-2/github-standard-templates` |
+| **Worktree ディレクトリ名** | `{種別}_{アカウント名またはAI名}_issue-{番号}_{説明}` | `fix_antigravity-2.0_issue-8_worktree-branch-naming-compliance` |
 
 ---
 

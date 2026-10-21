@@ -143,10 +143,29 @@ flowchart LR
 
 ---
 
-## 5. タスク完了プロトコル (Task Completion Protocol) & Worktree 連携統制
+## 5. Worktree 運用統制・タスクライフサイクルプロトコル
 
-Antigravity 2.0 はタスクごとに独立した Git Worktree を作成して自律開発を行います。一方、開発者・レビュー担当者は Antigravity IDE（メインリポジトリ / DevContainer）側で成果物を直接確認・検証します。両者をシームレスに連携させるため、**エージェントがタスクを完了する際は必ず以下のプロトコルを順序通りに完遂すること**。
+Antigravity 2.0 はタスクごとに独立した Git Worktree を作成して自律開発を行います。一方、開発者・レビュー担当者は Antigravity IDE（メインリポジトリ / DevContainer）側で成果物を直接確認・検証します。両者をシームレスかつ規約準拠で連携させるため、**エージェントはタスク開始時およびタスク完了時に以下のプロトコルを順序通りに完遂すること**。
 
+### 5.1 タスク開始時プロトコル (Task Initiation Protocol) & ブランチ自動是正
+1. **ブランチ命名規約の自動検査**:
+   - Worktree作成時、Antigravity 2.0 はユーザーの初期指示（例: `Issue #8 に対応せよ`）から簡易スラッグ（`resolve_issue_eight` 等のフラットなsnake_case）を自動採番してブランチを生成する。これは本リポジトリの統一ブランチ命名規約（`{作業種別}/{アカウント名またはAI名}/issue-{issue番号}/{作業説明ケバブケース}`）に反する。
+   - したがって、エージェントはセッション開始時（PBI着手・初期化フェーズ）、必ず現在のブランチ名（`git branch --show-current`）を検査すること。
+2. **規約準拠ブランチ名への即座改名 (`git branch -m`)**:
+   - 現在のブランチ名がリポジトリ規約に合致しない場合、エージェントは対象Issue情報に基づき規約準拠のブランチ名を自動導出し、直ちに `git branch -m <compliant_branch_name>` を実行して是正すること。
+   - **ブランチ名フォーマット**:
+     ```text
+     {作業種別}/{アカウント名またはAI名}/issue-{issue番号}/{作業説明ケバブケース}
+     ```
+     - 作業種別 (`type`): `feat`, `fix`, `docs`, `refactor`, `test`, `chore`
+     - アカウントまたはAI名: 各自のGitHubアカウント名、またはAI識別子（`process.env.EXPECTED_GITHUB_LOGIN || "antigravity-2.0"`）
+     - issue番号: 関連するGitHub Issue番号（例: `issue-8`）
+     - 作業説明: ハイフン区切りの英語小文字（ケバブケース）
+     - 指定例: `fix/antigravity-2.0/issue-8/worktree-branch-naming-compliance`
+3. **Worktree ディレクトリ命名規約**:
+   - ディレクトリパスにおける `/` の制約を考慮し、Worktreeディレクトリ名はブランチ名のスラッシュをアンダースコアに置換した `{作業種別}_{アカウント名またはAI名}_issue-{issue番号}_{作業説明ケバブケース}` をファイルシステム安全な標準形式とする。
+
+### 5.2 タスク完了プロトコル (Task Completion Protocol) & Worktree 連携統制
 1. **Git コミットの一元化**:
    - 変更・新規作成したすべてのファイルを適切なコミットメッセージでコミットする。
    - コミットはエージェント側のホスト環境（Worktree）から行い、コンテナ内と二重にコミットを作らない。

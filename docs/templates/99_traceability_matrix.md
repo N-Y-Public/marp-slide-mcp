@@ -38,7 +38,7 @@ tags:
 | **機能要件の前方追跡 (`REQ-F-*` → `PBI-*` & `MOD-*` & `TEST-*`)** | 3 件 | 3 件 | **100.0%** (断絶 0件) | PASS |
 | **非機能要件の前方追跡 (`REQ-NFR-*` → `PBI-*` & `MOD-*` & `TEST-*`)** | 6 件 | 6 件 | **100.0%** (断絶 0件) | PASS |
 | **設計モジュールの後方追跡 (`MOD-*` → `REQ-*` & `TEST-*`)** | 3 件 | 3 件 | **100.0%** (孤立 0件) | PASS |
-| **テストケースの根拠追跡 (`TEST-*` → `REQ-*` & `MOD-*`)** | 11 件 | 11 件 | **100.0%** (根拠欠落 0件) | PASS |
+| **テストケースの根拠追跡 (`TEST-*` → `REQ-*` & `MOD-*`)** | 12 件 | 12 件 | **100.0%** (根拠欠落 0件) | PASS |
 
 ---
 
@@ -65,7 +65,7 @@ tags:
 | `PBI-000` | **REQ-NFR-002** | 2. 性能・拡張性（PDF 30秒 / PPTX 60秒以内） | コンテナ内直接変換・ブラウザ即時解放 | `MOD-002`<br>`MOD-003` | `TEST-ST-002` | OK |
 | `PBI-000`<br>`PBI-001`<br>`PBI-004` | **REQ-NFR-003** | 3. 運用・保守性（全行直上平易コメント・Zod検証） | コーディング規約強制・Zodスキーマ定義 | `MOD-001`<br>`MOD-002`<br>`MOD-003` | `TEST-UT-001`<br>`TEST-ST-003` | OK |
 | `PBI-000` | **REQ-NFR-004** | 4. 移行性（Markdown / PDF / PPTX オープン出力） | 標準ファイルフォーマット出力パイプライン | `MOD-003` | `TEST-ST-002` | OK |
-| `PBI-000`<br>`PBI-002`<br>`PBI-003`<br>`PBI-005` | **REQ-NFR-005** | 5. セキュリティ（PII・絶対パス完全排除・動的アカウント検証） | `.githooks/pre-commit`・動的前検証ゲート・入力境界検証 | `MOD-001`<br>`MOD-002`<br>`MOD-003` | `TEST-IT-004`<br>`TEST-ST-003`<br>`TEST-ST-004` | OK |
+| `PBI-000`<br>`PBI-002`<br>`PBI-003`<br>`PBI-005`<br>`PBI-006` | **REQ-NFR-005** | 5. セキュリティ（PII・絶対パス完全排除・動的アカウント検証・Worktree是正） | `.githooks/pre-commit`・動的前検証ゲート・タスク開始時ブランチ是正 | `MOD-001`<br>`MOD-002`<br>`MOD-003` | `TEST-IT-004`<br>`TEST-IT-005`<br>`TEST-ST-003`<br>`TEST-ST-004` | OK |
 | `PBI-000` | **REQ-NFR-006** | 6. システム環境（Docker Dev Container OS非依存） | Node 22 + Chromium + Noto CJK コンテナ固定 | `MOD-002` | `TEST-ST-001` | OK |
 
 ---

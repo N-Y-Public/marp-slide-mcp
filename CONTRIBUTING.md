@@ -56,6 +56,17 @@ docker compose run --rm app python3 .agents/skills/ipa-traceability-validator/sc
 - メンテナー環境（Antigravity 2.0）による作業:
   `feat/antigravity-2.0/issue-2/github-standard-templates`
 
+### 2.1 Worktree ディレクトリ命名規則
+Gitの仕様上、ブランチ名に含まれるスラッシュ（`/`）はローカルファイルシステム上でパス区切り文字として解釈されます。Git Worktreeを明示的に作成・配置する際は、スラッシュをアンダースコア（`_`）に置換したファイルシステム安全な名称を使用してください：
+```text
+{作業種別}_{各自のGitHubアカウント名またはAI名}_issue-{issue番号}_{作業説明ケバブケース}
+```
+例: `fix_antigravity-2.0_issue-8_worktree-branch-naming-compliance`
+
+### 2.2 Google Antigravity 2.0 Worktree連携とブランチ自動是正
+Google Antigravity 2.0 で「Worktree」を選択して新しいセッションを開始した場合、初期プロンプトから簡易スラッグ（`resolve_issue_eight` 等のフラットなsnake_case）が一時的に自動採番されます。
+本リポジトリで動作する自律AIエージェントは、**タスク開始時プロトコル（Task Initiation Protocol）** に従い、セッション開始時に現在のブランチ名を自動検査し、リポジトリ規約に合致する正式ブランチ名（例: `fix/antigravity-2.0/issue-8/worktree-branch-naming-compliance`）へと `git branch -m` で即座に是正して作業を進めます。
+
 ---
 
 ## 3. コミット作法・著作権・プライバシー保護

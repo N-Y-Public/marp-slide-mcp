@@ -56,7 +56,7 @@ flowchart TD
 
 ## 3. 機能要件一覧 (Functional Requirements)
 
-本システムが提供する機能要件を以下の7カテゴリ（`REQ-FNC-001` 〜 `007`）に分類し定義する。
+本システムが提供する機能要件を以下の9カテゴリ（`REQ-FNC-001` 〜 `009`）に分類し定義する。
 
 | 要件ID | 機能名称 | 概要 | 優先度 |
 | :--- | :--- | :--- | :---: |
@@ -68,6 +68,7 @@ flowchart TD
 | **REQ-FNC-006** | MCPサーバー連携機能 | AIエージェントからスライド作成・編集・出力を実行するMCP Tools群 | 高 (Must) |
 | **REQ-FNC-007** | AI協調プロンプト＆Skill資産 | MBB品質のスライド構成をAIに指示・実行させるプロンプトとSkillの提供 | 中 (Should) |
 | **REQ-FNC-008** | GitHub MCP連携・PAT分離機能 | リポジトリ専用環境変数バインドおよび事前アカウント検証ゲートによる安全なGitHub連携 | 高 (Must) |
+| **REQ-FNC-009** | 業界標準GitHub運用・エージェント支援機能 | Issue Forms、PRテンプレート、2層分離規約、Worktreeブランチ自動是正および運用スキル | 高 (Must) |
 
 ---
 
@@ -125,6 +126,7 @@ flowchart TD
 - **REQ-FNC-009-01 (GitHub Issue Forms & PR Template)**: バグ報告（`bug_report.yml`）、機能要望（`feature_request.yml`）、ドキュメント改善（`documentation.yml`）の各入力フォームを提供し、空Issue作成（`blank_issues_enabled: false`）を防止すること。また、PR作成時に変更内容や機密・パス除外チェックリストを提示する標準PRテンプレート（`pull_request_template.md`）を提供すること。
 - **REQ-FNC-009-02 (2層分離コントリビューション規約)**: 外部コントリビューターが特定のアカウント名を強要されることなく各自のGitHubアカウント・クレジットで開発参加できるよう、`CONTRIBUTING.md` を配備し、ブランチ命名規則（`{種別}/{アカウントまたはAI名}/issue-{番号}/{説明}`）および事前アカウント検証ゲートの各自環境設定手順（`EXPECTED_GITHUB_LOGIN` 設定による自立検証）を明確化すること。
 - **REQ-FNC-009-03 (AIエージェント運用支援スキル `github-workflows`)**: AIエージェントがIssue起票・ブランチ命名・PR作成を行う際に、テンプレート読み込み、規約準拠ブランチ名導出、およびGit設定（noreplyメール利用推奨案内）を自動支援するスキルを提供すること。
+- **REQ-FNC-009-04 (Worktree初期化およびブランチ命名自動是正統制)**: Google Antigravity 2.0 等の自律エージェント環境において、Worktreeを選択してセッションを開始した際に自動採番される一時ブランチ名（`resolve_issue_eight` 等）がリポジトリ命名規約（`{種別}/{アカウントまたはAI名}/issue-{番号}/{説明}`）に反することを防止するため、タスク開始時プロトコル（Task Initiation Protocol）を策定・配備すること。エージェントはセッション開始時・PBI着手前に現在のブランチ名を自動検査し、規約違反を検知した場合は `git branch -m` により規約準拠ブランチ名へと自動是正すること。また、ファイルシステム安全なWorktreeディレクトリ命名形式（`{種別}_{アカウント名またはAI名}_issue-{番号}_{説明}`）を規定すること。
 
 ---
 
@@ -190,6 +192,7 @@ mindmap
 | `REQ-FNC-006` | MCPサーバー連携 | `FNC-006` / `EXT-MCP-001`〜`007` | `src/index.ts` |
 | `REQ-FNC-007` | AIプロンプト＆Skill | `FNC-007` | `.agents/skills/marp-slides/`, `prompts/` |
 | `REQ-FNC-008` | GitHub MCP連携・PAT分離 | `FNC-008` | `MOD-INF-001` (`docker-compose.yml`, `.agents/mcp_config.json`) |
+| `REQ-FNC-009` | 業界標準GitHub運用・エージェント支援 | `FNC-009` | `MOD-SKL-001` (`.github/`, `CONTRIBUTING.md`, `.agents/skills/github-workflows/`) |
 
 ---
 

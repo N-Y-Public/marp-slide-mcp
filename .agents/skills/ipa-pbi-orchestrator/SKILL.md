@@ -76,6 +76,8 @@ flowchart LR
 
 ### Stage A: Issue・要求からのPBI起票フェーズ
 ユーザーから「Issue #xxx に対応せよ」または機能要望が提示された場合：
+0. **タスク開始時プロトコル（ブランチ自動検査・是正）**:
+   セッション開始時、必ず現在のブランチ名（`git branch --show-current`）を確認する。Antigravity 2.0 等の自動採番による規約外ブランチ名（`resolve_issue_xxx` 等）の場合、直ちに `git branch -m <compliant_branch_name>`（例: `fix/antigravity-2.0/issue-8/worktree-branch-naming-compliance`）を実行して是正してからPBI起票を行う。
 1. 直ちに設計書やコードを編集せず、`docs/templates/98_pbi_template.md` のフォーマットに従い `docs/backlog/todo/PBI-xxx_<slug>.md` を作成する。
 2. 曖昧さ4分類（【未定義】【多義】【暗黙】【矛盾】）を検出し、ユーザーにPBIの内容（Why / What / Given-When-Then形式のAC）の確認を求める。
 

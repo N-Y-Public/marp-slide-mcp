@@ -15,12 +15,16 @@
 
 | 順序 | 工程名称 | 担当スキル | 必須成果物（差分更新対象テンプレート / 正本配置先） | 次工程移行ゲート条件（Exit Criteria） |
 | :---: | :--- | :--- | :--- | :--- |
-| **0** | **PBI起票・解析**<br>(Backlog Item) | `ipa-pbi-orchestrator` | ・`docs/templates/98_pbi_template.md`<br>（実体: `docs/backlog/todo/PBI-xxx*.md`） | ・Why/WhatおよびGiven-When-Then形式のACが定義済み<br>・PBI種別（`feature` / `enhancement` / `bugfix`）が確定済み |
+| **0** | **PBI起票・解析**<br>(Backlog Item) | `ipa-pbi-orchestrator` | ・`docs/templates/98_pbi_template.md`<br>（実体: `docs/backlog/todo/PBI-xxx*.md`） | ・タスク開始時プロトコル（Gitブランチ名が規約準拠か検証、違反時は `git branch -m` で是正済み）<br>・Why/WhatおよびGiven-When-Then形式のACが定義済み<br>・PBI種別（`feature` / `enhancement` / `bugfix`）が確定済み |
 | **1** | **要件定義（差分）**<br>(Requirements Diff) | `ipa-requirements-analyst` | ・`docs/templates/01`〜`03_*.md`<br>（実体: `docs/01_requirements/`） | ・対象PBIに対応する `REQ-F-xxx`（または `REQ-FNC-xxx`）が採番・差分追記済み<br>・PBIの `related_req_ids` に記録済み |
 | **2** | **方式設計（差分）**<br>(Architecture Diff) | `ipa-system-architect` | ・`docs/templates/04_system_architecture.md`<br>（実体: `docs/02_basic_design/`） | ・影響する構成図・外部I/F仕様・エラーコード一覧（最終行「上記以外（未定義エラー）」受け皿含む）の差分更新済み（※`bugfix`時はスキップ可） |
 | **3** | **詳細設計（差分）**<br>(Detail Design Diff) | `ipa-detail-designer` | ・`docs/templates/05_software_design.md`<br>（実体: `docs/03_detail_design/`） | ・影響するデータモデル・モジュール（`MOD-xxx`）・関数仕様・単体テスト観点の差分更新が完了し、PBIの `related_mod_ids` に記録済み |
 | **4** | **実装・単体検証**<br>(Implementation) | `ipa-detail-designer`<br>（実装フェーズ） | ・`src/`, `pptx_converter/`, `themes/`, `marp.config.js` | ・詳細設計書の差分仕様と100%一致<br>・`docs/00_project_charter/02_coding_standards.md`（**全行直上平易コメント規則**）100%遵守<br>・Dockerコンテナ内ビルド（`npm run build`）エラー0件 |
 | **5** | **テスト・RTM更新**<br>(QA & Traceability) | `ipa-qa-engineer`<br>`ipa-traceability-validator` | ・`docs/templates/06_test_specification.md`<br>・`docs/templates/99_traceability_matrix.md`<br>（実体: `docs/README.md` / `docs/backlog/done/`） | ・PBIの全ACを検証する `TEST-*` が差分追記・実行済み<br>・`verify_rtm.py` による `PBI` ↔ `REQ` ↔ `MOD` ↔ `TEST` の双方向断絶 **0件**<br>・PBIステータスが `done` に更新され `done/` へ移動済み |
+
+### 1.1 タスク開始時・Worktreeブランチ自動是正ルール (Task Initiation Protocol)
+- Antigravity 2.0 等でWorktreeを作成してセッションを開始した際、自動採番された一時ブランチ名（`resolve_issue_eight` 等のフラットなsnake_case）がリポジトリ規約に違反している場合、エージェントはStep 0（PBI起票）の着手前に必ず `git branch --show-current` を検査すること。
+- 規約違反を検知した場合は、対象Issue情報から規約準拠ブランチ名（`{type}/{author}/issue-{number}/{description}`）を自動導出し、直ちに `git branch -m <compliant_branch_name>` を実行して是正してからPBI作業を開始すること。
 
 ### 1.4 PBI種別（`type`）に応じたテーラリング（軽量化ゲート）
 - **`feature`（新機能）**: 全工程（要件追加 → 方式・詳細設計更新 → 実装 → 単体/結合/総合テスト → RTM更新）を実施。

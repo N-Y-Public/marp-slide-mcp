@@ -174,7 +174,34 @@ flowchart TD
 
 ---
 
-## 6. 関連設計図書への参照リンク
+## 6. PRG-SKL-001: GitHub 運用支援スキル (`.agents/skills/github-workflows/SKILL.md`) 仕様
+
+### 6.1 Worktree セッション初期化およびブランチ命名自動是正アルゴリズム
+AIエージェントがタスクを開始する際、現在のGitブランチ名を検査し、リポジトリ規約に合致しない場合に自動是正する処理論理を以下に定義する。
+
+```mermaid
+flowchart TD
+    START([セッション開始 / タスク着手]) --> CHK_BR[現在のブランチ名を取得<br>git branch --show-current]
+    CHK_BR --> EVAL{規約正規表現に合致するか?<br>^{type}/{author}/issue-{num}/{desc}$}
+    EVAL -->|合致 (PASS)| PROCEED([PBI起票 / 実装前設計レビューへ進行])
+    EVAL -->|不一致 (FAIL)| DERIVE[Issue番号・作業種別・説明から<br>規約準拠ブランチ名を自動導出]
+    DERIVE --> RENAME[ブランチ名変更コマンド実行<br>git branch -m 新ブランチ名]
+    RENAME --> VERIFY[変更後ブランチ名の再確認]
+    VERIFY --> PROCEED
+```
+
+1. **ブランチ検査手順**:
+   - `git branch --show-current` を実行して現在のブランチ名を取得する。
+   - ブランチ名が正規表現 `^(feat|fix|docs|refactor|test|chore)/[^/]+/issue-\d+/[a-z0-9-]+$` に適合するか検証する。
+2. **自動是正手順**:
+   - 不一致が検知された場合（例: Antigravity 2.0 の自動採番 `resolve_issue_eight` 等）、対象Issue情報から正規のブランチ名（例: `fix/antigravity-2.0/issue-8/worktree-branch-naming-compliance`）を導出する。
+   - `git branch -m <新ブランチ名>` を実行し、現在ブランチを即座に是正する。
+3. **Worktreeディレクトリ名形式**:
+   - ディレクトリ安全形式: `{type}_{author}_issue-{issue_number}_{description}`（スラッシュをアンダースコアに置換）。
+
+---
+
+## 7. 関連設計図書への参照リンク
 
 - [[01_architectural_design|構造設計書]]: モジュール構造およびコンポーネント依存関係
 - [[02_internal_interface_specification|内部I/F仕様書]]: 関数シグネチャおよび内部型定義

@@ -253,6 +253,16 @@ flowchart LR
 ### 5.2 Antigravity 2.0 Skill 定義 (`.agents/skills/marp-slides/SKILL.md`)
 - エージェントがMCPツールを認識し、自然言語によるプレゼン作成依頼に対して自律的に `generate_slide_deck` や `update_slide` を呼び出すためのトリガー定義。
 
+### 5.3 EXT-DOC-001: GitHub テンプレートおよびコントリビューション規約 I/F
+- **Issue Forms & PR Template (`.github/`)**:
+  - `bug_report.yml`, `feature_request.yml`, `documentation.yml` による構造化入力と空Issue抑止（`blank_issues_enabled: false`）。
+  - `pull_request_template.md` による変更概要・検証結果・機密除外チェックリストの提示。
+- **ブランチ運用規約 (`CONTRIBUTING.md`)**:
+  - ブランチ名形式: `{種別}/{アカウント名またはAI名}/issue-{issue番号}/{作業説明ケバブケース}`
+  - Worktreeディレクトリ命名形式: `{種別}_{アカウント名またはAI名}_issue-{issue番号}_{作業説明ケバブケース}`
+- **Worktreeタスク開始時プロトコル (Task Initiation Protocol)**:
+  - Antigravity 2.0 等で自動採番された一時ブランチ名（`resolve_issue_eight` 等）を検知し、エージェントがタスク開始時・PBI着手前に `git branch -m <compliant_branch_name>` を実行して規約準拠ブランチへ是正。
+
 ---
 
 ## 6. 関連設計図書への参照リンク
