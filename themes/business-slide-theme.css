@@ -30,7 +30,7 @@
     外部スタイルシートやMarkdown内の<style>タグ、MCPサーバーから上書き・差し替えが可能です。
     バナーを非表示にする場合は --banner-image: none; を指定します。
   */
-  --banner-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NjAgMTAwIiB3aWR0aD0iOTYwIiBoZWlnaHQ9IjEwMCI+CiAgPGRlZnM+CiAgICA8IS0tIOaYjuOCi+OBhOW4guadvuOCv+OCpOODq++8iDQweDQw44Om44OL44OD44OI44Gu5Lit44GrMjB4MjDjga7luILmnb7vvIkgLS0+CiAgICA8cGF0dGVybiBpZD0iaWNoaW1hdHN1LWxpZ2h0IiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiNmZmZmZmYiIC8+CiAgICAgIDxyZWN0IHg9IjIwIiB5PSIyMCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjZmZmZmZmIiAvPgogICAgPC9wYXR0ZXJuPgoKICAgIDwhLS0g5pqX44GE5biC5p2+44K/44Kk44Or77yI5Lqk5LqS44Gr6YWN572u44GV44KM44KLMjB4MjDjga7luILmnb7vvIkgLS0+CiAgICA8cGF0dGVybiBpZD0iaWNoaW1hdHN1LWRhcmsiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CiAgICAgIDxyZWN0IHg9IjIwIiB5PSIwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiMwMDAwMDAiIC8+CiAgICAgIDxyZWN0IHg9IjAiIHk9IjIwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiMwMDAwMDAiIC8+CiAgICA8L3BhdHRlcm4+CgogICAgPCEtLSDlt6bjgYvjgonlj7PjgbjjgrPjg7Pjg4jjg6njgrnjg4jjgpLmuJvoobDjgZXjgZvjgovjgrDjg6njg4fjg7zjgrfjg6fjg7Pjg57jgrnjgq/vvIjmmI7jgovjgYTjgr/jgqTjg6vnlKjvvIkgLS0+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImZhZGUtbGlnaHQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjI1IiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjMwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjE0IiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjY1JSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjA0IiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMC4wIiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KCiAgICA8IS0tIOW3puOBi+OCieWPs+OBuOOCs+ODs+ODiOODqeOCueODiOOCkua4m+ihsOOBleOBm+OCi+OCsOODqeODh+ODvOOCt+ODp+ODs+ODnuOCueOCr++8iOaal+OBhOOCv+OCpOODq+eUqO+8iSAtLT4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZmFkZS1kYXJrIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMC4xOCIgLz4KICAgIDxzdG9wIG9mZnNldD0iMzAlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjAuMDkiIC8+CiAgICAgIDxzdG9wIG9mZnNldD0iNjUlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjAuMDIiIC8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjAiIC8+CiAgICA8L2xpbmVhckdyYWRpZW50PgoKICAgIDxtYXNrIGlkPSJtYXNrLWxpZ2h0Ij4KICAgICAgPHJlY3Qgd2lkdGg9Ijk2MCIgaGVpZ2h0PSIxMDAiIGZpbGw9InVybCgjZmFkZS1saWdodCkiIC8+CiAgICA8L21hc2s+CgogICAgPG1hc2sgaWQ9Im1hc2stZGFyayI+CiAgICAgIDxyZWN0IHdpZHRoPSI5NjAiIGhlaWdodD0iMTAwIiBmaWxsPSJ1cmwoI2ZhZGUtZGFyaykiIC8+CiAgICA8L21hc2s+CiAgPC9kZWZzPgoKICA8IS0tIOODluODvOOCueODpuODg+OCr+OCq+ODqeODvO+8iOOCs+ODvOODneODrOODvOODiOODluODq+ODvCAjMWY0OTdk77yJIC0tPgogIDxyZWN0IHdpZHRoPSI5NjAiIGhlaWdodD0iMTAwIiBmaWxsPSIjMWY0OTdkIiAvPgoKICA8IS0tIOW4guadvuaooeanmO+8iOaal+mDqOODrOOCpOODpOODvO+8muW3puWBtOOBp+ODm+OCr+OBq+OBrueEtuOBquW9se+8iSAtLT4KICA8cmVjdCB3aWR0aD0iOTYwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNpY2hpbWF0c3UtZGFyaykiIG1hc2s9InVybCgjbWFzay1kYXJrKSIgLz4KCiAgPCEtLSDluILmnb7mooHnp5jvvIjmmI7pg6jODrOOCpOODpOODvO+8muW3puWBtOOBp+ODj+OCpOODqeOCpOODiOOAgeWPs+OBuOWQkeOBi+OBo+OBpuiHqueEtuOBq+ODleOCp+ODvOODieOCouOCpuODiO+8iSAtLT4KICA8cmVjdCB3aWR0aD0iOTYwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNpY2hpbWF0c3UtbGlnaHQpIiBtYXNrPSJ1cmwoI21hc2stbGlnaHQpIiAvPgoKICA8IS0tIOS4i+mDqOOBruijhemjvuWig+eVjOODqeOCpOODs++8iDFweOOBrue5iue0sOOBquOCouOCr+OCu+ODs+ODiO+8iSAtLT4KICA8bGluZSB4MT0iMCIgeTE9Ijk5LjUiIHgyPSI5NjAiIHkyPSI5OS41IiBzdHJva2U9IiMxNjM3NWYiIHN0cm9rZS13aWR0aD0iMSIgLz4KPC9zdmc+Cg==');
+  --banner-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NjAgMTAwIiB3aWR0aD0iOTYwIiBoZWlnaHQ9IjEwMCI+CiAgPGRlZnM+CiAgICA8IS0tIOaYjuOCi+OBhOW4guadvuOCv+OCpOODq++8iDQweDQw44Om44OL44OD44OI44Gu5Lit44GrMjB4MjDjga7luILmnb7vvIkgLS0+CiAgICA8cGF0dGVybiBpZD0iaWNoaW1hdHN1LWxpZ2h0IiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiNmZmZmZmYiIC8+CiAgICAgIDxyZWN0IHg9IjIwIiB5PSIyMCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjZmZmZmZmIiAvPgogICAgPC9wYXR0ZXJuPgoKICAgIDwhLS0g5pqX44GE5biC5p2+44K/44Kk44Or77yI5Lqk5LqS44Gr6YWN572u44GV44KM44KLMjB4MjDjga7luILmnb7vvIkgLS0+CiAgICA8cGF0dGVybiBpZD0iaWNoaW1hdHN1LWRhcmsiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CiAgICAgIDxyZWN0IHg9IjIwIiB5PSIwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiMwMDAwMDAiIC8+CiAgICAgIDxyZWN0IHg9IjAiIHk9IjIwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiMwMDAwMDAiIC8+CiAgICA8L3BhdHRlcm4+CgogICAgPCEtLSDlt6bjgYvjgonlj7PjgbjjgrPjg7Pjg4jjg6njgrnjg4jjgpLmuJvoobDjgZXjgZvjgovjgrDjg6njg4fjg7zjgrfjg6fjg7Pjg57jgrnjgq/vvIjmmI7jgovjgYTjgr/jgqTjg6vnlKjvvIkgLS0+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImZhZGUtbGlnaHQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjI1IiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjMwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjE0IiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjY1JSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjA0IiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMC4wIiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KCiAgICA8IS0tIOW3puOBi+OCieWPs+OBuOOCs+ODs+ODiOODqeOCueODiOOCkua4m+ihsOOBleOBm+OCi+OCsOODqeODh+ODvOOCt+ODp+ODs+ODnuOCueOCr++8iOaal+OBhOOCv+OCpOODq+eUqO+8iSAtLT4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZmFkZS1kYXJrIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMC4xOCIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIzMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMC4wOSIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI2NSUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMC4wMiIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjAuMCIgLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CgogICAgPG1hc2sgaWQ9Im1hc2stbGlnaHQiPgogICAgICA8cmVjdCB3aWR0aD0iOTYwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNmYWRlLWxpZ2h0KSIgLz4KICAgIDwvbWFzaz4KCiAgICA8bWFzayBpZD0ibWFzay1kYXJrIj4KICAgICAgPHJlY3Qgd2lkdGg9Ijk2MCIgaGVpZ2h0PSIxMDAiIGZpbGw9InVybCgjZmFkZS1kYXJrKSIgLz4KICAgIDwvbWFzaz4KICA8L2RlZnM+CgogIDwhLS0g44OZ44O844K56IOM5pmv6Imy77yI44Kz44O844Od44Os44O844OI44OW44Or44O8ICMxZjQ5N2TvvIkgLS0+CiAgPHJlY3Qgd2lkdGg9Ijk2MCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiMxZjQ5N2QiIC8+CgogIDwhLS0g5biC5p2+5qih5qeY77yI5pqX6YOo44Os44Kk44Ok44O877ya5bem5YG044Gn5rex44G/44Gu44GC44KL6Zmw5b2x77yJIC0tPgogIDxyZWN0IHdpZHRoPSI5NjAiIGhlaWdodD0iMTAwIiBmaWxsPSJ1cmwoI2ljaGltYXRzdS1kYXJrKSIgbWFzaz0idXJsKCNtYXNrLWRhcmspIiAvPgoKICA8IS0tIOW4guadvuaooeanmO+8iOaYjumDqOODrOOCpOODpOODvO+8muW3puWBtOOBp+ODj+OCpOODqeOCpOODiOOAgeWPs+OBuOWQkeOBi+OBo+OBpuiHqueEtuOBq+ODleOCp+ODvOODieOCouOCpuODiO+8iSAtLT4KICA8cmVjdCB3aWR0aD0iOTYwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNpY2hpbWF0c3UtbGlnaHQpIiBtYXNrPSJ1cmwoI21hc2stbGlnaHQpIiAvPgoKICA8IS0tIOS4i+mDqOOBruijhemjvuWig+eVjOODqeOCpOODs++8iDFweOOBrue5iue0sOOBquOCouOCr+OCu+ODs+ODiO+8iSAtLT4KICA8bGluZSB4MT0iMCIgeTE9Ijk5LjUiIHgyPSI5NjAiIHkyPSI5OS41IiBzdHJva2U9IiMxNjM3NWYiIHN0cm9rZS13aWR0aD0iMSIgLz4KPC9zdmc+Cg==');
 }
 
 /*
@@ -136,11 +136,18 @@ section h6 {
    タイトルページのコンテナ設定 (Flexbox化)
 */
 section[data-marpit-pagination="1"] {
+  /* 子要素をFlexbox配置とします */
   display: flex !important;
+  /* 縦方向に子要素を整列します */
   flex-direction: column !important;
+  /* 上揃え配置とします */
   justify-content: flex-start !important;
+  /* 左揃え配置とします */
   align-items: flex-start !important;
+  /* 内側余白をリセットします */
   padding: 0 !important;
+  /* 子要素および疑似要素の絶対配置の基準点とします */
+  position: relative !important;
 }
 
 /*
@@ -165,123 +172,270 @@ section[data-marpit-pagination="1"]::before {
 
 /*
    h1 content: メインタイトル
-   Flexboxアイテムとして配置し、マージンで位置を調整します。
+   Flexboxアイテムとして配置し、上部余白とフォントサイズを基準設定します。
 */
+/* メインタイトルの基準スタイル定義です */
 section[data-marpit-pagination="1"]>h1+* {
-  /* 絶対配置を解除し、Flexアイテムにします */
+  /* 文書フローに従うFlexアイテムとして配置します */
   position: static !important;
-  /* 上から250pxの位置に配置（バナーの下） */
-  margin-top: 250px !important;
-  /* 左から50pxの位置に配置 */
+  /* バナー下部との適度な余白として上部マージンを設定します */
+  margin-top: 220px !important;
+  /* スライド左端から50pxの位置に配置します */
   margin-left: 50px !important;
-  /* 幅を左右余白50pxずつを除いた幅に設定します（4:3なら860px、16:9なら1180px） */
+  /* 幅を左右余白50pxずつを除いた幅に設定します */
   width: calc(100% - 100px) !important;
   /* テキストを左揃えにします */
   text-align: left !important;
-  /* 文字サイズを36ポイント（大見出し用）にします */
+  /* 基本文字サイズを大見出し用の36ポイントにします */
   font-size: 36pt !important;
+  /* 見出しの行間を読みやすく引き締めます */
+  line-height: 1.3 !important;
   /* 文字を太字にします */
   font-weight: bold !important;
   /* 文字色を黒にします */
   color: #000000 !important;
   /* 背景を透明にします */
   background: transparent !important;
-  /* 余白をリセットした上でmargin-top/leftを使用 */
+  /* 右側マージンをリセットします */
   margin-right: 0 !important;
+  /* 下側マージンをリセットします */
   margin-bottom: 0 !important;
-  /* 重なり順を10に設定し、他の要素より前面に出るようにします */
+  /* 長い単語での横溢れを防ぎ自動改行を許可します */
+  word-break: break-word !important;
+  /* 任意の文字位置での安全な折り返しを許可します */
+  overflow-wrap: anywhere !important;
+  /* 通常のテキスト折り返しを有効化します */
+  white-space: normal !important;
+  /* 重なり順を前面表示に設定します */
   z-index: 10 !important;
-
-  /* 見出しタグ自体は隠れていますが、その内容は見えるようにします */
+  /* 要素を表示状態にします */
   visibility: visible !important;
-  /* マウス操作を有効にします */
+  /* マウス操作を有効化します */
   pointer-events: auto !important;
+}
+
+/*
+   h1 content: 2行タイトルの自動縮小・余白調整
+   改行タグを1つ含む場合、上部マージンとフォントサイズを適応縮小します。
+*/
+/* 2行タイトルのスタイル定義です */
+section[data-marpit-pagination="1"]>h1+*:has(br) {
+  /* 上部マージンを詰めて表示開始位置を引き上げます */
+  margin-top: 175px !important;
+  /* 文字サイズを30ポイントへ一段階縮小します */
+  font-size: 30pt !important;
+  /* 行の高さを最適化します */
+  line-height: 1.25 !important;
+}
+
+/*
+   h1 content: 3行以上タイトルの自動縮小・余白調整
+   改行タグを2つ以上含む場合、上部マージンを大幅に詰めフォントを縮小します。
+*/
+/* 3行以上タイトルのスタイル定義です */
+section[data-marpit-pagination="1"]>h1+*:has(br + br) {
+  /* 上部マージンをさらに詰めてバナー直下近くへ引き上げます */
+  margin-top: 145px !important;
+  /* 文字サイズを24ポイントへ縮小します */
+  font-size: 24pt !important;
+  /* 行の高さをコンパクトにします */
+  line-height: 1.2 !important;
+}
+
+/*
+   h1 content: 4行以上タイトルの自動縮小・余白調整
+   改行タグを3つ以上含む場合、フォントサイズを最小境界へ適応縮小します。
+*/
+/* 4行以上タイトルのスタイル定義です */
+section[data-marpit-pagination="1"]>h1+*:has(br + br + br) {
+  /* 上部マージンを最大限詰めます */
+  margin-top: 120px !important;
+  /* 文字サイズを20ポイントへ縮小します */
+  font-size: 20pt !important;
+  /* 行の高さを最小限に抑えます */
+  line-height: 1.15 !important;
 }
 
 /*
    h2 content: サブタイトル
    メインタイトルの直下に相対配置されます。
 */
+/* サブタイトルの基準スタイル定義です */
 section[data-marpit-pagination="1"]>h2+* {
+  /* 文書フローに従うFlexアイテムとして配置します */
   position: static !important;
-  /* メインタイトルとの間隔 */
+  /* メインタイトルとの間隔を設定します */
   margin-top: 20px !important;
+  /* スライド左端から50pxの位置に配置します */
   margin-left: 50px !important;
+  /* 幅を左右余白50pxずつを除いた幅に設定します */
   width: calc(100% - 100px) !important;
+  /* テキストを左揃えにします */
   text-align: left !important;
+  /* 文字サイズを中見出し用の20ポイントにします */
   font-size: 20pt !important;
+  /* 行の高さを設定します */
+  line-height: 1.4 !important;
+  /* 文字色を落ち着いたグレーにします */
   color: #555555 !important;
+  /* 背景を透明にします */
   background: transparent !important;
+  /* 右側マージンをリセットします */
   margin-right: 0 !important;
+  /* 下側マージンをリセットします */
   margin-bottom: 0 !important;
+  /* 長い単語での横溢れを防ぎ自動改行を許可します */
+  word-break: break-word !important;
+  /* 任意の文字位置での安全な折り返しを許可します */
+  overflow-wrap: anywhere !important;
+  /* 通常のテキスト折り返しを有効化します */
+  white-space: normal !important;
+  /* 重なり順を前面表示に設定します */
   z-index: 10 !important;
-
+  /* 要素を表示状態にします */
   visibility: visible !important;
+  /* マウス操作を有効化します */
   pointer-events: auto !important;
 }
 
 /*
-   h3 content 1つ目: 図書番号
-   サブタイトルの下に配置され、右寄せにします。
+   タイトル行数に応じたサブタイトルの余白・フォント連動調整
 */
-section[data-marpit-pagination="1"]>h3:first-of-type+* {
-  position: static !important;
-  /* 横幅いっぱいに広げてテキスト配置で制御 */
-  align-self: stretch !important;
-  width: auto !important;
-  text-align: right !important;
-  padding-right: 50px !important;
-  margin-top: 50px !important;
-  margin-right: 0 !important;
-  margin-left: 0 !important;
-  font-size: 14pt !important;
-  color: #000000 !important;
-  margin-bottom: 0 !important;
-  box-sizing: border-box !important;
+/* メインタイトルが2行の場合のサブタイトルスタイルです */
+section[data-marpit-pagination="1"]:has(>h1+*:has(br))>h2+* {
+  /* タイトルとの余白を少し詰めます */
+  margin-top: 16px !important;
+  /* 文字サイズを19ポイントへ調整します */
+  font-size: 19pt !important;
+}
 
+/* メインタイトルが3行以上の場合のサブタイトルスタイルです */
+section[data-marpit-pagination="1"]:has(>h1+*:has(br + br))>h2+* {
+  /* タイトルとの余白を詰めます */
+  margin-top: 12px !important;
+  /* 文字サイズを18ポイントへ調整します */
+  font-size: 18pt !important;
+}
+
+/* メインタイトルが4行以上の場合のサブタイトルスタイルです */
+section[data-marpit-pagination="1"]:has(>h1+*:has(br + br + br))>h2+* {
+  /* タイトルとの余白を最大限詰めます */
+  margin-top: 10px !important;
+  /* 文字サイズを16ポイントへ調整します */
+  font-size: 16pt !important;
+}
+
+/* サブタイトル自体が2行以上の場合の縮小スタイルです */
+section[data-marpit-pagination="1"]>h2+*:has(br) {
+  /* 文字サイズを17ポイントへ縮小します */
+  font-size: 17pt !important;
+  /* 行の高さを引き締めます */
+  line-height: 1.25 !important;
+}
+
+/* サブタイトル自体が3行以上の場合の縮小スタイルです */
+section[data-marpit-pagination="1"]>h2+*:has(br + br) {
+  /* 文字サイズを15ポイントへ縮小します */
+  font-size: 15pt !important;
+  /* 行の高さを最小限にします */
+  line-height: 1.2 !important;
+}
+
+/*
+   h3 content 1つ目: 図書番号
+   スライド下部右端に絶対配置し、タイトル行数の影響による押し出しを完全に防止します。
+*/
+/* 図書番号の配置スタイル定義です */
+section[data-marpit-pagination="1"]>h3:first-of-type+* {
+  /* スライド下部に絶対配置して縦積み押し出しから独立させます */
+  position: absolute !important;
+  /* ヘッダーロゴ（bottom: 50px、高さ50px）の上部に美しく整列する位置に配置します */
+  bottom: 110px !important;
+  /* スライド右端から50pxの位置に配置します */
+  right: 50px !important;
+  /* 自動幅とします */
+  width: auto !important;
+  /* テキストを右寄せにします */
+  text-align: right !important;
+  /* パディングをリセットします */
+  padding: 0 !important;
+  /* マージンをリセットします */
+  margin: 0 !important;
+  /* 文字サイズを14ポイントにします */
+  font-size: 14pt !important;
+  /* 文字色を黒にします */
+  color: #000000 !important;
+  /* 重なり順を設定します */
+  z-index: 10 !important;
+  /* 要素を表示状態にします */
   visibility: visible !important;
+  /* マウス操作を有効化します */
   pointer-events: auto !important;
 }
 
 /*
    h3 content 2つ目: 所属・氏名
-   図書番号の下に配置され、左寄せにします。
+   スライド下部左端（作成日の直上）に絶対配置し、タイトル行数に関わらず安定表示します。
 */
+/* 所属・氏名の配置スタイル定義です */
 section[data-marpit-pagination="1"]>h3:last-of-type+* {
-  position: static !important;
-  /* Flexbox内で左寄せ */
-  align-self: flex-start !important;
-  margin-top: 20px !important;
-  margin-left: 50px !important;
+  /* スライド下部に絶対配置して縦積み押し出しから独立させます */
+  position: absolute !important;
+  /* 作成日の直上となる下からの基準高さに配置します */
+  bottom: 85px !important;
+  /* スライド左端から50pxの位置に配置します */
+  left: 50px !important;
+  /* 自動幅とします */
   width: auto !important;
+  /* テキストを左揃えにします */
   text-align: left !important;
+  /* 文字サイズを16ポイントにします */
   font-size: 16pt !important;
+  /* 複数行時の行間を設定します */
+  line-height: 1.4 !important;
+  /* 文字色を黒にします */
   color: #000000 !important;
-  margin-right: 0 !important;
-  margin-bottom: 0 !important;
-
+  /* マージンをリセットします */
+  margin: 0 !important;
+  /* パディングをリセットします */
+  padding: 0 !important;
+  /* 重なり順を設定します */
+  z-index: 10 !important;
+  /* 要素を表示状態にします */
   visibility: visible !important;
+  /* マウス操作を有効化します */
   pointer-events: auto !important;
 }
 
 /*
    h4 content: 作成日・日付
-   所属・氏名の下に配置され、左寄せにします。
+   スライド下部左端（フッター帯の直上）に絶対配置し、画面外はみ出しを確実に防止します。
 */
+/* 作成日の配置スタイル定義です */
 section[data-marpit-pagination="1"]>h4+* {
-  position: static !important;
-  /* Flexbox内で左寄せ */
-  align-self: flex-start !important;
-  margin-top: 15px !important;
-  margin-left: 50px !important;
+  /* スライド下部に絶対配置して縦積み押し出しから独立させます */
+  position: absolute !important;
+  /* フッター帯（680px〜）の手前となる位置に配置します */
+  bottom: 50px !important;
+  /* スライド左端から50pxの位置に配置します */
+  left: 50px !important;
+  /* 自動幅とします */
   width: auto !important;
+  /* テキストを左揃えにします */
   text-align: left !important;
+  /* 文字サイズを14ポイントにします */
   font-size: 14pt !important;
+  /* 文字色を黒にします */
   color: #000000 !important;
-  margin-right: 0 !important;
-  margin-bottom: 0 !important;
-
+  /* マージンをリセットします */
+  margin: 0 !important;
+  /* パディングをリセットします */
+  padding: 0 !important;
+  /* 重なり順を設定します */
+  z-index: 10 !important;
+  /* 要素を表示状態にします */
   visibility: visible !important;
+  /* マウス操作を有効化します */
   pointer-events: auto !important;
 }
 

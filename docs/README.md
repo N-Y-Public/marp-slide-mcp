@@ -111,7 +111,7 @@ PBI（プロダクトバックログ）から要件、基本設計、詳細設�
 
 | `PBI_ID` | 要件ID (`REQ`) | 基本設計 機能ID (`FNC`) | 外部I/F (`EXT`) | モジュールID (`MOD`) | 内部I/F (`INT`) | プログラムID (`PRG`) | 主要実装ソースコード |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `PBI-000` | `REQ-FNC-001`<br>(ビジネス標準テーマ) | `FNC-001`<br>(スライドスタイリング) | — | `MOD-THM-001` | — | `PRG-THM-001` | `themes/business-slide-theme.css`<br>`themes/theme-colors.css` |
+| `PBI-000`<br>`PBI-009` | `REQ-FNC-001`<br>(ビジネス標準テーマ) | `FNC-001`<br>(スライドスタイリング) | — | `MOD-THM-001` | — | `PRG-THM-001` | `themes/business-slide-theme.css`<br>`themes/theme-colors.css` |
 | `PBI-000` | `REQ-FNC-002`<br>(自律要素リサイズ) | `FNC-002`<br>(自動リサイズ機構) | — | `MOD-THM-001`<br>`MOD-ENG-001` | — | `PRG-THM-001`<br>`PRG-ENG-001` | `themes/business-slide-theme.css`<br>`marp.config.js` |
 | `PBI-000` | `REQ-FNC-003`<br>(構造化レイアウト) | `FNC-003`<br>(2段組/画像/会話) | `EXT-MCP-001` | `MOD-THM-001`<br>`MOD-SRV-001` | `INT-FN-001` | `PRG-THM-001`<br>`PRG-SRV-001` | `themes/business-slide-theme.css`<br>`src/index.ts` |
 | `PBI-000`<br>`PBI-004`<br>`PBI-008` | `REQ-FNC-004`<br>(目次完全自動生成) | `FNC-004`<br>(目次プラグイン) | — | `MOD-ENG-001`<br>`MOD-SRV-001`<br>`MOD-THM-001` | `INT-ENG-001`<br>`INT-ENG-002`<br>`INT-FN-001` | `PRG-ENG-001`<br>`PRG-SRV-001`<br>`PRG-THM-001` | `marp.config.js` (`marp_toc`)<br>`src/index.ts`<br>`themes/business-slide-theme.css` |

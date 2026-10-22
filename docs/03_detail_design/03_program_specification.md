@@ -162,6 +162,21 @@ flowchart TD
   - `section:not(.title-slide) h3 ~ p:first-of-type`: 図表タイトル（`position: absolute; top: 165px; left: 0; width: 100%; text-align: center; font-size: 13pt;`）。
   - `section:not(.title-slide) h5 ~ p:first-of-type`: 出典・脚注（`position: absolute; bottom: 45px; right: 20px; font-size: 11pt; color: #666666;`）。
 
+### 5.2.1 表紙レイアウトと複数行タイトルはみ出し防止機構 (`MOD-THM-001`)
+- **下部メタ情報（所属・氏名、作成日、図書番号）の絶対配置固定**:
+  - `section[data-marpit-pagination="1"]` 内の下部メタ情報要素を `position: absolute` でスライド下部（フッター帯境界 680px の手前、y=520px〜670px）に固定配置。
+  - 作成日 (`h4+*`): `position: absolute !important; bottom: 50px !important; left: 50px !important;`
+  - 所属・氏名 (`h3:last-of-type+*`): `position: absolute !important; bottom: 85px !important; left: 50px !important;`
+  - 図書番号 (`h3:first-of-type+*`): `position: absolute !important; bottom: 85px !important; right: 50px !important;`
+  - これにより、上部のタイトルやサブタイトルの文字数・行数に影響されず、下部メタ情報がスライド下端（720px）外へ押し出される物理現象を防止する。
+- **タイトル・サブタイトルの適応的余白・フォントサイズ段階縮小**:
+  - タイトル領域の上部マージン（`margin-top`）を、行数に応じて動的に最適化。
+  - 1行タイトル（デフォルト）: `margin-top: 220px; font-size: 36pt; line-height: 1.3;`
+  - 2行タイトル（`h1+p:has(br)`）: `margin-top: 180px; font-size: 30pt; line-height: 1.25;`
+  - 3行以上タイトル（`h1+p:has(br + br)`）: `margin-top: 150px; font-size: 24pt; line-height: 1.2;`、サブタイトルマージン `margin-top: 12px;`
+  - 4行以上タイトル（`h1+p:has(br + br + br)`）: `margin-top: 130px; font-size: 20pt; line-height: 1.15;`、サブタイトルマージン `margin-top: 8px;`
+  - これにより、バナー（height: 100px）下から下部メタ情報上端（y=500px）までの利用可能領域内でタイトル・サブタイトルが完全に収まり、重複も回避される。
+
 ### 5.3 自動リサイズ機構の実装
 - **テーブル**:
   - `section table { font-size: 14pt; margin: auto; border-collapse: collapse; }`
