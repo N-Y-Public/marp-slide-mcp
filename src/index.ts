@@ -156,9 +156,9 @@ const NormalSlideSchema = z.object({
   confidentiality: z.string().default("CONFIDENTIAL").describe("機密指定"),
   // スライドに適用するカスタムCSSクラス配列です
   classes: z.array(z.string()).optional().describe(
-    "適用するCSSクラス配列。例: ['wide-content', 'mermaid-sm']\n" +
+    "適用するCSSクラス配列。例: ['wide-content', 'table-4', 'text-3']\n" +
     "レイアウト: 'wide-content', 'conversation-content', 'toc', 'columns-2' (2段組), 'images-2' (画像2枚並列), 'images-3' (画像3枚並列)\n" +
-    "サイズ調整: 'table-md', 'code-sm', 'mermaid-sm', 'claim-3' 等"
+    "サイズ調整（1〜10段階。1が最大・標準、数字が大きいほど縮小、10が極小）: 'table-1'〜'table-10', 'text-1'〜'text-10', 'mermaid-1'〜'mermaid-10', 'img-1'〜'img-10', 'code-1'〜'code-10', 'claim-1'〜'claim-8' 等（従来の 'table-sm', 'dense' 等も互換維持）"
   ),
 });
 

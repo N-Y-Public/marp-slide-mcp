@@ -56,7 +56,7 @@ CSSテーマは自動リサイズおよびクラス調整に対応していま�
 | **ページタイトル** | `# Label`<br>`タイトル` | **全角40〜60文字以内**（1〜2行） | `title-1` 〜 `title-3` | 上下中央揃えに対応。複数行時は `title-2` などを指定。 |
 | **メッセージ（主張）** | `## Label`<br>`メッセージ` | **全角250文字以内**（箇条書き3〜5行） | `claim-1` 〜 `claim-8` | 背景帯（高さ110px）に配置。行数が多い場合は `claim-4` 等で自動縮小。 |
 | **図表タイトル** | `### Label`<br>`タイトル` | **全角60文字以内**（1〜2行） | `fig-1` 〜 `fig-3` | ボディの上に配置される見出し。 |
-| **ボディ（本文）** | `#### Label`<br>`本文` | **最大1,500文字以内**（通常10〜15行） | `wide-content`<br>`columns-2`<br>`images-2`, `images-3`<br>`conversation-content`<br>`table-sm`, `mermaid-sm`, `code-sm` 等 | 2段組 (`columns-2`)、画像横並び (`images-2`/`images-3`)、会話 (`conversation-content`)、大きな図表は `wide-content` や `*-sm` を併用。 |
+| **ボディ（本文）** | `#### Label`<br>`本文` | **最大1,500文字以内**（通常10〜15行） | `wide-content`<br>`columns-2`<br>`images-2`, `images-3`<br>`conversation-content`<br>10段階数字クラス:<br>`table-1`〜`10`<br>`text-1`〜`10`<br>`mermaid-1`〜`10`<br>`img-1`〜`10`<br>`code-1`〜`10` | 2段組 (`columns-2`)、画像横並び (`images-2`/`images-3`)、会話 (`conversation-content`)、大きな図表は `wide-content` や要素別10段階数字クラス（1が標準・最大、10が極小）を併用（旧 `table-sm` 等も互換維持）。 |
 
 ## 3. スライド比率の切り替え（4:3 / 16:9）
 フロントマターの `size` を変更するだけで、簡単に 4:3 と 16:9 を切り替えられます。すべてのレイアウト（表紙、2段組、画像並列、Mermaid等）が自動追従します。

@@ -93,7 +93,7 @@ flowchart LR
           { "imagePath": "string", "caption": "string (任意)", "alt": "string (任意)" }
         ],
         "source": "string (任意: 図表出典)",
-        "classes": "string[] (任意: ['columns-2', 'wide-content', 'mermaid-sm'] 等)"
+        "classes": "string[] (任意: ['columns-2', 'wide-content', 'table-4', 'text-3', 'mermaid-5', 'img-3', 'code-4'] 等)"
       }
     ]
   }

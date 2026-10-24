@@ -1343,21 +1343,93 @@ section:not([data-marpit-pagination="1"]):has(> h4 ~ p:not(h5 ~ *, h6 ~ *) br ~ 
 }
 
 
-/* 手動で倍率を上書きしたい場合: <!-- _class: dense --> 等 */
+/* 手動で倍率を上書きしたい場合: <!-- _class: text-3 --> 等（10段階統一数字クラスおよび後方互換エイリアス） */
+/* 本文サイズ 段階1（最大・標準倍率 1.0）です */
+section.text-1,
+/* 本文サイズ 段階1 の別名定義です */
+section.body-1,
+/* 従来のゆったり表示クラスとの後方互換定義です */
 section.roomy {
+  /* 本文拡大率を等倍の1.0に固定します */
   --txt-scale: 1 !important;
 }
 
-section.dense {
-  --txt-scale: 0.75 !important;
+/* 本文サイズ 段階2（倍率 0.92）です */
+section.text-2,
+/* 本文サイズ 段階2 の別名定義です */
+section.body-2 {
+  /* 本文拡大率を0.92倍に縮小します */
+  --txt-scale: 0.92 !important;
 }
 
+/* 本文サイズ 段階3（倍率 0.84）です */
+section.text-3,
+/* 本文サイズ 段階3 の別名定義です */
+section.body-3 {
+  /* 本文拡大率を0.84倍に縮小します */
+  --txt-scale: 0.84 !important;
+}
+
+/* 本文サイズ 段階4（倍率 0.76）です */
+section.text-4,
+/* 本文サイズ 段階4 の別名定義です */
+section.body-4,
+/* 従来の標準縮小クラスとの後方互換定義です */
+section.dense {
+  /* 本文拡大率を0.76（旧0.75相当）倍に縮小します */
+  --txt-scale: 0.76 !important;
+}
+
+/* 本文サイズ 段階5（倍率 0.68）です */
+section.text-5,
+/* 本文サイズ 段階5 の別名定義です */
+section.body-5 {
+  /* 本文拡大率を0.68倍に縮小します */
+  --txt-scale: 0.68 !important;
+}
+
+/* 本文サイズ 段階6（倍率 0.60）です */
+section.text-6,
+/* 本文サイズ 段階6 の別名定義です */
+section.body-6,
+/* 従来の強縮小クラスとの後方互換定義です */
 section.denser {
+  /* 本文拡大率を0.60倍に縮小します */
   --txt-scale: 0.6 !important;
 }
 
+/* 本文サイズ 段階7（倍率 0.55）です */
+section.text-7,
+/* 本文サイズ 段階7 の別名定義です */
+section.body-7 {
+  /* 本文拡大率を0.55倍に縮小します */
+  --txt-scale: 0.55 !important;
+}
+
+/* 本文サイズ 段階8（倍率 0.50: 従来の最小値）です */
+section.text-8,
+/* 本文サイズ 段階8 の別名定義です */
+section.body-8,
+/* 従来の最大縮小クラスとの後方互換定義です */
 section.densest {
+  /* 本文拡大率を従来の最小値である0.50倍に縮小します */
   --txt-scale: 0.5 !important;
+}
+
+/* 本文サイズ 段階9（倍率 0.42: 従来の最小値より1段階小さいサイズ）です */
+section.text-9,
+/* 本文サイズ 段階9 の別名定義です */
+section.body-9 {
+  /* 本文拡大率を従来の最小値より1段階小さい0.42倍に縮小します */
+  --txt-scale: 0.42 !important;
+}
+
+/* 本文サイズ 段階10（倍率 0.35: 従来の最小値よりさらに2段階小さい極小サイズ）です */
+section.text-10,
+/* 本文サイズ 段階10 の別名定義です */
+section.body-10 {
+  /* 本文拡大率を従来の最小値よりさらに2段階小さい極小の0.35倍に縮小します */
+  --txt-scale: 0.35 !important;
 }
 
 
@@ -1509,12 +1581,23 @@ section.wide-content table:has(tbody tr:nth-child(18)) {
 
 section table th,
 section table td {
+  /* 親テーブルで指定されたフォントサイズをセル内へ確実に継承します */
+  font-size: inherit !important;
+  /* 親テーブルで指定された行の高さをセル内へ確実に継承します */
+  line-height: inherit !important;
+  /* セルの余白を指定します */
   padding: var(--tbl-pad) !important;
+  /* 通常のテキスト折り返しを行います */
   white-space: normal !important;
+  /* 単語単位での折り返しを許可します */
   word-wrap: break-word !important;
+  /* 領域超過時の折り返しを許可します */
   overflow-wrap: break-word !important;
+  /* 枠線を薄いグレーに設定します */
   border: 1px solid #cccccc !important;
+  /* パディングを含めたボックスサイズ計算を行います */
   box-sizing: border-box !important;
+  /* 縦方向の文字配置を中央揃えにします */
   vertical-align: middle !important;
 }
 
@@ -1529,39 +1612,117 @@ section table td {
   background-color: #ffffff !important;
 }
 
-/* 表だけを手動調整したい場合 */
+/* 表の手動サイズ調整クラス（10段階統一数字クラスおよび後方互換エイリアス） */
+/* 表サイズ 段階1（最大サイズ 26pt）です */
+section.table-1 table,
+/* 従来の特大表クラスとの後方互換定義です */
 section.table-xl table {
-  --tbl-fs-rows: 28pt !important;
-  --tbl-fs-cols: 28pt !important;
+  /* 表の行基準フォントサイズを26pt（xlは28pt相当）に設定します */
+  --tbl-fs-rows: 26pt !important;
+  /* 表の列基準フォントサイズを26ptに設定します */
+  --tbl-fs-cols: 26pt !important;
 }
 
+/* 表サイズ 段階2（大サイズ 22pt）です */
+section.table-2 table,
+/* 従来の大表クラスとの後方互換定義です */
 section.table-lg table {
+  /* 表の行基準フォントサイズを22ptに設定します */
   --tbl-fs-rows: 22pt !important;
+  /* 表の列基準フォントサイズを22ptに設定します */
   --tbl-fs-cols: 22pt !important;
 }
 
+/* 表サイズ 段階3（中大サイズ 19pt）です */
+section.table-3 table {
+  /* 表の行基準フォントサイズを19ptに設定します */
+  --tbl-fs-rows: 19pt !important;
+  /* 表の列基準フォントサイズを19ptに設定します */
+  --tbl-fs-cols: 19pt !important;
+}
+
+/* 表サイズ 段階4（中サイズ 16.5pt）です */
+section.table-4 table,
+/* 従来の中表クラスとの後方互換定義です */
 section.table-md table {
-  --tbl-fs-rows: 18pt !important;
-  --tbl-fs-cols: 18pt !important;
+  /* 表の行基準フォントサイズを16.5pt（md相当）に設定します */
+  --tbl-fs-rows: 16.5pt !important;
+  /* 表の列基準フォントサイズを16.5ptに設定します */
+  --tbl-fs-cols: 16.5pt !important;
 }
 
+/* 表サイズ 段階5（やや小さめ 13.5pt）です */
+section.table-5 table,
+/* 従来の小表クラスとの後方互換定義です */
 section.table-sm table {
-  --tbl-fs-rows: 13pt !important;
-  --tbl-fs-cols: 13pt !important;
+  /* 表の行基準フォントサイズを13.5pt（sm相当）に設定します */
+  --tbl-fs-rows: 13.5pt !important;
+  /* 表の列基準フォントサイズを13.5ptに設定します */
+  --tbl-fs-cols: 13.5pt !important;
 }
 
+/* 表サイズ 段階6（小サイズ 11.5pt）です */
+section.table-6 table {
+  /* 表の行基準フォントサイズを11.5ptに設定します */
+  --tbl-fs-rows: 11.5pt !important;
+  /* 表の列基準フォントサイズを11.5ptに設定します */
+  --tbl-fs-cols: 11.5pt !important;
+  /* セルの内側余白を小さくします */
+  --tbl-pad: 3px 6px !important;
+  /* 行の高さを少し引き締めます */
+  --tbl-lh: 1.25 !important;
+}
+
+/* 表サイズ 段階7（極小サイズ 10pt）です */
+section.table-7 table,
+/* 従来の極小表クラスとの後方互換定義です */
 section.table-xs table {
+  /* 表の行基準フォントサイズを10ptに設定します */
   --tbl-fs-rows: 10pt !important;
+  /* 表の列基準フォントサイズを10ptに設定します */
   --tbl-fs-cols: 10pt !important;
+  /* セルの内側余白を小さくします */
   --tbl-pad: 2px 5px !important;
+  /* 行の高さを引き締めます */
   --tbl-lh: 1.2 !important;
 }
 
+/* 表サイズ 段階8（超極小サイズ 8pt: 従来の最小値）です */
+section.table-8 table,
+/* 従来の最小表クラスとの後方互換定義です */
 section.table-xxs table {
+  /* 表の行基準フォントサイズを8ptに設定します */
   --tbl-fs-rows: 8pt !important;
+  /* 表の列基準フォントサイズを8ptに設定します */
   --tbl-fs-cols: 8pt !important;
+  /* セルの内側余白を最小限にします */
   --tbl-pad: 1px 4px !important;
+  /* 行の高さを詰めます */
   --tbl-lh: 1.15 !important;
+}
+
+/* 表サイズ 段階9（従来の最小値より1段階小さいサイズ 7pt）です */
+section.table-9 table {
+  /* 表の行基準フォントサイズを7ptに設定します */
+  --tbl-fs-rows: 7pt !important;
+  /* 表の列基準フォントサイズを7ptに設定します */
+  --tbl-fs-cols: 7pt !important;
+  /* セルの内側余白を極限まで詰めます */
+  --tbl-pad: 1px 3px !important;
+  /* 行の高さをさらに詰めます */
+  --tbl-lh: 1.12 !important;
+}
+
+/* 表サイズ 段階10（従来の最小値よりさらに2段階小さい極小サイズ 6pt）です */
+section.table-10 table {
+  /* 表の行基準フォントサイズを6ptに設定します */
+  --tbl-fs-rows: 6pt !important;
+  /* 表の列基準フォントサイズを6ptに設定します */
+  --tbl-fs-cols: 6pt !important;
+  /* セルの内側余白を最小限に抑えます */
+  --tbl-pad: 1px 2px !important;
+  /* 行の高さを限界まで詰めます */
+  --tbl-lh: 1.1 !important;
 }
 
 
@@ -1601,20 +1762,73 @@ section pre code {
   padding: 0 !important;
 }
 
+/* コードブロックの手動サイズ調整クラス（10段階統一数字クラスおよび後方互換エイリアス） */
+/* コードサイズ 段階1（大サイズ 18pt）です */
+section.code-1 pre,
+/* 従来の大コードクラスとの後方互換定義です */
 section.code-lg pre {
+  /* コードの基準フォントサイズを18ptに設定します */
   --code-fs-base: 18pt !important;
 }
 
+/* コードサイズ 段階2（中大サイズ 16pt）です */
+section.code-2 pre {
+  /* コードの基準フォントサイズを16ptに設定します */
+  --code-fs-base: 16pt !important;
+}
+
+/* コードサイズ 段階3（標準サイズ 14pt）です */
+section.code-3 pre {
+  /* コードの基準フォントサイズを14ptに設定します */
+  --code-fs-base: 14pt !important;
+}
+
+/* コードサイズ 段階4（やや小さめ 12.5pt）です */
+section.code-4 pre {
+  /* コードの基準フォントサイズを12.5ptに設定します */
+  --code-fs-base: 12.5pt !important;
+}
+
+/* コードサイズ 段階5（小サイズ 11pt）です */
+section.code-5 pre,
+/* 従来の小コードクラスとの後方互換定義です */
 section.code-sm pre {
+  /* コードの基準フォントサイズを11ptに設定します */
   --code-fs-base: 11pt !important;
 }
 
-section.code-xs pre {
-  --code-fs-base: 9pt !important;
+/* コードサイズ 段階6（やや極小 9.5pt）です */
+section.code-6 pre {
+  /* コードの基準フォントサイズを9.5ptに設定します */
+  --code-fs-base: 9.5pt !important;
 }
 
+/* コードサイズ 段階7（極小サイズ 8pt）です */
+section.code-7 pre,
+/* 従来の極小コードクラスとの後方互換定義です */
+section.code-xs pre {
+  /* コードの基準フォントサイズを8pt（旧xs相当）に設定します */
+  --code-fs-base: 8pt !important;
+}
+
+/* コードサイズ 段階8（超極小サイズ 7pt: 従来の最小値）です */
+section.code-8 pre,
+/* 従来の最小コードクラスとの後方互換定義です */
 section.code-xxs pre {
+  /* コードの基準フォントサイズを7ptに設定します */
   --code-fs-base: 7pt !important;
+}
+
+/* コードサイズ 段階9（従来の最小値より1段階小さいサイズ 6pt）です */
+section.code-9 pre {
+  /* コードの基準フォントサイズを6ptに設定します */
+  --code-fs-base: 6pt !important;
+}
+
+/* コードサイズ 段階10（従来の最小値よりさらに2段階小さい極小サイズ 5pt）です */
+section.code-10 pre {
+  /* コードの基準フォントサイズを極小の5ptに設定します */
+  --code-fs-base: 5pt !important;
 }
 
 section code {
@@ -1679,6 +1893,110 @@ section:not([data-marpit-pagination="1"]) img {
 
 section.wide-content img {
   max-height: 550px !important;
+}
+
+/* ---- 11-4-1. 画像の手動サイズ調整クラス（10段階統一数字クラス） -------- */
+/* 画像最大高さの基準変数（通常440px、wide-contentは550px）を設定します */
+section:not([data-marpit-pagination="1"]) {
+  /* 画像の基準高さを440pxとします */
+  --img-max-h: 440px;
+  /* 画像の拡大縮小倍率をデフォルトで1.0とします */
+  --img-max-h-scale: 1;
+}
+
+/* ワイドコンテンツ時の画像基準高さを設定します */
+section:not([data-marpit-pagination="1"]).wide-content {
+  /* ワイド時の画像基準高さを550pxとします */
+  --img-max-h: 550px;
+}
+
+/* 画像サイズ 段階1（最大サイズ 100%）です */
+section.img-1,
+/* 画像サイズ 段階1 の別名定義です */
+section.image-1 {
+  /* 画像最大高さ倍率を等倍（1.0）にします */
+  --img-max-h-scale: 1 !important;
+}
+
+/* 画像サイズ 段階2（90%）です */
+section.img-2,
+/* 画像サイズ 段階2 の別名定義です */
+section.image-2 {
+  /* 画像最大高さ倍率を0.90倍に縮小します */
+  --img-max-h-scale: 0.9 !important;
+}
+
+/* 画像サイズ 段階3（80%）です */
+section.img-3,
+/* 画像サイズ 段階3 の別名定義です */
+section.image-3 {
+  /* 画像最大高さ倍率を0.80倍に縮小します */
+  --img-max-h-scale: 0.8 !important;
+}
+
+/* 画像サイズ 段階4（70%）です */
+section.img-4,
+/* 画像サイズ 段階4 の別名定義です */
+section.image-4 {
+  /* 画像最大高さ倍率を0.70倍に縮小します */
+  --img-max-h-scale: 0.7 !important;
+}
+
+/* 画像サイズ 段階5（60%）です */
+section.img-5,
+/* 画像サイズ 段階5 の別名定義です */
+section.image-5 {
+  /* 画像最大高さ倍率を0.60倍に縮小します */
+  --img-max-h-scale: 0.6 !important;
+}
+
+/* 画像サイズ 段階6（50%）です */
+section.img-6,
+/* 画像サイズ 段階6 の別名定義です */
+section.image-6 {
+  /* 画像最大高さ倍率を0.50倍に縮小します */
+  --img-max-h-scale: 0.5 !important;
+}
+
+/* 画像サイズ 段階7（40%）です */
+section.img-7,
+/* 画像サイズ 段階7 の別名定義です */
+section.image-7 {
+  /* 画像最大高さ倍率を0.40倍に縮小します */
+  --img-max-h-scale: 0.4 !important;
+}
+
+/* 画像サイズ 段階8（35%）です */
+section.img-8,
+/* 画像サイズ 段階8 の別名定義です */
+section.image-8 {
+  /* 画像最大高さ倍率を0.35倍に縮小します */
+  --img-max-h-scale: 0.35 !important;
+}
+
+/* 画像サイズ 段階9（28%）です */
+section.img-9,
+/* 画像サイズ 段階9 の別名定義です */
+section.image-9 {
+  /* 画像最大高さ倍率を0.28倍に縮小します */
+  --img-max-h-scale: 0.28 !important;
+}
+
+/* 画像サイズ 段階10（極小サイズ 20%）です */
+section.img-10,
+/* 画像サイズ 段階10 の別名定義です */
+section.image-10 {
+  /* 画像最大高さ倍率を極小の0.20倍に縮小します */
+  --img-max-h-scale: 0.2 !important;
+}
+
+/* 手動サイズ指定クラスが適用された場合の画像要素の最大高さ制御です */
+section[class*="img-"]:not([data-marpit-pagination="1"])>h4~p:has(> img)>img,
+section[class*="image-"]:not([data-marpit-pagination="1"])>h4~p:has(> img)>img,
+section[class*="img-"]:not([data-marpit-pagination="1"]) img:not(header img),
+section[class*="image-"]:not([data-marpit-pagination="1"]) img:not(header img) {
+  /* 変数に基づき最大高さを制限します */
+  max-height: calc(var(--img-max-h, 440px) * var(--img-max-h-scale, 1)) !important;
 }
 
 /* ヘッダーロゴは上記の影響を受けないよう再指定 */
@@ -2153,13 +2471,93 @@ section:not([data-marpit-pagination="1"]):has(> h4 ~ .mermaid)>h4~*:not(.mermaid
   flex: 0 0 auto !important;
 }
 
-/* (e) 手動調整用クラス   <!-- _class: mermaid-sm --> */
-section.mermaid-sm .mermaid {
+/* (e) 手動調整用クラス   <!-- _class: mermaid-3 --> 等（10段階統一数字クラスおよび後方互換エイリアス） */
+/* Mermaid図サイズ 段階1（最大サイズ 100%）です */
+section.mermaid-1 .mermaid,
+/* 本文直下のMermaid図に対する段階1スタイルです */
+section.mermaid-1:not([data-marpit-pagination="1"])>h4~.mermaid {
+  /* 最大高さを基準値の100%に設定します */
+  max-height: var(--mmd-max-h, 440px) !important;
+}
+
+/* Mermaid図サイズ 段階2（90%）です */
+section.mermaid-2 .mermaid,
+/* 本文直下のMermaid図に対する段階2スタイルです */
+section.mermaid-2:not([data-marpit-pagination="1"])>h4~.mermaid {
+  /* 最大高さを基準値の90%に縮小します */
+  max-height: calc(var(--mmd-max-h, 440px) * 0.90) !important;
+}
+
+/* Mermaid図サイズ 段階3（82%）です */
+section.mermaid-3 .mermaid,
+/* 本文直下のMermaid図に対する段階3スタイルです */
+section.mermaid-3:not([data-marpit-pagination="1"])>h4~.mermaid {
+  /* 最大高さを基準値の82%に縮小します */
+  max-height: calc(var(--mmd-max-h, 440px) * 0.82) !important;
+}
+
+/* Mermaid図サイズ 段階4（75%）です */
+section.mermaid-4 .mermaid,
+/* 本文直下のMermaid図に対する段階4スタイルです */
+section.mermaid-4:not([data-marpit-pagination="1"])>h4~.mermaid,
+/* 従来の小サイズクラスとの後方互換定義です */
+section.mermaid-sm .mermaid,
+/* 本文直下のMermaid図に対する従来小サイズスタイルです */
+section.mermaid-sm:not([data-marpit-pagination="1"])>h4~.mermaid {
+  /* 最大高さを基準値の75%（旧sm相当）に縮小します */
   max-height: calc(var(--mmd-max-h, 440px) * 0.75) !important;
 }
 
-section.mermaid-xs .mermaid {
+/* Mermaid図サイズ 段階5（68%）です */
+section.mermaid-5 .mermaid,
+/* 本文直下のMermaid図に対する段階5スタイルです */
+section.mermaid-5:not([data-marpit-pagination="1"])>h4~.mermaid {
+  /* 最大高さを基準値の68%に縮小します */
+  max-height: calc(var(--mmd-max-h, 440px) * 0.68) !important;
+}
+
+/* Mermaid図サイズ 段階6（60%）です */
+section.mermaid-6 .mermaid,
+/* 本文直下のMermaid図に対する段階6スタイルです */
+section.mermaid-6:not([data-marpit-pagination="1"])>h4~.mermaid {
+  /* 最大高さを基準値の60%に縮小します */
+  max-height: calc(var(--mmd-max-h, 440px) * 0.60) !important;
+}
+
+/* Mermaid図サイズ 段階7（55%: 従来の最小値）です */
+section.mermaid-7 .mermaid,
+/* 本文直下のMermaid図に対する段階7スタイルです */
+section.mermaid-7:not([data-marpit-pagination="1"])>h4~.mermaid,
+/* 従来の極小サイズクラスとの後方互換定義です */
+section.mermaid-xs .mermaid,
+/* 本文直下のMermaid図に対する従来極小サイズスタイルです */
+section.mermaid-xs:not([data-marpit-pagination="1"])>h4~.mermaid {
+  /* 最大高さを従来の最小値である55%（旧xs相当）に縮小します */
   max-height: calc(var(--mmd-max-h, 440px) * 0.55) !important;
+}
+
+/* Mermaid図サイズ 段階8（48%）です */
+section.mermaid-8 .mermaid,
+/* 本文直下のMermaid図に対する段階8スタイルです */
+section.mermaid-8:not([data-marpit-pagination="1"])>h4~.mermaid {
+  /* 最大高さを基準値の48%に縮小します */
+  max-height: calc(var(--mmd-max-h, 440px) * 0.48) !important;
+}
+
+/* Mermaid図サイズ 段階9（38%: 従来の最小値より1段階小さいサイズ）です */
+section.mermaid-9 .mermaid,
+/* 本文直下のMermaid図に対する段階9スタイルです */
+section.mermaid-9:not([data-marpit-pagination="1"])>h4~.mermaid {
+  /* 最大高さを従来の最小値より1段階小さい38%に縮小します */
+  max-height: calc(var(--mmd-max-h, 440px) * 0.38) !important;
+}
+
+/* Mermaid図サイズ 段階10（28%: 従来の最小値よりさらに2段階小さい極小サイズ）です */
+section.mermaid-10 .mermaid,
+/* 本文直下のMermaid図に対する段階10スタイルです */
+section.mermaid-10:not([data-marpit-pagination="1"])>h4~.mermaid {
+  /* 最大高さを従来の最小値よりさらに2段階小さい極小の28%に縮小します */
+  max-height: calc(var(--mmd-max-h, 440px) * 0.28) !important;
 }
 
 /* (f) ローダースクリプト等がブロック数カウントに混入しないようにします */

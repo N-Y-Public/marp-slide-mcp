@@ -440,6 +440,10 @@ export default {
         let currentSlideWidth = 880;
         // ワイドコンテンツレイアウトかどうかを保持するフラグです
         let currentSlideIsWide = false;
+        // 手動表サイズ調整クラスが指定されているか保持するフラグです
+        let hasManualTableClass = false;
+        // 手動コードサイズ調整クラスが指定されているか保持するフラグです
+        let hasManualCodeClass = false;
         // 処理後のトークンを格納する配列です
         const newTokens = [];
 
@@ -456,8 +460,14 @@ export default {
             const directives = token.meta && token.meta.marpitDirectives ? token.meta.marpitDirectives : {};
             // クラス文字列を取得します
             const classStr = directives.class || '';
+            // クラス名を配列に分割します
+            const slideClasses = classStr.split(/\s+/).filter(Boolean);
             // ワイドコンテンツクラスが指定されているか判定します
-            currentSlideIsWide = classStr.split(' ').includes('wide-content');
+            currentSlideIsWide = slideClasses.includes('wide-content');
+            // 手動の表サイズ調整クラスが指定されているか判定します
+            hasManualTableClass = slideClasses.some(c => /^table-(\d+|xl|lg|md|sm|xs|xxs)$/.test(c));
+            // 手動のコードサイズ調整クラスが指定されているか判定します
+            hasManualCodeClass = slideClasses.some(c => /^code-(\d+|xl|lg|md|sm|xs|xxs)$/.test(c));
             // アスペクト比を取得します（未指定は4:3）
             const slideSize = directives.size || '4:3';
             // スライド全体の幅を決定します（16:9なら1280px、4:3なら960px）
@@ -471,8 +481,8 @@ export default {
           // コードブロックの許容最大高さを決定します
           const maxPreHeight = currentSlideIsWide ? 550 : 440;
 
-          // 表（Table）タグの開始を検出した場合、内容量に応じてフォントサイズを縮小します
-          if (token.type === 'table_open') {
+          // 表（Table）タグの開始を検出し、かつ手動表サイズクラスが指定されていない場合、内容量に応じてフォントサイズを縮小します
+          if (token.type === 'table_open' && !hasManualTableClass) {
             // 行数カウンターを初期化します
             let rowCount = 0;
             // 表内の総文字数カウンターを初期化します
@@ -536,8 +546,8 @@ export default {
             }
           }
           
-          // コードブロック（fence）を検出した場合、行数・文字数に応じてフォントサイズを縮小します
-          if (token.type === 'fence') {
+          // コードブロック（fence）を検出し、かつ手動コードサイズクラスが指定されていない場合、行数・文字数に応じてフォントサイズを縮小します
+          if (token.type === 'fence' && !hasManualCodeClass) {
             // 改行で分割して行数を取得します
             const lines = token.content.split('\n').length;
             // コードブロック全体の総文字数を取得します

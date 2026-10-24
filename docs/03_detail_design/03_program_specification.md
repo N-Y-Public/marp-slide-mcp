@@ -109,6 +109,14 @@ flowchart TD
 5. リンク先アンカー（`href="#N"`）および表示ページ番号（`.toc-page`）にシフト値を反映し、後続の `marpit_inline_svg` によるSVGページ分割およびリンク整合性を完全に担保する。
 6. **長文タイトルの自動折り返し・見切れ防止**: `themes/business-slide-theme.css` において目次項目の `<a>` 要素に `white-space: normal`, `overflow-wrap: anywhere`, `word-break: break-word` を指定し、スライド幅（1280px）に対してタイトルが長い場合でも省略記号で切り捨てず複数行へ折り返し、Flexboxのベースライン整列により最終行末尾にドットリーダー線とページ番号を連結する。
 
+### 3.3 表・コードブロック静的リサイズにおける手動クラス優先論理（Issue #12 是正）
+1. **背景・課題**: `marp.config.js` の Markdown-it プラグインでは、表およびコードブロックの行数・文字数推定による静的フォントサイズ縮小 `<style>section[id="..."] ... { font-size: ... !important; }</style>` をインライン注入する。このインラインスタイルが `id` セレクタおよび `!important` を伴うため、スライドに手動クラス（`table-1`〜`10`, `table-sm` 等や `code-1`〜`10`）が指定されている場合でも自動計算値が強制上書きされ、手動クラスが無効化される不具合が存在した。
+2. **手動クラス優先判定**:
+   - `marpit_slide_open` トークン走査時、スライドディレクティブの `class` 文字列を解析。
+   - 表クラス検出: `slideClasses.some(c => /^table-(\d+|xl|lg|md|sm|xs|xxs)$/.test(c))` が真の場合、当該スライド内の表に対する自動リサイズ `<style>` 注入をスキップし、テーマCSSの手動クラスを100%優先する。
+   - コードクラス検出: `slideClasses.some(c => /^code-(\d+|xl|lg|md|sm|xs|xxs)$/.test(c))` が真の場合、当該スライド内のコードブロックに対する自動リサイズ `<style>` 注入をスキップし、テーマCSSの手動クラスを100%優先する。
+3. **セル継承保護**: `themes/business-slide-theme.css` の `section table th, section table td` に `font-size: inherit !important; line-height: inherit !important;` を付与し、親 `table` のサイズ指定がセル内へ確実に浸透することを保証する。
+
 ---
 
 ## 4. PRG-PPT-001: PPTX 変換スクリプト (`pptx_converter/convert.js`) 仕様
@@ -178,15 +186,73 @@ flowchart TD
   - これにより、バナー（height: 100px）下から下部メタ情報上端（y=500px）までの利用可能領域内でタイトル・サブタイトルが完全に収まり、重複も回避される。
 
 ### 5.3 自動リサイズ機構の実装
-- **テーブル**:
-  - `section table { font-size: 14pt; margin: auto; border-collapse: collapse; }`
-  - `section.table-sm table { font-size: 11pt; }`
-  - `section.table-xs table { font-size: 9pt; }`
-- **コードブロック**:
-  - `section pre code { font-size: 13pt; line-height: 1.3; font-family: 'Consolas', monospace; }`
-  - `section.code-sm pre code { font-size: 10pt; line-height: 1.2; }`
-- **Mermaid 図**:
-  - `section .mermaid svg { max-width: 100% !important; max-height: 400px !important; object-fit: contain; }`
+#### 5.3.1 10段階統一数字クラスおよび手動オーバーライド仕様
+各要素（表、本文、Mermaid図、画像、コードブロック）に対して、`{要素名}-1` 〜 `{要素名}-10` の10段階クラスを導入する。
+1を最大（標準・余裕）とし、数字が増えるにつれて段階縮小し、10は従来の最小限界値よりさらに2段階小さい極小サイズとする。
+
+1. **テーブル（`section.table-1` 〜 `section.table-10`）**:
+   - `table-1`: `--tbl-fs-rows: 26pt !important; --tbl-fs-cols: 26pt !important;`
+   - `table-2`: `--tbl-fs-rows: 22pt !important; --tbl-fs-cols: 22pt !important;` (旧 `table-lg` 相当)
+   - `table-3`: `--tbl-fs-rows: 19pt !important; --tbl-fs-cols: 19pt !important;`
+   - `table-4`: `--tbl-fs-rows: 16.5pt !important; --tbl-fs-cols: 16.5pt !important;`
+   - `table-5`: `--tbl-fs-rows: 14pt !important; --tbl-fs-cols: 14pt !important;`
+   - `table-6`: `--tbl-fs-rows: 12pt !important; --tbl-fs-cols: 12pt !important;`
+   - `table-7`: `--tbl-fs-rows: 10pt !important; --tbl-fs-cols: 10pt !important; --tbl-pad: 2px 5px !important;` (旧 `table-xs` 相当)
+   - `table-8`: `--tbl-fs-rows: 8pt !important; --tbl-fs-cols: 8pt !important; --tbl-pad: 1px 4px !important; --tbl-lh: 1.15 !important;` (旧 `table-xxs` 相当)
+   - `table-9`: `--tbl-fs-rows: 7pt !important; --tbl-fs-cols: 7pt !important; --tbl-pad: 1px 3px !important; --tbl-lh: 1.12 !important;` (旧最小より1段階小)
+   - `table-10`: `--tbl-fs-rows: 6pt !important; --tbl-fs-cols: 6pt !important; --tbl-pad: 1px 2px !important; --tbl-lh: 1.1 !important;` (旧最小より2段階小)
+   - 後方互換性エイリアス: `table-xl` (28pt), `table-lg` (22pt), `table-md` (18pt), `table-sm` (13pt), `table-xs` (10pt), `table-xxs` (8pt) を維持。
+
+2. **本文テキスト（`section.text-1` 〜 `section.text-10` / `section.body-1` 〜 `section.body-10`）**:
+   - `text-1` / `body-1`: `--txt-scale: 1.0 !important;` (旧 `roomy` 相当)
+   - `text-2` / `body-2`: `--txt-scale: 0.92 !important;`
+   - `text-3` / `body-3`: `--txt-scale: 0.84 !important;`
+   - `text-4` / `body-4`: `--txt-scale: 0.76 !important;` (旧 `dense` 相当)
+   - `text-5` / `body-5`: `--txt-scale: 0.68 !important;`
+   - `text-6` / `body-6`: `--txt-scale: 0.60 !important;` (旧 `denser` 相当)
+   - `text-7` / `body-7`: `--txt-scale: 0.55 !important;`
+   - `text-8` / `body-8`: `--txt-scale: 0.50 !important;` (旧 `densest` 相当)
+   - `text-9` / `body-9`: `--txt-scale: 0.42 !important;` (旧最小より1段階小)
+   - `text-10` / `body-10`: `--txt-scale: 0.35 !important;` (旧最小より2段階小)
+   - 後方互換性エイリアス: `roomy` (1.0), `dense` (0.75), `denser` (0.6), `densest` (0.5) を維持。
+
+3. **Mermaid図（`section.mermaid-1` 〜 `section.mermaid-10`）**:
+   - `mermaid-1`: `max-height: var(--mmd-max-h, 440px) !important;` (100%)
+   - `mermaid-2`: `max-height: calc(var(--mmd-max-h, 440px) * 0.90) !important;`
+   - `mermaid-3`: `max-height: calc(var(--mmd-max-h, 440px) * 0.82) !important;`
+   - `mermaid-4`: `max-height: calc(var(--mmd-max-h, 440px) * 0.75) !important;` (旧 `mermaid-sm` 相当)
+   - `mermaid-5`: `max-height: calc(var(--mmd-max-h, 440px) * 0.68) !important;`
+   - `mermaid-6`: `max-height: calc(var(--mmd-max-h, 440px) * 0.60) !important;`
+   - `mermaid-7`: `max-height: calc(var(--mmd-max-h, 440px) * 0.55) !important;` (旧 `mermaid-xs` 相当)
+   - `mermaid-8`: `max-height: calc(var(--mmd-max-h, 440px) * 0.48) !important;`
+   - `mermaid-9`: `max-height: calc(var(--mmd-max-h, 440px) * 0.38) !important;` (旧最小より1段階小)
+   - `mermaid-10`: `max-height: calc(var(--mmd-max-h, 440px) * 0.28) !important;` (旧最小より2段階小)
+   - 後方互換性エイリアス: `mermaid-sm` (0.75), `mermaid-xs` (0.55) を維持。
+
+4. **画像（`section.img-1` 〜 `section.img-10` / `section.image-1` 〜 `section.image-10`）**:
+   - `img-1` / `image-1`: `max-height: 100% !important;`
+   - `img-2` / `image-2`: `max-height: 90% !important;`
+   - `img-3` / `image-3`: `max-height: 80% !important;`
+   - `img-4` / `image-4`: `max-height: 70% !important;`
+   - `img-5` / `image-5`: `max-height: 60% !important;`
+   - `img-6` / `image-6`: `max-height: 50% !important;`
+   - `img-7` / `image-7`: `max-height: 40% !important;`
+   - `img-8` / `image-8`: `max-height: 35% !important;`
+   - `img-9` / `image-9`: `max-height: 28% !important;`
+   - `img-10` / `image-10`: `max-height: 20% !important;`
+
+5. **コードブロック（`section.code-1` 〜 `section.code-10`）**:
+   - `code-1`: `--code-fs-base: 18pt !important;` (旧 `code-lg` 相当)
+   - `code-2`: `--code-fs-base: 16pt !important;`
+   - `code-3`: `--code-fs-base: 14pt !important;` (基準値)
+   - `code-4`: `--code-fs-base: 12.5pt !important;`
+   - `code-5`: `--code-fs-base: 11pt !important;` (旧 `code-sm` 相当)
+   - `code-6`: `--code-fs-base: 9.5pt !important;`
+   - `code-7`: `--code-fs-base: 8pt !important;`
+   - `code-8`: `--code-fs-base: 7pt !important;` (旧 `code-xxs` 相当)
+   - `code-9`: `--code-fs-base: 6pt !important;` (旧最小より1段階小)
+   - `code-10`: `--code-fs-base: 5pt !important;` (旧最小より2段階小)
+   - 後方互換性エイリアス: `code-lg` (18pt), `code-sm` (11pt), `code-xs` (9pt), `code-xxs` (7pt) を維持。
 
 ---
 
