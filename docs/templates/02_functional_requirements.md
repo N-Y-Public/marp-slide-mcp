@@ -89,6 +89,7 @@ tags:
 | **AC-003-02** | 正常系 | 変換対象のMarp Markdownファイルが存在する状態 | `npm run build:pptx`（`pptx_converter/convert.js`）を実行する | DOM座標・計算済みスタイルが96DPI基準で変換され、PowerPoint上でテキスト・表・図形として個別編集可能な `.pptx` ファイルが生成されること |
 | **AC-003-03** | 準正常系 | 存在しないMarkdownパスが指定された状態 | `export_to_pdf` または変換スクリプトを実行する | 対象ファイル不在を示す明確なエラーメッセージを出力し、不要な一時HTMLファイルを残さず終了すること |
 | **AC-003-04** | 正常系・運用性 | スライドMarkdownを微修正し手動エクスポートを行う状態（Docker利用またはDockerレス環境） | CLIコマンド（特定ファイル指定または一括ビルド）によりPDF/PPTX出力を直接実行する | MCP経由のAIトークンを消費することなく、MCP内蔵ツールと100%同一のレンダリング結果でPDFおよび編集可能PPTXが正常出力されること |
+| **AC-003-05** | 正常系・互換性 | 標準テーマ（`business-slide-theme.css`）を適用したスライド（表紙バナー・会話吹き出し・表・コード・Mermaid含む）が存在する状態 | `npm run build:pdf` または `export_to_pdf` でPDFを生成し、内部ストリームおよび企業環境のAdobe Acrobat Reader互換性を検証する | 生成PDF内にスライド全面の `PatternType 2`（`ShadingType 2`）背景、SVG `<mask>` 由来の `/TR` 付き `/SMask`、および反転 `FontBBox`（`lly > ury`）を持つ `/Subtype /Type3` フォントがすべて **0件** であり、単色白背景・単色フッター矩形・TrueType（`/Subtype /CIDFontType2`）フォントとして埋め込まれAcrobat Reader上で文字や画像が白飛びせず表示されること |
 
 ---
 

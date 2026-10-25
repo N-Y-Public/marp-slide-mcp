@@ -25,12 +25,12 @@
 
   /*
     表紙バナー画像の指定（CSS変数）
-    デフォルト値として標準の banner.svg を Data URI (Base64) で埋め込むことで、
+    デフォルト値として標準の banner.svg（Acrobat互換のためmask要素を排したマスクレスSVG）を Data URI (Base64) で埋め込むことで、
     スライドがどのディレクトリ階層に配置されても外部ファイルパスに依存せず100%確実に表示されます。
     外部スタイルシートやMarkdown内の<style>タグ、MCPサーバーから上書き・差し替えが可能です。
     バナーを非表示にする場合は --banner-image: none; を指定します。
   */
-  --banner-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NjAgMTAwIiB3aWR0aD0iOTYwIiBoZWlnaHQ9IjEwMCI+CiAgPGRlZnM+CiAgICA8IS0tIOaYjuOCi+OBhOW4guadvuOCv+OCpOODq++8iDQweDQw44Om44OL44OD44OI44Gu5Lit44GrMjB4MjDjga7luILmnb7vvIkgLS0+CiAgICA8cGF0dGVybiBpZD0iaWNoaW1hdHN1LWxpZ2h0IiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiNmZmZmZmYiIC8+CiAgICAgIDxyZWN0IHg9IjIwIiB5PSIyMCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjZmZmZmZmIiAvPgogICAgPC9wYXR0ZXJuPgoKICAgIDwhLS0g5pqX44GE5biC5p2+44K/44Kk44Or77yI5Lqk5LqS44Gr6YWN572u44GV44KM44KLMjB4MjDjga7luILmnb7vvIkgLS0+CiAgICA8cGF0dGVybiBpZD0iaWNoaW1hdHN1LWRhcmsiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CiAgICAgIDxyZWN0IHg9IjIwIiB5PSIwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiMwMDAwMDAiIC8+CiAgICAgIDxyZWN0IHg9IjAiIHk9IjIwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiMwMDAwMDAiIC8+CiAgICA8L3BhdHRlcm4+CgogICAgPCEtLSDlt6bjgYvjgonlj7PjgbjjgrPjg7Pjg4jjg6njgrnjg4jjgpLmuJvoobDjgZXjgZvjgovjgrDjg6njg4fjg7zjgrfjg6fjg7Pjg57jgrnjgq/vvIjmmI7jgovjgYTjgr/jgqTjg6vnlKjvvIkgLS0+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImZhZGUtbGlnaHQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjI1IiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjMwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjE0IiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjY1JSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjA0IiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMC4wIiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KCiAgICA8IS0tIOW3puOBi+OCieWPs+OBuOOCs+ODs+ODiOODqeOCueODiOOCkua4m+ihsOOBleOBm+OCi+OCsOODqeODh+ODvOOCt+ODp+ODs+ODnuOCueOCr++8iOaal+OBhOOCv+OCpOODq+eUqO+8iSAtLT4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZmFkZS1kYXJrIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMC4xOCIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIzMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMC4wOSIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI2NSUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMC4wMiIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjAuMCIgLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CgogICAgPG1hc2sgaWQ9Im1hc2stbGlnaHQiPgogICAgICA8cmVjdCB3aWR0aD0iOTYwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNmYWRlLWxpZ2h0KSIgLz4KICAgIDwvbWFzaz4KCiAgICA8bWFzayBpZD0ibWFzay1kYXJrIj4KICAgICAgPHJlY3Qgd2lkdGg9Ijk2MCIgaGVpZ2h0PSIxMDAiIGZpbGw9InVybCgjZmFkZS1kYXJrKSIgLz4KICAgIDwvbWFzaz4KICA8L2RlZnM+CgogIDwhLS0g44OZ44O844K56IOM5pmv6Imy77yI44Kz44O844Od44Os44O844OI44OW44Or44O8ICMxZjQ5N2TvvIkgLS0+CiAgPHJlY3Qgd2lkdGg9Ijk2MCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiMxZjQ5N2QiIC8+CgogIDwhLS0g5biC5p2+5qih5qeY77yI5pqX6YOo44Os44Kk44Ok44O877ya5bem5YG044Gn5rex44G/44Gu44GC44KL6Zmw5b2x77yJIC0tPgogIDxyZWN0IHdpZHRoPSI5NjAiIGhlaWdodD0iMTAwIiBmaWxsPSJ1cmwoI2ljaGltYXRzdS1kYXJrKSIgbWFzaz0idXJsKCNtYXNrLWRhcmspIiAvPgoKICA8IS0tIOW4guadvuaooeanmO+8iOaYjumDqOODrOOCpOODpOODvO+8muW3puWBtOOBp+ODj+OCpOODqeOCpOODiOOAgeWPs+OBuOWQkeOBi+OBo+OBpuiHqueEtuOBq+ODleOCp+ODvOODieOCouOCpuODiO+8iSAtLT4KICA8cmVjdCB3aWR0aD0iOTYwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNpY2hpbWF0c3UtbGlnaHQpIiBtYXNrPSJ1cmwoI21hc2stbGlnaHQpIiAvPgoKICA8IS0tIOS4i+mDqOOBruijhemjvuWig+eVjOODqeOCpOODs++8iDFweOOBrue5iue0sOOBquOCouOCr+OCu+ODs+ODiO+8iSAtLT4KICA8bGluZSB4MT0iMCIgeTE9Ijk5LjUiIHgyPSI5NjAiIHkyPSI5OS41IiBzdHJva2U9IiMxNjM3NWYiIHN0cm9rZS13aWR0aD0iMSIgLz4KPC9zdmc+Cg==');
+  --banner-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NjAgMTAwIiB3aWR0aD0iOTYwIiBoZWlnaHQ9IjEwMCI+PHJlY3Qgd2lkdGg9Ijk2MCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiMxZjQ5N2QiLz48ZyBmaWxsPSIjMDAwMDAwIj48cGF0aCBkPSJNMCwyMGgyMHYyMGgtMjB6TTAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjE3NyIvPjxwYXRoIGQ9Ik0yMCwwaDIwdjIwaC0yMHpNMjAsNDBoMjB2MjBoLTIwek0yMCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTcxIi8+PHBhdGggZD0iTTQwLDIwaDIwdjIwaC0yMHpNNDAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjE2NCIvPjxwYXRoIGQ9Ik02MCwwaDIwdjIwaC0yMHpNNjAsNDBoMjB2MjBoLTIwek02MCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTU4Ii8+PHBhdGggZD0iTTgwLDIwaDIwdjIwaC0yMHpNODAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjE1MiIvPjxwYXRoIGQ9Ik0xMDAsMGgyMHYyMGgtMjB6TTEwMCw0MGgyMHYyMGgtMjB6TTEwMCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTQ2Ii8+PHBhdGggZD0iTTEyMCwyMGgyMHYyMGgtMjB6TTEyMCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTM5Ii8+PHBhdGggZD0iTTE0MCwwaDIwdjIwaC0yMHpNMTQwLDQwaDIwdjIwaC0yMHpNMTQwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4xMzMiLz48cGF0aCBkPSJNMTYwLDIwaDIwdjIwaC0yMHpNMTYwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4xMjciLz48cGF0aCBkPSJNMTgwLDBoMjB2MjBoLTIwek0xODAsNDBoMjB2MjBoLTIwek0xODAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjEyMSIvPjxwYXRoIGQ9Ik0yMDAsMjBoMjB2MjBoLTIwek0yMDAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjExNCIvPjxwYXRoIGQ9Ik0yMjAsMGgyMHYyMGgtMjB6TTIyMCw0MGgyMHYyMGgtMjB6TTIyMCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTA4Ii8+PHBhdGggZD0iTTI0MCwyMGgyMHYyMGgtMjB6TTI0MCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTAyIi8+PHBhdGggZD0iTTI2MCwwaDIwdjIwaC0yMHpNMjYwLDQwaDIwdjIwaC0yMHpNMjYwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wOTYiLz48cGF0aCBkPSJNMjgwLDIwaDIwdjIwaC0yMHpNMjgwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wOSIvPjxwYXRoIGQ9Ik0zMDAsMGgyMHYyMGgtMjB6TTMwMCw0MGgyMHYyMGgtMjB6TTMwMCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDg1Ii8+PHBhdGggZD0iTTMyMCwyMGgyMHYyMGgtMjB6TTMyMCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDgxIi8+PHBhdGggZD0iTTM0MCwwaDIwdjIwaC0yMHpNMzQwLDQwaDIwdjIwaC0yMHpNMzQwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wNzciLz48cGF0aCBkPSJNMzYwLDIwaDIwdjIwaC0yMHpNMzYwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wNzMiLz48cGF0aCBkPSJNMzgwLDBoMjB2MjBoLTIwek0zODAsNDBoMjB2MjBoLTIwek0zODAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjA2OSIvPjxwYXRoIGQ9Ik00MDAsMjBoMjB2MjBoLTIwek00MDAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjA2NSIvPjxwYXRoIGQ9Ik00MjAsMGgyMHYyMGgtMjB6TTQyMCw0MGgyMHYyMGgtMjB6TTQyMCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDYiLz48cGF0aCBkPSJNNDQwLDIwaDIwdjIwaC0yMHpNNDQwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wNTYiLz48cGF0aCBkPSJNNDYwLDBoMjB2MjBoLTIwek00NjAsNDBoMjB2MjBoLTIwek00NjAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjA1MiIvPjxwYXRoIGQ9Ik00ODAsMjBoMjB2MjBoLTIwek00ODAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjA0OCIvPjxwYXRoIGQ9Ik01MDAsMGgyMHYyMGgtMjB6TTUwMCw0MGgyMHYyMGgtMjB6TTUwMCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDQ0Ii8+PHBhdGggZD0iTTUyMCwyMGgyMHYyMGgtMjB6TTUyMCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDQiLz48cGF0aCBkPSJNNTQwLDBoMjB2MjBoLTIwek01NDAsNDBoMjB2MjBoLTIwek01NDAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAzNSIvPjxwYXRoIGQ9Ik01NjAsMjBoMjB2MjBoLTIwek01NjAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAzMSIvPjxwYXRoIGQ9Ik01ODAsMGgyMHYyMGgtMjB6TTU4MCw0MGgyMHYyMGgtMjB6TTU4MCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDI3Ii8+PHBhdGggZD0iTTYwMCwyMGgyMHYyMGgtMjB6TTYwMCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDIzIi8+PHBhdGggZD0iTTY2MCwwaDIwdjIwaC0yMHpNNjYwLDQwaDIwdjIwaC0yMHpNNjYwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMTciLz48cGF0aCBkPSJNNjIwLDBoMjB2MjBoLTIwek02MjAsNDBoMjB2MjBoLTIwek02MjAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAyIi8+PHBhdGggZD0iTTY0MCwyMGgyMHYyMGgtMjB6TTY0MCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDE4Ii8+PHBhdGggZD0iTTY4MCwyMGgyMHYyMGgtMjB6TTY4MCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDE2Ii8+PHBhdGggZD0iTTcwMCwwaDIwdjIwaC0yMHpNNzAwLDQwaDIwdjIwaC0yMHpNNzAwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMTUiLz48cGF0aCBkPSJNNzIwLDIwaDIwdjIwaC0yMHpNNzIwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMTQiLz48cGF0aCBkPSJNNzQwLDBoMjB2MjBoLTIwek03NDAsNDBoMjB2MjBoLTIwek03NDAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAxMyIvPjxwYXRoIGQ9Ik03NjAsMjBoMjB2MjBoLTIwek03NjAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAxMSIvPjxwYXRoIGQ9Ik03ODAsMGgyMHYyMGgtMjB6TTc4MCw0MGgyMHYyMGgtMjB6TTc4MCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDEiLz48cGF0aCBkPSJNODAwLDIwaDIwdjIwaC0yMHpNODAwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMDkiLz48cGF0aCBkPSJNODIwLDBoMjB2MjBoLTIwek04MjAsNDBoMjB2MjBoLTIwek04MjAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAwOCIvPjxwYXRoIGQ9Ik04NDAsMjBoMjB2MjBoLTIwek04NDAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAwNyIvPjxwYXRoIGQ9Ik04NjAsMGgyMHYyMGgtMjB6TTg2MCw0MGgyMHYyMGgtMjB6TTg2MCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDA1Ii8+PHBhdGggZD0iTTg4MCwyMGgyMHYyMGgtMjB6TTg4MCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDA0Ii8+PHBhdGggZD0iTTkwMCwwaDIwdjIwaC0yMHpNOTAwLDQwaDIwdjIwaC0yMHpNOTAwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMDMiLz48cGF0aCBkPSJNOTIwLDIwaDIwdjIwaC0yMHpNOTIwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMDIiLz48cGF0aCBkPSJNOTQwLDBoMjB2MjBoLTIwek05NDAsNDBoMjB2MjBoLTIwek05NDAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAwMSIvPjwvZz48ZyBmaWxsPSIjZmZmZmZmIj48cGF0aCBkPSJNMCwwaDIwdjIwaC0yMHpNMCw0MGgyMHYyMGgtMjB6TTAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjI0NiIvPjxwYXRoIGQ9Ik0yMCwyMGgyMHYyMGgtMjB6TTIwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4yMzkiLz48cGF0aCBkPSJNNDAsMGgyMHYyMGgtMjB6TTQwLDQwaDIwdjIwaC0yMHpNNDAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjIzMSIvPjxwYXRoIGQ9Ik02MCwyMGgyMHYyMGgtMjB6TTYwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4yMjMiLz48cGF0aCBkPSJNODAsMGgyMHYyMGgtMjB6TTgwLDQwaDIwdjIwaC0yMHpNODAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjIxNiIvPjxwYXRoIGQ9Ik0xMDAsMjBoMjB2MjBoLTIwek0xMDAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjIwOCIvPjxwYXRoIGQ9Ik0xMjAsMGgyMHYyMGgtMjB6TTEyMCw0MGgyMHYyMGgtMjB6TTEyMCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxwYXRoIGQ9Ik0xNDAsMjBoMjB2MjBoLTIwek0xNDAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjE5MyIvPjxwYXRoIGQ9Ik0xNjAsMGgyMHYyMGgtMjB6TTE2MCw0MGgyMHYyMGgtMjB6TTE2MCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTg1Ii8+PHBhdGggZD0iTTE4MCwyMGgyMHYyMGgtMjB6TTE4MCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTc3Ii8+PHBhdGggZD0iTTIwMCwwaDIwdjIwaC0yMHpNMjAwLDQwaDIwdjIwaC0yMHpNMjAwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4xNyIvPjxwYXRoIGQ9Ik0yMjAsMjBoMjB2MjBoLTIwek0yMjAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjE2MiIvPjxwYXRoIGQ9Ik0yNDAsMGgyMHYyMGgtMjB6TTI0MCw0MGgyMHYyMGgtMjB6TTI0MCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTU1Ii8+PHBhdGggZD0iTTI2MCwyMGgyMHYyMGgtMjB6TTI2MCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTQ3Ii8+PHBhdGggZD0iTTI4MCwwaDIwdjIwaC0yMHpNMjgwLDQwaDIwdjIwaC0yMHpNMjgwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4xMzkiLz48cGF0aCBkPSJNMzAwLDIwaDIwdjIwaC0yMHpNMzAwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4xMzMiLz48cGF0aCBkPSJNMzIwLDBoMjB2MjBoLTIwek0zMjAsNDBoMjB2MjBoLTIwek0zMjAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjEyNyIvPjxwYXRoIGQ9Ik0zNDAsMjBoMjB2MjBoLTIwek0zNDAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjEyMSIvPjxwYXRoIGQ9Ik0zNjAsMGgyMHYyMGgtMjB6TTM2MCw0MGgyMHYyMGgtMjB6TTM2MCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTE1Ii8+PHBhdGggZD0iTTM4MCwyMGgyMHYyMGgtMjB6TTM4MCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTA5Ii8+PHBhdGggZD0iTTQwMCwwaDIwdjIwaC0yMHpNNDAwLDQwaDIwdjIwaC0yMHpNNDAwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4xMDMiLz48cGF0aCBkPSJNNDIwLDIwaDIwdjIwaC0yMHpNNDIwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wOTciLz48cGF0aCBkPSJNNDQwLDBoMjB2MjBoLTIwek00NDAsNDBoMjB2MjBoLTIwek00NDAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjA5MSIvPjxwYXRoIGQ9Ik00NjAsMjBoMjB2MjBoLTIwek00NjAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjA4NSIvPjxwYXRoIGQ9Ik00ODAsMGgyMHYyMGgtMjB6TTQ4MCw0MGgyMHYyMGgtMjB6TTQ4MCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDc5Ii8+PHBhdGggZD0iTTUwMCwyMGgyMHYyMGgtMjB6TTUwMCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDczIi8+PHBhdGggZD0iTTUyMCwwaDIwdjIwaC0yMHpNNTIwLDQwaDIwdjIwaC0yMHpNNTIwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wNjciLz48cGF0aCBkPSJNNTQwLDIwaDIwdjIwaC0yMHpNNTQwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wNjEiLz48cGF0aCBkPSJNNTYwLDBoMjB2MjBoLTIwek01NjAsNDBoMjB2MjBoLTIwek01NjAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjA1NSIvPjxwYXRoIGQ9Ik01ODAsMjBoMjB2MjBoLTIwek01ODAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjA0OSIvPjxwYXRoIGQ9Ik02MDAsMGgyMHYyMGgtMjB6TTYwMCw0MGgyMHYyMGgtMjB6TTYwMCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDQzIi8+PHBhdGggZD0iTTYyMCwyMGgyMHYyMGgtMjB6TTYyMCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDM5Ii8+PHBhdGggZD0iTTY0MCwwaDIwdjIwaC0yMHpNNjQwLDQwaDIwdjIwaC0yMHpNNjQwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMzciLz48cGF0aCBkPSJNNjYwLDIwaDIwdjIwaC0yMHpNNjYwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMzQiLz48cGF0aCBkPSJNNjgwLDBoMjB2MjBoLTIwek02ODAsNDBoMjB2MjBoLTIwek02ODAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAzMiIvPjxwYXRoIGQ9Ik03MDAsMjBoMjB2MjBoLTIwek03MDAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAzIi8+PHBhdGggZD0iTTcyMCwwaDIwdjIwaC0yMHpNNzIwLDQwaDIwdjIwaC0yMHpNNzIwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMjciLz48cGF0aCBkPSJNNzQwLDIwaDIwdjIwaC0yMHpNNzQwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMjUiLz48cGF0aCBkPSJNNzYwLDBoMjB2MjBoLTIwek03NjAsNDBoMjB2MjBoLTIwek03NjAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAyMyIvPjxwYXRoIGQ9Ik03ODAsMjBoMjB2MjBoLTIwek03ODAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAyIi8+PHBhdGggZD0iTTgwMCwwaDIwdjIwaC0yMHpNODAwLDQwaDIwdjIwaC0yMHpNODAwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMTgiLz48cGF0aCBkPSJNODIwLDIwaDIwdjIwaC0yMHpNODIwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMTUiLz48cGF0aCBkPSJNODQwLDBoMjB2MjBoLTIwek04NDAsNDBoMjB2MjBoLTIwek04NDAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAxMyIvPjxwYXRoIGQ9Ik04NjAsMjBoMjB2MjBoLTIwek04NjAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAxMSIvPjxwYXRoIGQ9Ik04ODAsMGgyMHYyMGgtMjB6TTg4MCw0MGgyMHYyMGgtMjB6TTg4MCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDA4Ii8+PHBhdGggZD0iTTkwMCwyMGgyMHYyMGgtMjB6TTkwMCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDA2Ii8+PHBhdGggZD0iTTkyMCwwaDIwdjIwaC0yMHpNOTIwLDQwaDIwdjIwaC0yMHpNOTIwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMDQiLz48cGF0aCBkPSJNOTQwLDIwaDIwdjIwaC0yMHpNOTQwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMDEiLz48L2c+PGxpbmUgeDE9IjAiIHkxPSI5OS41IiB4Mj0iOTYwIiB5Mj0iOTkuNSIgc3Ryb2tlPSIjMTYzNzVmIiBzdHJva2Utd2lkdGg9IjEiLz48L3N2Zz4=');
 }
 
 /*
@@ -43,6 +43,7 @@
   （ページサイズは Marp の @size ディレクティブにより 4:3 または 16:9 が自動設定されます）
 */
 @page {
+  /* 印刷時のページ余白を0にします */
   margin: 0;
 }
 
@@ -55,8 +56,8 @@ section {
   height: 720px;
   /* paddingやborderをwidth/heightに含める設定です（レイアウト崩れを防ぎます） */
   box-sizing: border-box;
-  /* フォント（書体）を指定します。メイリオやYu Gothicなど、日本語が見やすいフォントを優先します */
-  font-family: 'Meiryo', 'Yu Gothic', sans-serif;
+  /* フォント（書体）を指定します。CFFフォント由来のType3埋め込みを回避しTrueType（CIDFontType2）で埋め込まれる日本語・欧文フォントを優先します */
+  font-family: 'Meiryo', 'BIZ UDGothic', 'Yu Gothic', 'IPAPGothic', 'IPAGothic', 'DejaVu Sans', sans-serif !important;
   /* 基本の文字色を黒 (#000000) に設定します */
   color: #000000;
   /* 基本の文字サイズを 18ポイント に設定します */
@@ -78,11 +79,31 @@ section {
   padding: 230px 40px 50px 40px !important;
 
   /*
-     背景色およびフッター帯の設定
-     スライド下部40px（680px〜720px）にテーマカラーのフッター帯を描画します。
-     linear-gradient を使用することで、CSS変数 --primary-color に連動して帯の色が自動で変わります。
+     背景色およびフッター帯の設定（Issue #18 Acrobat白飛び防止対応）
+     全面 linear-gradient によるPDF PatternType 2（ShadingType 2）生成を廃止し、
+     単色白背景と内側下部40pxの単色矩形（inset box-shadow）でフッター帯を描画します。
   */
-  background: linear-gradient(to bottom, #ffffff 0px, #ffffff 680px, var(--primary-color) 680px, var(--primary-color) 720px) !important;
+  background: #ffffff !important;
+  /* 背景色を明示的に白（#ffffff）に固定します */
+  background-color: #ffffff !important;
+  /* スライド下部40px（680px〜720px）にテーマカラーの単色フッター帯を描画します */
+  box-shadow: inset 0 -40px 0 0 var(--primary-color) !important;
+  /* カラースキームをライトモードに固定しダークモード反転を防止します */
+  color-scheme: light !important;
+  /* PDF出力・印刷時に背景色と文字色を正確に維持します（WebKit系） */
+  -webkit-print-color-adjust: exact !important;
+  /* PDF出力・印刷時に背景色と文字色を正確に維持します（標準仕様） */
+  print-color-adjust: exact !important;
+  /* 太字ウェイトを持たないTrueTypeフォント（IPAPGothic等）使用時にPDF Type3（反転FontBBox）合成が発生するのを防ぎます */
+  font-synthesis: none !important;
+}
+
+/* スライド内すべての要素に対して合成太字・合成斜体によるPDF Type3フォント化を防止します */
+section *,
+section *::before,
+section *::after {
+  /* 合成太字・合成斜体を無効化しTrueType（CIDFontType2）アウトライン埋め込みを維持します */
+  font-synthesis: none !important;
 }
 
 /*
@@ -519,8 +540,8 @@ section::after {
   font-size: 19px !important;
   /* 太字にします */
   font-weight: bold !important;
-  /* フォントをArialなどに設定します */
-  font-family: Arial, sans-serif !important;
+  /* フォントをTrueType（CIDFontType2）で埋め込まれるArial・DejaVu Sans・IPAPGothic等に設定します */
+  font-family: Arial, 'DejaVu Sans', 'IPAPGothic', sans-serif !important;
   /* 背景透明 */
   background: transparent !important;
   /* 内側余白なし */
@@ -554,18 +575,31 @@ section[data-marpit-pagination="1"]::after {
    Markdownで `###### コピーライト` と書いた要素です。
 */
 section>h6:nth-of-type(1)+* {
+  /* スライド内の絶対配置にします */
   position: absolute !important;
+  /* 下端から12pxの位置に配置します */
   bottom: 12px !important;
+  /* 左端から20pxの位置に配置します */
   left: 20px !important;
+  /* 幅を文字数に応じた自動幅にします */
   width: auto !important;
+  /* 左揃えにします */
   text-align: left !important;
+  /* 文字サイズを12pxにします */
   font-size: 12px !important;
+  /* 文字色を白にします */
   color: #ffffff !important;
-  font-family: Arial, sans-serif !important;
+  /* フォントをTrueType（CIDFontType2）で埋め込まれるArial・DejaVu Sans・IPAPGothic等に設定します */
+  font-family: Arial, 'DejaVu Sans', 'IPAPGothic', sans-serif !important;
+  /* 背景を透明にします */
   background: transparent !important;
+  /* 外側余白を0にします */
   margin: 0 !important;
+  /* 重なり順を20に設定します */
   z-index: 20 !important;
+  /* 非表示設定を解除して可視化します */
   visibility: visible !important;
+  /* ポインターイベントを有効にします */
   pointer-events: auto !important;
 }
 
@@ -574,19 +608,33 @@ section>h6:nth-of-type(1)+* {
    Markdownで `###### 機密表示` と書いた要素です。
 */
 section>h6:nth-of-type(2)+* {
+  /* スライド内の絶対配置にします */
   position: absolute !important;
+  /* 下端から8pxの位置に配置します */
   bottom: 8px !important;
+  /* 右端から70pxの位置に配置します */
   right: 70px !important;
+  /* 幅を文字数に応じた自動幅にします */
   width: auto !important;
+  /* 右揃えにします */
   text-align: right !important;
+  /* 文字サイズを19pxにします */
   font-size: 19px !important;
+  /* 太字にします */
   font-weight: bold !important;
+  /* 文字色を赤にします */
   color: red !important;
-  font-family: Arial, sans-serif !important;
+  /* フォントをTrueType（CIDFontType2）で埋め込まれるArial・DejaVu Sans・IPAPGothic等に設定します */
+  font-family: Arial, 'DejaVu Sans', 'IPAPGothic', sans-serif !important;
+  /* 背景を透明にします */
   background: transparent !important;
+  /* 外側余白を0にします */
   margin: 0 !important;
+  /* 重なり順を20に設定します */
   z-index: 20 !important;
+  /* 非表示設定を解除して可視化します */
   visibility: visible !important;
+  /* ポインターイベントを有効にします */
   pointer-events: auto !important;
 }
 
@@ -682,15 +730,25 @@ section.conversation-content>h4+ol {
 */
 section.conversation-content>h4+ul>li,
 section.conversation-content>h4+ol>li {
+  /* 疑似要素（しっぽ・アイコン）の基準位置とします */
   position: relative !important;
+  /* アイコン領域を除いた最大幅を制限します */
   max-width: calc(85% - 100px) !important;
+  /* 吹き出しの背景色をテーマ連動色で設定します */
   background-color: var(--bubble-bg-color) !important;
+  /* 吹き出し内の文字色を設定します */
   color: var(--bubble-text-color) !important;
+  /* 吹き出し内部の余白を設定します */
   padding: 15px 20px !important;
+  /* 角丸を15pxに設定します */
   border-radius: 15px !important;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) !important;
+  /* PDF変換時のグレースケールJPEG SMask生成（Acrobat白飛び原因）を防ぐためドロップシャドウを無効化します */
+  box-shadow: none !important;
+  /* 外側余白を0にします */
   margin: 0 !important;
+  /* 文字サイズを16ptに設定します */
   font-size: 16pt !important;
+  /* ブロック要素として表示します */
   display: block !important;
 }
 
@@ -1733,32 +1791,67 @@ section.table-10 table {
    基準 14pt は約14行（折り返し込み）まで収まる想定です。
 */
 section pre {
+  /* コードブロックの基本文字サイズを14ptに定義します */
   --code-fs-base: 14pt;
-
+  /* TrueType（CIDFontType2）で埋め込まれる等幅・日本語フォントを優先指定します */
+  font-family: 'Consolas', 'Meiryo', 'BIZ UDGothic', 'IPAGothic', 'DejaVu Sans Mono', monospace !important;
+  /* 最大幅を親要素の100%に制限します */
   max-width: 100% !important;
+  /* スケール係数を乗じた文字サイズを設定します */
   font-size: calc(var(--code-fs-base) * var(--txt-scale)) !important;
+  /* 行の高さを1.35に設定します */
   line-height: 1.35 !important;
+  /* 改行と空白を保持しつつ自動折り返しを有効にします */
   white-space: pre-wrap !important;
+  /* 長い単語の途中でも折り返しを許可します（レガシー互換） */
   word-wrap: break-word !important;
+  /* 長い単語の途中でも折り返しを許可します（標準仕様） */
   overflow-wrap: break-word !important;
+  /* 内側余白を10pxに設定します */
   padding: 10px !important;
+  /* パディングとボーダーを幅・高さに含めます */
   box-sizing: border-box !important;
+  /* 上下のマージンをスケールに応じて設定します */
   margin: calc(0.6em * var(--txt-scale)) 0 !important;
+  /* 背景色を薄いグレー（#f5f5f5）に設定します */
   background: #f5f5f5 !important;
+  /* 1pxのグレー境界線を設定します */
   border: 1px solid #dddddd !important;
+  /* 角丸を4pxに設定します */
   border-radius: 4px !important;
 }
 
+/* コードブロックおよびインラインコード要素のスタイル設定 */
+section code,
+section kbd,
+section samp {
+  /* TrueType（CIDFontType2）で埋め込まれる等幅・日本語フォントを優先指定します */
+  font-family: 'Consolas', 'Meiryo', 'BIZ UDGothic', 'IPAGothic', 'DejaVu Sans Mono', monospace !important;
+}
+
+/* コードブロック内部のcode要素のスタイル設定 */
 section pre code {
+  /* 親要素（pre）のフォントファミリーを継承します */
+  font-family: inherit !important;
+  /* 親要素の文字サイズを継承します */
   font-size: inherit !important;
+  /* 親要素の行の高さを継承します */
   line-height: inherit !important;
+  /* 改行を保持しつつ自動折り返しを有効にします */
   white-space: pre-wrap !important;
+  /* 単語の途中での折り返しを許可します */
   word-break: break-word !important;
+  /* ブロック要素として表示します */
   display: block !important;
+  /* 背景をなしにします */
   background: none !important;
+  /* 背景色を透明にします */
   background-color: transparent !important;
+  /* ボックスシャドウを無効化します */
   box-shadow: none !important;
+  /* ボーダーを無効化します */
   border: none !important;
+  /* 内側余白を0にします */
   padding: 0 !important;
 }
 
@@ -2428,9 +2521,16 @@ section:not([data-marpit-pagination="1"]) .mermaid {
 /* Mermaid図の文字サイズ基準。継承の起点だけを整え、
    SVG内部の個別要素へは干渉しない（mermaid 自身の計算値を尊重する） */
 section .mermaid,
-section .mermaid svg {
+section .mermaid svg,
+section .mermaid svg text,
+section .mermaid svg tspan,
+section .mermaid svg foreignObject,
+section .mermaid svg foreignObject * {
+  /* Mermaid図内の基準文字サイズを14pxに設定します */
   font-size: 14px !important;
-  font-family: 'Meiryo', 'Yu Gothic', sans-serif !important;
+  /* TrueType（CIDFontType2）で埋め込まれる日本語・欧文フォントを優先指定します */
+  font-family: 'Meiryo', 'BIZ UDGothic', 'Yu Gothic', 'IPAPGothic', 'IPAGothic', 'DejaVu Sans', sans-serif !important;
+  /* 行の高さを1.2に設定します */
   line-height: 1.2 !important;
 }
 

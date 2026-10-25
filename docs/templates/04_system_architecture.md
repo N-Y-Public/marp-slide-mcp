@@ -92,7 +92,7 @@ flowchart TB
 | **アプリケーションランタイム** | Node.js 22.x LTS (ES Modules) | MCPサーバー（TypeScriptビルド済JS）およびPPTX変換スクリプトの実行基盤 |
 | **スクリプト検証ランタイム** | Python 3.x | トレーサビリティ検証スクリプト（`verify_rtm.py`）の実行基盤 |
 | **ヘッドレスブラウザ** | Chromium (`/usr/bin/chromium`) | Marp PDF出力およびPPTX変換時のDOM座標・計算済みスタイル計測用エンジン |
-| **日本語フォント体系** | `fonts-noto-cjk` | OS非依存で美しい日本語ゴシック体描画と正確な文字幅計測を保証 |
+| **日本語フォント体系** | `fonts-ipafont-gothic`, `fonts-noto-cjk` | Adobe Acrobat Reader互換のTrueTypeアウトライン（`IPAPGothic` / `IPAGothic` → `CIDFontType2`）を最優先でPDF埋め込みし、反転 `FontBBox` を持つ `Type3` フォント化による白飛びを防止 |
 
 ### 2.2 環境変数一覧
 | 環境変数名 | 必須/任意 | デフォルト値 | 用途・説明 |

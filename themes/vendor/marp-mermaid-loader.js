@@ -54,7 +54,7 @@
                 startOnLoad: false,
                 theme: 'neutral',
                 securityLevel: 'strict',
-                fontFamily: "'Meiryo','Yu Gothic',sans-serif",
+                fontFamily: "'Meiryo','BIZ UDGothic','Yu Gothic','IPAPGothic','IPAGothic','DejaVu Sans',sans-serif",
                 fontSize: 14,
                 flowchart:     { useMaxWidth: false, htmlLabels: false },
                 sequence:      { useMaxWidth: false },

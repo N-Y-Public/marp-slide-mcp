@@ -254,6 +254,18 @@ flowchart TD
    - `code-10`: `--code-fs-base: 5pt !important;` (旧最小より2段階小)
    - 後方互換性エイリアス: `code-lg` (18pt), `code-sm` (11pt), `code-xs` (9pt), `code-xxs` (7pt) を維持。
 
+### 5.4 Adobe Acrobat Reader / Acrobat 互換PDFレンダリング・フォント埋め込み仕様 (Issue #18 是正)
+1. **全面 `linear-gradient` 背景の廃止と単色矩形化**:
+   - Chromium（Skia PDFバックエンド）は `section` に `background: linear-gradient(...)` が設定されていると、スライド全面（`720x540` pt / `960x540` pt）を `PatternType 2`（`ShadingType 2` 軸方向シェーディングパターン）の塗りつぶし図形として出力する。企業環境の Adobe Acrobat Reader（アクセシビリティの色置換設定や保護ビュー有効時）ではこの全面シェーディングパターンがページ背景ではなく前面グラフィックスとして処理され、文字や図表が白飛び（非表示）する原因となる。
+   - これを解消するため、`section` の背景を純粋な単色白（`background: #ffffff !important; background-color: #ffffff !important;`）とし、下部 40px のフッター帯は `box-shadow: inset 0 -40px 0 0 var(--primary-color) !important;` によって標準の単色矩形（`re f`）として描画する。
+   - 印刷時の色強制維持として `-webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-scheme: light !important;` を明示する。
+2. **SVG `<mask>`（`/TR` 転送関数付き `/SMask`）およびドロップシャドウ `/SMask` の排除**:
+   - 表紙バナー SVG（`--banner-image` Data URI および `slides/D01-000001_Marpの使い方/banner.svg`）から `<mask>` / `<linearGradient>` / `<pattern>` を全廃し、純粋なベクターパスと `fill-opacity` のみで構成されたマスクレス SVG に置換することで、PDF 内の `FunctionType 4` 転送関数（`/TR`）および多重ソフトマスク（`/SMask`）の生成を 0 件にする。
+   - 会話吹き出し（`.conversation-content > h4 + ul > li`）の `box-shadow` を `none !important` とし、グレースケール JPEG による `/SMask` 生成を防止する。
+3. **TrueType アウトライン（`CIDFontType2`）フォント優先指定と合成太字（Faux Bold）の抑止**:
+   - Linux コンテナ上の Chromium で OpenType/CFF フォント（`Noto Sans CJK JP`）を使用した場合や、Bold ウェイトを持たないフォント（`IPAPGothic` / `IPAGothic`）に対してブラウザの合成太字（Faux Bold）が発動した場合、Skia PDF は反転した `FontBBox`（`[ -49 433 1875 -1793 ]` 等、`lly > ury`）を持つ `/Subtype /Type3` フォントを生成し、Acrobat で文字が消える現象を引き起こす。
+   - これを防ぐため、`section`、`section::after`、`section > h6`、`section pre`、`section code, section kbd, section samp`、`section .mermaid`（および `themes/vendor/marp-mermaid-loader.js`）の `font-family` において TrueType フォント（`'Meiryo', 'BIZ UDGothic', 'Yu Gothic', 'IPAPGothic', 'IPAGothic', 'DejaVu Sans'`）を最優先指定し、さらに `section` および全子孫要素（`section *, section *::before, section *::after`）に `font-synthesis: none !important;` を適用して `/Subtype /Type3` フォントの生成を 0 件に抑止する。
+
 ---
 
 ## 6. PRG-SKL-001: GitHub 運用支援スキル (`.agents/skills/github-workflows/SKILL.md`) 仕様

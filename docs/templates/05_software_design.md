@@ -95,7 +95,7 @@ erDiagram
 | モジュールID | 実設計サブシステムID | モジュール名称 | 物理ファイルパス | 対応要件ID | 責務概要 |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **MOD-001** | `MOD-SRV-001` | MCP スライド制御・生成モジュール | `src/index.ts` | `REQ-F-001`<br>`REQ-NFR-001`<br>`REQ-NFR-003`<br>`REQ-NFR-005`<br>`REQ-NFR-006` | MCP Stdio通信、Zod入力検証、スライドCRUD、Markdown生成・構文解析、PDF出力呼び出し（`CHROME_NO_SANDBOX` 保証） |
-| **MOD-002** | `MOD-ENG-001`<br>`MOD-THM-001` | Marp カスタムエンジン・テーマモジュール | `marp.config.js`<br>`themes/business-slide-theme.css` | `REQ-F-002`<br>`REQ-NFR-001`<br>`REQ-NFR-006` | 見出しアンカーCSS絶対配置、自動リサイズ制御、Markdown-itトークン走査による自動目次生成・ページ分割、Marp CLI非対話実行安定化 |
+| **MOD-002** | `MOD-ENG-001`<br>`MOD-THM-001` | Marp カスタムエンジン・テーマモジュール | `marp.config.js`<br>`themes/business-slide-theme.css`<br>`themes/vendor/marp-mermaid-loader.js` | `REQ-F-002`<br>`REQ-F-003`<br>`REQ-NFR-001`<br>`REQ-NFR-006` | 見出しアンカーCSS絶対配置、自動リサイズ制御、Markdown-itトークン走査による自動目次生成・ページ分割、Marp CLI非対話実行安定化、Adobe Acrobat Reader互換PDFレンダリング（単色背景＋フッター矩形・マスクレスSVG・TrueTypeフォント優先・合成太字抑止） |
 | **MOD-003** | `MOD-PPT-001` | ネイティブ PPTX DOM変換モジュール | `pptx_converter/convert.js` | `REQ-F-003`<br>`REQ-NFR-001`<br>`REQ-NFR-002`<br>`REQ-NFR-004` | PuppeteerによるヘッドレスHTML描画、DOM座標・計算済みスタイル抽出、PptxGenJSによる編集可能オブジェクト出力 |
 
 ---
@@ -125,7 +125,7 @@ erDiagram
 | 関数/ルールID | 名称 | 入力 | 出力 | 処理論理・境界条件 |
 | :--- | :--- | :--- | :--- | :--- |
 | **INT-ENG-001** | `marp_toc` プラグイン | Markdown-it `state.tokens` | 目次注入・分割済み `state.tokens` | 1. `marpit_directives_parse` 直後に実行し、全スライドのH1/直下段落からタイトルを収集（表紙・目次除外）。<br>2. 12項目を超える場合は独立した目次スライド（`marpitSlideElement: 1/-1`, `id` 属性付与）を自動分割生成し、後続スライドの `marpitSlide`・`marpitSlideTotal`・`id` 属性をシフト補正。<br>3. 元のヘッダー/フッターおよび `h6`（コピーライト・機密指定）トークンを全目次ページへ保持・再注入。 |
-| **INT-THM-001** | 見出しアンカー＆自動リサイズ・目次レイアウトCSS | Marp HTMLセクション | 絶対配置・縮小・整列済みDOM | 1. `h1`〜`h5` 自体を非表示化し直後要素を配置。表（`table-1`〜`10` / `.table-sm`等）、本文（`text-1`〜`10` / `dense`等）、Mermaid SVG（`mermaid-1`〜`10`）、画像（`img-1`〜`10`）、コード（`code-1`〜`10`）を本文枠内に収め、10段階の統一数字クラスで細粒度微調整を可能とする。<br>2. 目次スライド（`section.toc`）において、長文タイトルを省略記号（`...`）で見切ることなく `white-space: normal`, `overflow-wrap: anywhere`, `word-break: break-word` により自動複数行折り返しを行い、最終行右側にドットリーダー線（`border-bottom: 3px dotted`）とページ番号（`.toc-page`）を整列させる。<br>3. 表紙スライド（`section[data-marpit-pagination="1"]`）において、下部メタ情報（図書番号・所属・作成日）を `position: absolute` でフッター帯手前に固定し、タイトル行数に応じて上部マージン（220px→150px）およびフォントサイズ（36pt→24pt）を段階縮小してページ外はみ出しを防止する。 |
+| **INT-THM-001** | 見出しアンカー＆自動リサイズ・目次レイアウト・Acrobat互換CSS | Marp HTMLセクション | 絶対配置・縮小・整列済みDOM / PDF互換ストリーム | 1. `h1`〜`h5` 自体を非表示化し直後要素を配置。表（`table-1`〜`10` / `.table-sm`等）、本文（`text-1`〜`10` / `dense`等）、Mermaid SVG（`mermaid-1`〜`10`）、画像（`img-1`〜`10`）、コード（`code-1`〜`10`）を本文枠内に収め、10段階の統一数字クラスで細粒度微調整を可能とする。<br>2. 目次スライド（`section.toc`）において、長文タイトルを省略記号（`...`）で見切ることなく `white-space: normal`, `overflow-wrap: anywhere`, `word-break: break-word` により自動複数行折り返しを行い、最終行右側にドットリーダー線（`border-bottom: 3px dotted`）とページ番号（`.toc-page`）を整列させる。<br>3. 表紙スライド（`section[data-marpit-pagination="1"]`）において、下部メタ情報（図書番号・所属・作成日）を `position: absolute` でフッター帯手前に固定し、タイトル行数に応じて上部マージン（220px→150px）およびフォントサイズ（36pt→24pt）を段階縮小してページ外はみ出しを防止する。<br>4. Adobe Acrobat Readerでの白飛び（Issue #18）を防ぐため、`section` の全面 `linear-gradient` を廃止して単色白背景（`background-color: #ffffff`）＋ `box-shadow: inset 0 -40px 0 0 var(--primary-color)` による単色フッター矩形とし、表紙バナーSVGから `<mask>` を排除、さらにTrueTypeフォント優先指定（`'Meiryo', 'BIZ UDGothic', 'Yu Gothic', 'IPAPGothic', 'IPAGothic', 'DejaVu Sans'`）および `font-synthesis: none !important` により反転 `FontBBox` を持つ `Type3` フォント生成を完全に防止する。 |
 
 #### 単体テスト観点 (`TEST-UT-002` の根拠)
 - 正常系: `<!-- _class: toc -->` スライドに通常スライドのタイトル一覧とページ番号リンクが生成され、ヘッダーロゴおよびフッター（コピーライト・機密指定）が維持されること。
@@ -133,6 +133,7 @@ erDiagram
 - 見切れ防止・折り返し: 全角25文字以上の長文タイトルを持つスライドが存在する場合に、目次上でタイトルが省略記号で見切れることなく複数行に自動折り返され、最終行末尾にドットリーダー線とページ番号が整然と描画され、フッター帯（680px〜）を侵害しないこと。
 - 表紙複数行タイトル・はみ出し防止: 表紙タイトルが3行以上の複数行になった場合でも、所属・氏名および作成日がスライド下端（720px）およびフッター帯境界（680px）から溢れず、タイトル領域内で自動縮小されて表示されること。
 - 10段階統一数字クラス制御: 表・本文・Mermaid・画像・コードブロックに対して、`table-1`〜`10`, `text-1`〜`10`, `mermaid-1`〜`10`, `img-1`〜`10`, `code-1`〜`10` が滑らかに適用され、10が従来の最小値よりさらに2段階小さい極小サイズとして反映されること。また既存のクラス（`table-sm`, `dense` 等）が後方互換として機能すること。
+- Acrobat互換PDF構造: 出力PDFに全面 `PatternType 2`（`ShadingType 2`）背景、SVG `<mask>` の `/TR` 付き `/SMask`、反転 `FontBBox` を持つ `/Subtype /Type3` フォントが生成されないこと。
 
 ---
 
