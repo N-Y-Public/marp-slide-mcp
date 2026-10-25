@@ -34,11 +34,11 @@ tags:
 
 | 追跡指標 | 対象総数 | 追跡完了数 | カバレッジ / 断絶数 | 判定 (`Q-03`) |
 | :--- | :---: | :---: | :---: | :---: |
-| **PBIバックログ追跡 (`PBI-*` → `REQ-*` & `MOD-*` & `TEST-*`)** | 9 件 | 9 件 | **100.0%** (断絶 0件) | PASS |
+| **PBIバックログ追跡 (`PBI-*` → `REQ-*` & `MOD-*` & `TEST-*`)** | 10 件 | 10 件 | **100.0%** (断絶 0件) | PASS |
 | **機能要件の前方追跡 (`REQ-F-*` → `PBI-*` & `MOD-*` & `TEST-*`)** | 3 件 | 3 件 | **100.0%** (断絶 0件) | PASS |
 | **非機能要件の前方追跡 (`REQ-NFR-*` → `PBI-*` & `MOD-*` & `TEST-*`)** | 6 件 | 6 件 | **100.0%** (断絶 0件) | PASS |
 | **設計モジュールの後方追跡 (`MOD-*` → `REQ-*` & `TEST-*`)** | 3 件 | 3 件 | **100.0%** (孤立 0件) | PASS |
-| **テストケースの根拠追跡 (`TEST-*` → `REQ-*` & `MOD-*`)** | 15 件 | 15 件 | **100.0%** (根拠欠落 0件) | PASS |
+| **テストケースの根拠追跡 (`TEST-*` → `REQ-*` & `MOD-*`)** | 16 件 | 16 件 | **100.0%** (根拠欠落 0件) | PASS |
 
 ---
 
@@ -51,9 +51,9 @@ tags:
 
 | `PBI_ID` | 要件ID (`REQ`) | 要件名称 | 方式設計 外部I/F (`EXT`) | 詳細設計 モジュールID (`MOD`) | 単体テストID (`TEST-UT`) | 結合テストID (`TEST-IT`) | 総合テストID (`TEST-ST`) | 追跡状態 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
-| `PBI-000`<br>`PBI-001`<br>`PBI-003`<br>`PBI-009` | **REQ-F-001** | 構造化スライドデッキ生成・編集機能 | `EXT-MCP-001`〜`006` | `MOD-001`<br>`MOD-002` | `TEST-UT-001` | `TEST-IT-001`<br>`TEST-IT-002`<br>`TEST-IT-003` | `TEST-ST-001`<br>`TEST-ST-005` | OK |
+| `PBI-000`<br>`PBI-001`<br>`PBI-003`<br>`PBI-009`<br>`PBI-011` | **REQ-F-001** | 構造化スライドデッキ生成・編集機能 | `EXT-MCP-001`〜`006` | `MOD-001`<br>`MOD-002` | `TEST-UT-001` | `TEST-IT-001`<br>`TEST-IT-002`<br>`TEST-IT-003` | `TEST-ST-001`<br>`TEST-ST-005`<br>`TEST-ST-007` | OK |
 | `PBI-000`<br>`PBI-004`<br>`PBI-008`<br>`PBI-010` | **REQ-F-002** | 自律的要素リサイズ・目次自動生成機能 | `EXT-CLI-001` | `MOD-001`<br>`MOD-002` | `TEST-UT-002` | `TEST-IT-001` | `TEST-ST-001`<br>`TEST-ST-002`<br>`TEST-ST-006` | OK |
-| `PBI-000` | **REQ-F-003** | 高品質PDF・編集可能ネイティブPPTX出力機能 | `EXT-MCP-007`<br>`EXT-CLI-001`<br>`EXT-CLI-002` | `MOD-001`<br>`MOD-003` | `TEST-UT-003` | `TEST-IT-002` | `TEST-ST-002` | OK |
+| `PBI-000`<br>`PBI-011` | **REQ-F-003** | 高品質PDF・編集可能ネイティブPPTX出力機能 | `EXT-MCP-007`<br>`EXT-CLI-001`<br>`EXT-CLI-002` | `MOD-001`<br>`MOD-003` | `TEST-UT-003` | `TEST-IT-002` | `TEST-ST-002`<br>`TEST-ST-007` | OK |
 
 ---
 
@@ -66,7 +66,7 @@ tags:
 | `PBI-000`<br>`PBI-001`<br>`PBI-004` | **REQ-NFR-003** | 3. 運用・保守性（全行直上平易コメント・Zod検証） | コーディング規約強制・Zodスキーマ定義 | `MOD-001`<br>`MOD-002`<br>`MOD-003` | `TEST-UT-001`<br>`TEST-ST-003` | OK |
 | `PBI-000` | **REQ-NFR-004** | 4. 移行性（Markdown / PDF / PPTX オープン出力） | 標準ファイルフォーマット出力パイプライン | `MOD-003` | `TEST-ST-002` | OK |
 | `PBI-000`<br>`PBI-002`<br>`PBI-003`<br>`PBI-005`<br>`PBI-006` | **REQ-NFR-005** | 5. セキュリティ（PII・絶対パス完全排除・動的アカウント検証・Worktree是正） | `.githooks/pre-commit`・動的前検証ゲート・タスク開始時ブランチ是正 | `MOD-001`<br>`MOD-002`<br>`MOD-003` | `TEST-IT-004`<br>`TEST-IT-005`<br>`TEST-ST-003`<br>`TEST-ST-004` | OK |
-| `PBI-000`<br>`PBI-007` | **REQ-NFR-006** | 6. システム環境（Docker Dev Container OS非依存） | Node 22 + Chromium + Noto CJK コンテナ固定 | `MOD-001`<br>`MOD-002` | `TEST-IT-006`<br>`TEST-ST-001` | OK |
+| `PBI-000`<br>`PBI-007`<br>`PBI-011` | **REQ-NFR-006** | 6. システム環境（Docker Dev Container OS非依存・Dockerレス環境対応） | Node 22 + Chromium + Noto CJK コンテナ固定・ローカル直接実行環境定義 | `MOD-001`<br>`MOD-002`<br>`MOD-003` | `TEST-IT-006`<br>`TEST-ST-001`<br>`TEST-ST-007` | OK |
 
 ---
 

@@ -79,7 +79,7 @@ flowchart TB
 | **`REQ-NFR-001` (可用性)** | Chromium実行パスの4段階フォールバック解決機構を `MOD-001` / `MOD-003` に実装し、環境差異による停止を防止する。 |
 | **`REQ-NFR-002` (性能)** | Marp CLIおよびPuppeteerのヘッドレス描画をコンテナ内で直接実行し、不要なネットワーク通信を排除して高速変換を実現する。 |
 | **`REQ-NFR-005` (セキュリティ)** | Layer 5とLayer 4の境界でZodスキーマによる厳格な型・文字数検証を実施し、標準出力（`stdout`）への不正ログ混入を防止する。 |
-| **`REQ-NFR-006` (環境再現性)** | `.devcontainer/Dockerfile` および `docker-compose.yml` により、OS・ランタイム・日本語フォントをコード化（IaC）して固定する。 |
+| **`REQ-NFR-006` (環境再現性・代替適応性)** | `.devcontainer/Dockerfile` および `docker-compose.yml` によりOS・ランタイム・日本語フォントをコード化（IaC）して固定するとともに、Dockerが利用できない環境向けにホスト上のNode 22・Chrome・Python 3による直接実行パイプラインと手順を公式定義する。 |
 
 ---
 
@@ -101,6 +101,13 @@ flowchart TB
 | `CHROME_PATH` | 任意 | `/usr/bin/chromium` | Chromium実行バイナリパス（未指定時は4段階自動探索が稼働） |
 | `PUPPETEER_ARGS` | 任意 | `--no-sandbox --disable-setuid-sandbox` | コンテナ内でのヘッドレスブラウザ安全起動オプション |
 | `NODE_ENV` | 任意 | `development` / `production` | 実行モード制御 |
+
+### 2.3 Dockerレス代替環境（ホスト直接実行）仕様
+企業等のセキュリティ制限でDockerが利用できない環境において、ホストマシン単体でビルド・変換を行うための構成要件：
+- **Node.js**: バージョン 22.x LTS 以上（`npm install`, `npm run build`）
+- **ブラウザ**: Google Chrome または Chromium がインストール済みであること（Puppeteer / Marp CLI が参照）
+- **Python**: Python 3.10+ および `python-pptx`（PPTX変換機能利用時のみ必要）
+- **日本語フォント**: OS標準の日本語フォント（Windows: Meiryo / Yu Gothic、macOS: Hiragino Sans、Linux: Noto Sans CJK JP等）
 
 ---
 

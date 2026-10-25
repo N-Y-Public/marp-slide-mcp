@@ -68,11 +68,11 @@ marp-slide-mcp/
 
 ## クイックスタート
 
-### 1. VS Code による執筆（推奨）
+### 1. VS Code による執筆（プレビュー環境の準備）
 
 1. [VS Code](https://code.visualstudio.com/) をインストールします。
 2. 拡張機能マーケットプレイスから **Marp for VS Code**（`marp-team.marp-vscode`）をインストールします。
-3. VS Code の設定（`settings.json`）にテーマを登録します：
+3. VS Code のワークスペース設定またはユーザー設定（`settings.json`）にテーマを登録します：
 
 ```json
 {
@@ -83,30 +83,109 @@ marp-slide-mcp/
 }
 ```
 
-4. `slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.md` を開き、右上のプレビューボタン（または `Ctrl+K V`）を押すと、リアルタイムにデザインが適用されたプレビューが表示されます。
+4. `slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.md` を開き、右上のプレビューボタン（または `Ctrl+K V` / `Cmd+K V`）を押すと、リアルタイムにビジネスデザインが適用されたプレビューが表示されます。
 
 ---
 
-### 2. コマンドライン（CLI）によるビルド
+### 2. 環境に応じたビルド・実行方法
 
-依存関係をインストールします：
+本リポジトリは、**「Docker 環境（推奨）」** と **「Docker が使えない環境（ホストローカル実行）」** の双方に対応しています。
+
+#### 2.1 【推奨】Docker 環境による実行
+> [!TIP]
+> **なぜ Docker が推奨なのか？**  
+> Marp の PDF 出力は Chromium のレンダリングエンジンを利用します。Docker コンテナ内（Debian Bookworm + Headless Chromium + `fonts-noto-cjk`）でビルドすることで、Windows / macOS / Linux 間の**フォントレンダリング差分や文字幅のズレを完全に排除し、ピクセルパーフェクトなスライドを出力**できます。
 
 ```bash
+# 依存パッケージのインストール
+docker compose run --rm app npm install
+
+# MCP サーバーの TypeScript ビルド
+docker compose run --rm app npm run build
+
+# 全スライドの PDF 一括ビルド
+docker compose run --rm app npm run build:pdf
+
+# 全スライドのネイティブ編集可能 PPTX 一括ビルド
+docker compose run --rm app npm run build:pptx-custom
+
+# ※ Windows PowerShell の場合は .\dev.ps1、Linux/macOS の場合は ./dev.sh も利用可能です：
+# .\dev.ps1 run npm run build:pdf
+```
+
+#### 2.2 【企業の社内環境等】Docker が使えない環境での対応方法
+企業のセキュリティポリシーや PC の権限制約により Docker Desktop が利用できない環境でも、ホストマシンのランタイムを用いて完全動作させることができます。
+
+##### ① 前提要件・必要ランタイム
+- **Node.js**: `v22.x LTS`（または互換の v20+）
+- **Google Chrome** または **Chromium**: インストール済みであること（PDF 出力および PPTX 変換時にヘッドレスブラウザとして使用）
+- **Python**: `3.10+`（ネイティブ PPTX 変換を利用する場合のみ必要）
+- **日本語フォント**: OS 標準の日本語フォント（Windows: Meiryo / Yu Gothic、macOS: Hiragino Sans、Linux: `fonts-noto-cjk`）
+
+##### ② セットアップ手順
+```bash
+# 1. リポジトリ直下で依存パッケージをインストール
 npm install
+
+# 2. （任意: PPTX変換を利用する場合）Python依存パッケージをインストール
+pip install -r pptx_converter/requirements.txt
+# または直接インストール:
+pip install python-pptx
+
+# 3. MCP サーバーをビルド
+npm run build
 ```
 
-#### PDF の出力
+> [!NOTE]
+> **Chrome パスの手動指定（必要な場合のみ）**  
+> Chrome が標準以外のパスにインストールされている環境では、環境変数 `CHROME_PATH` または `PUPPETEER_EXECUTABLE_PATH` に Chrome の実行ファイル絶対パスを指定してください：
+> ```bash
+> # Windows (PowerShell) の例:
+> $env:CHROME_PATH = "C:\Program Files\Google\Chrome\Application\chrome.exe"
+> # Linux / macOS の例:
+> export CHROME_PATH="/usr/bin/google-chrome"
+> ```
+
+##### ③ ローカル環境でのビルド実行
 ```bash
+# 全スライドの PDF 出力
 npm run build:pdf
-```
-`slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.pdf` が生成されます。
 
-#### 高機能 PPTX の出力（推奨）
-テキストやシェイプが編集可能なネイティブ PowerPoint ファイルを出力します：
-```bash
+# 全スライドの編集可能 PPTX 出力
 npm run build:pptx-custom
 ```
-`slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.pptx` が生成されます。
+
+---
+
+### 3. MCP を利用しない手動 PDF・PPTX エクスポート手順（トークン消費ゼロ）
+
+スライド Markdown の誤字脱字・数値を手修正した場合など、**「わざわざ生成 AI / MCP を呼び出して API トークンを消費したくない」** 場合、MCP が内部で利用しているツール群（Marp CLI + カスタムエンジン `marp.config.js`、`pptx_converter/convert.js`）と同じパイプラインを手動で直接実行できます。
+
+#### 3.1 特定のスライド単体を指定して出力するコマンド
+
+##### 【Docker 環境の場合】
+```bash
+# 1. 特定のスライドのみ PDF 出力（--allow-local-files と --no-stdin を必ず付与）
+docker compose run --rm app npx @marp-team/marp-cli --config-file marp.config.js --pdf slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.md -o slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.pdf --allow-local-files --no-stdin
+
+# 2. 特定のスライドのみ編集可能 PPTX 出力
+docker compose run --rm app node pptx_converter/convert.js slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.md slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.pptx
+```
+
+##### 【Docker レス（ローカル環境）の場合】
+```bash
+# 1. 特定のスライドのみ PDF 出力
+npx @marp-team/marp-cli --config-file marp.config.js --pdf slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.md -o slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.pdf --allow-local-files
+
+# 2. 特定のスライドのみ編集可能 PPTX 出力
+node pptx_converter/convert.js slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.md slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.pptx
+```
+
+#### 3.2 VS Code 拡張機能（Marp for VS Code）からの GUI エクスポート
+CLI を使わずに GUI 操作だけでワンクリック出力することも可能です：
+1. 対象のスライド Markdown（`slides/.../*.md`）を VS Code で開きます。
+2. コマンドパレット（`Ctrl+Shift+P` / `Cmd+Shift+P`）を開き、`Marp: Export slide deck` を選択します。
+3. エクスポート形式で `pdf`（または `pptx`）を選択し、保存先を指定します。
 
 ---
 
@@ -288,7 +367,59 @@ npm run build
 
 #### 2.1 AI クライアントへの登録
 
-##### ① Cursor での設定（プロジェクト別、またはグローバル）
+##### ① VS Code での設定（推奨: GitHub Copilot, Cline, Roo Code, Claude Code 等）
+
+VS Code を利用する場合、**「作業中リポジトリ内限定で利用する方式（Workspace設定）」** と、**「ユーザーがアクセスできる全リポジトリから共通利用する方式（User設定）」** の2通りから選択できます。
+
+###### (a) ワークスペース設定（特定リポジトリ内限定で利用する場合）
+作業中プロジェクトのルートディレクトリに `.vscode/mcp.json` を作成し、以下を記述します：
+
+```json
+{
+  "mcpServers": {
+    "marp-slide-mcp": {
+      "command": "node",
+      "args": ["<本リポジトリの絶対パス>/build/index.js"]
+    }
+  }
+}
+```
+- **適用範囲**: このワークスペース（フォルダ）を開いているときのみ MCP ツールが有効になります。プロジェクトごとに使用するツールを分離したい場合に最適です。
+
+###### (b) ユーザー設定（全リポジトリ・どのプロジェクトからでも利用する場合）
+VS Code のグローバルユーザー設定用 `mcp.json` に本サーバーを登録します：
+- **Windows**: `%APPDATA%\Code\User\mcp.json`
+- **macOS**: `~/Library/Application Support/Code/User/mcp.json`
+- **Linux**: `~/.config/Code/User/mcp.json`
+
+```json
+{
+  "mcpServers": {
+    "marp-slide-mcp": {
+      "command": "node",
+      "args": ["<本リポジトリの絶対パス>/build/index.js"]
+    }
+  }
+}
+```
+
+**【ステップバイステップ設定手順】**
+1. 本リポジトリを PC 上の共通ツールディレクトリ（例: `C:\tools\marp-slide-mcp` や `~/tools/marp-slide-mcp` 等）にクローンし、リポジトリ直下でビルドを実行します：
+   ```bash
+   npm install && npm run build
+   ```
+2. 上記 OS 別のパスにある `mcp.json` をテキストエディタまたは VS Code で開きます（ファイルが存在しない場合は新規作成してください）。
+3. 上記の JSON 定義を追記し、`<本リポジトリの絶対パス>` をクローン先の絶対パス（例: `C:/tools/marp-slide-mcp`）に置き換えて保存します。
+4. VS Code を再起動（またはコマンドパレットから `Developer: Reload Window` を実行）します。
+5. どのフォルダやプロジェクトを開いている時でも、チャットから自然言語で「スライドを作成して」と指示すれば、本ツールの各 MCP ツール（`generate_slide_deck` 等）が自動認識されて呼び出されます。
+
+> [!WARNING]
+> **【重要】スコープ選択の指針と「別リポジトリ・古いMCPが参照される罠」の回避**  
+> ユーザー設定（グローバル設定）に本リポジトリのパスを登録すると、どのフォルダを開いていてもスライドを作成できる利便性がある反面、**Git Worktree や別のディレクトリで本ツール自体（テーマ・MCPコード）を開発・改修する場合に、エディタやAIがグローバル設定の固定パスを優先してしまい、作業中リポジトリではなく古い別リポジトリの MCP を参照してしまう問題**が発生します。  
+> - **スライド作成の利用のみ**: ユーザー設定（全プロジェクト共通）で PC 内の安定版パスを登録。  
+> - **本ツール自体の開発・改修・Worktree利用時**: 必ずプロジェクトごとの **ワークスペース設定（`.vscode/mcp.json`）** を使用し、作業中ディレクトリ自身の `build/index.js` を指すように設定してください。
+
+##### ② Cursor での設定（プロジェクト別、またはグローバル）
 作業中プロジェクトのルートに `.cursor/mcp.json` を配置するか、Cursor の設定（Settings > Features > MCP）から登録します：
 
 ```json
@@ -302,7 +433,7 @@ npm run build
 }
 ```
 
-##### ② Claude Desktop での設定（全プロジェクト共通）
+##### ③ Claude Desktop での設定（全プロジェクト共通）
 Claude Desktop の設定ファイル（`claude_desktop_config.json`）の `mcpServers` に本サーバーを登録します：
 - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
@@ -318,7 +449,7 @@ Claude Desktop の設定ファイル（`claude_desktop_config.json`）の `mcpSe
 }
 ```
 
-##### ③ Docker 経由での実行（ホスト側に Node.js / Chromium を構築しない場合）
+##### ④ Docker 経由での実行（ホスト側に Node.js / Chromium を構築しない場合）
 ```json
 {
   "mcpServers": {

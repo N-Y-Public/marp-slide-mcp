@@ -170,22 +170,37 @@ flowchart LR
 ### 3.1 EXT-CLI-001: Marp CLI による PDF 出力
 - **コマンド**:
   ```bash
+  # 全体一括ビルド（Docker環境）
+  docker compose run --rm app npm run build:pdf
+  # 全体一括ビルド（ローカル環境）
   npm run build:pdf
-  # または特定ファイル指定:
-  npx marp <スライドMarkdownパス> --theme-set themes/business-slide-theme.css --output <出力PDFパス> --allow-local-files
+
+  # 特定ファイル単体ビルド（Docker環境）
+  docker compose run --rm app npx @marp-team/marp-cli --config-file marp.config.js --pdf slides/<スライド名>/<スライド名>.md -o slides/<スライド名>/<スライド名>.pdf
+
+  # 特定ファイル単体ビルド（ローカル環境）
+  npx @marp-team/marp-cli --config-file marp.config.js --pdf slides/<スライド名>/<スライド名>.md -o slides/<スライド名>/<スライド名>.pdf
   ```
 - **主要オプション**:
-  - `--theme-set`: カスタムテーマCSSファイルのパス。
+  - `--config-file marp.config.js`: 目次自動生成・カスタムエンジン設定を適用。
+  - `--pdf`: PDF形式での直接出力。
   - `--allow-local-files`: ローカル画像・アセットの読み込みを許可。
-  - `--html`: スライド内のインラインHTMLタグを有効化。
+  - `--no-stdin`: 非対話パイプラインでのstdinハングを防止。
 - **終了ステータス**: `0`: 成功, `1`: ビルドエラー
 
 ### 3.2 EXT-CLI-002: カスタム PPTX 変換コマンド
 - **コマンド**:
   ```bash
-  node pptx_converter/convert.js <入力Markdownパス> [出力PowerPointパス]
-  # npmスクリプト:
+  # 全体一括ビルド（Docker環境）
+  docker compose run --rm app npm run build:pptx-custom
+  # 全体一括ビルド（ローカル環境）
   npm run build:pptx-custom
+
+  # 特定ファイル単体ビルド（Docker環境）
+  docker compose run --rm app node pptx_converter/convert.js slides/<スライド名>/<スライド名>.md slides/<スライド名>/<スライド名>.pptx
+
+  # 特定ファイル単体ビルド（ローカル環境）
+  node pptx_converter/convert.js slides/<スライド名>/<スライド名>.md slides/<スライド名>/<スライド名>.pptx
   ```
 - **引数仕様**:
   - 第1引数（必須）: 変換元の `.md` ファイルパス。
@@ -250,7 +265,41 @@ flowchart LR
 }
 ```
 
-### 5.2 Antigravity 2.0 Skill 定義 (`.agents/skills/marp-slides/SKILL.md`)
+### 5.2 VS Code MCP 設定 (`EXT-CFG-002`)
+
+VS Code（GitHub Copilot や Claude Code 等）から本MCPサーバーを利用する場合、用途に応じて2つのスコープで設定可能：
+
+#### ① ワークスペース設定（特定リポジトリ限定利用: `.vscode/mcp.json`）
+作業中のリポジトリルートに `.vscode/mcp.json` を配置します：
+```json
+{
+  "mcpServers": {
+    "marp-slide-mcp": {
+      "command": "node",
+      "args": ["<本リポジトリの絶対パス>/build/index.js"]
+    }
+  }
+}
+```
+
+#### ② ユーザー設定（全リポジトリ共通利用: グローバル設定）
+VS Codeのグローバルユーザー設定またはプロファイル設定内の `mcp.json` に登録します：
+- **Windows**: `%APPDATA%\Code\User\mcp.json`
+- **macOS**: `~/Library/Application Support/Code/User/mcp.json`
+- **Linux**: `~/.config/Code/User/mcp.json`
+
+```json
+{
+  "mcpServers": {
+    "marp-slide-mcp": {
+      "command": "node",
+      "args": ["<本リポジトリの絶対パス>/build/index.js"]
+    }
+  }
+}
+```
+
+### 5.3 Antigravity 2.0 Skill 定義 (`.agents/skills/marp-slides/SKILL.md`)
 - エージェントがMCPツールを認識し、自然言語によるプレゼン作成依頼に対して自律的に `generate_slide_deck` や `update_slide` を呼び出すためのトリガー定義。
 
 ### 5.3 EXT-DOC-001: GitHub テンプレートおよびコントリビューション規約 I/F
