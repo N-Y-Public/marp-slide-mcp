@@ -54,6 +54,7 @@ flowchart TD
 2. `filenamePrefix` が未指定の場合、`DOC-YYYYMMDD-UUID` 形式で一意なファイル名を採番。
 3. `slides/<filename>/` ディレクトリを `ensureOutputDir` で作成。
 4. `generateMarpMarkdown(deck)` を呼び出し、Marp 互換 Markdown テキストを生成。
+   - 通常スライドが0枚（`deck.normalSlides.length === 0`）の場合は、表紙直後の区切り線（`\n---\n`）を出力せず、単一ページ構成として出力する。
 5. ディレクトリ内に `<filename>.md` として保存。
 6. 同時に、後続のプログラム解析用に構造化データを `<filename>.json` としてキャッシュ保存。
 7. 生成成功メッセージとファイルパスを返却。
@@ -265,6 +266,24 @@ flowchart TD
 3. **TrueType アウトライン（`CIDFontType2`）フォント優先指定と合成太字（Faux Bold）の抑止**:
    - Linux コンテナ上の Chromium で OpenType/CFF フォント（`Noto Sans CJK JP`）を使用した場合や、Bold ウェイトを持たないフォント（`IPAPGothic` / `IPAGothic`）に対してブラウザの合成太字（Faux Bold）が発動した場合、Skia PDF は反転した `FontBBox`（`[ -49 433 1875 -1793 ]` 等、`lly > ury`）を持つ `/Subtype /Type3` フォントを生成し、Acrobat で文字が消える現象を引き起こす。
    - これを防ぐため、`section`、`section::after`、`section > h6`、`section pre`、`section code, section kbd, section samp`、`section .mermaid`（および `themes/vendor/marp-mermaid-loader.js`）の `font-family` において TrueType フォント（`'Meiryo', 'BIZ UDGothic', 'Yu Gothic', 'IPAPGothic', 'IPAGothic', 'DejaVu Sans'`）を最優先指定し、さらに `section` および全子孫要素（`section *, section *::before, section *::after`）に `font-synthesis: none !important;` を適用して `/Subtype /Type3` フォントの生成を 0 件に抑止する。
+
+### 5.5 印刷・PDF出力時における不要な白紙最終ページの抑止仕様 (Issue #16 是正)
+1. **Mermaid動的レンダリング作業領域およびツールチップ要素の印刷時非表示化**:
+   - `themes/vendor/marp-mermaid-loader.js` では、Mermaid レンダリング時に `document.body` 直下に一時作業領域 `<div id="mermaid-workspace">` を生成し、また外部ライブラリ `mermaid.min.js` 自身がツールチップ用要素 `<div class="mermaidTooltip">` を `document.body` 直下に動的生成する。
+   - これら2つの要素は Marp のスライドコンテナ（`<div class="marpit">` 等）の外側に配置されるため、Chromium の `@media print` 印刷エンジンがスライド全ページを描画した後に、`body` 直下に追加の印刷ブロックとして解釈し、最終スライドの後に不要な改ページを発生させて真っ白な最終ページを生成していた。
+   - `themes/business-slide-theme.css` に以下のルールを追加し、印刷エンジンに対してこれら要素を完全に非表示・レイアウト対象外とする：
+     ```css
+     @media print {
+       #mermaid-workspace,
+       .mermaidTooltip {
+         display: none !important;
+       }
+     }
+     ```
+   - さらに、`themes/vendor/marp-mermaid-loader.js` 側でも、Mermaid レンダリング完了時（`render()` 完了時）に `workspace.remove()` を実行して作業用DOMを物理的に破棄し、`.mermaidTooltip` 要素に対しても `display = 'none'` を設定する二重の安全防護を施す。
+2. **表紙のみスライドデッキ生成時の末尾区切り線抑止**:
+   - `src/index.ts` の `generateMarpMarkdown()` において、`deck.titleSlide` の直後に無条件で `\n---\n` を出力していたため、通常スライドが0枚（`deck.normalSlides.length === 0`）の場合に末尾改ページ記号として解釈され白紙ページが出力されていた。
+   - `if (deck.normalSlides.length > 0)` の条件分岐を追加し、通常スライドが1枚以上存在する場合にのみ `\n---\n` を出力するよう修正する。
 
 ---
 

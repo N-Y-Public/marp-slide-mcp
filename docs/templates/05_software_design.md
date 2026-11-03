@@ -108,7 +108,7 @@ erDiagram
 | 関数ID | 関数名 | 引数 (型) | 戻り値 (型) | 処理概要・例外仕様 |
 | :--- | :--- | :--- | :--- | :--- |
 | **INT-FN-001** | `resolveSlideContent` | `slide: NormalSlide` | `{ bodyContent: string; classes: string[] }` | `twoColumns` 指定時は `columns-2` クラスを付与し箇条書き2列に整形。`imageGrid` 指定時は `images-2`〜`4` を付与。`pageTitle` が `"目次"`（または `"Table of Contents"`）かつ本文が空の場合は `toc` クラスを自動補完。 |
-| **INT-FN-002** | `generateMarpMarkdown` | `deck: SlideDeck` | `string` | フロントマター、テーマ色CSS変数、表紙スライド、通常スライド群を `---` 区切りで結合し完全なMarp Markdownを生成。 |
+| **INT-FN-002** | `generateMarpMarkdown` | `deck: SlideDeck` | `string` | フロントマター、テーマ色CSS変数、表紙スライド、通常スライド群を `---` 区切りで結合し完全なMarp Markdownを生成。通常スライドが0枚（`deck.normalSlides.length === 0`）の場合は表紙直後の余剰な改ページ区切り線（`\n---\n`）を出力せず1ページ構成を維持する。 |
 | **INT-FN-003** | `parseMarpMarkdown` | `content: string` | `{ frontmatter: Record<string, unknown>; slides: SlideRaw[] }` | 既存Markdownからフロントマターと各ページの生テキスト・構造を抽出。不正構文時は `ERR-VAL-001` 相当の例外を送出。 |
 | **INT-FN-004** | `exportSlideToPdf` | `markdownPath: string` | `Promise<string>` | Chromiumパスを4段階解決し、`CHROME_NO_SANDBOX=1` を保証した上でMarp CLIを実行してPDFを生成。対象不在時は `ERR-NOT-002`、未定義例外は `ERR-SYS-999` 受け皿で捕捉。 |
 
@@ -125,7 +125,7 @@ erDiagram
 | 関数/ルールID | 名称 | 入力 | 出力 | 処理論理・境界条件 |
 | :--- | :--- | :--- | :--- | :--- |
 | **INT-ENG-001** | `marp_toc` プラグイン | Markdown-it `state.tokens` | 目次注入・分割済み `state.tokens` | 1. `marpit_directives_parse` 直後に実行し、全スライドのH1/直下段落からタイトルを収集（表紙・目次除外）。<br>2. 12項目を超える場合は独立した目次スライド（`marpitSlideElement: 1/-1`, `id` 属性付与）を自動分割生成し、後続スライドの `marpitSlide`・`marpitSlideTotal`・`id` 属性をシフト補正。<br>3. 元のヘッダー/フッターおよび `h6`（コピーライト・機密指定）トークンを全目次ページへ保持・再注入。 |
-| **INT-THM-001** | 見出しアンカー＆自動リサイズ・目次レイアウト・Acrobat互換CSS | Marp HTMLセクション | 絶対配置・縮小・整列済みDOM / PDF互換ストリーム | 1. `h1`〜`h5` 自体を非表示化し直後要素を配置。表（`table-1`〜`10` / `.table-sm`等）、本文（`text-1`〜`10` / `dense`等）、Mermaid SVG（`mermaid-1`〜`10`）、画像（`img-1`〜`10`）、コード（`code-1`〜`10`）を本文枠内に収め、10段階の統一数字クラスで細粒度微調整を可能とする。<br>2. 目次スライド（`section.toc`）において、長文タイトルを省略記号（`...`）で見切ることなく `white-space: normal`, `overflow-wrap: anywhere`, `word-break: break-word` により自動複数行折り返しを行い、最終行右側にドットリーダー線（`border-bottom: 3px dotted`）とページ番号（`.toc-page`）を整列させる。<br>3. 表紙スライド（`section[data-marpit-pagination="1"]`）において、下部メタ情報（図書番号・所属・作成日）を `position: absolute` でフッター帯手前に固定し、タイトル行数に応じて上部マージン（220px→150px）およびフォントサイズ（36pt→24pt）を段階縮小してページ外はみ出しを防止する。<br>4. Adobe Acrobat Readerでの白飛び（Issue #18）を防ぐため、`section` の全面 `linear-gradient` を廃止して単色白背景（`background-color: #ffffff`）＋ `box-shadow: inset 0 -40px 0 0 var(--primary-color)` による単色フッター矩形とし、表紙バナーSVGから `<mask>` を排除、さらにTrueTypeフォント優先指定（`'Meiryo', 'BIZ UDGothic', 'Yu Gothic', 'IPAPGothic', 'IPAGothic', 'DejaVu Sans'`）および `font-synthesis: none !important` により反転 `FontBBox` を持つ `Type3` フォント生成を完全に防止する。 |
+| **INT-THM-001** | 見出しアンカー＆自動リサイズ・目次レイアウト・Acrobat互換CSS | Marp HTMLセクション | 絶対配置・縮小・整列済みDOM / PDF互換ストリーム | 1. `h1`〜`h5` 自体を非表示化し直後要素を配置。表（`table-1`〜`10` / `.table-sm`等）、本文（`text-1`〜`10` / `dense`等）、Mermaid SVG（`mermaid-1`〜`10`）、画像（`img-1`〜`10`）、コード（`code-1`〜`10`）を本文枠内に収め、10段階の統一数字クラスで細粒度微調整を可能とする。<br>2. 目次スライド（`section.toc`）において、長文タイトルを省略記号（`...`）で見切ることなく `white-space: normal`, `overflow-wrap: anywhere`, `word-break: break-word` により自動複数行折り返しを行い、最終行右側にドットリーダー線（`border-bottom: 3px dotted`）とページ番号（`.toc-page`）を整列させる。<br>3. 表紙スライド（`section[data-marpit-pagination="1"]`）において、下部メタ情報（図書番号・所属・作成日）を `position: absolute` でフッター帯手前に固定し、タイトル行数に応じて上部マージン（220px→150px）およびフォントサイズ（36pt→24pt）を段階縮小してページ外はみ出しを防止する。<br>4. Adobe Acrobat Readerでの白飛び（Issue #18）を防ぐため、`section` の全面 `linear-gradient` を廃止して単色白背景（`background-color: #ffffff`）＋ `box-shadow: inset 0 -40px 0 0 var(--primary-color)` による単色フッター矩形とし、表紙バナーSVGから `<mask>` を排除、さらにTrueTypeフォント優先指定（`'Meiryo', 'BIZ UDGothic', 'Yu Gothic', 'IPAPGothic', 'IPAGothic', 'DejaVu Sans'`）および `font-synthesis: none !important` により反転 `FontBBox` を持つ `Type3` フォント生成を完全に防止する。<br>5. 印刷・PDFエクスポート時の末尾余剰白紙ページ（Issue #16）を防ぐため、`@media print { #mermaid-workspace, .mermaidTooltip { display: none !important; } }` を指定して印刷エンジンによる独立ブロック解釈を防止し、`marp-mermaid-loader.js` 側でもレンダリング完了後に DOM 除去（`workspace.remove()`）およびツールチップ非表示（`display = 'none'`）を施す。 |
 
 #### 単体テスト観点 (`TEST-UT-002` の根拠)
 - 正常系: `<!-- _class: toc -->` スライドに通常スライドのタイトル一覧とページ番号リンクが生成され、ヘッダーロゴおよびフッター（コピーライト・機密指定）が維持されること。
@@ -134,6 +134,7 @@ erDiagram
 - 表紙複数行タイトル・はみ出し防止: 表紙タイトルが3行以上の複数行になった場合でも、所属・氏名および作成日がスライド下端（720px）およびフッター帯境界（680px）から溢れず、タイトル領域内で自動縮小されて表示されること。
 - 10段階統一数字クラス制御: 表・本文・Mermaid・画像・コードブロックに対して、`table-1`〜`10`, `text-1`〜`10`, `mermaid-1`〜`10`, `img-1`〜`10`, `code-1`〜`10` が滑らかに適用され、10が従来の最小値よりさらに2段階小さい極小サイズとして反映されること。また既存のクラス（`table-sm`, `dense` 等）が後方互換として機能すること。
 - Acrobat互換PDF構造: 出力PDFに全面 `PatternType 2`（`ShadingType 2`）背景、SVG `<mask>` の `/TR` 付き `/SMask`、反転 `FontBBox` を持つ `/Subtype /Type3` フォントが生成されないこと。
+- 余剰白紙ページ抑止: Mermaid図を含むスライド、Mermaid図を含まないスライド、および表紙のみのスライドをPDF出力した際、定義したスライド枚数とPDF総ページ数が完全に一致し、末尾に余分な白紙ページが出力されないこと。
 
 ---
 

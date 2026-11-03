@@ -119,6 +119,18 @@
                     pre.style.display = ''; // エラー時は元に戻す
                 }
             }
+            // すべてのMermaid要素の変換が完了したため、body直下の作業領域を完全に削除します
+            if (workspace) {
+                // DOMから作業領域を物理的に破棄します
+                workspace.remove();
+            }
+            // Mermaidライブラリがbody直下に動的生成したツールチップ要素を非表示にします
+            const tooltips = document.querySelectorAll('.mermaidTooltip');
+            // 検出されたツールチップ要素を反復処理します
+            for (const tooltip of Array.from(tooltips)) {
+                // 印刷エンジンが独立ブロックとして解釈しないようdisplayをnoneに設定します
+                tooltip.style.display = 'none';
+            }
             document.body.setAttribute('data-mermaid-done', '');
         } catch (e) {
             console.error('[mermaid] ライブラリ未ロード。コードブロックはそのまま残します。', e);

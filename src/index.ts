@@ -311,9 +311,13 @@ ${deck.titleSlide.copyright || "© 2026 N-Y-Public"}
 
 ###### 機密指定
 ${deck.titleSlide.confidentiality || "CONFIDENTIAL"}
-
----
 `;
+
+  // 通常スライドが1枚以上存在する場合のみ改ページ区切り線を出力します
+  if (deck.normalSlides.length > 0) {
+    // 次のスライドへ遷移するための改ページ区切り記号を追加します
+    md += `\n---\n\n`;
+  }
 
   // 2枚目以降の通常スライドを順次Markdownに追加します
   for (let i = 0; i < deck.normalSlides.length; i++) {
