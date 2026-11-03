@@ -7,14 +7,23 @@ body:
     attributes:
       value: |
         機能要望や改善提案ありがとうございます。
-        本プロジェクトでは PBI（Product Backlog Item）駆動で機能追加を管理しています。提案の背景（Why）と具体的な要求（What）をお聞かせください。
+        本プロジェクトでは PBI（Product Backlog Item）駆動で機能追加を管理しています。対象ユーザー（Who）、提案の背景（Why）、および具体的な要求（What）をお聞かせください。
+
+  - type: textarea
+    id: who
+    attributes:
+      label: "対象ユーザー・アクター (Who)"
+      description: "この機能は誰のためのものですか？ どのような立場のユーザーが使用しますか？"
+      placeholder: "例: スライド作成者、登壇者、AIエージェントと協調して発表資料を作成するコンサルタント。"
+    validations:
+      required: true
 
   - type: textarea
     id: problem
     attributes:
-      label: "関連する課題・背景 (Why & Who)"
-      description: "現在どのような課題や不便がありますか？ 誰にとっての機能ですか？"
-      placeholder: "例: スライド作成者として、発表者用ノート（Speaker Notes）をMarkdown内に記述してPDF/PPTX出力時にも保持したい。"
+      label: "関連する課題・背景 (Why)"
+      description: "現在どのような課題や不便がありますか？ なぜこの機能や変更が必要ですか？"
+      placeholder: "例: 発表者用ノート（Speaker Notes）をMarkdown内に記述しても、PDF/PPTX出力時に保持されず手作業での再入力が発生してしまう。"
     validations:
       required: true
 

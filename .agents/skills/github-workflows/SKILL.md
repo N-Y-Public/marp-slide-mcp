@@ -25,7 +25,7 @@ description: Automate GitHub Issue drafting, branch naming convention enforcemen
 コントリビューターまたはAIがIssueを起票する際、`.github/ISSUE_TEMPLATE/` 配下の公式Issue Formsを読み込み、適切なドラフトMarkdownを自動生成する。
 
 - **バグ報告**: `bug_report.yml` の構造に沿って、問題概要、再現手順、期待される挙動、動作環境、ログ（マスク済み）を整理。
-- **機能要望**: `feature_request.yml` の構造に沿って、Why & Who（背景と課題）、What（提案機能）、代替案を整理。
+- **機能要望**: `feature_request.yml` の構造に沿って、Who（対象ユーザー・アクター）、Why（背景と課題）、What（提案機能）、代替案を整理。
 - **ドキュメント改善**: `documentation.yml` の構造に沿って、対象文書と改善内容を整理。
 
 ### 2.2 ブランチ命名規則の自動導出

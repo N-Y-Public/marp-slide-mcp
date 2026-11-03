@@ -305,6 +305,7 @@ VS Codeのグローバルユーザー設定またはプロファイル設定内�
 ### 5.3 EXT-DOC-001: GitHub テンプレートおよびコントリビューション規約 I/F
 - **Issue Forms & PR Template (`.github/`)**:
   - `bug_report.yml`, `feature_request.yml`, `documentation.yml` による構造化入力と空Issue抑止（`blank_issues_enabled: false`）。
+  - `feature_request.yml` においては、対象ユーザー（Who）と課題・背景（Why）を独立した必須入力枠として分離配置し、起票時点でのユーザーストーリー構造化を強制。
   - `pull_request_template.md` による変更概要・検証結果・機密除外チェックリストの提示。
 - **ブランチ運用規約 (`CONTRIBUTING.md`)**:
   - ブランチ名形式: `{種別}/{アカウント名またはAI名}/issue-{issue番号}/{作業説明ケバブケース}`
