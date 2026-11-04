@@ -108,7 +108,7 @@ Google Antigravity 2.0 で「Worktree」を選択して新しいセッション�
 本プロジェクトは、**PBI駆動アジャイル（マクロ）** と **IPA共通フレーム2013（SLCP-JCF2013）品質ゲート（ミクロ）** を採用しています。
 
 1. **PBI起点の開発**:
-   - 機能追加や仕様変更は、`docs/backlog/todo/PBI-xxx_*.md`（雛形: `docs/templates/98_pbi_template.md`）の作成から開始します。
+   - 機能追加や仕様変更は、`docs/backlog/todo/PBI-xxx_*.md`（雛形: `docs/templates/tpl_98_pbi_template.md`）の作成から開始します。
 2. **設計書の差分更新（Living Documentation）**:
    - ゼロから巨大な別個の設計書を作るのではなく、既存のマスター設計書（`docs/01_requirements/`, `docs/02_basic_design/`, `docs/03_detail_design/` 等）に対して差分を追記・更新します。
 3. **全行直上平易コメント規則**:

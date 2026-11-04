@@ -102,7 +102,7 @@ flowchart LR
 
 > [!IMPORTANT]
 > **PBI駆動・実装前設計書差分レビュー強制原則 (PBI Pre-Implementation Design Gate)**:
-> **実装コード（`src/`, `pptx_converter/`, `themes/`, `marp.config.js`）の変更は、対象となる `PBI-xxx.md` が存在し、かつそのPBIに対応する詳細設計書（`docs/03_detail_design/` または `docs/templates/05_software_design.md`）の差分更新が完了している場合のみ許可する。**
+> **実装コード（`src/`, `pptx_converter/`, `themes/`, `marp.config.js`）の変更は、対象となる `PBI-xxx.md` が存在し、かつそのPBIに対応する詳細設計書（`docs/03_detail_design/` または `docs/legacy/templates/05_software_design.md`）の差分更新が完了している場合のみ許可する。**
 > - **Living Documentation（差分更新原則）**: PBIごとにゼロから巨大な設計書を作るのではなく、既存のマスター設計書に対してPBI単位で差分を追記・更新する。
 > - **PBI種別テーラリング**: `feature`（全工程実施）、`enhancement`（影響設計書の差分更新＋実装＋テスト＋RTM）、`bugfix`（原因特定・詳細設計乖離確認＋修正実装＋回帰テスト＋RTM、方式設計はスキップ可）。
 > - **越境ルール**: 宣言された現在工程の外の作業を行う必要がある場合は、黙って越境せず、必ずユーザー（承認者）へ「現在の工程はXですが、工程Yの作業へ越境しますか？」と確認し、合意と理由を記録してから着手すること。
@@ -113,8 +113,8 @@ flowchart LR
    - PBIの受入基準（AC）および機能要件（`REQ-F-xxx` / `REQ-FNC-xxx`）は、`Given（前提）/ When（操作）/ Then（観測可能な期待結果）` 形式で記述する。「適切に」「速やかに」「使いやすく」等の曖昧表現は禁止する。
 2. **曖昧さ4分類の検出とエスカレーション**:
    - 要件や仕様に **【未定義】【多義】【暗黙】【矛盾】** を発見した場合は、AIの独断で仕様を捏造せず、推奨案付きの選択肢形式でユーザーへ確認を行う。
-3. **仮定マーカー (`【仮定: Q-xxx】`)**:
-   - 未確定事項を残したまま暫定進行が承認された場合は、PBI・設計書・テスト仕様書・コードコメントの該当箇所に `【仮定: Q-xxx】` を明記し、確定時に機械検索（grep）で確実に巻き戻せる状態を保つ。仮定の多段積みは最大2段までとし、3段目は必ず人間へエスカレーションする。
+3. **仮定マーカー (`【仮定: ASM-NNN】`)**:
+   - 未確定事項を残したまま暫定進行が承認された場合は、PBI・設計書・テスト仕様書・コードコメントの該当箇所に `【仮定: ASM-NNN】` を明記し、確定時に機械検索（grep）で確実に巻き戻せる状態を保つ。仮定の多段積みは最大2段までとし、3段目は必ず人間へエスカレーションする。
 
 ### 4.3 Quality Gates (QCD基準) & Separation of Concerns
 
@@ -133,12 +133,12 @@ flowchart LR
 | 工程 / 領域 | スキル名 (`.agents/skills/`) | 役割・責務 | 参照・更新対象テンプレート (`docs/templates/`) | 既存成果物配置先 (`docs/`) |
 | :--- | :--- | :--- | :--- | :--- |
 | **工程統制ルール** | `@[ipa-process-gate](.agents/rules/ipa-process-gate.md)` | PBI駆動V字/W字工程順序の強制、実装前設計差分ゲート判定、越境管理、QCD基準審査 | 全テンプレート共通 | `docs/README.md` |
-| **0. PBI統制司令塔** | `ipa-pbi-orchestrator` | PBI起票・解析、種別テーラリング、Step 1〜5（要件→設計差分→実装→テスト→RTM）の直列実行 | `98_pbi_template.md` | `docs/backlog/{todo,in_progress,done}/` |
-| **1. 要件定義(差分)** | `ipa-requirements-analyst` | PBIに基づく業務/機能要件（`REQ-F-*`）・AC差分追記、IPA非機能要求グレード6大項目定義 | `01_business_requirements.md`<br>`02_functional_requirements.md`<br>`03_non_functional_requirements.md` | `docs/01_requirements/` |
-| **2. 方式設計(差分)** | `ipa-system-architect` | システム構成（Mermaid）、基盤環境、外部I/F差分更新、エラーコード空間閉鎖、方式審査 | `04_system_architecture.md`<br>`05_software_design.md` (方式部) | `docs/02_basic_design/` |
-| **3. 詳細設計(差分)** | `ipa-detail-designer` | ER図・データモデル、モジュール分割（`MOD-*`）、内部I/F・処理論理の差分更新、規約準拠実装 | `05_software_design.md` | `docs/03_detail_design/` |
-| **4. 品質保証・テスト** | `ipa-qa-engineer` | PBI受入基準（AC）に基づく単体/結合/総合テスト仕様（`TEST-*`）差分策定、数値サマリー記録 | `06_test_specification.md` | `docs/04_test/` (新規作成時) |
-| **5. 追跡性検証** | `ipa-traceability-validator` | `PBI` ↔ `REQ` ↔ `MOD` ↔ `TEST` の双方向RTM更新・`verify_rtm.py` による機械的整合性検証 | `99_traceability_matrix.md` | `docs/README.md` (第3章) |
+| **0. PBI統制司令塔** | `ipa-pbi-orchestrator` | PBI起票・解析、種別テーラリング、Step 1〜5（要件→設計差分→実装→テスト→RTM）の直列実行 | `tpl_98_pbi_template.md` | `docs/backlog/{todo,in_progress,done}/` |
+| **1. 要件定義(差分)** | `ipa-requirements-analyst` | PBIに基づく業務/機能要件（`REQ-FNC-*`）・AC差分追記、IPA非機能要求グレード6大項目定義 | `tpl_01_requirements_specification.md` | `docs/01_requirements/` |
+| **2. 方式設計(差分)** | `ipa-system-architect` | システム構成（Mermaid）、基盤環境、外部I/F差分更新、エラーコード空間閉鎖、方式審査 | `tpl_01_system_architecture_design.md` | `docs/02_basic_design/` |
+| **3. 詳細設計(差分)** | `ipa-detail-designer` | ER図・データモデル、モジュール分割（`MOD-*`）、内部I/F・処理論理の差分更新、規約準拠実装 | `tpl_01_software_structure_design.md` | `docs/03_detail_design/` |
+| **4. 品質保証・テスト** | `ipa-qa-engineer` | PBI受入基準（AC）に基づく単体/結合/総合テスト仕様（`TEST-*`）差分策定、数値サマリー記録 | `tpl_01_test_specification.md` | `docs/04_test/` |
+| **5. 追跡性検証** | `ipa-traceability-validator` | `PBI` ↔ `REQ` ↔ `MOD` ↔ `TEST` の双方向RTM更新・`verify_rtm.py` による機械的整合性検証 | `tpl_01_traceability_matrix.md` | `docs/05_traceability/` |
 | **プレゼン生成** | `marp-slides` | 設計図書・要件定義・レビュー報告書のMBB標準Marpスライド自動生成・PDF/PPTX出力 | `templates/スライド*_テンプレ.md` | `slides/` |
 
 ---
@@ -178,3 +178,5 @@ Antigravity 2.0 はタスクごとに独立した Git Worktree を作成して�
 3. **ユーザーへの再開・確認案内**:
    - ユーザーが Antigravity IDE 側でスムーズに成果物を確認できるよう、対象ブランチ名および IDE での確認手順を回答内に明確に案内すること。
 
+
+> **設計図書の記述規約**: 設計図書の記述は `docs/00_project_charter/03_documentation_standard.md`（`DOC-GOV-003`）と `docs/00_project_charter/04_id_numbering_rules.md`（`DOC-GOV-004`）に従い、図書別の章構造は `docs/templates/tpl_*.md` を正本とする。規約適合は `verify_doc_syntax.py`（`verify_rtm.py` から呼び出し）で機械検査する。

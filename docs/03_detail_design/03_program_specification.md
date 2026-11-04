@@ -1,10 +1,12 @@
 ---
 id: DOC-DD-003
-title: プログラム仕様書 (Program Specification)
+title: プログラム仕様書
+doc_type: detail_design
 version: 1.0.0
 status: Approved
-date: 2026-10-05
+date: 2026-11-04
 author: N-Y-Public
+doc_standard: DOC-GOV-003@1.0.0
 tags:
   - detail-design
   - program-specification
@@ -12,324 +14,427 @@ tags:
   - implementation
 ---
 
-# プログラム仕様書 (Program Specification)
+# 1 本書の位置づけ
 
-本ドキュメントは、「**marp-slide-mcp (Marp スライド作成環境)**」を構成する各プログラムファイルの詳細処理論理、アルゴリズム、制御構造、および例外処理仕様を定義する詳細設計書である。
+## 1.1 目的
+「marp-slide-mcp」を構成する各プログラムファイルの詳細処理論理、アルゴリズム、制御構造、および例外処理仕様を定める。
 
----
+## 1.2 記述対象
+記述対象は [[03_documentation_standard#2.1 図書一覧|図書一覧]] の本書の行に従う。
 
-## 1. プログラム一覧
+## 1.3 記述対象外と参照先
+- 入出力の形式: [[06_data_structure_specification#2 データ構造|データ構造]]、[[05_file_format_specification#2 ファイル形式|ファイル形式]]
+- モジュール構成: [[01_software_structure_design#2 モジュール構成|モジュール構成]]
+- 外部I/F仕様: [[03_external_interface_specification#2 外部インターフェース|外部インターフェース]]
+- 内部I/F仕様: [[02_internal_interface_specification#2 内部インターフェース|内部インターフェース]]
 
-| プログラムID | ファイルパス | 種別 | 責務概要 |
-| :--- | :--- | :---: | :--- |
-| **PRG-SRV-001** | `src/index.ts` | TypeScript | MCPサーバー本体（Stdio通信、スライドCRUD、PDF出力、パス自動解決） |
-| **PRG-ENG-001** | `marp.config.js` | JavaScript | カスタムMarpエンジン（目次生成プラグイン、Markdown-itトークン操作） |
-| **PRG-PPT-001** | `pptx_converter/convert.js` | JavaScript | PPTX変換スクリプト（PuppeteerによるDOM計測、PptxGenJS生成） |
-| **PRG-THM-001** | `themes/business-slide-theme.css` | CSS | ビジネステーマスタイル（アンカー非表示・絶対配置、自動リサイズ） |
-| **PRG-SKL-001** | `.agents/skills/github-workflows/SKILL.md` | Skill / Markdown | GitHub運用支援スキル（Issue起票、ブランチ命名規則、PR文面自動生成） |
+## 1.4 改版履歴
+| 版 | 日付 | 起因PBI | 変更概要 |
+| :--- | :--- | :--- | :--- |
+| 1.0.0 | 2026-11-04 | PBI-016 | 初版作成（DOC-GOV-003およびDOC-GOV-004準拠） |
 
----
+# 2 プログラム
 
-## 2. PRG-SRV-001: MCP サーバー (`src/index.ts`) 仕様
+## 2.1 PRG-SRV-001 MCPサーバー本体
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[01_software_structure_design#2.1 MOD-SRV-001 MCPサービスモジュール|MOD-SRV-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
+| 実装ファイル | `src/index.ts` |
+| 所属モジュール | `MOD-SRV-001` |
 
-### 2.1 環境初期化および Chromium 探索アルゴリズム
-Puppeteer や Marp CLI が必要とする Chromium 実行可能バイナリを、環境差分（Windows, Linux, Docker Dev Container）に依存せず確実に特定するため、以下の4段階フォールバック探索を行う。
+### 2.1.1 FN-SRV-001 resolveChromiumPath
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[#2.1 PRG-SRV-001 MCPサーバー本体|PRG-SRV-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
 
-```mermaid
-flowchart TD
-    A[環境変数 CHROME_PATH の存在確認] -->|設定あり| Z[探索完了: CHROME_PATH 採用]
-    A -->|未設定| B[Puppeteer 内蔵パス puppeteer.executablePath 取得]
-    B -->|ファイル存在| C[CHROME_PATH へ設定] --> Z
-    B -->|存在しない| D[Linux Puppeteer キャッシュ探索<br>/home/node/.cache/puppeteer/chrome]
-    D -->|バージョンディレクトリ走査 & 存在| E[CHROME_PATH へ設定] --> Z
-    D -->|存在しない| F{Linux かつ /usr/bin/chromium 存在?}
-    F -->|Yes| G[CHROME_PATH = '/usr/bin/chromium'] --> Z
-    F -->|No| H[探索終了: 未設定のまま続行]
-```
+#### 2.1.1.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| なし | - | 入力引数は存在しない | - | - |
 
-### 2.2 主要ツールの処理論理
+#### 2.1.1.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-SRV-001-OUT01` | 解決済みパス | 検出したChromium実行バイナリの絶対パス | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
 
-#### 1. `generate_slide_deck`
-1. 入力パラメータ（`SlideDeckSchema`）を Zod で検証。
-2. `filenamePrefix` が未指定の場合、`DOC-YYYYMMDD-UUID` 形式で一意なファイル名を採番。
-3. `slides/<filename>/` ディレクトリを `ensureOutputDir` で作成。
-4. `generateMarpMarkdown(deck)` を呼び出し、Marp 互換 Markdown テキストを生成。
-   - 通常スライドが0枚（`deck.normalSlides.length === 0`）の場合は、表紙直後の区切り線（`\n---\n`）を出力せず、単一ページ構成として出力する。
-5. ディレクトリ内に `<filename>.md` として保存。
-6. 同時に、後続のプログラム解析用に構造化データを `<filename>.json` としてキャッシュ保存。
-7. 生成成功メッセージとファイルパスを返却。
+#### 2.1.1.3 処理論理
+1. 環境変数 `CHROME_PATH` の存在を確認する。設定済みの場合はその値を返却する。
+2. Puppeteer内蔵パス `puppeteer.executablePath()` を取得し、ファイルが存在する場合はその値を返却する。
+3. Linux環境の場合、Puppeteerキャッシュディレクトリ（`~/.cache/puppeteer/chrome`）を走査し、実行可能バイナリが存在する場合はその値を返却する。
+4. Linux環境かつ `/usr/bin/chromium` が存在する場合はその値を返却する。
+5. いずれの条件にも合致しない場合は空文字列を返却する。
 
-#### 2. `get_slide_deck`
-1. 指定された `filePath` の存在を確認し、ファイルを非同期読込。
-2. `parseMarpMarkdown(content)` を呼び出し、フロントマターと各スライドの Markdown ブロックを抽出。
-3. 各スライドのタイトル、主張、本文を正規表現で解析し、構造化 JSON として返却。
+#### 2.1.1.4 異常系
+| 条件 | エラーコード | 動作 |
+| :--- | :--- | :--- |
+| Chromiumバイナリ未検出 | `ERR-ENV-001` | 空文字列を返却し、後続のPDF出力処理へ委ねる |
 
-#### 3. `insert_slide` / `update_slide` / `delete_slide`
-1. 対象ファイルを読み込み、スライド単位で分割。
-2. 指定インデックス（`index`）の妥当性をチェック（表紙 `index === 0` に対する不当操作を防止）。
-3. 挿入時は `splice(index, 0, newSlideMarkdown)`、更新時は `splice(index, 1, updatedMarkdown)`、削除時は `splice(index, 1)` を実行。
-4. スライド群を `\n---\n` で再結合し、アトミックにファイルへ書き戻し。
+### 2.1.2 FN-SRV-002 generateSlideDeck
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[#2.1 PRG-SRV-001 MCPサーバー本体|PRG-SRV-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
 
-#### 4. `export_to_pdf`
-1. 入力ファイルパスの存在を検証。
-2. 出力パスが未指定の場合、同一ディレクトリ内の `.pdf` パスを生成。
-3. Marp Core / CLI を非同期プロセス（`child_process`）として呼び出し、Marp エンジン経由でレンダリング。
-4. 成功時は出力先パスを返却し、失敗時は標準エラー出力をキャプチャしてエラー応答。
+#### 2.1.2.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-SRV-002-IN01` | スライド定義 | スライドデッキの全構造データ | 必須 | [[06_data_structure_specification#2.1 DAT-TYP-001 SlideDeck|DAT-TYP-001]] |
 
----
+#### 2.1.2.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-SRV-002-OUT01` | 生成結果情報 | 生成したファイルのパスと確認メッセージ | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
 
-## 3. PRG-ENG-001: カスタム Marp エンジン (`marp.config.js`) 仕様
+#### 2.1.2.3 処理論理
+1. 入力パラメータをZodスキーマで検証する。
+2. `filenamePrefix` が未指定の場合、`DOC-YYYYMMDD-UUID` 形式で一意なファイル名を採番する。
+3. 出力ディレクトリ `slides/<filename>/` を作成する。
+4. `generateMarpMarkdown(deck)` を呼び出し、Marp互換Markdownテキストを生成する。通常スライドが0枚の場合は表紙直後の改ページ区切り線を出力しない。
+5. ディレクトリ内に `<filename>.md` として保存する。
+6. 後続処理用に構造化データを `<filename>.json` としてキャッシュ保存する。
+7. 生成成功メッセージとファイルパスを返却する。
 
-### 3.1 目次（TOC）自動生成アルゴリズム (`marp_toc`)
+#### 2.1.2.4 異常系
+| 条件 | エラーコード | 動作 |
+| :--- | :--- | :--- |
+| スキーマ検証失敗 | `ERR-VAL-001` | エラーメッセージを返却する |
+| ファイル書込失敗 | `ERR-SYS-001` | 未定義エラーとして例外を捕捉し通知する |
 
-```mermaid
-flowchart TD
-    Start[トークン列走査開始] --> Loop[トークン走査 i = 0 to length]
-    Loop --> CheckSlideOpen{marpit_slide_open?}
-    CheckSlideOpen -- Yes --> IncSlide[スライド番号+1<br>クラスに toc 含むか判定]
-    CheckSlideOpen -- No --> CheckHeading{h1 かつ !isTocSlide?}
-    
-    CheckHeading -- Yes --> ExtractTitle[直後インラインからタイトル取得<br>直後 paragraph_open から表題取得<br>headings 配列に追加]
-    CheckHeading -- No --> NextToken[次トークンへ]
-    
-    ExtractTitle --> NextToken
-    IncSlide --> NextToken
-    NextToken --> Loop
+### 2.1.3 FN-SRV-003 getSlideDeck
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[#2.1 PRG-SRV-001 MCPサーバー本体|PRG-SRV-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
 
-    Loop -- 走査完了 --> CheckTOC{目次スライド存在 & headings >= 1?}
-    CheckTOC -- No --> End[終了: 変更なし]
-    CheckTOC -- Yes --> BuildTOC[1. 元目次スライドからヘッダー設定抽出（任意）<br>2. 12項目ごとにページ分割判定<br>3. タイトル + ドットリーダー + ページ番号トークン生成<br>4. tokens.splice で元目次スライドを置換]
-    BuildTOC --> End
-```
+#### 2.1.3.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-SRV-003-IN01` | ファイルパス | 読込対象スライドMarkdownの相対パス | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
 
-### 3.2 複数スライド分割およびページ番号シフト論理
-1. **フック登録位置**: `md.core.ruler.after('marpit_directives_parse', 'marp_toc', ...)` により、`marpit_inline_svg`・`marpit_directives_apply`・`marpit_header_and_footer`・`marpit_collect` の前段で実行する（`state.inlineMode` 時はスキップ）。
-2. **スライド分割閾値**: 1スライドあたり最大 12 項目（`ITEMS_PER_SLIDE = 12`）。
-3. 収集された `headings.length > 12` の場合、12項目ごとに `marpit_slide_open`（クラス `toc`・ディレクティブ継承、`meta.marpitSlideElement = 1`、`id` 属性設定）および `marpit_slide_close`（`meta.marpitSlideElement = -1`）を生成し、元の目次スライド内のヘッダー/フッターおよび `h6`（コピーライト・機密指定）トークンを全目次ページへ複製注入する。
-4. 目次スライドが `N` 枚に分割された場合（`totalAddedSlides = Math.ceil(headings.length / 12)`）、目次以降の全スライドの `meta.marpitSlide`・`meta.marpitSlideTotal`・`id` 属性および実ページ番号（`data-marpit-pagination`）は `+(totalAddedSlides - 1)` シフトされる。
-5. リンク先アンカー（`href="#N"`）および表示ページ番号（`.toc-page`）にシフト値を反映し、後続の `marpit_inline_svg` によるSVGページ分割およびリンク整合性を完全に担保する。
-6. **長文タイトルの自動折り返し・見切れ防止**: `themes/business-slide-theme.css` において目次項目の `<a>` 要素に `white-space: normal`, `overflow-wrap: anywhere`, `word-break: break-word` を指定し、スライド幅（1280px）に対してタイトルが長い場合でも省略記号で切り捨てず複数行へ折り返し、Flexboxのベースライン整列により最終行末尾にドットリーダー線とページ番号を連結する。
+#### 2.1.3.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-SRV-003-OUT01` | スライド構造データ | 解析されたスライド構成データ | 必須 | [[06_data_structure_specification#2.1 DAT-TYP-001 SlideDeck|DAT-TYP-001]] |
 
-### 3.3 表・コードブロック静的リサイズにおける手動クラス優先論理（Issue #12 是正）
-1. **背景・課題**: `marp.config.js` の Markdown-it プラグインでは、表およびコードブロックの行数・文字数推定による静的フォントサイズ縮小 `<style>section[id="..."] ... { font-size: ... !important; }</style>` をインライン注入する。このインラインスタイルが `id` セレクタおよび `!important` を伴うため、スライドに手動クラス（`table-1`〜`10`, `table-sm` 等や `code-1`〜`10`）が指定されている場合でも自動計算値が強制上書きされ、手動クラスが無効化される不具合が存在した。
-2. **手動クラス優先判定**:
-   - `marpit_slide_open` トークン走査時、スライドディレクティブの `class` 文字列を解析。
-   - 表クラス検出: `slideClasses.some(c => /^table-(\d+|xl|lg|md|sm|xs|xxs)$/.test(c))` が真の場合、当該スライド内の表に対する自動リサイズ `<style>` 注入をスキップし、テーマCSSの手動クラスを100%優先する。
-   - コードクラス検出: `slideClasses.some(c => /^code-(\d+|xl|lg|md|sm|xs|xxs)$/.test(c))` が真の場合、当該スライド内のコードブロックに対する自動リサイズ `<style>` 注入をスキップし、テーマCSSの手動クラスを100%優先する。
-3. **セル継承保護**: `themes/business-slide-theme.css` の `section table th, section table td` に `font-size: inherit !important; line-height: inherit !important;` を付与し、親 `table` のサイズ指定がセル内へ確実に浸透することを保証する。
+#### 2.1.3.3 処理論理
+1. 指定されたファイルパスの存在を確認し、ファイルを非同期読込する。
+2. フロントマターと各スライドのMarkdownブロックを抽出する。
+3. 各スライドのタイトル、主張、本文を解析し、構造化JSONとして返却する。
 
----
+#### 2.1.3.4 異常系
+| 条件 | エラーコード | 動作 |
+| :--- | :--- | :--- |
+| ファイルが存在しない | `ERR-NOT-001` | 不在エラーメッセージを返却する |
+| パス解析失敗 | `ERR-VAL-001` | 検証エラーメッセージを返却する |
 
-## 4. PRG-PPT-001: PPTX 変換スクリプト (`pptx_converter/convert.js`) 仕様
+### 2.1.4 FN-SRV-004 insertSlide
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[#2.1 PRG-SRV-001 MCPサーバー本体|PRG-SRV-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
 
-### 4.1 変換パイプライン処理フロー
-1. **初期化**:
-   - `INPUT_MD` の存在確認。
-   - `THEME_CSS = 'themes/business-slide-theme.css'` の設定。
-   - `SCREEN_WIDTH = 960`, `SCREEN_HEIGHT = 720`, `PX_TO_INCH = 1 / 96` を定義。
-2. **中間HTMLレンダリング**:
-   - `npx marp "${INPUT_MD}" --html --allow-local-files --theme-set "${THEME_CSS}" -o "${TEMP_HTML}"` を実行。
-3. **Puppeteer による DOM スキャン**:
-   - Chromium をヘッドレスモードで起動。
-   - `page.goto('file://' + TEMP_HTML)` により完全レンダリングを待機。
-   - 各スライド `section` の子ノードを再帰走査：
-     - `nodeType === 3`（テキストノード）: 親要素のスタイル（フォント名、サイズpt、色、Bold、位置）を抽出。
-     - `tagName === 'TABLE'`: 行・列・セル結合・境界線を抽出。
-     - `tagName === 'IMG'` / `SVG`: 画像データURIまたはローカルパス、位置を抽出。
-     - 背景色を持つコンテナ: オートシェイプ矩形情報を抽出。
-4. **PptxGenJS オブジェクト描画**:
-   - `new PptxGenJS()` を初期化し、4:3 / 16:9 レイアウトを定義。
-   - スキャンした要素群を座標（インチ単位）変換して `slide.addText()`, `slide.addShape()`, `slide.addTable()`, `slide.addImage()` で配置。
-5. **後処理**:
-   - `pptx.writeFile({ fileName: OUTPUT_PPTX })` を実行。
-   - `fs.unlinkSync(TEMP_HTML)` により中間一時ファイルを削除。
+#### 2.1.4.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-SRV-004-IN01` | ファイルパス | 対象スライドファイルの相対パス | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
+| `FN-SRV-004-IN02` | 挿入位置インデックス | スライドを挿入する1始まりの位置 | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
+| `FN-SRV-004-IN03` | スライドデータ | 挿入するスライドの構成定義 | 必須 | [[06_data_structure_specification#2.3 DAT-TYP-003 NormalSlide|DAT-TYP-003]] |
 
----
+#### 2.1.4.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-SRV-004-OUT01` | 処理結果メッセージ | 挿入完了通知メッセージ | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
 
-## 5. PRG-THM-001: ビジネステーマスタイル (`business-slide-theme.css`) 仕様
+#### 2.1.4.3 処理論理
+1. 対象ファイルを読み込み、スライド単位で分割する。
+2. 指定インデックスの妥当性を検証する（0以下の値は拒否する）。
+3. 指定位置に新しいスライドのMarkdownテキストを挿入する。
+4. 全スライドを区切り線で再結合し、ファイルを更新保存する。
 
-### 5.1 CSS 変数およびカスケード構造
-```css
-:root {
-  /* 基底テーマカラー（デフォルト: コーポレートブルー） */
-  --primary-color: var(--theme-color, #1f497d);
-  /* 会話吹き出し背景（primary-colorを40%白と混合） */
-  --bubble-bg-color: color-mix(in srgb, var(--primary-color) 40%, white);
-  /* 吹き出し文字色 */
-  --bubble-text-color: #222222;
-  /* 表紙バナー（Base64 SVG埋め込み） */
-  --banner-image: url('data:image/svg+xml;base64,...');
-}
-```
+#### 2.1.4.4 異常系
+| 条件 | エラーコード | 動作 |
+| :--- | :--- | :--- |
+| インデックス範囲外 | `ERR-RNG-001` | 範囲外エラーメッセージを返却する |
+| ファイル書込失敗 | `ERR-SYS-001` | 未定義エラーとして例外を通知する |
 
-### 5.2 見出しアンカー駆動の配置ルール
-- `section h1, section h2, section h3, section h4, section h5, section h6`:
-  - `visibility: hidden; height: 0; margin: 0; padding: 0;` により非表示化。
-- 直後の要素に対する配置ルール：
-  - `section:not(.title-slide) h1 ~ p:first-of-type`: スライドタイトル（`position: absolute; top: 25px; left: 20px; font-size: 22pt; font-weight: bold;`）。
-  - `section:not(.title-slide) h2 ~ p:first-of-type`: 主張欄（`position: absolute; top: 80px; left: 20px; width: calc(100% - 40px); background: #f2f2f2; border-left: 8px solid var(--primary-color);`）。
-  - `section:not(.title-slide) h3 ~ p:first-of-type`: 図表タイトル（`position: absolute; top: 165px; left: 0; width: 100%; text-align: center; font-size: 13pt;`）。
-  - `section:not(.title-slide) h5 ~ p:first-of-type`: 出典・脚注（`position: absolute; bottom: 45px; right: 20px; font-size: 11pt; color: #666666;`）。
+### 2.1.5 FN-SRV-005 updateSlide
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[#2.1 PRG-SRV-001 MCPサーバー本体|PRG-SRV-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
 
-### 5.2.1 表紙レイアウトと複数行タイトルはみ出し防止機構 (`MOD-THM-001`)
-- **下部メタ情報（所属・氏名、作成日、図書番号）の絶対配置固定**:
-  - `section[data-marpit-pagination="1"]` 内の下部メタ情報要素を `position: absolute` でスライド下部（フッター帯境界 680px の手前、y=520px〜670px）に固定配置。
-  - 作成日 (`h4+*`): `position: absolute !important; bottom: 50px !important; left: 50px !important;`
-  - 所属・氏名 (`h3:last-of-type+*`): `position: absolute !important; bottom: 85px !important; left: 50px !important;`
-  - 図書番号 (`h3:first-of-type+*`): `position: absolute !important; bottom: 85px !important; right: 50px !important;`
-  - これにより、上部のタイトルやサブタイトルの文字数・行数に影響されず、下部メタ情報がスライド下端（720px）外へ押し出される物理現象を防止する。
-- **タイトル・サブタイトルの適応的余白・フォントサイズ段階縮小**:
-  - タイトル領域の上部マージン（`margin-top`）を、行数に応じて動的に最適化。
-  - 1行タイトル（デフォルト）: `margin-top: 220px; font-size: 36pt; line-height: 1.3;`
-  - 2行タイトル（`h1+p:has(br)`）: `margin-top: 180px; font-size: 30pt; line-height: 1.25;`
-  - 3行以上タイトル（`h1+p:has(br + br)`）: `margin-top: 150px; font-size: 24pt; line-height: 1.2;`、サブタイトルマージン `margin-top: 12px;`
-  - 4行以上タイトル（`h1+p:has(br + br + br)`）: `margin-top: 130px; font-size: 20pt; line-height: 1.15;`、サブタイトルマージン `margin-top: 8px;`
-  - これにより、バナー（height: 100px）下から下部メタ情報上端（y=500px）までの利用可能領域内でタイトル・サブタイトルが完全に収まり、重複も回避される。
+#### 2.1.5.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-SRV-005-IN01` | ファイルパス | 対象スライドファイルの相対パス | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
+| `FN-SRV-005-IN02` | 更新位置インデックス | 更新対象のスライド位置 | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
+| `FN-SRV-005-IN03` | スライドデータ | 更新後のスライド構成定義 | 必須 | [[06_data_structure_specification#2.3 DAT-TYP-003 NormalSlide|DAT-TYP-003]] |
 
-### 5.3 自動リサイズ機構の実装
-#### 5.3.1 10段階統一数字クラスおよび手動オーバーライド仕様
-各要素（表、本文、Mermaid図、画像、コードブロック）に対して、`{要素名}-1` 〜 `{要素名}-10` の10段階クラスを導入する。
-1を最大（標準・余裕）とし、数字が増えるにつれて段階縮小し、10は従来の最小限界値よりさらに2段階小さい極小サイズとする。
+#### 2.1.5.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-SRV-005-OUT01` | 処理結果メッセージ | 更新完了通知メッセージ | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
 
-1. **テーブル（`section.table-1` 〜 `section.table-10`）**:
-   - `table-1`: `--tbl-fs-rows: 26pt !important; --tbl-fs-cols: 26pt !important;`
-   - `table-2`: `--tbl-fs-rows: 22pt !important; --tbl-fs-cols: 22pt !important;` (旧 `table-lg` 相当)
-   - `table-3`: `--tbl-fs-rows: 19pt !important; --tbl-fs-cols: 19pt !important;`
-   - `table-4`: `--tbl-fs-rows: 16.5pt !important; --tbl-fs-cols: 16.5pt !important;`
-   - `table-5`: `--tbl-fs-rows: 14pt !important; --tbl-fs-cols: 14pt !important;`
-   - `table-6`: `--tbl-fs-rows: 12pt !important; --tbl-fs-cols: 12pt !important;`
-   - `table-7`: `--tbl-fs-rows: 10pt !important; --tbl-fs-cols: 10pt !important; --tbl-pad: 2px 5px !important;` (旧 `table-xs` 相当)
-   - `table-8`: `--tbl-fs-rows: 8pt !important; --tbl-fs-cols: 8pt !important; --tbl-pad: 1px 4px !important; --tbl-lh: 1.15 !important;` (旧 `table-xxs` 相当)
-   - `table-9`: `--tbl-fs-rows: 7pt !important; --tbl-fs-cols: 7pt !important; --tbl-pad: 1px 3px !important; --tbl-lh: 1.12 !important;` (旧最小より1段階小)
-   - `table-10`: `--tbl-fs-rows: 6pt !important; --tbl-fs-cols: 6pt !important; --tbl-pad: 1px 2px !important; --tbl-lh: 1.1 !important;` (旧最小より2段階小)
-   - 後方互換性エイリアス: `table-xl` (28pt), `table-lg` (22pt), `table-md` (18pt), `table-sm` (13pt), `table-xs` (10pt), `table-xxs` (8pt) を維持。
+#### 2.1.5.3 処理論理
+1. 対象ファイルを読み込み、スライド単位で分割する。
+2. 指定インデックスの妥当性を検証する。
+3. 指定位置のスライドテキストを更新後の内容で置換する。
+4. 全スライドを再結合し、ファイルを更新保存する。
 
-2. **本文テキスト（`section.text-1` 〜 `section.text-10` / `section.body-1` 〜 `section.body-10`）**:
-   - `text-1` / `body-1`: `--txt-scale: 1.0 !important;` (旧 `roomy` 相当)
-   - `text-2` / `body-2`: `--txt-scale: 0.92 !important;`
-   - `text-3` / `body-3`: `--txt-scale: 0.84 !important;`
-   - `text-4` / `body-4`: `--txt-scale: 0.76 !important;` (旧 `dense` 相当)
-   - `text-5` / `body-5`: `--txt-scale: 0.68 !important;`
-   - `text-6` / `body-6`: `--txt-scale: 0.60 !important;` (旧 `denser` 相当)
-   - `text-7` / `body-7`: `--txt-scale: 0.55 !important;`
-   - `text-8` / `body-8`: `--txt-scale: 0.50 !important;` (旧 `densest` 相当)
-   - `text-9` / `body-9`: `--txt-scale: 0.42 !important;` (旧最小より1段階小)
-   - `text-10` / `body-10`: `--txt-scale: 0.35 !important;` (旧最小より2段階小)
-   - 後方互換性エイリアス: `roomy` (1.0), `dense` (0.75), `denser` (0.6), `densest` (0.5) を維持。
+#### 2.1.5.4 異常系
+| 条件 | エラーコード | 動作 |
+| :--- | :--- | :--- |
+| インデックス範囲外 | `ERR-RNG-001` | 範囲外エラーメッセージを返却する |
+| ファイル書込失敗 | `ERR-SYS-001` | 未定義エラーとして例外を通知する |
 
-3. **Mermaid図（`section.mermaid-1` 〜 `section.mermaid-10`）**:
-   - `mermaid-1`: `max-height: var(--mmd-max-h, 440px) !important;` (100%)
-   - `mermaid-2`: `max-height: calc(var(--mmd-max-h, 440px) * 0.90) !important;`
-   - `mermaid-3`: `max-height: calc(var(--mmd-max-h, 440px) * 0.82) !important;`
-   - `mermaid-4`: `max-height: calc(var(--mmd-max-h, 440px) * 0.75) !important;` (旧 `mermaid-sm` 相当)
-   - `mermaid-5`: `max-height: calc(var(--mmd-max-h, 440px) * 0.68) !important;`
-   - `mermaid-6`: `max-height: calc(var(--mmd-max-h, 440px) * 0.60) !important;`
-   - `mermaid-7`: `max-height: calc(var(--mmd-max-h, 440px) * 0.55) !important;` (旧 `mermaid-xs` 相当)
-   - `mermaid-8`: `max-height: calc(var(--mmd-max-h, 440px) * 0.48) !important;`
-   - `mermaid-9`: `max-height: calc(var(--mmd-max-h, 440px) * 0.38) !important;` (旧最小より1段階小)
-   - `mermaid-10`: `max-height: calc(var(--mmd-max-h, 440px) * 0.28) !important;` (旧最小より2段階小)
-   - 後方互換性エイリアス: `mermaid-sm` (0.75), `mermaid-xs` (0.55) を維持。
+### 2.1.6 FN-SRV-006 deleteSlide
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[#2.1 PRG-SRV-001 MCPサーバー本体|PRG-SRV-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
 
-4. **画像（`section.img-1` 〜 `section.img-10` / `section.image-1` 〜 `section.image-10`）**:
-   - `img-1` / `image-1`: `max-height: 100% !important;`
-   - `img-2` / `image-2`: `max-height: 90% !important;`
-   - `img-3` / `image-3`: `max-height: 80% !important;`
-   - `img-4` / `image-4`: `max-height: 70% !important;`
-   - `img-5` / `image-5`: `max-height: 60% !important;`
-   - `img-6` / `image-6`: `max-height: 50% !important;`
-   - `img-7` / `image-7`: `max-height: 40% !important;`
-   - `img-8` / `image-8`: `max-height: 35% !important;`
-   - `img-9` / `image-9`: `max-height: 28% !important;`
-   - `img-10` / `image-10`: `max-height: 20% !important;`
+#### 2.1.6.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-SRV-006-IN01` | ファイルパス | 対象スライドファイルの相対パス | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
+| `FN-SRV-006-IN02` | 削除位置インデックス | 削除対象のスライド位置 | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
 
-5. **コードブロック（`section.code-1` 〜 `section.code-10`）**:
-   - `code-1`: `--code-fs-base: 18pt !important;` (旧 `code-lg` 相当)
-   - `code-2`: `--code-fs-base: 16pt !important;`
-   - `code-3`: `--code-fs-base: 14pt !important;` (基準値)
-   - `code-4`: `--code-fs-base: 12.5pt !important;`
-   - `code-5`: `--code-fs-base: 11pt !important;` (旧 `code-sm` 相当)
-   - `code-6`: `--code-fs-base: 9.5pt !important;`
-   - `code-7`: `--code-fs-base: 8pt !important;`
-   - `code-8`: `--code-fs-base: 7pt !important;` (旧 `code-xxs` 相当)
-   - `code-9`: `--code-fs-base: 6pt !important;` (旧最小より1段階小)
-   - `code-10`: `--code-fs-base: 5pt !important;` (旧最小より2段階小)
-   - 後方互換性エイリアス: `code-lg` (18pt), `code-sm` (11pt), `code-xs` (9pt), `code-xxs` (7pt) を維持。
+#### 2.1.6.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-SRV-006-OUT01` | 処理結果メッセージ | 削除完了通知メッセージ | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
 
-### 5.4 Adobe Acrobat Reader / Acrobat 互換PDFレンダリング・フォント埋め込み仕様 (Issue #18 是正)
-1. **全面 `linear-gradient` 背景の廃止と単色矩形化**:
-   - Chromium（Skia PDFバックエンド）は `section` に `background: linear-gradient(...)` が設定されていると、スライド全面（`720x540` pt / `960x540` pt）を `PatternType 2`（`ShadingType 2` 軸方向シェーディングパターン）の塗りつぶし図形として出力する。企業環境の Adobe Acrobat Reader（アクセシビリティの色置換設定や保護ビュー有効時）ではこの全面シェーディングパターンがページ背景ではなく前面グラフィックスとして処理され、文字や図表が白飛び（非表示）する原因となる。
-   - これを解消するため、`section` の背景を純粋な単色白（`background: #ffffff !important; background-color: #ffffff !important;`）とし、下部 40px のフッター帯は `box-shadow: inset 0 -40px 0 0 var(--primary-color) !important;` によって標準の単色矩形（`re f`）として描画する。
-   - 印刷時の色強制維持として `-webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-scheme: light !important;` を明示する。
-2. **SVG `<mask>`（`/TR` 転送関数付き `/SMask`）およびドロップシャドウ `/SMask` の排除**:
-   - 表紙バナー SVG（`--banner-image` Data URI および `slides/D01-000001_Marpの使い方/banner.svg`）から `<mask>` / `<linearGradient>` / `<pattern>` を全廃し、純粋なベクターパスと `fill-opacity` のみで構成されたマスクレス SVG に置換することで、PDF 内の `FunctionType 4` 転送関数（`/TR`）および多重ソフトマスク（`/SMask`）の生成を 0 件にする。
-   - 会話吹き出し（`.conversation-content > h4 + ul > li`）の `box-shadow` を `none !important` とし、グレースケール JPEG による `/SMask` 生成を防止する。
-3. **TrueType アウトライン（`CIDFontType2`）フォント優先指定と合成太字（Faux Bold）の抑止**:
-   - Linux コンテナ上の Chromium で OpenType/CFF フォント（`Noto Sans CJK JP`）を使用した場合や、Bold ウェイトを持たないフォント（`IPAPGothic` / `IPAGothic`）に対してブラウザの合成太字（Faux Bold）が発動した場合、Skia PDF は反転した `FontBBox`（`[ -49 433 1875 -1793 ]` 等、`lly > ury`）を持つ `/Subtype /Type3` フォントを生成し、Acrobat で文字が消える現象を引き起こす。
-   - これを防ぐため、`section`、`section::after`、`section > h6`、`section pre`、`section code, section kbd, section samp`、`section .mermaid`（および `themes/vendor/marp-mermaid-loader.js`）の `font-family` において TrueType フォント（`'Meiryo', 'BIZ UDGothic', 'Yu Gothic', 'IPAPGothic', 'IPAGothic', 'DejaVu Sans'`）を最優先指定し、さらに `section` および全子孫要素（`section *, section *::before, section *::after`）に `font-synthesis: none !important;` を適用して `/Subtype /Type3` フォントの生成を 0 件に抑止する。
+#### 2.1.6.3 処理論理
+1. 対象ファイルを読み込み、スライド単位で分割する。
+2. 指定インデックスの妥当性を検証する。
+3. 指定位置のスライド要素を削除する。
+4. 残余スライドを再結合し、ファイルを更新保存する。
 
-### 5.5 印刷・PDF出力時における不要な白紙最終ページの抑止仕様 (Issue #16 是正)
-1. **Mermaid動的レンダリング作業領域およびツールチップ要素の印刷時非表示化**:
-   - `themes/vendor/marp-mermaid-loader.js` では、Mermaid レンダリング時に `document.body` 直下に一時作業領域 `<div id="mermaid-workspace">` を生成し、また外部ライブラリ `mermaid.min.js` 自身がツールチップ用要素 `<div class="mermaidTooltip">` を `document.body` 直下に動的生成する。
-   - これら2つの要素は Marp のスライドコンテナ（`<div class="marpit">` 等）の外側に配置されるため、Chromium の `@media print` 印刷エンジンがスライド全ページを描画した後に、`body` 直下に追加の印刷ブロックとして解釈し、最終スライドの後に不要な改ページを発生させて真っ白な最終ページを生成していた。
-   - `themes/business-slide-theme.css` に以下のルールを追加し、印刷エンジンに対してこれら要素を完全に非表示・レイアウト対象外とする：
-     ```css
-     @media print {
-       #mermaid-workspace,
-       .mermaidTooltip {
-         display: none !important;
-       }
-     }
-     ```
-   - さらに、`themes/vendor/marp-mermaid-loader.js` 側でも、Mermaid レンダリング完了時（`render()` 完了時）に `workspace.remove()` を実行して作業用DOMを物理的に破棄し、`.mermaidTooltip` 要素に対しても `display = 'none'` を設定する二重の安全防護を施す。
-2. **表紙のみスライドデッキ生成時の末尾区切り線抑止**:
-   - `src/index.ts` の `generateMarpMarkdown()` において、`deck.titleSlide` の直後に無条件で `\n---\n` を出力していたため、通常スライドが0枚（`deck.normalSlides.length === 0`）の場合に末尾改ページ記号として解釈され白紙ページが出力されていた。
-   - `if (deck.normalSlides.length > 0)` の条件分岐を追加し、通常スライドが1枚以上存在する場合にのみ `\n---\n` を出力するよう修正する。
+#### 2.1.6.4 異常系
+| 条件 | エラーコード | 動作 |
+| :--- | :--- | :--- |
+| インデックス範囲外 | `ERR-RNG-001` | 範囲外エラーメッセージを返却する |
+| ファイル書込失敗 | `ERR-SYS-001` | 未定義エラーとして例外を通知する |
 
----
+### 2.1.7 FN-SRV-007 exportToPdf
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[#2.1 PRG-SRV-001 MCPサーバー本体|PRG-SRV-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
 
-## 6. PRG-SKL-001: GitHub 運用支援スキル (`.agents/skills/github-workflows/SKILL.md`) 仕様
+#### 2.1.7.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-SRV-007-IN01` | 入力ファイルパス | 対象スライドMarkdownの相対パス | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
+| `FN-SRV-007-IN02` | 出力ファイルパス | 出力先PDFの相対パス | 任意 | [[06_data_structure_specification#2 データ構造|データ構造]] |
 
-### 6.1 Worktree セッション初期化およびブランチ命名自動是正アルゴリズム
-AIエージェントがタスクを開始する際、現在のGitブランチ名を検査し、リポジトリ規約に合致しない場合に自動是正する処理論理を以下に定義する。
+#### 2.1.7.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-SRV-007-OUT01` | 出力先情報 | 生成されたPDFファイルのパス情報 | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
 
-```mermaid
-flowchart TD
-    START([セッション開始 / タスク着手]) --> CHK_BR[現在のブランチ名を取得<br>git branch --show-current]
-    CHK_BR --> EVAL{規約正規表現に合致するか?<br>^{type}/{author}/issue-{num}/{desc}$}
-    EVAL -->|合致 (PASS)| PROCEED([PBI起票 / 実装前設計レビューへ進行])
-    EVAL -->|不一致 (FAIL)| DERIVE[Issue番号・作業種別・説明から<br>規約準拠ブランチ名を自動導出]
-    DERIVE --> RENAME[ブランチ名変更コマンド実行<br>git branch -m 新ブランチ名]
-    RENAME --> VERIFY[変更後ブランチ名の再確認]
-    VERIFY --> PROCEED
-```
+#### 2.1.7.3 処理論理
+1. 入力Markdownファイルの存在を確認する。
+2. 出力パスが未指定の場合、拡張子を `.pdf` に変換したパスを設定する。
+3. Marp CLIプロセスを起動し、PDF変換処理を実行する。
+4. 処理成功時は生成ファイルのパスを返却する。
 
-1. **ブランチ検査手順**:
-   - `git branch --show-current` を実行して現在のブランチ名を取得する。
-   - ブランチ名が正規表現 `^(feat|fix|docs|refactor|test|chore)/[^/]+/issue-\d+/[a-z0-9-]+$` に適合するか検証する。
-2. **自動是正手順**:
-   - 不一致が検知された場合（例: Antigravity 2.0 の自動採番 `resolve_issue_eight` 等）、対象Issue情報から正規のブランチ名（例: `fix/antigravity-2.0/issue-8/worktree-branch-naming-compliance`）を導出する。
-   - `git branch -m <新ブランチ名>` を実行し、現在ブランチを即座に是正する。
-3. **Worktreeディレクトリ名形式**:
-   - ディレクトリ安全形式: `{type}_{author}_issue-{issue_number}_{description}`（スラッシュをアンダースコアに置換）。
+#### 2.1.7.4 異常系
+| 条件 | エラーコード | 動作 |
+| :--- | :--- | :--- |
+| 入力ファイル不在 | `ERR-NOT-001` | 不在エラーメッセージを返却する |
+| レンダリング失敗 | `ERR-SYS-001` | 未定義エラーとして例外を通知する |
 
-### 6.2 機能要望Issueドラフト生成およびWho/Why個別構造化論理
-機能要望（`feature_request.yml`）のドラフト作成時、AIエージェントおよびコントリビューターは「誰のための機能か（Who）」と「なぜ必要なのか・どのような課題があるのか（Why）」を以下の個別構造で整理・抽出する。
+## 2.2 PRG-ENG-001 カスタムMarpエンジン
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[01_software_structure_design#2.2 MOD-ENG-001 カスタムMarpエンジン|MOD-ENG-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
+| 実装ファイル | `marp.config.js` |
+| 所属モジュール | `MOD-ENG-001` |
 
-1. **Who（対象ユーザー・アクター）**:
-   - 利用者ペルソナ（例: スライド作成者、登壇者、AI協調コンサルタント）を明確に定義。
-2. **Why（関連する課題・背景）**:
-   - 現状の不便や問題点、改善理由を客観的・具体的に記述。
-3. **What（提案する解決策・機能仕様）**:
-   - 実装を求める機能、構文、CLI/MCPオプションを定義。
-4. **Alternative（代替案）**:
-   - 検討済みの回避策や代替手段を記述。
+### 2.2.1 FN-ENG-001 marpTocPlugin
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[#2.2 PRG-ENG-001 カスタムMarpエンジン|PRG-ENG-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
 
----
+#### 2.2.1.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-ENG-001-IN01` | MarkdownItインスタンス | Markdownパーサーのインスタンス | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
 
-## 7. 関連設計図書への参照リンク
+#### 2.2.1.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| なし | - | プラグイン登録による副作用のみ | - | - |
 
-- [[01_architectural_design|構造設計書]]: モジュール構造およびコンポーネント依存関係
-- [[02_internal_interface_specification|内部I/F仕様書]]: 関数シグネチャおよび内部型定義
-- [[02_external_interface_specification|外部I/F仕様書]]: 外部プロトコルおよびCLI仕様
-- [[../00_project_charter/02_coding_standards|コーディング規約]]: 全行直上コメントおよび記述規範
-- [[../README|設計図書統合インデックス]]: 設計図書体系の全体マップ
+#### 2.2.1.3 処理論理
+1. トークン列を走査し、スライド境界および見出しトークンを検出する。
+2. 目次スライド（クラス名 `toc`）が存在する場合、収集した見出し情報を整形して目次トークンを注入する。
+3. 見出し件数が12件を超える場合は複数スライドへ自動分割する。
+4. 分割枚数に応じて後続スライドのページ番号属性をシフト補正する。
+
+#### 2.2.1.4 異常系
+| 条件 | エラーコード | 動作 |
+| :--- | :--- | :--- |
+| トークン走査失敗 | `ERR-SYS-001` | 未定義エラーとして変更を加えずに終了する |
+
+### 2.2.2 FN-ENG-002 tableCodeResizePlugin
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[#2.2 PRG-ENG-001 カスタムMarpエンジン|PRG-ENG-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
+
+#### 2.2.2.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-ENG-002-IN01` | MarkdownItインスタンス | Markdownパーサーのインスタンス | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
+
+#### 2.2.2.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| なし | - | プラグイン登録による副作用のみ | - | - |
+
+#### 2.2.2.3 処理論理
+1. スライドディレクティブのクラス指定を検査する。
+2. 手動クラス（`table-1` から `table-10`、または `code-1` から `code-10`）が指定されている場合は自動計算スタイルの注入を抑止する。
+3. 手動クラスが存在しない場合のみ、行数および文字数に応じた縮小スタイルをインライン注入する。
+
+#### 2.2.2.4 異常系
+| 条件 | エラーコード | 動作 |
+| :--- | :--- | :--- |
+| スタイル注入失敗 | `ERR-SYS-001` | 未定義エラーとして通常スタイルで処理を継続する |
+
+## 2.3 PRG-PPT-001 PPTX変換スクリプト
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[01_software_structure_design#2.3 MOD-PPT-001 PPTXカスタムコンバーター|MOD-PPT-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
+| 実装ファイル | `pptx_converter/convert.js` |
+| 所属モジュール | `MOD-PPT-001` |
+
+### 2.3.1 FN-PPT-001 convertToPptx
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[#2.3 PRG-PPT-001 PPTX変換スクリプト|PRG-PPT-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
+
+#### 2.3.1.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-PPT-001-IN01` | 入力ファイルパス | 変換元Markdownのパス | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
+| `FN-PPT-001-IN02` | 出力ファイルパス | 出力先PPTXのパス | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
+
+#### 2.3.1.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-PPT-001-OUT01` | 終了コード | 実行結果を表す数値（成功時0） | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
+
+#### 2.3.1.3 処理論理
+1. 入力MarkdownからMarp CLIを用いて中間HTMLを生成する。
+2. ヘッドレスChromiumを起動し、中間HTMLのDOM構造および要素の描画位置・フォント属性を走査する。
+3. 取得した要素群をPptxGenJSオブジェクトへ変換し、配置する。
+4. PPTXファイルを保存し、中間HTMLファイルを削除する。
+
+#### 2.3.1.4 異常系
+| 条件 | エラーコード | 動作 |
+| :--- | :--- | :--- |
+| 入力ファイル不在 | `ERR-NOT-001` | 終了コード1で終了する |
+| レンダリング失敗 | `ERR-SYS-001` | 終了コード1で終了する |
+
+## 2.4 PRG-THM-001 ビジネステーマスタイル
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[01_software_structure_design#2.4 MOD-THM-001 ビジネステーマスタイル|MOD-THM-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
+| 実装ファイル | `themes/business-slide-theme.css` |
+| 所属モジュール | `MOD-THM-001` |
+
+### 2.4.1 スタイル定義仕様
+#### 2.4.1.1 CSS変数およびカスケード構造
+1. 基底テーマカラーは `--primary-color: var(--theme-color, #1f497d)` を定義する。
+2. 会話吹き出し背景は `color-mix(in srgb, var(--primary-color) 40%, white)` を定義する。
+3. 表紙バナーはマスクレスベクターSVGをData URIとして定義する。
+
+#### 2.4.1.2 見出しアンカー駆動の配置ルール
+1. スライド内見出し要素（`h1` から `h6`）は `visibility: hidden` で非表示化する。
+2. 見出し直後の要素（`h1 ~ p`, `h2 ~ p`）を絶対配置によりタイトルおよび主張欄として描画する。
+
+#### 2.4.1.3 PDF互換性保護仕様
+1. スライド全面グラデーション背景を廃止し、単色白背景およびボックスシャドウによる下部帯描画を適用する。
+2. TrueTypeフォント優先指定および合成太字抑止（`font-synthesis: none`）によりType3フォントの発生を抑止する。
+3. 印刷メディア（`@media print`）において作業用DOMおよびツールチップを非表示化し、不要な白紙ページの出力を抑止する。
+
+## 2.5 PRG-SKL-001 GitHub運用支援スキル
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[01_software_structure_design#2.6 MOD-SKL-001 GitHub運用支援スキル体系|MOD-SKL-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
+| 実装ファイル | `.agents/skills/github-workflows/SKILL.md` |
+| 所属モジュール | `MOD-SKL-001` |
+
+### 2.5.1 スキル処理手順仕様
+#### 2.5.1.1 ブランチ命名検証論理
+1. `git branch --show-current` を実行して現在のブランチ名を取得する。
+2. 正規表現 `^(feat|fix|docs|refactor|test|chore)/[^/]+/issue-\d+/[a-z0-9-]+$` への適合性を検証する。
+3. 不一致が検知された場合、Issue番号および作業種別から規約準拠ブランチ名を導出し、`git branch -m` で是正する。
+
+#### 2.5.1.2 Issueドラフト生成論理
+1. 機能要望ドラフト作成時、利用者ペルソナ（Who）と背景課題（Why）を個別構造で整理する。
+2. 提案仕様（What）および検討済み代替案（Alternative）を記述する。
+
+## 2.6 PRG-DOC-001 設計図書構文検査器
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[01_software_structure_design#2.7 MOD-DOC-001 設計図書規約・構文検査モジュール|MOD-DOC-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
+| 実装ファイル | `.agents/skills/ipa-traceability-validator/scripts/verify_doc_syntax.py` |
+| 所属モジュール | `MOD-DOC-001` |
+
+### 2.6.1 FN-DOC-001 verifyDocSyntax
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[#2.6 PRG-DOC-001 設計図書構文検査器|PRG-DOC-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
+
+#### 2.6.1.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-DOC-001-IN01` | 検査対象パス | 走査対象ディレクトリまたはファイルパス | 任意 | [[06_data_structure_specification#2 データ構造|データ構造]] |
+
+#### 2.6.1.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-DOC-001-OUT01` | 終了コード | 検査成否を示す数値（違反0件時0、違反時1） | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
+
+#### 2.6.1.3 処理論理
+1. 指定パス配下の対象Markdownファイルを走査する。
+2. 各ファイルに対してFrontmatter、見出し番号体系、第1章固定構造、ID一意性と所有権、Obsidianリンク、禁止語、ホスト絶対パスの7系統を検査する。
+3. 違反を検出した場合はファイル名、行番号、エラーコード、詳細理由を出力する。
+4. 全ファイルの検査完了後、結果集計を出力し終了コードを返却する。
+
+#### 2.6.1.4 異常系
+| 条件 | エラーコード | 動作 |
+| :--- | :--- | :--- |
+| 入力パス不在 | `ERR-NOT-001` | 終了コード2で終了する |
+| ファイル読込不可 | `ERR-SYS-001` | 終了コード2で終了する |

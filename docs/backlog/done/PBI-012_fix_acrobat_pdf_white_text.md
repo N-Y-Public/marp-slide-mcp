@@ -4,9 +4,9 @@ title: "企業環境のAdobe Acrobat Reader / Acrobatにおける出力PDFの文
 type: "bugfix" # feature | enhancement | bugfix
 status: "done" # todo | designing | implementing | testing | done
 priority: "high" # high | medium | low
-related_req_ids: ["REQ-F-003", "REQ-NFR-001", "REQ-NFR-006"]
-related_mod_ids: ["MOD-001", "MOD-002"]
-related_test_ids: ["TEST-UT-002", "TEST-IT-002", "TEST-ST-002", "TEST-ST-008"]
+related_req_ids: ["REQ-FNC-001", "REQ-NFR-001", "REQ-NFR-006"]
+related_mod_ids: ["MOD-SRV-001", "MOD-THM-001"]
+related_test_ids: ["TEST-ST-008"]
 ---
 
 # [PBI-012] 企業環境のAdobe Acrobat Reader / Acrobatにおける出力PDFの文字・画像の白飛び（非表示）不具合の修正
@@ -17,7 +17,7 @@ related_test_ids: ["TEST-UT-002", "TEST-IT-002", "TEST-ST-002", "TEST-ST-008"]
 - **なぜなら (So that):** PDF内にテキストや画像データ自体が存在していても、閲覧者のAdobe Acrobat環境設定やPDF内部のグラデーション・透過マスク・Type3フォント構造に起因して文字や図表が真っ白になり読めなくなる重大な共有障害（Issue #18）を根絶するため
 
 ## 2. スコープと仕様概要 (What)
-### やること (In Scope)
+### 2.1 やること (In Scope)
 - **原因1（全面 `linear-gradient` によるPDF `PatternType 2` / `ShadingType 2` 背景と色置換・透過合成不整合）の解消**:
   - `themes/business-slide-theme.css` の `section` に指定されている全面 `background: linear-gradient(to bottom, #ffffff 0px, #ffffff 680px, var(--primary-color) 680px, var(--primary-color) 720px)` を廃止し、単色背景（`background-color: #ffffff`）＋下部フッター帯の単色矩形描画（`box-shadow: inset 0 -40px 0 0 var(--primary-color)`）に変更することで、PDFのページ全面が `PatternType 2`（`ShadingType 2` 軸方向シェーディング）で覆われる構造を排除する。
   - 明示的な印刷色維持指定（`-webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-scheme: light !important;`）を付与する。
@@ -29,7 +29,7 @@ related_test_ids: ["TEST-UT-002", "TEST-IT-002", "TEST-ST-002", "TEST-ST-008"]
 - **サンプルスライドのPDF再生成と回帰検証**:
   - `slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.md` からPDF/PPTXを再生成し、PDF内部ストリーム解析テスト（`TEST-ST-008` / `tests/verify_acrobat_pdf_compatibility.js`）によって `ShadingType 2` 全面背景・不正 `Type3` フォント・複雑 `SMask` が0件であることを機械的に検証する。
 
-### やらないこと (Out of Scope)
+### 2.2 やらないこと (Out of Scope)
 - スライドの視覚的レイアウト構造（ヘッダー・クレーム帯・フッター帯・本文領域の座標配置）やブランドカラー配色の変更。
 - 外部有償フォントの新規バンドル（OS標準またはオープンソースのTrueTypeフォントのみを使用）。
 

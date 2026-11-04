@@ -4,8 +4,8 @@ title: "スライド内要素（本文・表・Mermaid図・画像・コード�
 type: "feature" # feature | enhancement | bugfix
 status: "done" # todo | designing | implementing | testing | done
 priority: "high" # high | medium | low
-related_req_ids: ["REQ-F-002", "REQ-FNC-002", "REQ-FNC-003"]
-related_mod_ids: ["MOD-002"]
+related_req_ids: ["REQ-FNC-002", "REQ-FNC-003", "REQ-NFR-004"]
+related_mod_ids: ["MOD-THM-001"]
 related_test_ids: ["TEST-ST-006"]
 ---
 
@@ -20,7 +20,7 @@ related_test_ids: ["TEST-ST-006"]
   - さらに、情報量の非常に多いスライドでも収め切れるよう、従来の最小限界よりもさらに2段階小さいサイズ（極小サイズ）を要求されるケースがあるため。
 
 ## 2. スコープと仕様概要 (What)
-### やること (In Scope)
+### 2.1 やること (In Scope)
 1. **全主要要素に対する統一数字クラス命名体系（10段階）の導入 (`themes/business-slide-theme.css`)**:
    - タイトルクラス（`title-1`〜`3`, `claim-1`〜`8`, `fig-1`〜`3`）と規則を統一した `{要素名}-{1〜10}` の統一ナンバリング体系を定義する。
    - `1` を最大（標準・余裕）、数字が増えるほど縮小し、`10` を従来の最小限界よりもさらに2段階小さい極小サイズとする。
@@ -57,7 +57,7 @@ related_test_ids: ["TEST-ST-006"]
 4. **自動検証テストの追加 (`TEST-ST-006`)**:
    - Docker環境で実行可能な回帰・表示検証スクリプトを作成し、各数字クラス（1〜10）が正しく要素のスタイル（フォントサイズや高さ）に反映され、10が旧最小値より2段階小さくなっていることを機械検証する。
 
-### やらないこと (Out of Scope)
+### 2.2 やらないこと (Out of Scope)
 - タイトルや主張（`title-1`〜`3`, `claim-1`〜`8`）自体の既存の動作仕様の変更。
 - スライドの2段組（`columns-2`）や画像並列（`images-2`等）などのマクロな構造レイアウト枠組みの変更。
 

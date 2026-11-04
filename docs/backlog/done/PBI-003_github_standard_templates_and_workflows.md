@@ -4,9 +4,9 @@ title: "業界標準GitHubテンプレート（Issue/PR）の導入とブラン�
 type: "feature" # feature | enhancement | bugfix
 status: "done" # todo | designing | implementing | testing | done
 priority: "high" # high | medium | low
-related_req_ids: ["REQ-F-001", "REQ-NFR-005"]
-related_mod_ids: ["MOD-001"]
-related_test_ids: ["TEST-IT-003", "TEST-ST-004"]
+related_req_ids: ["REQ-FNC-007", "REQ-NFR-003", "REQ-NFR-005"]
+related_mod_ids: ["MOD-SKL-001"]
+related_test_ids: ["TEST-IT-003", "TEST-ST-003", "TEST-ST-004"]
 ---
 
 # [PBI-003] 業界標準GitHubテンプレート（Issue/PR）の導入とブランチ運用スキルの整備
@@ -21,7 +21,7 @@ related_test_ids: ["TEST-IT-003", "TEST-ST-004"]
   - 人間とAIの双方が高品質かつ再現性の高いIssue起票・PR作成を均一に行い、OSSとしてのプライバシー保護（ホスト絶対パス・機密漏洩の防止）とガバナンスを自動担保するため
 
 ## 2. スコープと仕様概要 (What)
-### やること (In Scope)
+### 2.1 やること (In Scope)
 1. **GitHub 標準テンプレート（GitHub Issue Forms & PR Template）の整備**:
    - `.github/ISSUE_TEMPLATE/bug_report.yml`: バグ報告用フォーム（環境情報、再現手順、ログ）
    - `.github/ISSUE_TEMPLATE/feature_request.yml`: 機能追加・改善提案用フォーム（背景、提案、代替案）
@@ -42,7 +42,7 @@ related_test_ids: ["TEST-IT-003", "TEST-ST-004"]
 4. **IPAミクロ工程（要件差分・方式設計差分・詳細設計差分・実装・テスト・RTM検証）の完遂**:
    - `verify_rtm.py` によるトレーサビリティ断絶 0 件の達成
 
-### やらないこと (Out of Scope)
+### 2.2 やらないこと (Out of Scope)
 - 外部コントリビューターに対してリポジトリメンテナーの特定アカウント名（`N-Y-Public`）を強制すること（各コントリビューター自身の真正性・クレジットを100%尊重）
 - GitHub リポジトリ設定画面での外部 Webhook 連携やサードパーティBotの直接セットアップ
 - GitHub Actions CIワークフローの新規作成（既存のDocker運用ルールを優先）

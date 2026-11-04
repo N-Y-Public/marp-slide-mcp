@@ -4,9 +4,9 @@ title: "タイトルを記述"
 type: "feature" # feature | enhancement | bugfix
 status: "todo" # todo | designing | implementing | testing | done
 priority: "high" # high | medium | low
-related_req_ids: [] # 例: ["REQ-F-001", "REQ-NF-002"]
-related_mod_ids: [] # 例: ["MOD-001"]
-related_test_ids: [] # 例: ["TEST-001"]
+related_req_ids: [] # 例: ["REQ-FNC-001", "REQ-NFR-001"]
+related_mod_ids: [] # 例: ["MOD-SRV-001"]
+related_test_ids: [] # 例: ["TEST-UT-001"]
 ---
 
 # [PBI-001] タイトル
@@ -17,10 +17,10 @@ related_test_ids: [] # 例: ["TEST-001"]
 - **なぜなら (So that):** [得られる価値 / 解決される課題]
 
 ## 2. スコープと仕様概要 (What)
-### やること (In Scope)
+### 2.1 やること (In Scope)
 - 
 
-### やらないこと (Out of Scope)
+### 2.2 やらないこと (Out of Scope)
 - 
 
 ## 3. 受け入れ基準 (Acceptance Criteria)

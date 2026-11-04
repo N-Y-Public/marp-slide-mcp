@@ -26,6 +26,7 @@ if (!process.env.CHROME_NO_SANDBOX) {
   process.env.CHROME_NO_SANDBOX = "1";
 }
 
+// @spec FN-SRV-001 resolveChromiumPath
 // CHROME_PATH が未設定の場合は Puppeteer のブラウザパスまたはシステム Chromium を自動補完します
 if (!process.env.CHROME_PATH) {
   // Puppeteer 内蔵のブラウザパス取得を試みます
@@ -519,6 +520,7 @@ const server = new McpServer({
   version: "1.0.0",
 });
 
+// @spec FN-SRV-002 generateSlideDeck
 // 1. 新規スライドデッキ作成ツールを登録します
 server.tool(
   // ツール名を指定します
@@ -571,6 +573,7 @@ server.tool(
   }
 );
 
+// @spec FN-SRV-003 getSlideDeck
 // 2. スライドデッキの構成確認ツールを登録します
 server.tool(
   // ツール名を指定します
@@ -631,6 +634,7 @@ server.tool(
   }
 );
 
+// @spec FN-SRV-004 insertSlide
 // 3. 指定位置へのスライド新規挿入ツールを登録します
 server.tool(
   // ツール名を指定します
@@ -672,6 +676,7 @@ server.tool(
   }
 );
 
+// @spec FN-SRV-005 updateSlide
 // 4. 指定ページ内容の更新・編集ツールを登録します
 server.tool(
   // ツール名を指定します
@@ -718,6 +723,7 @@ server.tool(
   }
 );
 
+// @spec FN-SRV-006 deleteSlide
 // 5. 指定ページのスライド削除ツールを登録します
 server.tool(
   // ツール名を指定します
@@ -820,6 +826,7 @@ server.tool(
   }
 );
 
+// @spec FN-SRV-007 exportToPdf
 // 7. PDF出力専用ツールを登録します
 server.tool(
   // ツール名を指定します

@@ -4,9 +4,9 @@ title: "MCP経由およびMarp CLIでのPDF出力時に末尾に必ず白紙ペ�
 type: "bugfix" # feature | enhancement | bugfix
 status: "done" # todo | designing | implementing | testing | done
 priority: "high" # high | medium | low
-related_req_ids: ["REQ-F-003", "REQ-NFR-001"]
-related_mod_ids: ["MOD-001", "MOD-002"]
-related_test_ids: ["TEST-UT-002", "TEST-ST-002", "TEST-ST-009"]
+related_req_ids: ["REQ-FNC-004", "REQ-NFR-001"]
+related_mod_ids: ["MOD-SRV-001", "MOD-ENG-001"]
+related_test_ids: ["TEST-ST-009"]
 ---
 
 # [PBI-013] MCP経由およびMarp CLIでのPDF出力時に末尾に必ず白紙ページが出力される不具合の修正
@@ -17,7 +17,7 @@ related_test_ids: ["TEST-UT-002", "TEST-ST-002", "TEST-ST-009"]
 - **なぜなら (So that):** 最終ページに白紙が存在するとプレゼンテーション資料として不完全であり、印刷時や共有時に不要な白紙ページ削除の手間が発生し、資料品質およびツール信頼性を大きく損なうため（Issue #16）
 
 ## 2. スコープと仕様概要 (What)
-### やること (In Scope)
+### 2.1 やること (In Scope)
 - **原因1（Mermaid用DOM要素残存による印刷時ページ送りの誘発）の解消**:
   - `themes/vendor/marp-mermaid-loader.js` において、`document.body` 直下に一時生成される `#mermaid-workspace` および外部ライブラリ `mermaid.min.js` が生成するツールチップ要素 `.mermaidTooltip` がスライドコンテナ（`<div class="marpit">` 等）の外側に残存することにより、Chromiumの `@media print` 印刷エンジンがスライド全ページの描画後に追加ブロックとして解釈し、不要な白紙ページを生成していた。
   - `themes/business-slide-theme.css` に `@media print { #mermaid-workspace, .mermaidTooltip { display: none !important; } }` を追加し、印刷レンダリングエンジンに対して完全に不可視・レイアウト非算出とする。
@@ -30,7 +30,7 @@ related_test_ids: ["TEST-UT-002", "TEST-ST-002", "TEST-ST-009"]
   - 表紙のみ（通常スライド0枚）のスライドデッキを出力した際に正確に1ページのPDFが生成されること。
   - 既存の公式サンプルスライド（`slides/D01-000001_Marpの使い方/D01-000001_Marpの使い方.md`）のPDF出力ページ数が正確にスライド枚数（17ページ）と一致すること。
 
-### やらないこと (Out of Scope)
+### 2.2 やらないこと (Out of Scope)
 - Mermaidダイアグラム自体の描画ロジック・テーマ配色・SVGスタイルの変更。
 - Marp CLI自体の内部印刷パイプラインやChromiumコマンドライン引数の変更。
 

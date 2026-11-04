@@ -5,7 +5,7 @@ type: "bugfix" # feature | enhancement | bugfix
 status: "done" # todo | designing | implementing | testing | done
 priority: "high" # high | medium | low
 related_req_ids: ["REQ-NFR-005"]
-related_mod_ids: ["MOD-001"]
+related_mod_ids: ["MOD-SKL-001"]
 related_test_ids: ["TEST-IT-004"]
 ---
 
@@ -21,7 +21,7 @@ related_test_ids: ["TEST-IT-004"]
   - メンテナー環境（本番ワークスペース）における個人アカウント誤爆・情報漏洩防止（Q-09）の防衛機構を100%維持するため
 
 ## 2. スコープと仕様概要 (What)
-### やること (In Scope)
+### 2.1 やること (In Scope)
 1. **`README.md` の記述是正**:
    - 2.3節「GitHub MCP 連携と PAT 完全分離アーキテクチャ」の「② 安全装置（Pre-Execution Identity Gate）」の記述を外部クローン手順から切り離し、「メンテナー環境におけるデフォルト動作」として位置づけを是正。
    - 外部利用者が自身のPATで開発・操作する場合は、環境変数 `EXPECTED_GITHUB_LOGIN`（任意で `EXPECTED_GITHUB_ID`）を設定することで、自身のアカウント名に対する安全装置として機能する旨を明記。
@@ -39,7 +39,7 @@ related_test_ids: ["TEST-IT-004"]
    - テスト仕様書（`docs/templates/06_test_specification.md`）への追記
    - `verify_rtm.py` による自動検査（断絶0件）
 
-### やらないこと (Out of Scope)
+### 2.2 やらないこと (Out of Scope)
 - 安全装置（Pre-Execution Identity Gate）自体の廃止・全削除（アカウント誤爆防止のため必須防衛機構として存続）
 - GitHub への push / PR 自動提出（ユーザー指示「プッシュはまだ行うな」を厳守）
 

@@ -42,7 +42,7 @@ description: >-
 ## 2. 参照・更新対象ドキュメントおよび連携スキル
 
 ### PBIテンプレート・バックログ
-- **PBI標準テンプレート**: `@[docs/templates/98_pbi_template.md](../../../docs/templates/98_pbi_template.md)`
+- **PBI標準テンプレート**: `@[docs/templates/tpl_98_pbi_template.md](../../../docs/templates/tpl_98_pbi_template.md)`
 - **PBI管理ディレクトリ**: `docs/backlog/todo/`, `docs/backlog/in_progress/`, `docs/backlog/done/`
 
 ### 順次呼び出す既存IPAスキル群
@@ -78,7 +78,7 @@ flowchart LR
 ユーザーから「Issue #xxx に対応せよ」または機能要望が提示された場合：
 0. **タスク開始時プロトコル（ブランチ自動検査・是正）**:
    セッション開始時、必ず現在のブランチ名（`git branch --show-current`）を確認する。Antigravity 2.0 等の自動採番による規約外ブランチ名（`resolve_issue_xxx` 等）の場合、直ちに `git branch -m <compliant_branch_name>`（例: `fix/antigravity-2.0/issue-8/worktree-branch-naming-compliance`）を実行して是正してからPBI起票を行う。
-1. 直ちに設計書やコードを編集せず、`docs/templates/98_pbi_template.md` のフォーマットに従い `docs/backlog/todo/PBI-xxx_<slug>.md` を作成する。
+1. 直ちに設計書やコードを編集せず、`docs/templates/tpl_98_pbi_template.md` のフォーマットに従い `docs/backlog/todo/PBI-xxx_<slug>.md` を作成する。
 2. 曖昧さ4分類（【未定義】【多義】【暗黙】【矛盾】）を検出し、ユーザーにPBIの内容（Why / What / Given-When-Then形式のAC）の確認を求める。
 
 ### Stage B: PBI承認後の一気通貫オーケストレーション実行フェーズ
@@ -94,16 +94,16 @@ flowchart LR
 
 ### Step 1: 要件反映 (`ipa-requirements-analyst` 基準)
 1. `type: "feature"` または `"enhancement"` の場合：
-   - PBIのユーザーストーリーと受け入れ基準（AC）をマスターの要件定義書（`docs/01_requirements/01_requirements_specification.md` および `docs/templates/02_functional_requirements.md` / `03_non_functional_requirements.md`）へ差分追記または更新する。
-   - 新規または更新対象の要件ID（`REQ-*`）を確定する。
+   - PBIのユーザーストーリーと受け入れ基準（AC）をマスターの要件定義書（`docs/01_requirements/01_requirements_specification.md`）へ差分追記または更新する。
+   - 新規または更新対象の要件ID（`REQ-FNC-*` / `REQ-NFR-*`）を確定する。
 2. `type: "bugfix"` の場合：
    - 修正対象が本来満たすべき既存の要件ID（`REQ-*`）を特定する。
 3. 確定した `REQ-*` IDをPBIファイルのFrontmatter（`related_req_ids`）および「5. 実行ログ・トレーサビリティ記録」に記録する。
 
 ### Step 2: 設計差分反映 (`ipa-system-architect` & `ipa-detail-designer` 基準)
 1. `type: "feature"` の場合：
-   - 方式設計書（`docs/02_basic_design/` および `docs/templates/04_system_architecture.md`）に外部I/F（`EXT-*`）やエラーコード一覧（末尾の未定義エラー受け皿含む）の差分を追記する。
-   - 詳細設計書（`docs/03_detail_design/` および `docs/templates/05_software_design.md`）にデータモデル・モジュール定義（`MOD-*`）・内部関数（`INT-*`）・単体テスト観点の差分を追記する。
+   - 方式設計書（`docs/02_basic_design/`）に外部I/F（`EXT-*`）やエラーコード一覧（末尾の未定義エラー受け皿含む）の差分を追記する。
+   - 詳細設計書（`docs/03_detail_design/`）にデータモデル・モジュール定義（`MOD-*`）・内部関数（`FN-*`）・単体テスト観点の差分を追記する。
 2. `type: "enhancement"` の場合：
    - 影響を受ける方式設計書・詳細設計書の該当セクションのみ差分を更新し、対象 `MOD-*` IDを特定する。
 3. `type: "bugfix"` の場合：
@@ -121,12 +121,12 @@ flowchart LR
 
 ### Step 4: テスト・検証 (`ipa-qa-engineer` 基準)
 1. PBIファイルのFrontmatterの `status` を `"testing"` に変更する。
-2. PBIの「受け入れ基準（AC-1, AC-2, ...）」を100%網羅するテスト仕様（`TEST-UT-*`, `TEST-IT-*`, `TEST-ST-*`）をマスターのテスト仕様書（`docs/templates/06_test_specification.md` 等）へ差分追記し、テストコードの作成およびDockerコンテナ内での検証を実行する。
+2. PBIの「受け入れ基準（AC-1, AC-2, ...）」を100%網羅するテスト仕様（`TEST-UT-*`, `TEST-IT-*`, `TEST-ST-*`）をマスターのテスト仕様書（`docs/04_test/01_test_specification.md` 等）へ差分追記し、テストコードの作成およびDockerコンテナ内での検証を実行する。
 3. テスト仕様書の数値サマリー表（計画/実測/合格件数/消化率100%）を最新の実測値に更新する。
 4. 追加・更新した `TEST-*` IDをPBIファイルのFrontmatter（`related_test_ids`）および「5. 実行ログ・トレーサビリティ記録」に記録し、PBI内の全 `[ ] AC-*` チェックボックスを `[x]` に更新する。
 
 ### Step 5: RTM更新と完了 (`ipa-traceability-validator` 基準)
-1. 要件追跡マトリクス（`docs/templates/99_traceability_matrix.md` および `docs/README.md`）の該当行に `PBI_ID`（`PBI-xxx`）、`REQ-*`, `MOD-*`, `TEST-*` の対応を追記・更新する。
+1. 要件追跡マトリクス（`docs/05_traceability/01_traceability_matrix.md`）の該当行に `PBI_ID`（`PBI-xxx`）、`REQ-*`, `MOD-*`, `TEST-*` の対応を追記・更新する。
 2. PBIファイルのFrontmatterの `status` を `"done"` に変更し、ファイルを `docs/backlog/in_progress/` から `docs/backlog/done/` へ移動する。
 3. Dockerコンテナ内で自動検証スクリプト `verify_rtm.py` を実行し、`PBI-xxx` ↔ `REQ-xxx` ↔ `MOD-xxx` ↔ `TEST-xxx` の双方向追跡性が完全に取れていること（断絶 **0件**、Exit Code `0`）を確認する：
    ```bash
@@ -138,8 +138,10 @@ flowchart LR
 
 ## 5. 完了判定チェックリスト（Definition of Done）
 
-- [ ] 対象PBIファイルが `docs/templates/98_pbi_template.md` のYAML Frontmatterおよび全5セクション構文に準拠しているか。
+- [ ] 対象PBIファイルが `docs/templates/tpl_98_pbi_template.md` のYAML Frontmatterおよび全5セクション構文に準拠しているか。
 - [ ] PBIの `related_req_ids`, `related_mod_ids`, `related_test_ids` に実在するIDが漏れなく記録されているか。
 - [ ] マスター設計書（要件定義・方式設計・詳細設計・テスト仕様・RTM）の差分更新が完了しているか。
 - [ ] 変更したソースコードが「全行直上平易コメント規則」を100%遵守し、Docker内ビルド（`npm run build`）が成功しているか。
 - [ ] `verify_rtm.py` が `PBI_ID` を含むトレーサビリティ検査で `PASS (Exit Code 0)` となり、PBIファイルが `docs/backlog/done/` へ移動されているか。
+
+> **設計図書の記述規約**: 設計図書の記述は `docs/00_project_charter/03_documentation_standard.md`（`DOC-GOV-003`）と `docs/00_project_charter/04_id_numbering_rules.md`（`DOC-GOV-004`）に従い、図書別の章構造は `docs/templates/tpl_*.md` を正本とする。規約適合は `verify_doc_syntax.py`（`verify_rtm.py` から呼び出し）で機械検査する。

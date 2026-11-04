@@ -4,9 +4,9 @@ title: "ユーザーオンボーディング・利用性向上ドキュメント
 type: "enhancement" # feature | enhancement | bugfix
 status: "done" # todo | designing | implementing | testing | done
 priority: "high" # high | medium | low
-related_req_ids: ["REQ-F-001", "REQ-F-003", "REQ-NFR-006"]
-related_mod_ids: ["MOD-001", "MOD-003"]
-related_test_ids: ["TEST-ST-007"]
+related_req_ids: ["REQ-FNC-001", "REQ-FNC-005", "REQ-NFR-002", "REQ-NFR-006"]
+related_mod_ids: ["MOD-SRV-001", "MOD-PPT-001"]
+related_test_ids: ["TEST-ST-002", "TEST-ST-007"]
 ---
 
 # [PBI-011] ユーザーオンボーディング・利用性向上ドキュメント拡充（VS Code MCP設定・Dockerレス環境対応・手動PDF/PPTX出力手順の整備）
@@ -28,7 +28,7 @@ related_test_ids: ["TEST-ST-007"]
   - スライド Markdown の誤字脱字や微調整のたびに AI アシスタントへ再出力を要求すると無駄な API トークンと待ち時間が発生するため、内部エンジン（Marp CLI + `marp.config.js`、`pptx_converter/convert.js`）をCLIから直接叩いて素早く手動再出力する標準コマンド体系が利用者に明示されている必要があるため。
 
 ## 2. スコープと仕様概要 (What)
-### やること (In Scope)
+### 2.1 やること (In Scope)
 1. **`README.md` のオンボーディングおよび利用ドキュメント拡充**:
    - **VS Code 利用時の MCP 設定手順の追記 (Issue #11)**:
      - ワークスペース設定（`.vscode/mcp.json`）によるリポジトリ単体利用手順。
@@ -60,7 +60,7 @@ related_test_ids: ["TEST-ST-007"]
    - 単体スライドの直接エクスポートコマンド動作検証（PASS）。
    - `verify_rtm.py` によるトレーサビリティ完全性検証（断絶 0 件）。
 
-### やらないこと (Out of Scope)
+### 2.2 やらないこと (Out of Scope)
 - MCP サーバー本体の API スキーマ（Zod）の変更（ドキュメント拡充およびスライド更新が主目的）。
 - Dockerfile / docker-compose.yml 本体の破壊的変更。
 

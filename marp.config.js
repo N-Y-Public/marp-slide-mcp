@@ -20,6 +20,7 @@ export default {
     
     // Markdown-itのプラグインを登録してMarpの変換処理を拡張します
     marp.use((md) => {
+      // @spec FN-ENG-001 marpTocPlugin
       // 1. 目次（TOC）スライドの自動生成ルールをディレクティブ解析直後（SVGラッパーや属性適用より前）に追加します
       md.core.ruler.after('marpit_directives_parse', 'marp_toc', (state) => {
         // インラインモード（ヘッダー・フッター内部のパース時など）の場合は処理をスキップします
@@ -432,6 +433,7 @@ export default {
         }
       });
       
+      // @spec FN-ENG-002 tableCodeResizePlugin
       // 2. 表やコードブロックの静的自動リサイズルールをパーサーに追加します
       md.core.ruler.push('auto_resize_static', (state) => {
         // 現在処理中のスライドIDカウンターを初期化します

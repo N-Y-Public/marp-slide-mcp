@@ -4,8 +4,8 @@ title: "目次（TOC）自動生成機能における複数ページ分割・ペ
 type: "bugfix" # feature | enhancement | bugfix
 status: "done" # todo | designing | implementing | testing | done
 priority: "high" # high | medium | low
-related_req_ids: ["REQ-F-002", "REQ-NFR-003"]
-related_mod_ids: ["MOD-001", "MOD-002"]
+related_req_ids: ["REQ-FNC-002", "REQ-NFR-003"]
+related_mod_ids: ["MOD-ENG-001"]
 related_test_ids: ["TEST-UT-002", "TEST-IT-001", "TEST-ST-001"]
 ---
 
@@ -22,7 +22,7 @@ related_test_ids: ["TEST-UT-002", "TEST-IT-001", "TEST-ST-001"]
   3. **MCP経由での目次スライド生成時のフッター保持・クラス補完**: MCP（`generate_slide_deck` 等）から生成された目次スライドに含まれる `###### コピーライト`・`###### 機密指定` トークンが `marp_toc` 置換時に消失するほか、AIエージェントが `pageTitle: "目次"` で本文空のスライドを作成した際に `toc` クラス指定を忘れるケースがある。
 
 ## 2. スコープと仕様概要 (What)
-### やること (In Scope)
+### 2.1 やること (In Scope)
 - **`marp.config.js` (`MOD-002` / `MOD-ENG-001`) の修正**:
   1. `marp_toc` ルールの登録位置を `md.core.ruler.after('marpit_directives_parse', 'marp_toc', ...)`（`marpit_inline_svg` および `marpit_directives_apply` の**前**）へ変更し、`state.inlineMode` 時は即時リターンするガードを追加する。
   2. 目次チャンク（1スライド最大12項目: `ITEMS_PER_SLIDE = 12`）ごとに生成する `marpit_slide_open` / `marpit_slide_close` トークンに `meta.marpitSlideElement = 1` / `-1`、`meta.marpitDirectives`（ディープコピー）、および正しい `id` 属性（`String(slideNumber)`）を設定し、後続の `marpit_inline_svg`・`marpit_directives_apply`・`marpit_header_and_footer`・`marpit_collect` が各目次ページを正規の独立スライドとして処理できるようにする。
@@ -34,7 +34,7 @@ related_test_ids: ["TEST-UT-002", "TEST-IT-001", "TEST-ST-001"]
   1. 詳細設計書（`docs/03_detail_design/02_internal_interface_specification.md`, `03_program_specification.md`, `docs/templates/05_software_design.md`）の `marp_toc` フック位置・トークン制御仕様を補正する。
   2. 17ページ以上（例: 表紙1枚＋目次＋通常スライド15枚＝目次2ページ分割で計18ページ）および3ページ目次分割（25項目以上）のテストケースを検証し、`verify_rtm.py` でトレーサビリティ断絶0件を確認する。
 
-### やらないこと (Out of Scope)
+### 2.2 やらないこと (Out of Scope)
 - 1スライドあたりの目次最大項目数（`ITEMS_PER_SLIDE = 12`）の閾値変更（既存要件 `REQ-FNC-004-04` の12項目/ページ基準を維持）
 - 目次スライドのCSSデザイン（ドットリーダーやフォントサイズ計算式）の大幅な変更
 

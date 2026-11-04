@@ -30,14 +30,16 @@ description: >-
 
 ### PBIバックログおよび参照テンプレート（差分更新・方式審査の基準）
 - **対象PBIファイル**: `docs/backlog/in_progress/PBI-xxx*.md`（または `todo/`）
-- **システム方式設計テンプレート**: `@[docs/templates/04_system_architecture.md](../../../docs/templates/04_system_architecture.md)`
-- **ソフトウェア設計テンプレート（方式・データモデル部）**: `@[docs/templates/05_software_design.md](../../../docs/templates/05_software_design.md)`
-- **要件追跡マトリクス (RTM) テンプレート**: `@[docs/templates/99_traceability_matrix.md](../../../docs/templates/99_traceability_matrix.md)`
+- **システム方式設計テンプレート**: `@[docs/templates/tpl_01_system_architecture_design.md](../../../docs/templates/tpl_01_system_architecture_design.md)`
+- **ソフトウェア構造設計テンプレート**: `@[docs/templates/tpl_01_software_structure_design.md](../../../docs/templates/tpl_01_software_structure_design.md)`
+- **要件追跡マトリクス (RTM) テンプレート**: `@[docs/templates/tpl_01_traceability_matrix.md](../../../docs/templates/tpl_01_traceability_matrix.md)`
 
 ### 上流入力および本リポジトリの正本配置先（更新対象）
 - **要件定義書（上流入力）**: `@[docs/01_requirements/01_requirements_specification.md](../../../docs/01_requirements/01_requirements_specification.md)`
-- **機能仕様書（基本設計正本）**: `@[docs/02_basic_design/01_functional_specification.md](../../../docs/02_basic_design/01_functional_specification.md)`
-- **外部I/F仕様書（基本設計正本）**: `@[docs/02_basic_design/02_external_interface_specification.md](../../../docs/02_basic_design/02_external_interface_specification.md)`
+- **システム方式設計書（基本設計正本）**: `@[docs/02_basic_design/01_system_architecture_design.md](../../../docs/02_basic_design/01_system_architecture_design.md)`
+- **機能仕様書（基本設計正本）**: `@[docs/02_basic_design/02_functional_specification.md](../../../docs/02_basic_design/02_functional_specification.md)`
+- **外部I/F仕様書（基本設計正本）**: `@[docs/02_basic_design/03_external_interface_specification.md](../../../docs/02_basic_design/03_external_interface_specification.md)`
+- **要件追跡マトリクス（正本）**: `@[docs/05_traceability/01_traceability_matrix.md](../../../docs/05_traceability/01_traceability_matrix.md)`
 - **設計図書統合インデックス**: `@[docs/README.md](../../../docs/README.md)`
 - **工程統制ルール**: `@[.agents/rules/ipa-process-gate.md](../../rules/ipa-process-gate.md)`
 
@@ -48,7 +50,7 @@ description: >-
 以下の条件を満たさない場合は方式設計に着手せず、`ipa-requirements-analyst` へ差し戻すこと：
 1. 対象 `PBI-xxx.md` が存在し、対応する機能要件ID（`REQ-F-*` / `REQ-FNC-*`）および受入基準（AC）が定義・紐付け済みであること。
 2. 非機能要件（性能・可用性・セキュリティ・稼働環境）に要求値（仮置き含む）が設定されていること。
-3. 未確定要件に依存する箇所がある場合、`【仮定: Q-xxx】` マーカーが付与されていること。
+3. 未確定要件に依存する箇所がある場合、`【仮定: ASM-NNN】` マーカーが付与されていること。
 
 ---
 
@@ -62,11 +64,11 @@ flowchart TD
 ```
 
 ### Phase 1: 上流要件のトレースとレイヤリング確認
-1. 対象となる要件ID（`REQ-*`）を特定し、`docs/02_basic_design/01_functional_specification.md` の5層アーキテクチャ（1. Presentation Theme層 / 2. Rendering Engine層 / 3. Converter & Build Engine層 / 4. MCP Service層 / 5. AI Agent & UI層）のどの層に責務を配置するか決定する。
+1. 対象となる要件ID（`REQ-*`）を特定し、`docs/02_basic_design/02_functional_specification.md` の5層アーキテクチャ（1. Presentation Theme層 / 2. Rendering Engine層 / 3. Converter & Build Engine層 / 4. MCP Service層 / 5. AI Agent & UI層）のどの層に責務を配置するか決定する。
 2. 層の責務越境（例：テーマ層にビジネスロジックを混入させる、MCP層で直接DOM操作を行う等）がないか検証する。
 
 ### Phase 2: システム方式設計（構成図・基盤環境・セキュリティ境界）
-1. `@[docs/templates/04_system_architecture.md](../../../docs/templates/04_system_architecture.md)` に従い、以下を設計・記述する：
+1. `@[docs/templates/tpl_01_system_architecture_design.md](../../../docs/templates/tpl_01_system_architecture_design.md)` に従い、以下を設計・記述する：
    - **システム全体構成図（Mermaid `flowchart` / `sequenceDiagram`）**: コンポーネント間の呼び出し方向、プロトコル（Stdio JSON-RPC、CLI、Puppeteer IPC）、データの流れを明記する。
    - **基盤環境・コンテナ構成**: Docker Dev Container（Node.js 22 LTS、Chromium、Noto CJKフォント）における稼働条件、環境変数（`CHROME_PATH`, `PUPPETEER_ARGS` 等）、障害時のフォールバック方式（多段階ブラウザ探索等）。
    - **信頼境界とセキュリティ設計**: 外部入力（MCPクライアントからのJSONペイロード、ファイルパス指定）のバリデーション境界、ローカルファイルアクセス制限、PII・絶対パス遮断方式。
@@ -112,3 +114,5 @@ flowchart TD
 - [ ] 外部I/Fの全項目に型・必須区分・制約が定義され、「TBD」が残っていないか。
 - [ ] エラーコード一覧に準正常系が網羅され、最終行に受け皿「上記以外（未定義エラー）」が定義されているか。
 - [ ] W字シフトレフトとして、結合テスト仕様（外部I/F検証観点）への入力情報が揃っているか。
+
+> **設計図書の記述規約**: 設計図書の記述は `docs/00_project_charter/03_documentation_standard.md`（`DOC-GOV-003`）と `docs/00_project_charter/04_id_numbering_rules.md`（`DOC-GOV-004`）に従い、図書別の章構造は `docs/templates/tpl_*.md` を正本とする。規約適合は `verify_doc_syntax.py`（`verify_rtm.py` から呼び出し）で機械検査する。

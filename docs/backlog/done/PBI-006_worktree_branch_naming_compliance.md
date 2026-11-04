@@ -5,7 +5,7 @@ type: "bugfix" # feature | enhancement | bugfix
 status: "done" # todo | designing | implementing | testing | done
 priority: "high" # high | medium | low
 related_req_ids: ["REQ-NFR-005"]
-related_mod_ids: ["MOD-001"]
+related_mod_ids: ["MOD-SKL-001"]
 related_test_ids: ["TEST-IT-005"]
 ---
 
@@ -22,7 +22,7 @@ related_test_ids: ["TEST-IT-005"]
   - リポジトリのガバナンスと自動化品質を担保し、人間・AI双方がブランチ命名規約違反を起こさずにシームレスに開発を完遂できるようにするため
 
 ## 2. スコープと仕様概要 (What)
-### やること (In Scope)
+### 2.1 やること (In Scope)
 1. **タスク開始時プロトコル（Task Initiation Protocol）の策定・明文化**:
    - `AGENTS.md`, `GEMINI.md`, `.agents/rules/ipa-process-gate.md`, `.agents/skills/github-workflows/SKILL.md`, `.agents/skills/ipa-pbi-orchestrator/SKILL.md` に「タスク開始時・Worktreeブランチ自動是正ルール」を新設。
    - エージェントはセッション開始時（PBI起票前またはStep 0直前）、必ず現在のブランチ名（`git branch --show-current`）を検査する。
@@ -39,7 +39,7 @@ related_test_ids: ["TEST-IT-005"]
    - 現在の `resolve_issue_eight` ブランチを規約準拠ブランチ名 `fix/antigravity-2.0/issue-8/worktree-branch-naming-compliance` へ是正。
    - Dockerコンテナ内ビルド検証（`npm run build`）およびRTM監査スクリプト（`verify_rtm.py`）を実行し、断絶0件を達成。
 
-### やらないこと (Out of Scope)
+### 2.2 やらないこと (Out of Scope)
 - Google Antigravity 2.0 アプリケーション本体のバイナリ（`language_server.exe` / `Antigravity.exe`）の直接改変（OSSリポジトリのスコープ外であり、エージェント統制ルールおよびプロトコルによって完全解決する）
 - GitHub へのリモートプッシュおよびPR自動オープン（ユーザーの指示に基づく）
 

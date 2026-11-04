@@ -33,11 +33,11 @@ description: >-
 
 ### PBIバックログおよび参照テンプレート（差分更新・項目監査の基準）
 - **対象PBIファイル**: `docs/backlog/todo/PBI-xxx*.md` または `docs/backlog/in_progress/PBI-xxx*.md`
-- **PBIテンプレート**: `@[docs/templates/98_pbi_template.md](../../../docs/templates/98_pbi_template.md)`
-- **業務要件定義テンプレート**: `@[docs/templates/01_business_requirements.md](../../../docs/templates/01_business_requirements.md)`
-- **機能要件定義テンプレート**: `@[docs/templates/02_functional_requirements.md](../../../docs/templates/02_functional_requirements.md)`
-- **非機能要件グレードテンプレート**: `@[docs/templates/03_non_functional_requirements.md](../../../docs/templates/03_non_functional_requirements.md)`
-- **要件追跡マトリクス (RTM) テンプレート**: `@[docs/templates/99_traceability_matrix.md](../../../docs/templates/99_traceability_matrix.md)`
+- **PBIテンプレート**: `@[docs/templates/tpl_98_pbi_template.md](../../../docs/templates/tpl_98_pbi_template.md)`
+- **業務要件定義テンプレート**: `@[docs/legacy/templates/01_business_requirements.md](../../../docs/legacy/templates/01_business_requirements.md)`
+- **機能要件定義テンプレート**: `@[docs/legacy/templates/02_functional_requirements.md](../../../docs/legacy/templates/02_functional_requirements.md)`
+- **非機能要件グレードテンプレート**: `@[docs/legacy/templates/03_non_functional_requirements.md](../../../docs/legacy/templates/03_non_functional_requirements.md)`
+- **要件追跡マトリクス (RTM) テンプレート**: `@[docs/legacy/templates/99_traceability_matrix.md](../../../docs/legacy/templates/99_traceability_matrix.md)`
 
 ### 本リポジトリの正本配置先（更新対象）
 - **プロジェクト憲章**: `@[docs/00_project_charter/01_project_charter.md](../../../docs/00_project_charter/01_project_charter.md)`
@@ -63,11 +63,11 @@ flowchart TD
    - **【多義】**: 「原則として」「適宜」「速やかに」「〜など」「使いやすい」等の複数解釈が可能な表現。
    - **【暗黙】**: 明記されていないが実装・運用に必須の前提（既存機能との互換性、Docker環境制約、排他制御等）。
    - **【矛盾】**: 既存要件、非機能要件、またはプロジェクト憲章（SaaS制限ライセンス・PII保護原則等）との衝突。
-3. 未確定事項は勝手に仕様を捏造せず、「A案とB案のどちらとしますか？（推奨はA案、理由は〜）」という**推奨案付き選択肢**として提示する。暫定進行が合意された箇所には `【仮定: Q-xxx】` マーカーを付与する。
+3. 未確定事項は勝手に仕様を捏造せず、「A案とB案のどちらとしますか？（推奨はA案、理由は〜）」という**推奨案付き選択肢**として提示する。暫定進行が合意された箇所には `【仮定: ASM-NNN】` マーカーを付与する。
 
 ### Phase 2: 業務要件・機能要件・受入基準（AC）の策定
-1. `@[docs/templates/01_business_requirements.md](../../../docs/templates/01_business_requirements.md)` に従い、業務の背景（As-Isの課題）、目的（To-Be像）、ステークホルダー、システム化範囲（スコープ内外）、業務フロー（Mermaid図）を定義する。
-2. `@[docs/templates/02_functional_requirements.md](../../../docs/templates/02_functional_requirements.md)` に従い、すべての機能要件に一意のID（`REQ-F-001` 等、または既存体系の `REQ-FNC-008` 等）を採番する。
+1. `@[docs/templates/tpl_01_requirements_specification.md](../../../docs/templates/tpl_01_requirements_specification.md)`（正本: `docs/01_requirements/01_requirements_specification.md`）に従い、業務の背景（As-Isの課題）、目的（To-Be像）、ステークホルダー、システム化範囲（スコープ内外）、業務フロー（Mermaid図）を定義する。
+2. 機能要件に一意のID（`REQ-FNC-xxx`）を採番する。
 3. 各機能要件に対して、以下のチェックリストを満たす **受入基準（Acceptance Criteria）** を記述する：
    - [ ] `Given（前提条件）/ When（操作・入力）/ Then（期待結果）` 形式であること。
    - [ ] `Then` は数値・出力ファイル・返却JSON・DOM状態・エラーコード等の**観測可能な事実**で記述されていること。
@@ -76,7 +76,7 @@ flowchart TD
 
 ### Phase 3: 非機能要件（IPA非機能要求グレード6大項目）の定義
 1. ユーザーへ非機能要件を確認する際は、SLAやRTO/RPO等の専門用語をそのまま投げず、「何秒以内に処理が終わる必要があるか」「どの環境で動く必要があるか」といった業務・利用文脈から要求値へ変換する。
-2. `@[docs/templates/03_non_functional_requirements.md](../../../docs/templates/03_non_functional_requirements.md)` に従い、以下の **IPA 6大項目** を網羅的に定義する：
+2. `@[docs/templates/tpl_01_requirements_specification.md](../../../docs/templates/tpl_01_requirements_specification.md)` に従い、以下の **IPA 6大項目**（`REQ-NFR-xxx`）を網羅的に定義する：
    - **1. 可用性 (Availability)**: 継続稼働性、障害時の縮退動作・フォールバック（Chromium多段探索等）、復旧方針。
    - **2. 性能・拡張性 (Performance & Scalability)**: 処理レスポンス時間（p95または上限秒数）、スループット、最大ページ数・データ量上限。
    - **3. 運用・保守性 (Operability & Maintainability)**: ログ出力形式、設定変更容易性、コーディング規約（全行直上平易コメント規則）準拠。
@@ -87,15 +87,15 @@ flowchart TD
 
 ### Phase 4: W字シフトレフト監査とトレーサビリティ接続
 1. 定義した全要件ID（`REQ-*`）がテスト可能（Testable）であるか自己監査する。
-2. `@[docs/templates/99_traceability_matrix.md](../../../docs/templates/99_traceability_matrix.md)`（または `docs/README.md` のトレーサビリティ表）に新規要件IDを登録し、次工程（`ipa-system-architect`）への引き継ぎ準備を完了する。
+2. `@[docs/05_traceability/01_traceability_matrix.md](../../../docs/05_traceability/01_traceability_matrix.md)`（正本: `DOC-RTM-001`）に新規要件IDを登録し、次工程（`ipa-system-architect`）への引き継ぎ準備を完了する。
 
 ---
 
 ## 3. 完了判定チェックリスト（Definition of Done）
 
-- [ ] 全機能要件に一意の `REQ-F-xxx`（または `REQ-FNC-xxx`）が採番され、優先度（Must / Should / Could）が明記されているか。
+- [ ] 全機能要件に一意の `REQ-FNC-xxx` が採番され、優先度（Must / Should / Could）が明記されているか。
 - [ ] 全機能要件に `Given / When / Then` 形式の受入基準（正常系・準正常系・境界値）が定義されているか。
-- [ ] 非機能要件6大項目に未記入（TBD）がなく、仮置き項目には `【仮定: Q-xxx】` が付与されているか。
+- [ ] 非機能要件6大項目に未記入（TBD）がなく、仮置き項目には `【仮定: ASM-NNN】` が付与されているか。
 - [ ] 成果物冒頭に「レビュアー向けサマリ（前版差分・判断ポイント・影響ID）」が記載されているか。
 - [ ] ドキュメント内に個人の実名やホスト固有の絶対パスが含まれていないか。
 
@@ -108,3 +108,5 @@ flowchart TD
 2. **検出した曖昧さ指摘トップ3**と推奨案付きの質問事項
 3. **残存する仮定（`Q-ID`）一覧**
 4. **次工程（`ipa-system-architect`）への引き継ぎ事項**
+
+> **設計図書の記述規約**: 設計図書の記述は `docs/00_project_charter/03_documentation_standard.md`（`DOC-GOV-003`）と `docs/00_project_charter/04_id_numbering_rules.md`（`DOC-GOV-004`）に従い、図書別の章構造は `docs/templates/tpl_*.md` を正本とする。規約適合は `verify_doc_syntax.py`（`verify_rtm.py` から呼び出し）で機械検査する。

@@ -7,7 +7,7 @@
 ## 1. マクロはアジャイル、ミクロはIPA準拠（PBI駆動V字/W字モデル統制）
 
 1. **PBI起点の原則**:
-   - すべての機能追加（`feature`）・仕様改善（`enhancement`）・バグ修正（`bugfix`）は、定型構文のPBIファイル（`docs/backlog/{todo,in_progress,done}/PBI-xxx*.md`、雛形: `docs/templates/98_pbi_template.md`）を起点として開始する。
+   - すべての機能追加（`feature`）・仕様改善（`enhancement`）・バグ修正（`bugfix`）は、定型構文のPBIファイル（`docs/backlog/{todo,in_progress,done}/PBI-xxx*.md`、雛形: `docs/templates/tpl_98_pbi_template.md`）を起点として開始する。
 2. **ドキュメントの差分更新（Living Documentation）**:
    - PBIごとにゼロから別個の設計書を作るのではなく、既存のマスター設計書（要件定義書、方式設計書、詳細設計書、テスト仕様書、要件追跡マトリクス）に対して、**PBI単位で差分をインクリメンタルに追記・更新**する。
 3. **1つのPBI内部におけるミクロ工程順序**:
@@ -15,12 +15,12 @@
 
 | 順序 | 工程名称 | 担当スキル | 必須成果物（差分更新対象テンプレート / 正本配置先） | 次工程移行ゲート条件（Exit Criteria） |
 | :---: | :--- | :--- | :--- | :--- |
-| **0** | **PBI起票・解析**<br>(Backlog Item) | `ipa-pbi-orchestrator` | ・`docs/templates/98_pbi_template.md`<br>（実体: `docs/backlog/todo/PBI-xxx*.md`） | ・タスク開始時プロトコル（Gitブランチ名が規約準拠か検証、違反時は `git branch -m` で是正済み）<br>・Why/WhatおよびGiven-When-Then形式のACが定義済み<br>・PBI種別（`feature` / `enhancement` / `bugfix`）が確定済み |
-| **1** | **要件定義（差分）**<br>(Requirements Diff) | `ipa-requirements-analyst` | ・`docs/templates/01`〜`03_*.md`<br>（実体: `docs/01_requirements/`） | ・対象PBIに対応する `REQ-F-xxx`（または `REQ-FNC-xxx`）が採番・差分追記済み<br>・PBIの `related_req_ids` に記録済み |
-| **2** | **方式設計（差分）**<br>(Architecture Diff) | `ipa-system-architect` | ・`docs/templates/04_system_architecture.md`<br>（実体: `docs/02_basic_design/`） | ・影響する構成図・外部I/F仕様・エラーコード一覧（最終行「上記以外（未定義エラー）」受け皿含む）の差分更新済み（※`bugfix`時はスキップ可） |
-| **3** | **詳細設計（差分）**<br>(Detail Design Diff) | `ipa-detail-designer` | ・`docs/templates/05_software_design.md`<br>（実体: `docs/03_detail_design/`） | ・影響するデータモデル・モジュール（`MOD-xxx`）・関数仕様・単体テスト観点の差分更新が完了し、PBIの `related_mod_ids` に記録済み |
+| **0** | **PBI起票・解析**<br>(Backlog Item) | `ipa-pbi-orchestrator` | ・`docs/templates/tpl_98_pbi_template.md`<br>（実体: `docs/backlog/todo/PBI-xxx*.md`） | ・タスク開始時プロトコル（Gitブランチ名が規約準拠か検証、違反時は `git branch -m` で是正済み）<br>・Why/WhatおよびGiven-When-Then形式のACが定義済み<br>・PBI種別（`feature` / `enhancement` / `bugfix`）が確定済み |
+| **1** | **要件定義（差分）**<br>(Requirements Diff) | `ipa-requirements-analyst` | ・`docs/legacy/templates/01`〜`03_*.md`<br>（実体: `docs/01_requirements/`） | ・対象PBIに対応する `REQ-F-xxx`（または `REQ-FNC-xxx`）が採番・差分追記済み<br>・PBIの `related_req_ids` に記録済み |
+| **2** | **方式設計（差分）**<br>(Architecture Diff) | `ipa-system-architect` | ・`docs/legacy/templates/04_system_architecture.md`<br>（実体: `docs/02_basic_design/`） | ・影響する構成図・外部I/F仕様・エラーコード一覧（最終行「上記以外（未定義エラー）」受け皿含む）の差分更新済み（※`bugfix`時はスキップ可） |
+| **3** | **詳細設計（差分）**<br>(Detail Design Diff) | `ipa-detail-designer` | ・`docs/legacy/templates/05_software_design.md`<br>（実体: `docs/03_detail_design/`） | ・影響するデータモデル・モジュール（`MOD-xxx`）・関数仕様・単体テスト観点の差分更新が完了し、PBIの `related_mod_ids` に記録済み |
 | **4** | **実装・単体検証**<br>(Implementation) | `ipa-detail-designer`<br>（実装フェーズ） | ・`src/`, `pptx_converter/`, `themes/`, `marp.config.js` | ・詳細設計書の差分仕様と100%一致<br>・`docs/00_project_charter/02_coding_standards.md`（**全行直上平易コメント規則**）100%遵守<br>・Dockerコンテナ内ビルド（`npm run build`）エラー0件 |
-| **5** | **テスト・RTM更新**<br>(QA & Traceability) | `ipa-qa-engineer`<br>`ipa-traceability-validator` | ・`docs/templates/06_test_specification.md`<br>・`docs/templates/99_traceability_matrix.md`<br>（実体: `docs/README.md` / `docs/backlog/done/`） | ・PBIの全ACを検証する `TEST-*` が差分追記・実行済み<br>・`verify_rtm.py` による `PBI` ↔ `REQ` ↔ `MOD` ↔ `TEST` の双方向断絶 **0件**<br>・PBIステータスが `done` に更新され `done/` へ移動済み |
+| **5** | **テスト・RTM更新**<br>(QA & Traceability) | `ipa-qa-engineer`<br>`ipa-traceability-validator` | ・`docs/legacy/templates/06_test_specification.md`<br>・`docs/legacy/templates/99_traceability_matrix.md`<br>（実体: `docs/README.md` / `docs/backlog/done/`） | ・PBIの全ACを検証する `TEST-*` が差分追記・実行済み<br>・`verify_rtm.py` による `PBI` ↔ `REQ` ↔ `MOD` ↔ `TEST` の双方向断絶 **0件**<br>・PBIステータスが `done` に更新され `done/` へ移動済み |
 
 ### 1.1 タスク開始時・Worktreeブランチ自動是正ルール (Task Initiation Protocol)
 - Antigravity 2.0 等でWorktreeを作成してセッションを開始した際、自動採番された一時ブランチ名（`resolve_issue_eight` 等のフラットなsnake_case）がリポジトリ規約に違反している場合、エージェントはStep 0（PBI起票）の着手前に必ず `git branch --show-current` を検査すること。
@@ -76,7 +76,7 @@
    - **【矛盾】**: 要件間、非機能要件、または既存実装仕様との衝突。
 2. **仮定マーカーの埋め込み**:
    - 未確定事項を抱えたまま暫定進行する場合は、AIが勝手に仕様を捏造せず、必ず推奨案を添えてユーザーへ確認する。
-   - 暫定仮定で進める合意を得た箇所には `【仮定: Q-xxx】` マーカーをPBI・設計書・テスト仕様書・コード内に埋め込み、確定時に `grep` で全件特定・解消できるようにする（仮定の多段積みは2段まで）。
+   - 暫定仮定で進める合意を得た箇所には `【仮定: ASM-NNN】` マーカーをPBI・設計書・テスト仕様書・コード内に埋め込み、確定時に `grep` で全件特定・解消できるようにする（仮定の多段積みは2段まで）。
 
 ---
 
@@ -107,8 +107,10 @@
 - **確認済み成果物・差分更新パス**:
   - `docs/backlog/.../PBI-xxx.md`
   - `docs/...`
-- **残存する仮定 (Q-ID) / 積み残し条件**:
+- **残存する仮定 (ASM-ID) / 積み残し条件**:
   - （なければ「なし」と明記）
 - **次工程への実行指示**:
   - （次に実行すべきスキル・作業内容）
 ```
+
+> **設計図書の記述規約**: 設計図書の記述は `docs/00_project_charter/03_documentation_standard.md`（`DOC-GOV-003`）と `docs/00_project_charter/04_id_numbering_rules.md`（`DOC-GOV-004`）に従い、図書別の章構造は `docs/templates/tpl_*.md` を正本とする。規約適合は `verify_doc_syntax.py`（`verify_rtm.py` から呼び出し）で機械検査する。

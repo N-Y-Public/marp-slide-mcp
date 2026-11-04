@@ -5,7 +5,7 @@ type: "bugfix" # feature | enhancement | bugfix
 status: "done" # todo | designing | implementing | testing | done
 priority: "high" # high | medium | low
 related_req_ids: ["REQ-NFR-001", "REQ-NFR-006"]
-related_mod_ids: ["MOD-001", "MOD-002"]
+related_mod_ids: ["MOD-SRV-001", "MOD-ENG-001"]
 related_test_ids: ["TEST-IT-006"]
 ---
 
@@ -22,7 +22,7 @@ related_test_ids: ["TEST-IT-006"]
   - これらの複合要因を根本から是正し、開発者やAIエージェントがDocker環境で安定してスライド変換パイプラインを実行できるようにするため。
 
 ## 2. スコープと仕様概要 (What)
-### やること (In Scope)
+### 2.1 やること (In Scope)
 1. **Marp CLI 非対話標準入力待機の遮断 (`--no-stdin`)**:
    - `package.json` のビルドスクリプト（`build:pdf`, `build:pptx`, `pdf`, `pptx`）に `--no-stdin` フラグを追加し、Docker Compose や CI などの非対話パイプ環境下で Marp CLI が stdin 入力待ち（`get-stdin`）でハングするのを防止する。
 2. **Marp CLI 向け Puppeteer サンドボックス解除環境変数の配備 (`CHROME_NO_SANDBOX=1`)**:
@@ -39,7 +39,7 @@ related_test_ids: ["TEST-IT-006"]
    - Dockerコンテナ内で `npm run build:pdf` および `npm run build:pptx` を実行し、ハングすることなく正常終了（終了コード0）することを確認。
    - `verify_rtm.py` によるトレーサビリティ検証を実行し、断絶0件を達成。
 
-### やらないこと (Out of Scope)
+### 2.2 やらないこと (Out of Scope)
 - `@marp-team/marp-cli` 自体のアップストリーム npm パッケージコードの直接改変（OSSの利用規約・環境変数・CLI引数および設定ファイルによる解決とする）。
 - GitHub へのリモートプッシュおよびPR自動オープン（ユーザーの承認・指示に基づく）。
 

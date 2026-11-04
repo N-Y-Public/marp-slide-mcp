@@ -31,19 +31,22 @@ description: >-
 
 ### PBIバックログおよび参照テンプレート（差分更新・詳細設計の基準）
 - **対象PBIファイル**: `docs/backlog/in_progress/PBI-xxx*.md`（または `todo/`）
-- **ソフトウェア方式・詳細設計テンプレート**: `@[docs/templates/05_software_design.md](../../../docs/templates/05_software_design.md)`
-- **テスト仕様書テンプレート（単体テスト観点の連携先）**: `@[docs/templates/06_test_specification.md](../../../docs/templates/06_test_specification.md)`
-- **要件追跡マトリクス (RTM) テンプレート**: `@[docs/templates/99_traceability_matrix.md](../../../docs/templates/99_traceability_matrix.md)`
+- **ソフトウェア構造設計テンプレート**: `@[docs/templates/tpl_01_software_structure_design.md](../../../docs/templates/tpl_01_software_structure_design.md)`
+- **テスト仕様書テンプレート（単体テスト観点の連携先）**: `@[docs/templates/tpl_01_test_specification.md](../../../docs/templates/tpl_01_test_specification.md)`
+- **要件追跡マトリクス (RTM) テンプレート**: `@[docs/templates/tpl_01_traceability_matrix.md](../../../docs/templates/tpl_01_traceability_matrix.md)`
 
 ### 上流入力および本リポジトリの正本配置先（更新対象）
 - **コーディング規約（最優先遵守）**: `@[docs/00_project_charter/02_coding_standards.md](../../../docs/00_project_charter/02_coding_standards.md)`
 - **機能仕様書・外部I/F仕様書（上流入力）**:
-  - `@[docs/02_basic_design/01_functional_specification.md](../../../docs/02_basic_design/01_functional_specification.md)`
-  - `@[docs/02_basic_design/02_external_interface_specification.md](../../../docs/02_basic_design/02_external_interface_specification.md)`
+  - `@[docs/02_basic_design/02_functional_specification.md](../../../docs/02_basic_design/02_functional_specification.md)`
+  - `@[docs/02_basic_design/03_external_interface_specification.md](../../../docs/02_basic_design/03_external_interface_specification.md)`
 - **詳細設計書群（正本）**:
-  - **構造設計書**: `@[docs/03_detail_design/01_architectural_design.md](../../../docs/03_detail_design/01_architectural_design.md)`
+  - **構造設計書**: `@[docs/03_detail_design/01_software_structure_design.md](../../../docs/03_detail_design/01_software_structure_design.md)`
   - **内部I/F仕様書**: `@[docs/03_detail_design/02_internal_interface_specification.md](../../../docs/03_detail_design/02_internal_interface_specification.md)`
   - **プログラム仕様書**: `@[docs/03_detail_design/03_program_specification.md](../../../docs/03_detail_design/03_program_specification.md)`
+  - **データ構造仕様書**: `@[docs/03_detail_design/06_data_structure_specification.md](../../../docs/03_detail_design/06_data_structure_specification.md)`
+  - **画面仕様書**: `@[docs/03_detail_design/07_screen_specification.md](../../../docs/03_detail_design/07_screen_specification.md)`
+- **要件追跡マトリクス（正本）**: `@[docs/05_traceability/01_traceability_matrix.md](../../../docs/05_traceability/01_traceability_matrix.md)`
 - **工程統制ルール**: `@[.agents/rules/ipa-process-gate.md](../../rules/ipa-process-gate.md)`
 
 ---
@@ -53,7 +56,7 @@ description: >-
 1. **詳細設計着手の前提**:
    - 対象となる `PBI-xxx.md` が存在し、上流の要件定義（`REQ-*`）および（必要な場合は）システム方式設計・外部I/F定義（`FNC-*`, `EXT-*`）の差分更新が完了していること。
 2. **ソースコード実装着手の絶対ゲート（PBI駆動 Pre-Implementation Gate）**:
-   - **実装コード（`src/`, `pptx_converter/`, `themes/`, `marp.config.js` 等）の変更は、対象となる `PBI-xxx.md` が存在し、かつそのPBIに対応する詳細設計書（`docs/03_detail_design/` または `docs/templates/05_software_design.md`）の差分更新が完了している場合のみ許可する。**
+   - **実装コード（`src/`, `pptx_converter/`, `themes/`, `marp.config.js` 等）の変更は、対象となる `PBI-xxx.md` が存在し、かつそのPBIに対応する詳細設計書（`docs/03_detail_design/`）の差分更新が完了している場合のみ許可する。**
    - PBIまたは詳細設計書の差分更新が未完了の場合は、必ず本スキルにより詳細設計書の差分反映と `related_mod_ids` の記録を完了させてから実装（`status: "implementing"`）に移ること。
 
 ---
@@ -68,7 +71,7 @@ flowchart TD
 ```
 
 ### Phase 1: データモデル・ER図設計と変更影響調査（Data Model Specialist 観点）
-1. `@[docs/templates/05_software_design.md](../../../docs/templates/05_software_design.md)` に従い、エンティティ・データ構造（Mermaid `erDiagram` または `classDiagram`）およびZodスキーマ/TypeScript型定義を設計する。
+1. `@[docs/templates/tpl_06_data_structure_specification.md](../../../docs/templates/tpl_06_data_structure_specification.md)`（正本: `docs/03_detail_design/06_data_structure_specification.md`）に従い、エンティティ・データ構造（Mermaid `erDiagram` または `classDiagram`）およびZodスキーマ/TypeScript型定義を設計する。
 2. 既存のデータ構造（`SlideDeck`, `TitleSlide`, `NormalSlide`, DOM計測構造体等）を変更する場合は、**変更影響調査**を省略せず実施する：
    - [ ] 該当データ構造を参照する全モジュール・関数・テンプレート・変換スクリプトを `grep` 等で機械的に列挙したか。
    - [ ] 後方互換性（既存スライドMarkdownやMCPクライアント呼び出しへの影響）を確認し、破壊的変更がある場合はエスカレーションフラグを立てたか。
@@ -86,7 +89,7 @@ flowchart TD
 2. **例外・エラー分岐の明記**:
    - 準正常系（想定された入力不備・ファイル不在）と異常系（未定義エラー受け皿）の分岐条件およびエラー返却ロジックを明記する。
 3. **単体テスト観点（W字シフトレフト）**:
-   - 詳細設計書内に、各モジュール・関数の「単体テスト観点（正常系・境界値・準正常系・異常系）」を列挙し、`ipa-qa-engineer` が作成する `06_test_specification.md`（`TEST-UT-xxx`）の直接の検証根拠とする。
+   - 詳細設計書内に、各モジュール・関数の「単体テスト観点（正常系・境界値・準正常系・異常系）」を列挙し、`ipa-qa-engineer` が作成する `01_test_specification.md`（`TEST-UT-xxx`）の直接の検証根拠とする。
 
 ### Phase 4: コーディング規約準拠の実装とDocker検証（設計承認後のみ）
 詳細設計が承認された後、以下の実装統制チェックリストを厳守してコードを記述する：
@@ -95,7 +98,7 @@ flowchart TD
 - [ ] **設計書との完全一致**:
   - 詳細設計書に定義されていない引数・項目・機能を「気を利かせて」勝手に追加しない（スコープクリープ禁止）。
 - [ ] **仮定マーカーの同期**:
-  - 未確定要件の仮定（`Q-xxx`）に依存する実装箇所には `// 【仮定: Q-xxx】 ...` を明記する。
+  - 未確定要件の仮定（`ASM-NNN`）に依存する実装箇所には `// 【仮定: ASM-NNN】 ...` を明記する。
 - [ ] **Dockerコンテナ内での検証必須**:
   - ホストOS上で直接 `npm` や `node` を実行せず、必ず `docker compose run --rm app npm run build` を実行してTypeScriptコンパイルエラーが **0件** であることを確認する。
 
@@ -105,6 +108,8 @@ flowchart TD
 
 - [ ] 全モジュールに一意の `MOD-xxx` が採番され、上流の `REQ-*` および外部I/F（`EXT-*`）と紐付いているか。
 - [ ] ER図/クラス図、データ構造定義、内部関数シグネチャ、処理フロー、エラー分岐が漏れなく記述されているか。
-- [ ] 各モジュールの単体テスト観点が明記され、`06_test_specification.md` からトレース可能か。
+- [ ] 各モジュールの単体テスト観点が明記され、`01_test_specification.md` からトレース可能か。
 - [ ] （実装を伴う場合）全ソースコード行に直上日本語コメントが付与され、Docker内の `npm run build` が成功（エラー0件）したか。
-- [ ] `@[docs/templates/99_traceability_matrix.md](../../../docs/templates/99_traceability_matrix.md)`（または `docs/README.md`）に `REQ` ↔ `MOD` の対応が反映されているか。
+- [ ] `@[docs/05_traceability/01_traceability_matrix.md](../../../docs/05_traceability/01_traceability_matrix.md)`（正本: `DOC-RTM-001`）に `REQ` ↔ `MOD` の対応が反映されているか。
+
+> **設計図書の記述規約**: 設計図書の記述は `docs/00_project_charter/03_documentation_standard.md`（`DOC-GOV-003`）と `docs/00_project_charter/04_id_numbering_rules.md`（`DOC-GOV-004`）に従い、図書別の章構造は `docs/templates/tpl_*.md` を正本とする。規約適合は `verify_doc_syntax.py`（`verify_rtm.py` から呼び出し）で機械検査する。

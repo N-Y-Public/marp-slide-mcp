@@ -4,8 +4,8 @@ title: "通常スライドへのスピーカーノート（発表者ノート）
 type: "enhancement" # feature | enhancement | bugfix
 status: "todo" # todo | designing | implementing | testing | done
 priority: "medium" # high | medium | low
-related_req_ids: ["REQ-F-001"] # 例: ["REQ-F-001", "REQ-NF-002"]
-related_mod_ids: ["MOD-001"] # 例: ["MOD-001"]
+related_req_ids: ["REQ-FNC-001"] # 例: ["REQ-FNC-001", "REQ-NFR-001"]
+related_mod_ids: ["MOD-SRV-001"] # 例: ["MOD-SRV-001"]
 related_test_ids: ["TEST-UT-001", "TEST-IT-001"] # 例: ["TEST-001"]
 ---
 
@@ -17,12 +17,12 @@ related_test_ids: ["TEST-UT-001", "TEST-IT-001"] # 例: ["TEST-001"]
 - **なぜなら (So that):** スライド紙面の情報密度（ワンスライド・ワンメッセージ原則）を維持したまま、口頭補足説明や想定問答スクリプトを同一Markdown正本内で一元管理できるため
 
 ## 2. スコープと仕様概要 (What)
-### やること (In Scope)
+### 2.1 やること (In Scope)
 - `NormalSlideSchema`（`src/index.ts` / `MOD-001`）にオプショナル項目 `speakerNotes`（文字列・最大1,000文字）を追加する
 - `generateMarpMarkdown` において、`speakerNotes` が指定されている場合はスライド末尾に `<!-- [内容] -->`（Marpディレクティブと衝突しないノートコメント）を出力する
 - `parseMarpMarkdown` / `get_slide_deck` において、ディレクティブ以外のHTMLコメントから `speakerNotes` を復元してJSONレスポンスに含める
 
-### やらないこと (Out of Scope)
+### 2.2 やらないこと (Out of Scope)
 - 表紙スライド（`TitleSlide`）および自動生成目次スライド（`toc`）へのスピーカーノート付与
 - PDFおよびPPTX出力時におけるスピーカーノート専用印刷レイアウトの新規追加
 

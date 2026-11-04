@@ -57,6 +57,11 @@ Thumbs.db
 coverage/
 .nyc_output/
 
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
 # Docker local data (if any mounts write to host)
 .docker/
 docker-data/

@@ -13,7 +13,7 @@
 | 参照元の仕組み (`claude-code-project-pack`) | Antigravity 2.0 での実装先 | 移植・最適化の内容 |
 | :--- | :--- | :--- |
 | **憲法・全体統制 (`CLAUDE.md.template`)** | `AGENTS.md` / `GEMINI.md` | 既存のDocker環境限定実行ルール・OSSプライバシー保護ルールを維持したまま、第4章としてIPA共通フレーム2013 × PBI駆動アジャイルのハイブリッド工程統制・QCDゲート・スキルカタログを統合。 |
-| **PBI駆動オーケストレーション（ハイブリッド統合）** | `ipa-pbi-orchestrator`<br>`docs/backlog/{todo,in_progress,done}/`<br>`98_pbi_template.md` | 「マクロはPBI駆動アジャイル、ミクロはIPA準拠（ミニ・ウォーターフォール）」として再定義。1つのPBIを起点に要件・設計の差分更新（Living Documentation）から実装・テスト・RTM更新までを一気通貫で自動実行。 |
+| **PBI駆動オーケストレーション（ハイブリッド統合）** | `ipa-pbi-orchestrator`<br>`docs/backlog/{todo,in_progress,done}/`<br>`tpl_98_pbi_template.md` | 「マクロはPBI駆動アジャイル、ミクロはIPA準拠（ミニ・ウォーターフォール）」として再定義。1つのPBIを起点に要件・設計の差分更新（Living Documentation）から実装・テスト・RTM更新までを一気通貫で自動実行。 |
 | **工程順序統制・PBIゲート (`leader.md` / `deliverables-catalog.md`)** | `.agents/rules/ipa-process-gate.md` | **「実装コードの変更は、対象となる `PBI-xxx.md` が存在し、かつそのPBIに対応する詳細設計書の差分更新が完了している場合のみ許可する」** というPBI駆動ゲートおよび種別テーラリング（`feature` / `enhancement` / `bugfix`）を明文化。 |
 | **曖昧さ4分類検出・仮定管理 (`assumption-management.md`)** | `.agents/rules/ipa-process-gate.md`<br>`ipa-requirements-analyst` | 【未定義】【多義】【暗黙】【矛盾】の4分類検出、推奨案付き質問形式、未確定箇所への `【仮定: Q-xxx】` マーカー埋め込みルールを実装。 |
 | **エラー空間の閉鎖 (`api-designer.md` / `test-planning`)** | `ipa-system-architect`<br>`04_system_architecture.md` | 外部I/Fエラーコード一覧において準正常系を全行採番し、最終行に受け皿「上記以外（未定義エラー: `ERR-SYS-999`）」を必須化。 |
@@ -57,7 +57,7 @@
     │   ├── in_progress/                     # 進行中PBI（status: "designing" | "implementing" | "testing"）
     │   └── done/                            # 完了・RTM監査通過済みPBI（status: "done"）
     ├── templates/                           # IPA共通フレーム2013 × PBI駆動 設計書Markdown雛形一式
-    │   ├── 98_pbi_template.md               # PBI定義標準テンプレート（YAML Frontmatter + 5セクション構文）
+    │   ├── tpl_98_pbi_template.md           # PBI定義標準テンプレート（YAML Frontmatter + 5セクション構文）
     │   ├── 01_business_requirements.md      # 業務要件定義（背景、目的、システム化範囲、業務フロー）
     │   ├── 02_functional_requirements.md    # 機能要件一覧（一意の REQ-F-xxx 採番テーブル・AC付き）
     │   ├── 03_non_functional_requirements.md# 非機能要件グレード（IPA 6大項目：可用性・性能・保守・移行・Sec・環境）
@@ -77,7 +77,7 @@
 
 | スキル名 | 対応する役割・IPA工程 | 動作モード（Living Documentation） | 参照・更新対象テンプレート (`docs/templates/`) |
 | :--- | :--- | :--- | :--- |
-| **`ipa-pbi-orchestrator`** | **PBI駆動オーケストレーター**<br>（全体司令塔・テーラリング） | `PBI-xxx.md` を解析し、種別（`feature` / `enhancement` / `bugfix`）に応じてStep 1〜5を直列実行しステータスと配置先を遷移させる | ・`98_pbi_template.md`<br>・`docs/backlog/{todo,in_progress,done}/` |
+| **`ipa-pbi-orchestrator`** | **PBI駆動オーケストレーター**<br>（全体司令塔・テーラリング） | `PBI-xxx.md` を解析し、種別（`feature` / `enhancement` / `bugfix`）に応じてStep 1〜5を直列実行しステータスと配置先を遷移させる | ・`tpl_98_pbi_template.md`<br>・`docs/backlog/{todo,in_progress,done}/` |
 | **`ipa-requirements-analyst`** | 要件定義プロセス<br>（業務・機能・非機能） | PBIのWhy/What/ACをマスター要件定義書へ差分追記し、`related_req_ids` をPBIに記録 | ・`01_business_requirements.md`<br>・`02_functional_requirements.md`<br>・`03_non_functional_requirements.md` |
 | **`ipa-system-architect`** | システム方式設計プロセス<br>（基本設計・外部設計） | 影響する構成・外部I/F・エラーコード一覧をマスター方式設計書へ差分追記（`bugfix`時はスキップ可） | ・`04_system_architecture.md`<br>・`05_software_design.md`（方式部） |
 | **`ipa-detail-designer`** | ソフトウェア詳細設計・実装<br>（内部設計・製造） | データモデル・モジュール（`MOD-*`）・内部ロジックを差分更新し、`related_mod_ids` 記録後に規約準拠実装 | ・`05_software_design.md`<br>・`docs/00_project_charter/02_coding_standards.md` |
@@ -131,7 +131,7 @@ docker compose run --rm app npm run build:pptx
    - `enhancement`（改善）: 影響する設計書の差分更新 → 実装 → テスト → RTM更新を実施。
    - `bugfix`（バグ修正）: 原因特定・詳細設計との乖離確認 → 修正実装 → 回帰テスト追加 → RTM更新を実施（方式設計等はスキップ可）。
 
-### 5.2 PBIファイルの書き方（`docs/templates/98_pbi_template.md`）
+### 5.2 PBIファイルの書き方（`docs/templates/tpl_98_pbi_template.md`）
 PBIファイルは、機械可読性とAIの解釈精度を最大化するため、**YAML Frontmatter + 厳密な5つのMarkdownセクション**で記述します（サンプル: [`docs/backlog/todo/PBI-001_sample.md`](docs/backlog/todo/PBI-001_sample.md)）：
 
 - **YAML Frontmatter**:
@@ -162,7 +162,7 @@ Issue #xxx に対応せよ
 ```text
 通常スライドに発表者ノート（speakerNotes）を付与・取得できるようにしたい。PBIを作成して確認を求めよ。
 ```
-- **AIの動作**: `docs/templates/98_pbi_template.md` に従い、`docs/backlog/todo/PBI-xxx_*.md`（Why / What / Given-When-Then形式のAC）を作成し、人間に内容確認を求めます。
+- **AIの動作**: `docs/templates/tpl_98_pbi_template.md` に従い、`docs/backlog/todo/PBI-xxx_*.md`（Why / What / Given-When-Then形式のAC）を作成し、人間に内容確認を求めます。
 
 #### ステップ3: PBI確認後、Antigravity に設計〜実装〜テストの一気通貫実行を指示する
 ```text

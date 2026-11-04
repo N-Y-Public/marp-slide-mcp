@@ -4,9 +4,9 @@ title: "GitHub MCP サーバーのリポジトリ別 PAT 完全分離アーキ�
 type: "enhancement" # feature | enhancement | bugfix
 status: "done" # todo | designing | implementing | testing | done
 priority: "high" # high | medium | low
-related_req_ids: ["REQ-NFR-005"]
-related_mod_ids: ["MOD-001"]
-related_test_ids: ["TEST-ST-003"]
+related_req_ids: ["REQ-FNC-008", "REQ-NFR-005"]
+related_mod_ids: ["MOD-INF-001"]
+related_test_ids: ["TEST-IT-004", "TEST-ST-004"]
 ---
 
 # [PBI-002] GitHub MCP サーバーのリポジトリ別 PAT 完全分離アーキテクチャおよび事前アカウント検証ゲートの実装
@@ -19,7 +19,7 @@ related_test_ids: ["TEST-ST-003"]
 - **なぜなら (So that):** 過去セッションの常駐コンテナによるトークン混線（個人アカウント等での誤起票事故）を物理的に根絶し、第三者がクローンしてもホストを汚さず安全に利用できるOSSポータビリティを担保するため
 
 ## 2. スコープと仕様概要 (What)
-### やること (In Scope)
+### 2.1 やること (In Scope)
 - ホスト側グローバル設定（`~/.gemini/config/mcp_config.json`）の `github-mcp-server` 削除および古い常駐ゾンビコンテナの完全破棄（Step 1）
 - `docker-compose.yml` への `github-mcp` サービス追加（`${GITHUB_PAT_MARP_SLIDE_MCP:-${GITHUB_PERSONAL_ACCESS_TOKEN:-}}` による多段フォールバック連携）（Step 2）
 - リポジトリ内 `.agents/mcp_config.json` における `docker compose run --rm -T github-mcp` 動的ワンショット実行定義（Step 3）
@@ -27,7 +27,7 @@ related_test_ids: ["TEST-ST-003"]
 - AIエージェント行動規範（`AGENTS.md` / `GEMINI.md` / `.agents/rules/`）への事前アカウント検証ゲート（`get_me` で `login === "N-Y-Public"` の機械照合）追記（Step 4）
 - 動作検証（`get_me` 照合テスト、RTMトレーサビリティ検証）（Step 5）
 
-### やらないこと (Out of Scope)
+### 2.2 やらないこと (Out of Scope)
 - リポジトリ内 `.env` ファイルへの平文トークンの書き込み（ユーザー環境ではホスト環境変数のみで管理）
 - GitHub MCP サーバー公式イメージ自体のソースコード改変
 

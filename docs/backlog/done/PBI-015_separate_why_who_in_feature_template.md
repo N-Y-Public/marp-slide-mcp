@@ -4,9 +4,9 @@ title: "機能要望IssueテンプレートにおけるWhyとWhoの入力枠分�
 type: "enhancement" # feature | enhancement | bugfix
 status: "done" # todo | designing | implementing | testing | done
 priority: "medium" # high | medium | low
-related_req_ids: ["REQ-F-001", "REQ-NFR-005"]
-related_mod_ids: ["MOD-001"]
-related_test_ids: ["TEST-IT-003"]
+related_req_ids: ["REQ-FNC-009", "REQ-NFR-005"]
+related_mod_ids: ["MOD-SKL-001"]
+related_test_ids: ["TEST-IT-005"]
 ---
 
 # [PBI-015] 機能要望IssueテンプレートにおけるWhyとWhoの入力枠分離
@@ -22,7 +22,7 @@ related_test_ids: ["TEST-IT-003"]
   - ※なお先行ブランチ `feat/antigravity-2.0/issue-19/complete-pptx-export` にて `PBI-014`（ネイティブPPTX変換）が定義されているため、図書類・バックログのコンフリクトを回避すべく本PBIを `PBI-015` として採番・管理する
 
 ## 2. スコープと仕様概要 (What)
-### やること (In Scope)
+### 2.1 やること (In Scope)
 1. **GitHub Issue フォーム（`feature_request.yml`）の入力枠分離**:
    - 既存の「関連する課題・背景 (Why & Who)」（id: `problem`）を以下の2つの独立した入力枠に分割：
      - **Who枠**:
@@ -49,7 +49,7 @@ related_test_ids: ["TEST-IT-003"]
    - `verify_rtm.py` による双方向トレーサビリティ断絶 0 件の維持。
    - `npm run build` によるビルドエラー 0 件の確認。
 
-### やらないこと (Out of Scope)
+### 2.2 やらないこと (Out of Scope)
 - `bug_report.yml` や `documentation.yml` のフォーム構造変更（今回は `feature_request.yml` のみが対象）
 - 外部IssueやPRへの自動書き込み（手動・ローカル検証に留める）
 

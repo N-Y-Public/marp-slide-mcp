@@ -4,8 +4,8 @@ title: "目次（TOC）スライドにおける長文タイトルの自動折り
 type: "bugfix" # feature | enhancement | bugfix
 status: "done" # todo | designing | implementing | testing | done
 priority: "high" # high | medium | low
-related_req_ids: ["REQ-F-002", "REQ-FNC-004"]
-related_mod_ids: ["MOD-002", "MOD-THEME-001"]
+related_req_ids: ["REQ-FNC-002", "REQ-FNC-004"]
+related_mod_ids: ["MOD-ENG-001", "MOD-THM-001"]
 related_test_ids: ["TEST-UT-002", "TEST-IT-001", "TEST-ST-001"]
 ---
 
@@ -19,7 +19,7 @@ related_test_ids: ["TEST-UT-002", "TEST-IT-001", "TEST-ST-001"]
 - **なぜなら (So that):** 現状の `themes/business-slide-theme.css` では、目次リンク（`section.toc>ul>li.toc-item>p>a`）に `white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important;` が指定されており、一定長を超えるタイトルが `...` で強制的に切り捨てられてしまい、スライドの正確な章立て・アジェンダが閲覧者に伝わらないため。
 
 ## 2. スコープと仕様概要 (What)
-### やること (In Scope)
+### 2.1 やること (In Scope)
 - **`themes/business-slide-theme.css` (`MOD-THEME-001`) の修正**:
   1. 目次タイトルリンク（`section.toc>ul>li.toc-item>p>a`, `section.toc>ol>li.toc-item>p>a`）の折り返し許可設定:
      - `white-space: normal !important;`
@@ -40,7 +40,7 @@ related_test_ids: ["TEST-UT-002", "TEST-IT-001", "TEST-ST-001"]
   - 長文タイトル（日本語長文・英単語混在長文）を含むテストスライドのビルド検証・PDF生成検証。
   - `verify_rtm.py` によるRTM双方向断絶0件の確認。
 
-### やらないこと (Out of Scope)
+### 2.2 やらないこと (Out of Scope)
 - 目次スライド以外の通常スライドタイトル折り返し仕様の大幅変更
 - 1スライドあたりの目次最大項目数（`ITEMS_PER_SLIDE = 12`）の変更（12項目基準を維持）
 

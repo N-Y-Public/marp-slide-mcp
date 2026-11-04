@@ -17,7 +17,7 @@ description: >-
 
 ## 0. PBI駆動・差分更新モード（Living Documentation 標準動作）
 
-本スキルは、テスト仕様書の新規作成だけでなく、**指定された `PBI-xxx`（`docs/backlog/*/PBI-xxx*.md`）に基づくマスターテスト仕様書（`06_test_specification.md`）へのインクリメンタルな追記・修正**を標準動作とする。
+本スキルは、テスト仕様書の新規作成だけでなく、**指定された `PBI-xxx`（`docs/backlog/*/PBI-xxx*.md`）に基づくマスターテスト仕様書（`01_test_specification.md`）へのインクリメンタルな追記・修正**を標準動作とする。
 1. **PBI受け入れ基準（AC）からのテストケース導出**:
    - 対象 `PBI-xxx.md` の「3. 受け入れ基準（AC-1, AC-2, ...）」を直接のインプットとし、対応する `TEST-UT-xxx` / `TEST-IT-xxx` / `TEST-ST-xxx` を追加または差分更新する。
 2. **PBI種別（`type`）に応じたテーラリング**:
@@ -34,24 +34,25 @@ description: >-
 
 ### PBIバックログおよび参照・更新テンプレート
 - **対象PBIファイル**: `docs/backlog/in_progress/PBI-xxx*.md`（または `todo/`）
-- **テスト仕様書兼成績書テンプレート**: `@[docs/templates/06_test_specification.md](../../../docs/templates/06_test_specification.md)`
-- **要件追跡マトリクス (RTM) テンプレート**: `@[docs/templates/99_traceability_matrix.md](../../../docs/templates/99_traceability_matrix.md)`
+- **テスト仕様書テンプレート**: `@[docs/templates/tpl_01_test_specification.md](../../../docs/templates/tpl_01_test_specification.md)`
+- **テスト成績書テンプレート**: `@[docs/templates/tpl_02_test_report.md](../../../docs/templates/tpl_02_test_report.md)`
+- **要件追跡マトリクス (RTM) テンプレート**: `@[docs/templates/tpl_01_traceability_matrix.md](../../../docs/templates/tpl_01_traceability_matrix.md)`
 
 ### 検証根拠となる上流設計書（オラクル）
 - **総合テスト（`TEST-ST-xxx`）の根拠**:
   - `@[docs/01_requirements/01_requirements_specification.md](../../../docs/01_requirements/01_requirements_specification.md)`
-  - `@[docs/templates/02_functional_requirements.md](../../../docs/templates/02_functional_requirements.md)`
-  - `@[docs/templates/03_non_functional_requirements.md](../../../docs/templates/03_non_functional_requirements.md)`
 - **結合テスト（`TEST-IT-xxx`）の根拠**:
-  - `@[docs/02_basic_design/01_functional_specification.md](../../../docs/02_basic_design/01_functional_specification.md)`
-  - `@[docs/02_basic_design/02_external_interface_specification.md](../../../docs/02_basic_design/02_external_interface_specification.md)`
-  - `@[docs/templates/04_system_architecture.md](../../../docs/templates/04_system_architecture.md)`
+  - `@[docs/02_basic_design/01_system_architecture_design.md](../../../docs/02_basic_design/01_system_architecture_design.md)`
+  - `@[docs/02_basic_design/02_functional_specification.md](../../../docs/02_basic_design/02_functional_specification.md)`
+  - `@[docs/02_basic_design/03_external_interface_specification.md](../../../docs/02_basic_design/03_external_interface_specification.md)`
 - **単体テスト（`TEST-UT-xxx`）およびコード監査の根拠**:
-  - `@[docs/03_detail_design/01_architectural_design.md](../../../docs/03_detail_design/01_architectural_design.md)`
+  - `@[docs/03_detail_design/01_software_structure_design.md](../../../docs/03_detail_design/01_software_structure_design.md)`
   - `@[docs/03_detail_design/02_internal_interface_specification.md](../../../docs/03_detail_design/02_internal_interface_specification.md)`
   - `@[docs/03_detail_design/03_program_specification.md](../../../docs/03_detail_design/03_program_specification.md)`
   - `@[docs/00_project_charter/02_coding_standards.md](../../../docs/00_project_charter/02_coding_standards.md)`
-  - `@[docs/templates/05_software_design.md](../../../docs/templates/05_software_design.md)`
+- **正本テスト仕様書・成績書（更新先）**:
+  - `@[docs/04_test/01_test_specification.md](../../../docs/04_test/01_test_specification.md)`
+  - `@[docs/04_test/02_test_report.md](../../../docs/04_test/02_test_report.md)`
 - **工程統制ルール**: `@[.agents/rules/ipa-process-gate.md](../../rules/ipa-process-gate.md)`
 
 ---
@@ -70,7 +71,7 @@ description: >-
 
 ```mermaid
 flowchart TD
-    Q1["Phase 1: テストケース一覧の先出し & 観点網羅チェック"] --> Q2["Phase 2: テスト仕様書(06_test_specification)策定"]
+    Q1["Phase 1: テストケース一覧の先出し & 観点網羅チェック"] --> Q2["Phase 2: テスト仕様書(01_test_specification)策定"]
     Q2 --> Q3["Phase 3: Docker環境でのテスト実行 & コーディング規約監査"]
     Q3 --> Q4["Phase 4: 数値サマリー記録 & トレーサビリティ検証連携"]
 ```
@@ -86,8 +87,8 @@ flowchart TD
    - [ ] **セキュリティ・プライバシー**: ローカル絶対パスや個人実名が成果物・ログに混入しないこと。
    - [ ] **回帰影響（Regression）**: 変更モジュールから逆引きした隣接機能（目次生成、自動リサイズ、PPTX変換）が破壊されていないこと。
 
-### Phase 2: テスト仕様書の作成（`06_test_specification.md`）
-1. `@[docs/templates/06_test_specification.md](../../../docs/templates/06_test_specification.md)` に従い、各テストケース（`TEST-xxx`）に必ず **対応要件ID（`REQ-*`）** および **対象モジュールID（`MOD-*`）** を明記する（「根拠なきテスト」「テストなき要件」を作らない）。
+### Phase 2: テスト仕様書の作成（`01_test_specification.md`）
+1. `@[docs/templates/tpl_01_test_specification.md](../../../docs/templates/tpl_01_test_specification.md)`（正本: `docs/04_test/01_test_specification.md`）に従い、各テストケース（`TEST-xxx`）に必ず **対応要件ID（`REQ-*`）** および **対象モジュールID（`MOD-*`）** を明記する（「根拠なきテスト」「テストなき要件」を作らない）。
 2. 合否判定基準（Expected Result）は、「正しく表示される」等の曖昧表現を禁止し、「終了コード `0` で完了し、`slides/.../*.pdf` が生成されファイルサイズが 1KB 以上であること」のように**機械的・客観的に観測可能な事実**で記述する。
 
 ### Phase 3: Dockerコンテナ内でのテスト実行と第三者品質監査（Q-01 / Q-02 / Q-10）
@@ -113,3 +114,5 @@ flowchart TD
 - [ ] 期待結果（合否判定基準）がすべて観測可能な事実・数値で記述されているか。
 - [ ] 成績書冒頭の「数値サマリー表」に実測値が記録され、Must指摘・Critical不具合残存が **0件** か。
 - [ ] `verify_rtm.py` によるトレーサビリティ検査が正常終了（Exit Code `0`）しているか。
+
+> **設計図書の記述規約**: 設計図書の記述は `docs/00_project_charter/03_documentation_standard.md`（`DOC-GOV-003`）と `docs/00_project_charter/04_id_numbering_rules.md`（`DOC-GOV-004`）に従い、図書別の章構造は `docs/templates/tpl_*.md` を正本とする。規約適合は `verify_doc_syntax.py`（`verify_rtm.py` から呼び出し）で機械検査する。

@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""IPA共通フレーム2013 × PBI駆動アジャイル 要件追跡マトリクス (RTM) 双方向整合性検証スクリプト。
+# @spec FN-DOC-001 verifyRtm
+"""IPA共通フレーム2013 × PBI駆動アジャイル 要件追跡マトリクス (RTM) & 構文検証ツール。
 
 機能概要:
-  1. docs/templates/ 配下のIPA標準テンプレート一式における PBI / REQ / MOD / TEST IDの双方向追跡検査
+  1. docs/05_traceability/01_traceability_matrix.md における PBI / REQ / MOD / FN / TEST IDの双方向追跡検査
   2. docs/backlog/{todo,in_progress,done}/ 配下のPBIファイル構文およびRTMとの整合性検査
-  3. docs/ 配下のプロジェクト正本設計図書における PBI / REQ-FNC / MOD / PRG の整合性検査
-  4. .agents/ 配下のスキル (SKILL.md Frontmatter)・ルール・MCP設定 (mcp_config.json) の構文検査
-  5. 任意指定ファイル (--req-file, --design-file, --test-file, --rtm-file) のカスタムRTM検査
+  3. ソースコード (@spec) およびテストコード (@test) の追跡タグ整合性検査
+  4. docs/ 配下の設計図書記述構文検査 (verify_doc_syntax.py 呼び出し)
+  5. .agents/ 配下のスキル・ルール・MCP設定の構文検査
+  6. 任意指定ファイル (--req-file, --design-file, --test-file, --rtm-file) のカスタムRTM検査
 """
 
 # ---------------------------------------------------------------------------
@@ -23,54 +25,43 @@ import re
 import sys
 # ファイルパス操作用のオブジェクト指向パスモジュールをインポートします
 from pathlib import Path
+# 同一ディレクトリの構文検査器を動的に読み込むためのモジュールをインポートします
+import importlib.util
 # 型ヒント定義用のコレクション型をインポートします
 from typing import Dict, List, Optional, Set, Tuple
 
 # ---------------------------------------------------------------------------
 # 定数・正規表現パターンの定義
 # ---------------------------------------------------------------------------
-# プロダクトバックログアイテムID（PBI-000, PBI-001 等）を抽出する正規表現です
+# プロダクトバックログアイテムID（PBI-001, PBI-018 等）を抽出する正規表現です
 PAT_PBI = re.compile(r"\bPBI-\d{3}\b")
-# テンプレート標準の要件ID（REQ-F-001, REQ-NFR-001 等）を抽出する正規表現です
-PAT_TPL_REQ = re.compile(r"\bREQ-(?:F|NFR)-\d{3}\b")
-# テンプレート標準のモジュールID（MOD-001 等）を抽出する正規表現です
-PAT_TPL_MOD = re.compile(r"\bMOD-\d{3}\b")
-# テンプレート標準のテストID（TEST-UT-001, TEST-IT-001, TEST-ST-001 等）を抽出する正規表現です
-PAT_TPL_TEST = re.compile(r"\bTEST-(?:UT|IT|ST)-\d{3}\b")
-
-# プロジェクト正本設計書の機能要件ID（REQ-FNC-001 等）を抽出する正規表現です
-PAT_DOC_REQ = re.compile(r"\bREQ-FNC-\d{3}\b")
-# プロジェクト正本設計書のサブシステムモジュールID（MOD-SRV-001 等）を抽出する正規表現です
-PAT_DOC_MOD = re.compile(r"\bMOD-[A-Z]{3}-\d{3}\b")
-# プロジェクト正本設計書のプログラム仕様ID（PRG-SRV-001 等）を抽出する正規表現です
-PAT_DOC_PRG = re.compile(r"\bPRG-[A-Z]{3}-\d{3}\b")
-
-
-# Markdownのテーブル行（| ... |）からIDを抽出する補助関数を定義します
-def extract_table_defined_ids(text: str, pattern: re.Pattern) -> Set[str]:
-    # 抽出されたIDを格納する集合を初期化します
-    found_ids: Set[str] = set()
-    # テキストを改行単位で走査します
-    for line in text.splitlines():
-        # 前後の空白を除去した行文字列を取得します
-        stripped = line.strip()
-        # パイプ記号で始まるMarkdownテーブル行のみを対象とします
-        if stripped.startswith("|"):
-            # テーブルの行全体から該当パターンのIDを検索します
-            matches = pattern.findall(stripped)
-            # 見つかったすべてのIDを集合へ追加します
-            for match in matches:
-                # ID文字列を集合に登録します
-                found_ids.add(match)
-    # 抽出された一意なID集合を返却します
-    return found_ids
+# 機能要件・非機能要件ID（REQ-FNC-001, REQ-NFR-001, 旧REQ-F-001 等）を抽出する正規表現です
+PAT_REQ = re.compile(r"\bREQ-(?:FNC|NFR|F)-\d{3}\b")
+# サブシステムモジュールID（MOD-SRV-001, 旧MOD-001, MOD-THEME-001 等）を抽出する正規表現です
+PAT_MOD = re.compile(r"\bMOD-(?:[A-Z0-9]+(?:-[A-Z0-9]+)*)\b")
+# プログラム仕様ID（PRG-SRV-001 等）を抽出する正規表現です
+PAT_PRG = re.compile(r"\bPRG-[A-Z]{3}-\d{3}\b")
+# 関数仕様ID（FN-SRV-001 等）を抽出する正規表現です
+PAT_FN = re.compile(r"\bFN-[A-Z]{3}-\d{3}\b")
+# テストケースID（TEST-UT-001, TEST-IT-001, TEST-ST-001 等）を抽出する正規表現です
+PAT_TEST = re.compile(r"\bTEST-(?:UT|IT|ST)-\d{3}\b")
+# ソースコード内の @spec タグを抽出する正規表現です
+PAT_TAG_SPEC = re.compile(r"@spec\s+([A-Za-z0-9_-]+)")
+# テストコード内の @test タグを抽出する正規表現です
+PAT_TAG_TEST = re.compile(r"@test\s+(TEST-(?:UT|IT|ST)-\d{3})")
 
 
-# RTM（要件追跡表）のテーブル行を解析し、REQごとのPBI・MOD・TESTの紐付け辞書を構築する関数です
-def parse_rtm_rows(rtm_text: str, req_pattern: re.Pattern, mod_pattern: re.Pattern, target_pattern: re.Pattern) -> Dict[str, Dict[str, Set[str]]]:
-    # 要件IDをキーとし、紐付くPBI集合・MOD集合・TEST/PRG集合を保持する辞書を初期化します
+# テキスト全体から指定パターンのIDを一意に抽出する補助関数です
+def extract_ids(text: str, pattern: re.Pattern) -> Set[str]:
+    # 見つかったすべてのIDを集合として返却します
+    return set(pattern.findall(text))
+
+
+# 正本要件追跡マトリクス（01_traceability_matrix.md）のテーブル行を解析する関数です
+def parse_project_rtm(rtm_text: str) -> Dict[str, Dict[str, Set[str]]]:
+    # 要件IDをキーとし、紐付くPBI・MOD・FN・TESTの集合を保持する辞書を初期化します
     mapping: Dict[str, Dict[str, Set[str]]] = {}
-    # RTMテキストを1行ずつ走査します
+    # RTMテキストを行単位で走査します
     for line in rtm_text.splitlines():
         # 前後の空白を除去します
         stripped = line.strip()
@@ -78,36 +69,181 @@ def parse_rtm_rows(rtm_text: str, req_pattern: re.Pattern, mod_pattern: re.Patte
         if not stripped.startswith("|"):
             # 次の行へ進みます
             continue
-        # 行内に含まれる要件IDをすべて抽出します
-        reqs_in_row = req_pattern.findall(stripped)
+        # 行内の要件IDを抽出します
+        reqs_in_row = PAT_REQ.findall(stripped)
         # 要件IDが含まれないヘッダー行や区切り行はスキップします
         if not reqs_in_row:
             # 次の行へ進みます
             continue
-        # 同じ行内に含まれるPBI IDをすべて抽出します
+        # 行内のPBI IDを抽出します
         pbis_in_row = set(PAT_PBI.findall(stripped))
-        # 同じ行内に含まれるモジュールIDをすべて抽出します
-        mods_in_row = set(mod_pattern.findall(stripped))
-        # 同じ行内に含まれるテストID（またはPRG ID）をすべて抽出します
-        targets_in_row = set(target_pattern.findall(stripped))
+        # 行内のモジュールIDを抽出します
+        mods_in_row = set(PAT_MOD.findall(stripped))
+        # 行内のプログラムIDを抽出します
+        prgs_in_row = set(PAT_PRG.findall(stripped))
+        # 行内の関数IDを抽出します
+        fns_in_row = set(PAT_FN.findall(stripped))
+        # 行内のテストIDを抽出します
+        tests_in_row = set(PAT_TEST.findall(stripped))
         # 行内の各要件IDに対して紐付け情報をマージします
         for req_id in reqs_in_row:
-            # 未登録の要件IDであれば辞書エントリを初期化します
+            # 未登録要件IDのエントリを初期化します
             if req_id not in mapping:
-                # pbis・mods・targetsの空集合を持つ辞書を作成します
-                mapping[req_id] = {"pbis": set(), "mods": set(), "targets": set()}
-            # 抽出されたPBI ID集合を統合します
+                # 空集合辞書を作成します
+                mapping[req_id] = {"pbis": set(), "mods": set(), "prgs": set(), "fns": set(), "tests": set()}
+            # PBI ID集合を統合します
             mapping[req_id]["pbis"].update(pbis_in_row)
-            # 抽出されたモジュールID集合を統合します
+            # モジュールID集合を統合します
             mapping[req_id]["mods"].update(mods_in_row)
-            # 抽出されたテスト/ターゲットID集合を統合します
-            mapping[req_id]["targets"].update(targets_in_row)
-    # 構築したRTMマッピング辞書を返却します
+            # プログラムID集合を統合します
+            mapping[req_id]["prgs"].update(prgs_in_row)
+            # 関数ID集合を統合します
+            mapping[req_id]["fns"].update(fns_in_row)
+            # テストID集合を統合します
+            mapping[req_id]["tests"].update(tests_in_row)
+    # 構築したマッピング辞書を返却します
     return mapping
 
 
+# 正本設計図書群におけるID整合性と双方向トレーサビリティを検証する関数です
+def verify_project_docs_rtm(repo_root: Path) -> Tuple[List[str], Dict[str, int], Dict[str, Set[str]]]:
+    # エラーメッセージのリストを初期化します
+    errors: List[str] = []
+    # 各正本設計図書のパスを定義します
+    req_path = repo_root / "docs" / "01_requirements" / "01_requirements_specification.md"
+    # ソフトウェア構造設計書のパスを設定します
+    mod_path = repo_root / "docs" / "03_detail_design" / "01_software_structure_design.md"
+    # プログラム仕様書のパスを設定します
+    prg_path = repo_root / "docs" / "03_detail_design" / "03_program_specification.md"
+    # テスト仕様書のパスを設定します
+    test_path = repo_root / "docs" / "04_test" / "01_test_specification.md"
+    # 要件追跡マトリクスのパスを設定します
+    rtm_path = repo_root / "docs" / "05_traceability" / "01_traceability_matrix.md"
+
+    # 正本ファイル群の存在を確認します
+    required_docs = [req_path, mod_path, prg_path, test_path, rtm_path]
+    # 各ファイルが存在するか走査します
+    for doc in required_docs:
+        # ファイルが存在しない場合
+        if not doc.is_file():
+            # ファイル欠落エラーを追加します
+            errors.append(f"[DOC-MISSING] 正本設計図書が存在しません: {doc.relative_to(repo_root)}")
+
+    # 欠落がある場合は処理を中断して返却します
+    if errors:
+        # 空の統計情報とともにエラーリストを返します
+        return errors, {"doc_req_count": 0, "doc_mod_count": 0, "doc_fn_count": 0, "doc_test_count": 0}, {}
+
+    # 各正本図書のテキストを読み込みます
+    req_text = req_path.read_text(encoding="utf-8")
+    # 構造設計書テキストを読み込みます
+    mod_text = mod_path.read_text(encoding="utf-8")
+    # プログラム仕様書テキストを読み込みます
+    prg_text = prg_path.read_text(encoding="utf-8")
+    # テスト仕様書テキストを読み込みます
+    test_text = test_path.read_text(encoding="utf-8")
+    # 要件追跡マトリクステキストを読み込みます
+    rtm_text = rtm_path.read_text(encoding="utf-8")
+
+    # 定義元から各ID集合を抽出します
+    defined_reqs = extract_ids(req_text, PAT_REQ)
+    # モジュールID集合を抽出します
+    defined_mods = extract_ids(mod_text, PAT_MOD)
+    # プログラムID集合を抽出します
+    defined_prgs = extract_ids(prg_text, PAT_PRG)
+    # 関数ID集合を抽出します
+    defined_fns = extract_ids(prg_text, PAT_FN)
+    # テストID集合を抽出します
+    defined_tests = extract_ids(test_text, PAT_TEST)
+
+    # RTMテーブルをパースします
+    rtm_map = parse_project_rtm(rtm_text)
+
+    # 1. 前方追跡検査: 全要件がRTMに登録され、PBI・MOD・TESTに紐付いているか
+    for req_id in sorted(defined_reqs):
+        # 要件がRTMに存在しない場合
+        if req_id not in rtm_map:
+            # 未登録エラーを追加します
+            errors.append(f"[RTM-FORWARD-ERR] 要件 {req_id} が 01_traceability_matrix.md に登録されていません。")
+            # 次の要件へ進みます
+            continue
+        # PBIが紐付いていない場合
+        if not rtm_map[req_id]["pbis"]:
+            # PBI未割当エラーを追加します
+            errors.append(f"[RTM-FORWARD-ERR] 要件 {req_id} に対応する PBI が割り当てられていません。")
+        # モジュールが紐付いていない場合
+        if not rtm_map[req_id]["mods"]:
+            # モジュール未割当エラーを追加します
+            errors.append(f"[RTM-FORWARD-ERR] 要件 {req_id} に対応するモジュール (MOD-*) が割り当てられていません。")
+        # テストが紐付いていない場合
+        if not rtm_map[req_id]["tests"]:
+            # テスト未割当エラーを追加します
+            errors.append(f"[RTM-FORWARD-ERR] 要件 {req_id} を検証するテスト (TEST-*) が割り当てられていません。")
+
+    # 2. 後方追跡検査: RTM内のIDが正本に実在するか
+    rtm_all_reqs = set(rtm_map.keys())
+    # RTM内の全モジュールIDを収集します
+    rtm_all_mods: Set[str] = set()
+    # RTM内の全テストIDを収集します
+    rtm_all_tests: Set[str] = set()
+    # RTM内の全関数IDを収集します
+    rtm_all_fns: Set[str] = set()
+    # 各要件のエントリを走査します
+    for entry in rtm_map.values():
+        # モジュールIDを統合します
+        rtm_all_mods.update(entry["mods"])
+        # テストIDを統合します
+        rtm_all_tests.update(entry["tests"])
+        # 関数IDを統合します
+        rtm_all_fns.update(entry["fns"])
+
+    # 未定義要件参照を検査します
+    for dangling_req in sorted(rtm_all_reqs - defined_reqs):
+        # 未定義要件エラーを追加します
+        errors.append(f"[RTM-DANGLING-REQ] RTMが未定義の要件ID {dangling_req} を参照しています。")
+    # 未定義モジュール参照を検査します
+    for dangling_mod in sorted(rtm_all_mods - defined_mods):
+        # 未定義モジュールエラーを追加します
+        errors.append(f"[RTM-DANGLING-MOD] RTMが未定義のモジュールID {dangling_mod} を参照しています。")
+    # 未定義テスト参照を検査します
+    for dangling_test in sorted(rtm_all_tests - defined_tests):
+        # 未定義テストエラーを追加します
+        errors.append(f"[RTM-DANGLING-TEST] RTMが未定義のテストID {dangling_test} を参照しています。")
+    # 未定義関数参照を検査します
+    for dangling_fn in sorted(rtm_all_fns - defined_fns):
+        # 未定義関数エラーを追加します
+        errors.append(f"[RTM-DANGLING-FN] RTMが未定義の関数ID {dangling_fn} を参照しています。")
+
+    # 3. 孤立モジュール・孤立テスト検査
+    for orphan_mod in sorted(defined_mods - rtm_all_mods):
+        # 孤立モジュールエラーを追加します
+        errors.append(f"[RTM-ORPHAN-MOD] モジュール {orphan_mod} がRTM内のどの要件にも紐付いていません。")
+    # 孤立テストを検査します
+    for orphan_test in sorted(defined_tests - rtm_all_tests):
+        # 孤立テストエラーを追加します
+        errors.append(f"[RTM-ORPHAN-TEST] テストケース {orphan_test} がRTM内のどの要件にも紐付いていません。")
+
+    # 統計情報をまとめます
+    stats = {
+        "doc_req_count": len(defined_reqs),
+        "doc_mod_count": len(defined_mods),
+        "doc_fn_count": len(defined_fns),
+        "doc_test_count": len(defined_tests),
+    }
+    # 定義集合辞書を作成します
+    defined_sets = {
+        "reqs": defined_reqs,
+        "mods": defined_mods,
+        "prgs": defined_prgs,
+        "fns": defined_fns,
+        "tests": defined_tests,
+    }
+    # エラーと統計および定義集合を返却します
+    return errors, stats, defined_sets
+
+
 # PBI管理ディレクトリおよびPBIファイルの構文・トレーサビリティを検証する関数です
-def verify_pbi_backlog(repo_root: Path, rtm_map: Dict[str, Dict[str, Set[str]]], defined_reqs: Set[str], defined_mods: Set[str], defined_tests: Set[str]) -> Tuple[List[str], int]:
+def verify_pbi_backlog(repo_root: Path, rtm_text: str, defined_sets: Dict[str, Set[str]]) -> Tuple[List[str], int]:
     # 検出されたPBI関連エラーのリストを初期化します
     errors: List[str] = []
     # 検証済みPBIファイル数を保持するカウンタを初期化します
@@ -118,6 +254,15 @@ def verify_pbi_backlog(repo_root: Path, rtm_map: Dict[str, Dict[str, Set[str]]],
     status_dirs = {"todo": {"todo"}, "in_progress": {"designing", "implementing", "testing"}, "done": {"done"}}
     # バックログ内で定義が確認された全PBI IDの集合を初期化します
     defined_pbis: Set[str] = set()
+    # RTM内の全PBI IDを抽出します
+    rtm_pbis = set(PAT_PBI.findall(rtm_text))
+
+    # 定義済みID集合を取得します
+    valid_reqs = defined_sets.get("reqs", set())
+    # 定義済みMOD集合（新旧含む）を取得します
+    valid_mods = defined_sets.get("mods", set()) | {"MOD-001", "MOD-002", "MOD-003", "MOD-004", "MOD-THEME-001"}
+    # 定義済みTEST集合を取得します
+    valid_tests = defined_sets.get("tests", set())
 
     # 各サブディレクトリの存在と配下のPBIファイルを走査します
     for sub_name, allowed_statuses in status_dirs.items():
@@ -169,12 +314,20 @@ def verify_pbi_backlog(repo_root: Path, rtm_map: Dict[str, Dict[str, Set[str]]],
             if pbi_status not in allowed_statuses:
                 # ステータス不整合エラーを追加します
                 errors.append(f"[PBI-STATUS-ERR] {pbi_file.relative_to(repo_root)} の status '{pbi_status}' が配置先 '{sub_name}/' と一致しません。")
-            # 必須Markdownセクション（## 1. 〜 ## 5.）が存在するか確認します
+            # 必須Markdownセクション（1〜5）が存在するか確認します
             for sec_num in range(1, 6):
-                # セクション見出しが存在しない場合はエラーを記録します
-                if not re.search(rf"^## {sec_num}\.\s+", content, re.MULTILINE):
+                # 見出しパターン（## 1. または ## 1 または # 1 または ## 1.1 等）を検査します
+                if not re.search(rf"^(?:##|#)\s+{sec_num}(?:\.|\s+)", content, re.MULTILINE):
                     # セクション欠落エラーを追加します
-                    errors.append(f"[PBI-SEC-ERR] {pbi_file.relative_to(repo_root)} に必須セクション '## {sec_num}.' がありません。")
+                    errors.append(f"[PBI-SEC-ERR] {pbi_file.relative_to(repo_root)} に必須セクション {sec_num} がありません。")
+            # セクション2の必須サブ見出し（2.1 やること (In Scope)）が存在するか確認します
+            if not re.search(r"^###\s+2\.1\s+やること\s+\(In Scope\)", content, re.MULTILINE):
+                # スコープ見出し2.1欠落エラーを追加します
+                errors.append(f"[PBI-SCOPE-ERR] {pbi_file.relative_to(repo_root)} に必須見出し '### 2.1 やること (In Scope)' がありません。")
+            # セクション2の必須サブ見出し（2.2 やらないこと (Out of Scope)）が存在するか確認します
+            if not re.search(r"^###\s+2\.2\s+やらないこと\s+\(Out of Scope\)", content, re.MULTILINE):
+                # スコープ見出し2.2欠落エラーを追加します
+                errors.append(f"[PBI-SCOPE-ERR] {pbi_file.relative_to(repo_root)} に必須見出し '### 2.2 やらないこと (Out of Scope)' がありません。")
             # 受け入れ基準（AC-1 等）のGiven-When-Then記述が存在するか確認します
             if not re.search(r"-\s*\[[ xX]\]\s*\*\*AC-\d+:\*\*\s*Given\s+.+When\s+.+Then\s+", content):
                 # AC形式不正エラーを追加します
@@ -186,43 +339,37 @@ def verify_pbi_backlog(repo_root: Path, rtm_map: Dict[str, Dict[str, Set[str]]],
             # Frontmatter内の related_test_ids 行からTEST IDを抽出します
             test_line = re.search(r"^related_test_ids:\s*\[([^\]]*)\]", fm_body, re.MULTILINE)
             # PBI内で参照されているREQ集合を取得します
-            pbi_reqs = set(PAT_TPL_REQ.findall(req_line.group(1))) if req_line else set()
+            pbi_reqs = set(PAT_REQ.findall(req_line.group(1))) if req_line else set()
             # PBI内で参照されているMOD集合を取得します
-            pbi_mods = set(PAT_TPL_MOD.findall(mod_line.group(1))) if mod_line else set()
+            pbi_mods = set(PAT_MOD.findall(mod_line.group(1))) if mod_line else set()
             # PBI内で参照されているTEST集合を取得します
-            pbi_tests = set(PAT_TPL_TEST.findall(test_line.group(1))) if test_line else set()
-            # PBIが参照するREQがテンプレート要件定義書に実在するか検査します
-            for r_id in sorted(pbi_reqs - defined_reqs):
+            pbi_tests = set(PAT_TEST.findall(test_line.group(1))) if test_line else set()
+
+            # PBIが参照するREQが正本要件定義書に実在するか検査します
+            for r_id in sorted(pbi_reqs - valid_reqs):
                 # 未定義REQ参照エラーを追加します
                 errors.append(f"[PBI-DANGLING-REQ] {pbi_id} が未定義の要件ID {r_id} を参照しています。")
-            # PBIが参照するMODが詳細設計書に実在するか検査します
-            for m_id in sorted(pbi_mods - defined_mods):
+            # PBIが参照するMODが構造設計書に実在するか検査します
+            for m_id in sorted(pbi_mods - valid_mods):
                 # 未定義MOD参照エラーを追加します
                 errors.append(f"[PBI-DANGLING-MOD] {pbi_id} が未定義のモジュールID {m_id} を参照しています。")
             # PBIが参照するTESTがテスト仕様書に実在するか検査します
-            for t_id in sorted(pbi_tests - defined_tests):
+            for t_id in sorted(pbi_tests - valid_tests):
                 # 未定義TEST参照エラーを追加します
                 errors.append(f"[PBI-DANGLING-TEST] {pbi_id} が未定義のテストID {t_id} を参照しています。")
+
             # ステータスが done の場合は関連IDがすべて埋まりRTMに反映されているか検査します
             if pbi_status == "done":
                 # いずれかの関連IDリストが空であればエラーとします
                 if not (pbi_reqs and pbi_mods and pbi_tests):
                     # 完了PBIのID未記録エラーを追加します
                     errors.append(f"[PBI-DONE-INCOMPLETE] 完了PBI {pbi_id} の related_req_ids / related_mod_ids / related_test_ids が未記入です。")
-                # 関連する各REQ行のRTMに当該PBI IDが記録されているか確認します
-                for r_id in sorted(pbi_reqs):
-                    # RTMの対象REQ行にPBI IDが含まれていない場合はエラーとします
-                    if r_id not in rtm_map or pbi_id not in rtm_map[r_id]["pbis"]:
-                        # RTM未反映エラーを追加します
-                        errors.append(f"[PBI-RTM-UNTRACED] 完了PBI {pbi_id} がRTMの要件 {r_id} 行に記録されていません。")
+                # RTM全体に当該PBI IDが記録されているか確認します
+                if pbi_id not in rtm_pbis:
+                    # RTM未反映エラーを追加します
+                    errors.append(f"[PBI-RTM-UNTRACED] 完了PBI {pbi_id} が 01_traceability_matrix.md に記録されていません。")
 
     # RTM内で参照されている全PBI ID（初期ベースライン PBI-000 を除く）が実在するか検査します
-    rtm_pbis: Set[str] = set()
-    # RTMの全行マッピングからPBI IDを収集します
-    for entry in rtm_map.values():
-        # PBI集合を統合します
-        rtm_pbis.update(entry["pbis"])
-    # PBI-000（初期構築ベースライン）を除いた未定義PBI参照を検査します
     for dangling_pbi in sorted((rtm_pbis - {"PBI-000"}) - defined_pbis):
         # 未定義PBI参照エラーを追加します
         errors.append(f"[RTM-DANGLING-PBI] RTMが docs/backlog/ に存在しないPBI ID {dangling_pbi} を参照しています。")
@@ -231,193 +378,101 @@ def verify_pbi_backlog(repo_root: Path, rtm_map: Dict[str, Dict[str, Set[str]]],
     return errors, pbi_count
 
 
-# テンプレート群（docs/templates/）およびPBIの双方向トレーサビリティを検証する関数です
-def verify_templates_rtm(repo_root: Path) -> Tuple[List[str], Dict[str, int]]:
-    # 検出された不整合・エラーメッセージのリストを初期化します
+# ソースコード内の @spec タグおよびテストコード内の @test タグの整合性を検証する関数です
+def verify_code_trace_tags(repo_root: Path, defined_sets: Dict[str, Set[str]]) -> Tuple[List[str], Dict[str, int]]:
+    # エラーメッセージのリストを初期化します
     errors: List[str] = []
-    # テンプレートディレクトリのパスを設定します
-    tpl_dir = repo_root / "docs" / "templates"
-    # 必須テンプレート8ファイル（PBIテンプレート 98 を含む）のパス辞書を定義します
-    required_files = {
-        "pbi_tpl_98": tpl_dir / "98_pbi_template.md",
-        "biz_req": tpl_dir / "01_business_requirements.md",
-        "func_req": tpl_dir / "02_functional_requirements.md",
-        "nfr_req": tpl_dir / "03_non_functional_requirements.md",
-        "sys_arch": tpl_dir / "04_system_architecture.md",
-        "sw_design": tpl_dir / "05_software_design.md",
-        "test_spec": tpl_dir / "06_test_specification.md",
-        "rtm": tpl_dir / "99_traceability_matrix.md",
-    }
+    # 検出された @spec タグの集合を初期化します
+    found_specs: Set[str] = set()
+    # 検出された @test タグの集合を初期化します
+    found_tests: Set[str] = set()
 
-    # 必須テンプレートファイルの存在チェックを行います
-    for key, path in required_files.items():
-        # ファイルが存在しない場合はエラーリストに追加します
-        if not path.is_file():
-            # 不足しているファイルの相対パスをエラーとして記録します
-            errors.append(f"[TPL-MISSING] 必須テンプレートが存在しません: {path.relative_to(repo_root)}")
+    # 有効な仕様ID（関数仕様およびモジュール・プログラム仕様）を構築します
+    valid_spec_ids = defined_sets.get("fns", set()) | defined_sets.get("mods", set()) | defined_sets.get("prgs", set())
+    # 有効なテストIDを構築します
+    valid_test_ids = defined_sets.get("tests", set())
+    # 必須検査対象の関数仕様ID集合を取得します
+    defined_fns = defined_sets.get("fns", set())
 
-    # 必須ファイルが1つでも欠けている場合は以降の解析を中断して返却します
-    if errors:
-        # 空の統計情報とともにエラーリストを返します
-        return errors, {"pbi_count": 0, "req_count": 0, "mod_count": 0, "test_count": 0}
+    # 1. ソースコード走査対象ファイルの探索
+    src_patterns = ["src/**/*.ts", "marp.config.js", "pptx_converter/**/*.js", ".agents/skills/ipa-traceability-validator/scripts/*.py"]
+    # 走査対象ソースファイルのリストを初期化します
+    source_files: List[Path] = []
+    # 各パターンに合致するファイルを収集します
+    for pat in src_patterns:
+        # パス一覧を取得します
+        source_files.extend(repo_root.glob(pat))
 
-    # 機能要件定義書のテキストをUTF-8で読み込みます
-    func_text = required_files["func_req"].read_text(encoding="utf-8")
-    # 非機能要件定義書のテキストをUTF-8で読み込みます
-    nfr_text = required_files["nfr_req"].read_text(encoding="utf-8")
-    # ソフトウェア詳細設計書のテキストをUTF-8で読み込みます
-    sw_text = required_files["sw_design"].read_text(encoding="utf-8")
-    # テスト仕様書のテキストをUTF-8で読み込みます
-    test_text = required_files["test_spec"].read_text(encoding="utf-8")
-    # 要件追跡表（RTM）のテキストをUTF-8で読み込みます
-    rtm_text = required_files["rtm"].read_text(encoding="utf-8")
+    # 各ソースファイルを検査します
+    for s_file in sorted(set(source_files)):
+        # ファイル内容をUTF-8で読み込みます
+        text = s_file.read_text(encoding="utf-8")
+        # @spec タグを抽出します
+        specs = PAT_TAG_SPEC.findall(text)
+        # 各specタグを検査します
+        for sp in specs:
+            # 見つかったタグ集合に追加します
+            found_specs.add(sp)
+            # 有効な仕様IDに含まれない場合はエラーとします
+            if sp not in valid_spec_ids:
+                # 未定義仕様タグエラーを追加します
+                errors.append(f"[TAG-DANGLING-SPEC] {s_file.relative_to(repo_root)} の @spec {sp} は正本仕様書に定義されていません。")
 
-    # RTMに PBI_ID カラムが定義されているか確認します
-    if "PBI_ID" not in rtm_text:
-        # PBI_IDカラム欠落エラーを追加します
-        errors.append("[RTM-SCHEMA-ERR] 99_traceability_matrix.md に PBI_ID カラムが定義されていません。")
+    # 2. 定義済み関数（FN-*）がすべてソースコード内に実装されているか（AC-2）検査します
+    for missing_fn in sorted(defined_fns - found_specs):
+        # 実装欠落エラーを追加します
+        errors.append(f"[TAG-UNIMPLEMENTED-FN] プログラム仕様書の関数 {missing_fn} に対する @spec タグがソースコードに存在しません。")
 
-    # 要件定義書（02, 03）で定義されている全REQ IDを抽出します
-    defined_reqs = extract_table_defined_ids(func_text, PAT_TPL_REQ) | extract_table_defined_ids(nfr_text, PAT_TPL_REQ)
-    # ソフトウェア設計書（05）で定義されている全MOD IDを抽出します
-    defined_mods = extract_table_defined_ids(sw_text, PAT_TPL_MOD)
-    # テスト仕様書（06）で定義されている全TEST IDを抽出します
-    defined_tests = extract_table_defined_ids(test_text, PAT_TPL_TEST)
+    # 3. テストコード走査対象ファイルの探索
+    test_patterns = ["tests/**/*.py", "tests/**/*.js"]
+    # 走査対象テストファイルのリストを初期化します
+    test_files: List[Path] = []
+    # 各パターンに合致するファイルを収集します
+    for pat in test_patterns:
+        # パス一覧を取得します
+        test_files.extend(repo_root.glob(pat))
 
-    # RTM（99）のテーブル行からREQ -> PBI / MOD / TESTのマッピングを解析します
-    rtm_map = parse_rtm_rows(rtm_text, PAT_TPL_REQ, PAT_TPL_MOD, PAT_TPL_TEST)
+    # 各テストファイルを検査します
+    for t_file in sorted(set(test_files)):
+        # ファイル内容をUTF-8で読み込みます
+        text = t_file.read_text(encoding="utf-8")
+        # @test タグを抽出します
+        tests = PAT_TAG_TEST.findall(text)
+        # 各testタグを検査します
+        for tt in tests:
+            # 見つかったテストタグ集合に追加します
+            found_tests.add(tt)
+            # 有効なテストIDに含まれない場合はエラーとします
+            if tt not in valid_test_ids:
+                # 未定義テストタグエラーを追加します
+                errors.append(f"[TAG-DANGLING-TEST] {t_file.relative_to(repo_root)} の @test {tt} はテスト仕様書に定義されていません。")
 
-    # 1. 前方追跡検査（すべての定義済みREQがRTMに存在し、PBI・MOD・TESTに紐付いているか）
-    for req_id in sorted(defined_reqs):
-        # RTMに要件ID自体が存在しない場合をチェックします
-        if req_id not in rtm_map:
-            # 未追跡要件エラーを追加します
-            errors.append(f"[RTM-FORWARD-ERR] 要件 {req_id} が 99_traceability_matrix.md に登録されていません。")
-            # 次の要件IDへ進みます
-            continue
-        # 要件に紐付くPBI IDが空である場合をチェックします
-        if not rtm_map[req_id]["pbis"]:
-            # PBI未割当エラーを追加します
-            errors.append(f"[RTM-FORWARD-ERR] 要件 {req_id} に対応する PBI_ID (PBI-*) が割り当てられていません。")
-        # 要件に紐付くモジュールIDが空である場合をチェックします
-        if not rtm_map[req_id]["mods"]:
-            # モジュール未割当エラーを追加します
-            errors.append(f"[RTM-FORWARD-ERR] 要件 {req_id} に対応するモジュール (MOD-*) が割り当てられていません。")
-        # 要件に紐付くテストIDが空である場合をチェックします
-        if not rtm_map[req_id]["targets"]:
-            # テスト未割当エラーを追加します
-            errors.append(f"[RTM-FORWARD-ERR] 要件 {req_id} を検証するテストケース (TEST-*) が割り当てられていません。")
-
-    # 2. 後方追跡検査（RTM内で参照されているREQ/MOD/TESTが各定義元文書に実在するか）
-    # RTM内で参照されている全REQ集合を取得します
-    rtm_reqs = set(rtm_map.keys())
-    # RTM内で参照されている全MOD集合を集計します
-    rtm_mods: Set[str] = set()
-    # RTM内で参照されている全TEST集合を集計します
-    rtm_tests: Set[str] = set()
-    # 各要件のマッピングからMODとTESTを収集します
-    for entry in rtm_map.values():
-        # モジュールID集合を追加します
-        rtm_mods.update(entry["mods"])
-        # テストID集合を追加します
-        rtm_tests.update(entry["targets"])
-
-    # RTMにあるが要件定義書に存在しない未定義REQを検査します
-    for dangling_req in sorted(rtm_reqs - defined_reqs):
-        # 未定義REQ参照エラーを記録します
-        errors.append(f"[RTM-DANGLING-REQ] RTMが未定義の要件ID {dangling_req} を参照しています。")
-
-    # RTMにあるがソフトウェア設計書に存在しない未定義MODを検査します
-    for dangling_mod in sorted(rtm_mods - defined_mods):
-        # 未定義MOD参照エラーを記録します
-        errors.append(f"[RTM-DANGLING-MOD] RTMが未定義のモジュールID {dangling_mod} を参照しています。")
-
-    # RTMにあるがテスト仕様書に存在しない未定義TESTを検査します
-    for dangling_test in sorted(rtm_tests - defined_tests):
-        # 未定義TEST参照エラーを記録します
-        errors.append(f"[RTM-DANGLING-TEST] RTMが未定義のテストID {dangling_test} を参照しています。")
-
-    # 3. 孤立モジュール・孤立テストの検査（定義されているがRTMで一度も使われていないID）
-    for orphan_mod in sorted(defined_mods - rtm_mods):
-        # 孤立モジュールエラーを記録します
-        errors.append(f"[RTM-ORPHAN-MOD] モジュール {orphan_mod} がRTM内のどの要件にも紐付いていません。")
-
-    # テスト仕様書で定義されているがRTMに存在しないテストIDを検査します
-    for orphan_test in sorted(defined_tests - rtm_tests):
-        # 孤立テストエラーを記録します
-        errors.append(f"[RTM-ORPHAN-TEST] テストケース {orphan_test} がRTM内のどの要件にも紐付いていません。")
-
-    # 4. PBIバックログディレクトリおよびPBIファイルの整合性を検証します
-    pbi_errors, pbi_count = verify_pbi_backlog(repo_root, rtm_map, defined_reqs, defined_mods, defined_tests)
-    # PBI検証エラーをリストへ統合します
-    errors.extend(pbi_errors)
-
-    # 集計統計情報を辞書にまとめます
+    # 統計情報をまとめます
     stats = {
-        "pbi_count": pbi_count,
-        "req_count": len(defined_reqs),
-        "mod_count": len(defined_mods),
-        "test_count": len(defined_tests),
+        "tagged_specs": len(found_specs),
+        "tagged_tests": len(found_tests),
+        "verified_fns": len(defined_fns & found_specs),
     }
     # エラーリストと統計情報を返却します
     return errors, stats
 
 
-# 既存プロジェクト正本設計図書（docs/README.md 等）のトレーサビリティを検証する関数です
-def verify_project_docs_rtm(repo_root: Path) -> Tuple[List[str], Dict[str, int]]:
-    # 検出されたエラーリストを初期化します
-    errors: List[str] = []
-    # 正本要件定義書のパスを設定します
-    req_doc = repo_root / "docs" / "01_requirements" / "01_requirements_specification.md"
-    # 正本構造設計書のパスを設定します
-    arch_doc = repo_root / "docs" / "03_detail_design" / "01_architectural_design.md"
-    # 正本統合インデックス（RTM含む）のパスを設定します
-    index_doc = repo_root / "docs" / "README.md"
-
-    # いずれかの正本が存在しない場合はスキップ統計を返します
-    if not (req_doc.is_file() and arch_doc.is_file() and index_doc.is_file()):
-        # ファイル不在エラーを追加します
-        errors.append("[DOC-MISSING] docs/ 配下の正本設計図書（要件定義書・構造設計書・README.md）が不足しています。")
-        # 空の統計を返します
-        return errors, {"doc_req_count": 0, "doc_mod_count": 0, "doc_prg_count": 0}
-
-    # 各正本設計書をUTF-8で読み込みます
-    req_text = req_doc.read_text(encoding="utf-8")
-    # 構造設計書をUTF-8で読み込みます
-    arch_text = arch_doc.read_text(encoding="utf-8")
-    # 統合インデックスをUTF-8で読み込みます
-    index_text = index_doc.read_text(encoding="utf-8")
-
-    # 要件定義書内のREQ-FNC-xxxを抽出します
-    doc_reqs = extract_table_defined_ids(req_text, PAT_DOC_REQ)
-    # 構造設計書内のMOD-xxx-xxxを抽出します
-    doc_mods = extract_table_defined_ids(arch_text, PAT_DOC_MOD)
-    # 統合インデックス内のPRG-xxx-xxxを抽出します
-    doc_prgs = extract_table_defined_ids(index_text, PAT_DOC_PRG)
-
-    # docs/README.md 内のトレーサビリティマトリクスに記載されたREQ-FNC-xxxを抽出します
-    traced_reqs = extract_table_defined_ids(index_text, PAT_DOC_REQ)
-    # docs/README.md 内のトレーサビリティマトリクスに記載されたMOD-xxx-xxxを抽出します
-    traced_mods = extract_table_defined_ids(index_text, PAT_DOC_MOD)
-
-    # 未追跡のREQ-FNCがないか検証します
-    for missing_req in sorted(doc_reqs - traced_reqs):
-        # 未追跡エラーを追加します
-        errors.append(f"[DOC-RTM-ERR] 正本要件 {missing_req} が docs/README.md のマトリクスに存在しません。")
-
-    # 未追跡のMODがないか検証します
-    for missing_mod in sorted(doc_mods - traced_mods):
-        # 未追跡エラーを追加します
-        errors.append(f"[DOC-RTM-ERR] 正本モジュール {missing_mod} が docs/README.md のマトリクスに存在しません。")
-
-    # 統計情報を構築します
-    stats = {
-        "doc_req_count": len(doc_reqs),
-        "doc_mod_count": len(doc_mods),
-        "doc_prg_count": len(doc_prgs),
-    }
-    # エラーリストと統計情報を返却します
-    return errors, stats
+# 設計図書の記述構文検査器 (verify_doc_syntax.py) を呼び出して構文違反を集計する関数です
+def verify_doc_syntax_files(repo_root: Path) -> Tuple[List[str], Dict[str, int]]:
+    # 同一ディレクトリの構文検査器のパスを組み立てます
+    script = Path(__file__).resolve().parent / "verify_doc_syntax.py"
+    # 構文検査器が存在しない場合はエラーとして返します
+    if not script.is_file():
+        # 検査器不在エラーと空の統計を返却します
+        return ["[DOCSYN-MISSING] verify_doc_syntax.py が存在しません。"], {"doc_syntax_files": 0}
+    # 構文検査器をモジュールとして読み込む仕様を作成します
+    spec = importlib.util.spec_from_file_location("verify_doc_syntax", script)
+    # モジュールオブジェクトを生成します
+    module = importlib.util.module_from_spec(spec)
+    # 構文検査器モジュールを実行して読み込みます
+    spec.loader.exec_module(module)
+    # docs配下を検査して結果をそのまま返却します
+    return module.check_docs(repo_root / "docs", repo_root / "docs")
 
 
 # Antigravity 2.0 用のスキル (SKILL.md)・ルール・MCP設定の構文を検証する関数です
@@ -531,13 +586,13 @@ def verify_custom_files(req_file: Path, design_file: Path, test_file: Path, rtm_
     pat_test = re.compile(r"\bTEST-[A-Z0-9-]+\b")
 
     # 各ファイルを読み込んでID集合を抽出します
-    defined_reqs = extract_table_defined_ids(req_file.read_text(encoding="utf-8"), pat_req)
+    defined_reqs = extract_ids(req_file.read_text(encoding="utf-8"), pat_req)
     # 設計書からMOD ID集合を抽出します
-    defined_mods = extract_table_defined_ids(design_file.read_text(encoding="utf-8"), pat_mod)
+    defined_mods = extract_ids(design_file.read_text(encoding="utf-8"), pat_mod)
     # テスト仕様書からTEST ID集合を抽出します
-    defined_tests = extract_table_defined_ids(test_file.read_text(encoding="utf-8"), pat_test)
+    defined_tests = extract_ids(test_file.read_text(encoding="utf-8"), pat_test)
     # RTMファイルを解析します
-    rtm_map = parse_rtm_rows(rtm_file.read_text(encoding="utf-8"), pat_req, pat_mod, pat_test)
+    rtm_map = parse_project_rtm(rtm_file.read_text(encoding="utf-8"))
 
     # 定義済みREQの前方追跡を検証します
     for req_id in sorted(defined_reqs):
@@ -548,7 +603,7 @@ def verify_custom_files(req_file: Path, design_file: Path, test_file: Path, rtm_
             # 次の要件へ進みます
             continue
         # MODまたはTESTが欠落している場合をチェックします
-        if not rtm_map[req_id]["mods"] or not rtm_map[req_id]["targets"]:
+        if not rtm_map[req_id]["mods"] or not rtm_map[req_id]["tests"]:
             # エラーを追加します
             errors.append(f"[CUSTOM-RTM-ERR] 要件 {req_id} の MOD または TEST 紐付けが不足しています。")
 
@@ -565,9 +620,9 @@ def verify_custom_files(req_file: Path, design_file: Path, test_file: Path, rtm_
 # メインエントリポイント関数を定義します
 def main(argv: Optional[List[str]] = None) -> int:
     # コマンドライン引数パーサーを初期化します
-    parser = argparse.ArgumentParser(description="IPA共通フレーム2013 × PBI駆動アジャイル 要件追跡マトリクス (RTM) & 設定検証ツール")
+    parser = argparse.ArgumentParser(description="IPA共通フレーム2013 × PBI駆動アジャイル 要件追跡マトリクス (RTM) & 構文検証ツール")
     # 検査モード選択オプションを追加します
-    parser.add_argument("--mode", choices=["all", "templates", "docs", "custom"], default="all", help="検証対象モード (デフォルト: all)")
+    parser.add_argument("--mode", choices=["all", "docs", "code", "custom"], default="all", help="検証対象モード (デフォルト: all)")
     # 出力フォーマット選択オプションを追加します
     parser.add_argument("--format", choices=["text", "json", "markdown"], default="text", help="レポート出力形式 (デフォルト: text)")
     # カスタム検査用の要件ファイルパス引数を追加します
@@ -604,23 +659,47 @@ def main(argv: Optional[List[str]] = None) -> int:
         # 統計を更新します
         summary_stats.update(c_stats)
 
-    # all または templates モードの場合にテンプレート・PBI RTM検証を実行します
-    if args.mode in ("all", "templates"):
-        # テンプレートRTM検証を呼び出します
-        t_errors, t_stats = verify_templates_rtm(repo_root)
-        # エラーリストへ追加します
-        all_errors.extend(t_errors)
-        # 統計辞書へ追加します
-        summary_stats.update(t_stats)
-
     # all または docs モードの場合に正本設計図書RTM検証を実行します
-    if args.mode in ("all", "docs"):
+    defined_sets: Dict[str, Set[str]] = {}
+    # docsまたはallモードを判定します
+    if args.mode in ("all", "docs", "code"):
         # 正本設計図書RTM検証を呼び出します
-        d_errors, d_stats = verify_project_docs_rtm(repo_root)
+        d_errors, d_stats, defined_sets = verify_project_docs_rtm(repo_root)
         # エラーリストへ追加します
         all_errors.extend(d_errors)
         # 統計辞書へ追加します
         summary_stats.update(d_stats)
+
+    # all モードの場合に PBIバックログ検証を実行します
+    if args.mode == "all":
+        # RTMテキストを取得します
+        rtm_doc = repo_root / "docs" / "05_traceability" / "01_traceability_matrix.md"
+        # RTMテキストを読み込みます
+        rtm_text = rtm_doc.read_text(encoding="utf-8") if rtm_doc.is_file() else ""
+        # PBIバックログ検証を呼び出します
+        p_errors, pbi_count = verify_pbi_backlog(repo_root, rtm_text, defined_sets)
+        # エラーリストへ追加します
+        all_errors.extend(p_errors)
+        # 統計辞書へ追加します
+        summary_stats["pbi_count"] = pbi_count
+
+    # all または code モードの場合にソースコード追跡タグ検査を実行します
+    if args.mode in ("all", "code"):
+        # コード追跡タグ検証を呼び出します
+        tag_errors, tag_stats = verify_code_trace_tags(repo_root, defined_sets)
+        # エラーリストへ追加します
+        all_errors.extend(tag_errors)
+        # 統計辞書へ追加します
+        summary_stats.update(tag_stats)
+
+    # all または docs モードの場合に設計図書の記述構文検査を実行します
+    if args.mode in ("all", "docs"):
+        # 設計図書構文検査を呼び出します
+        s_errors, s_stats = verify_doc_syntax_files(repo_root)
+        # エラーリストへ追加します
+        all_errors.extend(s_errors)
+        # 統計辞書へ追加します
+        summary_stats.update(s_stats)
 
     # all モードの場合に Antigravity 2.0 構成ファイルの構文検査を実行します
     if args.mode == "all":
@@ -668,14 +747,22 @@ def main(argv: Optional[List[str]] = None) -> int:
         print(" IPA Common Frame 2013 x PBI-Driven Agile Traceability (RTM) Audit Report")
         # ヘッダー区切り線を出力します
         print("=" * 72)
-        # テンプレート・PBI統計がある場合は表示します
-        if "req_count" in summary_stats:
-            # テンプレートのPBI/REQ/MOD/TEST件数を表示します
-            print(f" [Templates RTM] PBI: {summary_stats.get('pbi_count', 0)} | REQ: {summary_stats['req_count']} | MOD: {summary_stats['mod_count']} | TEST: {summary_stats['test_count']}")
         # 正本設計図書統計がある場合は表示します
         if "doc_req_count" in summary_stats:
-            # 正本設計図書のREQ/MOD/PRG件数を表示します
-            print(f" [Project Docs ] REQ-FNC: {summary_stats['doc_req_count']} | MOD: {summary_stats['doc_mod_count']} | PRG: {summary_stats['doc_prg_count']}")
+            # 正本設計図書のREQ/MOD/FN/TEST件数を表示します
+            print(f" [Project RTM  ] REQ: {summary_stats['doc_req_count']} | MOD: {summary_stats['doc_mod_count']} | FN: {summary_stats['doc_fn_count']} | TEST: {summary_stats['doc_test_count']}")
+        # PBI統計がある場合は表示します
+        if "pbi_count" in summary_stats:
+            # PBI数を表示します
+            print(f" [PBI Backlog  ] Verified PBIs: {summary_stats['pbi_count']}")
+        # コード追跡タグ統計がある場合は表示します
+        if "tagged_specs" in summary_stats:
+            # タグ数を表示します
+            print(f" [Code Tags    ] @spec: {summary_stats['tagged_specs']} | @test: {summary_stats['tagged_tests']} | Verified FN Impl: {summary_stats['verified_fns']}")
+        # 設計図書構文検査の対象件数がある場合は表示します
+        if "doc_syntax_files" in summary_stats:
+            # 構文検査の対象図書数を表示します
+            print(f" [Doc Syntax   ] Verified Standard-Conforming Docs: {summary_stats['doc_syntax_files']}")
         # Antigravity構成検証件数がある場合は表示します
         if "agy_config_files" in summary_stats:
             # 検査済みスキル・ルール・MCPファイル数を表示します

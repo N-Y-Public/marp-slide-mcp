@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// @test TEST-IT-001
+// @test TEST-ST-007
 // ワークツリー内 MCP サーバー直接動作検証スクリプト (TEST-ST-007) です
 // 子プロセス生成モジュールをインポートします
 import { spawn } from "child_process";

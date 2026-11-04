@@ -17,9 +17,9 @@ description: >-
 ## 0. PBI駆動・差分更新モード（Living Documentation 標準動作）
 
 1. **RTMへの `PBI_ID` カラム差分反映**:
-   - 指定された `PBI-xxx` の完了時、`docs/templates/99_traceability_matrix.md`（および `docs/README.md`）の該当要件行の `PBI_ID` カラムに `PBI-xxx` を追記・更新し、どのPBIによってどの要件（`REQ-*`）・モジュール（`MOD-*`）・テスト（`TEST-*`）が追加・変更されたかを記録する。
+   - 指定された `PBI-xxx` の完了時、`docs/05_traceability/01_traceability_matrix.md`（および `docs/README.md`）の該当要件行の `PBI` カラムに `PBI-xxx` を追記・更新し、どのPBIによってどの要件（`REQ-*`）・モジュール（`MOD-*`）・テスト（`TEST-*`）が追加・変更されたかを記録する。
 2. **PBIファイルとRTMの双方向整合性検証**:
-   - `verify_rtm.py` を実行し、`docs/backlog/{todo,in_progress,done}/` 内のPBI定義と `99_traceability_matrix.md` の `PBI_ID` ↔ `REQ-*` ↔ `MOD-*` ↔ `TEST-*` に断絶がないことを機械検査する。
+   - `verify_rtm.py` を実行し、`docs/backlog/{todo,in_progress,done}/` 内のPBI定義と `01_traceability_matrix.md` の `PBI` ↔ `REQ-*` ↔ `MOD-*` ↔ `TEST-*` に断絶がないことを機械検査する。
 
 ---
 
@@ -30,23 +30,29 @@ description: >-
 
 ### PBIバックログおよび参照・更新テンプレート
 - **PBI管理ディレクトリ**: `docs/backlog/todo/`, `docs/backlog/in_progress/`, `docs/backlog/done/`
-- **PBIテンプレート**: `@[docs/templates/98_pbi_template.md](../../../docs/templates/98_pbi_template.md)`
-- **要件追跡マトリクス (RTM) テンプレート**: `@[docs/templates/99_traceability_matrix.md](../../../docs/templates/99_traceability_matrix.md)`
-- **機能要件定義テンプレート**: `@[docs/templates/02_functional_requirements.md](../../../docs/templates/02_functional_requirements.md)`
-- **非機能要件グレードテンプレート**: `@[docs/templates/03_non_functional_requirements.md](../../../docs/templates/03_non_functional_requirements.md)`
-- **ソフトウェア設計テンプレート**: `@[docs/templates/05_software_design.md](../../../docs/templates/05_software_design.md)`
-- **テスト仕様書テンプレート**: `@[docs/templates/06_test_specification.md](../../../docs/templates/06_test_specification.md)`
+- **PBIテンプレート**: `@[docs/templates/tpl_98_pbi_template.md](../../../docs/templates/tpl_98_pbi_template.md)`
+- **要件追跡マトリクス (RTM) テンプレート**: `@[docs/templates/tpl_01_traceability_matrix.md](../../../docs/templates/tpl_01_traceability_matrix.md)`
+- **要件定義テンプレート**: `@[docs/templates/tpl_01_requirements_specification.md](../../../docs/templates/tpl_01_requirements_specification.md)`
+- **ソフトウェア構造設計テンプレート**: `@[docs/templates/tpl_01_software_structure_design.md](../../../docs/templates/tpl_01_software_structure_design.md)`
+- **テスト仕様書テンプレート**: `@[docs/templates/tpl_01_test_specification.md](../../../docs/templates/tpl_01_test_specification.md)`
 
 ### 本リポジトリの正本設計図書（検査対象）
-- **設計図書統合インデックス & 完全RTM**: `@[docs/README.md](../../../docs/README.md)`
+- **設計図書統合インデックス**: `@[docs/README.md](../../../docs/README.md)`
+- **要件追跡マトリクス（正本）**: `@[docs/05_traceability/01_traceability_matrix.md](../../../docs/05_traceability/01_traceability_matrix.md)`
 - **要件定義書**: `@[docs/01_requirements/01_requirements_specification.md](../../../docs/01_requirements/01_requirements_specification.md)`
 - **基本設計書群**:
-  - `@[docs/02_basic_design/01_functional_specification.md](../../../docs/02_basic_design/01_functional_specification.md)`
-  - `@[docs/02_basic_design/02_external_interface_specification.md](../../../docs/02_basic_design/02_external_interface_specification.md)`
+  - `@[docs/02_basic_design/01_system_architecture_design.md](../../../docs/02_basic_design/01_system_architecture_design.md)`
+  - `@[docs/02_basic_design/02_functional_specification.md](../../../docs/02_basic_design/02_functional_specification.md)`
+  - `@[docs/02_basic_design/03_external_interface_specification.md](../../../docs/02_basic_design/03_external_interface_specification.md)`
 - **詳細設計書群**:
-  - `@[docs/03_detail_design/01_architectural_design.md](../../../docs/03_detail_design/01_architectural_design.md)`
+  - `@[docs/03_detail_design/01_software_structure_design.md](../../../docs/03_detail_design/01_software_structure_design.md)`
   - `@[docs/03_detail_design/02_internal_interface_specification.md](../../../docs/03_detail_design/02_internal_interface_specification.md)`
   - `@[docs/03_detail_design/03_program_specification.md](../../../docs/03_detail_design/03_program_specification.md)`
+  - `@[docs/03_detail_design/06_data_structure_specification.md](../../../docs/03_detail_design/06_data_structure_specification.md)`
+  - `@[docs/03_detail_design/07_screen_specification.md](../../../docs/03_detail_design/07_screen_specification.md)`
+- **テスト層**:
+  - `@[docs/04_test/01_test_specification.md](../../../docs/04_test/01_test_specification.md)`
+  - `@[docs/04_test/02_test_report.md](../../../docs/04_test/02_test_report.md)`
 - **工程統制ルール**: `@[.agents/rules/ipa-process-gate.md](../../rules/ipa-process-gate.md)`
 
 ---
@@ -57,10 +63,10 @@ description: >-
 
 | ID種別 | 正規表現パターン | 定義元（正本） | 必須追跡条件（Q-03基準） |
 | :--- | :--- | :--- | :--- |
-| **PBI ID (`PBI`)** | `PBI-\d{3}` | `docs/backlog/{todo,in_progress,done}/PBI-*.md`<br>（初期構築ベースラインは `PBI-000`） | すべてのRTM行に `PBI_ID` が記録され、完了済み（`done`）PBIの `related_req_ids` / `related_mod_ids` / `related_test_ids` がRTMと完全一致すること |
-| **要件ID (`REQ`)** | `REQ-(?:F\|FNC\|NFR(?:-[A-Z]+)?)-\d{2,3}` | `02_functional_requirements.md`<br>`03_non_functional_requirements.md`<br>`docs/01_requirements/` | すべての機能要件がRTMに登録され、少なくとも1つの `PBI-*`, `MOD-*`（または設計要素）および `TEST-*` に紐付いていること |
-| **モジュールID (`MOD`)** | `MOD-(?:[A-Z]+-)?\d{3}` | `05_software_design.md`<br>`docs/03_detail_design/` | すべてのモジュールがRTMに登録され、根拠となる `REQ-*` に紐付いていること（孤立モジュール禁止） |
-| **テストID (`TEST`)** | `TEST-(?:UT\|IT\|ST-)?\d{3}` | `06_test_specification.md`<br>`docs/04_test/` | すべてのテストケースが検証根拠となる `REQ-*`（および該当する `MOD-*`）を引用していること（根拠なきテスト禁止） |
+| **PBI ID (`PBI`)** | `PBI-\d{3}` | `docs/backlog/{todo,in_progress,done}/PBI-*.md`<br>（初期構築ベースラインは `PBI-000`） | すべてのRTM行に `PBI` が記録され、完了済み（`done`）PBIの `related_req_ids` / `related_mod_ids` / `related_test_ids` がRTMと完全一致すること |
+| **要件ID (`REQ`)** | `REQ-(?:FNC\|NFR)-\d{3}` | `01_requirements_specification.md`<br>`docs/01_requirements/` | すべての要件がRTMに登録され、少なくとも1つの `PBI-*`, `MOD-*`（または設計要素）および `TEST-*` に紐付いていること |
+| **モジュールID (`MOD`)** | `MOD-(?:[A-Z]{3}-)?\d{3}` | `01_software_structure_design.md`<br>`docs/03_detail_design/` | すべてのモジュールがRTMに登録され、根拠となる `REQ-*` に紐付いていること（孤立モジュール禁止） |
+| **テストID (`TEST`)** | `TEST-(?:UT\|IT\|ST-)?\d{3}` | `01_test_specification.md`<br>`docs/04_test/` | すべてのテストケースが検証根拠となる `REQ-*`（および該当する `MOD-*`）を引用していること（根拠なきテスト禁止） |
 
 ---
 
@@ -83,7 +89,7 @@ docker compose run --rm app python3 .agents/skills/ipa-traceability-validator/sc
 ### Step 2: 断絶・不整合の分析と是正
 `verify_rtm.py` がエラー（Exit Code `1`）または警告を出力した場合は、以下の分類に従って原因を特定し是正する：
 1. **未追跡の要件（Untraced Requirement: `REQ` → `MOD`/`TEST` 欠落）**:
-   - 要件定義書に存在する `REQ-*` が `99_traceability_matrix.md`（または `docs/README.md`）に存在しない、または対応する設計モジュール・テストケースが割り当てられていない。
+   - 要件定義書に存在する `REQ-*` が `01_traceability_matrix.md`（または `docs/README.md`）に存在しない、または対応する設計モジュール・テストケースが割り当てられていない。
    - **対処**: `ipa-detail-designer` で対応モジュールを設計するか、`ipa-qa-engineer` で対応テストケースを追加し、RTMを更新する。
 2. **孤立モジュール（Orphan Module: `MOD` → `REQ` 欠落）**:
    - 詳細設計書で定義された `MOD-*` がどの要件IDにも紐付いていない（スコープ外の勝手な作り込みの疑い）。
@@ -93,7 +99,7 @@ docker compose run --rm app python3 .agents/skills/ipa-traceability-validator/sc
    - **対処**: 定義元のIDと照合してタイポを修正する。
 
 ### Step 3: 要件追跡マトリクス（RTM）の更新と再検証
-1. `@[docs/templates/99_traceability_matrix.md](../../../docs/templates/99_traceability_matrix.md)` および `@[docs/README.md](../../../docs/README.md)` のマトリクス表を最新状態に更新する。
+1. `@[docs/05_traceability/01_traceability_matrix.md](../../../docs/05_traceability/01_traceability_matrix.md)` および `@[docs/README.md](../../../docs/README.md)` のマトリクス表を最新状態に更新する。
 2. 再度 `verify_rtm.py` を実行し、**断絶件数 0件（Exit Code `0`）** であることを確認してからゲート判定へ進む。
 
 ---
@@ -104,3 +110,5 @@ docker compose run --rm app python3 .agents/skills/ipa-traceability-validator/sc
 - [ ] 前方追跡率（`REQ` → `MOD` → `TEST` カバレッジ）が **100%** であるか。
 - [ ] 後方追跡（未定義の `REQ-*` / `MOD-*` / `TEST-*` への不正参照）が **0件** であるか。
 - [ ] 検査結果の数値（検査対象REQ数、MOD数、TEST数、断絶件数 0件）をゲート判定レポートに明記したか。
+
+> **設計図書の記述規約**: 設計図書の記述は `docs/00_project_charter/03_documentation_standard.md`（`DOC-GOV-003`）と `docs/00_project_charter/04_id_numbering_rules.md`（`DOC-GOV-004`）に従い、図書別の章構造は `docs/templates/tpl_*.md` を正本とする。規約適合は `verify_doc_syntax.py`（`verify_rtm.py` から呼び出し）で機械検査する。

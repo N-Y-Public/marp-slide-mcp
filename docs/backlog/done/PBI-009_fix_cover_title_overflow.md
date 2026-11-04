@@ -4,8 +4,8 @@ title: "表紙タイトル・サブタイトルの複数行表示における下
 type: "bugfix" # feature | enhancement | bugfix
 status: "done" # todo | designing | implementing | testing | done
 priority: "high" # high | medium | low
-related_req_ids: ["REQ-F-001", "REQ-NFR-001"]
-related_mod_ids: ["MOD-002"]
+related_req_ids: ["REQ-FNC-001", "REQ-NFR-001"]
+related_mod_ids: ["MOD-THM-001"]
 related_test_ids: ["TEST-ST-005"]
 ---
 
@@ -17,13 +17,13 @@ related_test_ids: ["TEST-ST-005"]
 - **なぜなら (So that):** 企業向けプレゼンテーション等で長大な文書タイトルや詳細なサブタイトルを指定した際、スライド高さ（720px）の制限によって重要な発表者情報や作成日が画面外へ脱落・欠落する事故を防ぎ、視認性と信頼性の高いスライドを維持するため
 
 ## 2. スコープと仕様概要 (What)
-### やること (In Scope)
+### 2.1 やること (In Scope)
 - 表紙スライド（`section[data-marpit-pagination="1"]`）における下部要素（図書番号、所属・氏名、作成日）の配置構造を改善し、スライド下部の安全領域（フッター帯の手前）に安定配置（絶対配置固定等）する。
 - タイトルおよびサブタイトルの利用可能領域（バナー下 y=100px 〜 下部メタ情報上端 y=500px）を有効活用し、タイトルが複数行化した場合の上部余白（`margin-top`）を柔軟に調整する。
 - タイトルとサブタイトルの余白（間隔）を詰め、さらに行数に応じてフォントサイズおよび行間（`line-height`）を段階的に縮小（36pt → 28pt → 24pt 等）させる適応ルールをテーマCSS（`themes/business-slide-theme.css`）に導入する。
 - 1行タイトル、2行タイトル、3行以上（4行含む）の長文タイトル、および長文サブタイトルが混在するケースを検証する自動テスト仕様（`TEST-ST-005`）を作成し、Dockerコンテナ内での回帰検証を完了させる。
 
-### やらないこと (Out of Scope)
+### 2.2 やらないこと (Out of Scope)
 - 2ページ目以降の通常コンテンツスライド（`section:not([data-marpit-pagination="1"])`）の見出し仕様変更（表紙スライド固有の修正に限定）。
 - 表紙フッター帯（コピーライト・機密指定）の既存デザイン・色調の変更。
 
