@@ -2,7 +2,7 @@
 id: DOC-DD-002
 title: 内部I/F仕様書
 doc_type: detail_design
-version: 1.0.0
+version: 1.1.0
 status: Approved
 date: 2026-11-04
 author: N-Y-Public
@@ -30,6 +30,7 @@ tags:
 | 版 | 日付 | 起因PBI | 変更概要 |
 | :--- | :--- | :--- | :--- |
 | 1.0.0 | 2026-11-04 | PBI-016 | 規約 DOC-GOV-003 準拠への再編および意味／形式仕様の分離 |
+| 1.1.0 | 2026-11-04 | PBI-014 | PPTX変換およびOffice MathML数式注入I/F（INT-PPT-002）の追加 |
 
 # 2 内部インターフェース
 
@@ -157,3 +158,29 @@ tags:
 | 発生条件 | 送出エラーコード |
 | :--- | :--- |
 | ブラウザプロセス起動失敗時 | `ERR-ENV-004` |
+
+## 2.6 INT-PPT-002 injectOfficeMath
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | `MOD-PPT-002` |
+| 状態 | Approved |
+| 後継ID | なし |
+| 目的 | 生成されたPPTXアーカイブ内のDrawingML数式プレースホルダをOffice MathMLへ置換・注入する |
+| 提供元 | `MOD-PPT-002` (`pptx_converter/omml.js`) |
+| 利用元 | `MOD-PPT-001` (`pptx_converter/convert.js`) |
+
+### 2.6.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `INT-PPT-002-IN01` | PPTXパス | 変換対象PPTXファイルパス | 必須 | なし |
+| `INT-PPT-002-IN02` | 数式辞書 | プレースホルダとMathML/LaTeX対応辞書 | 必須 | なし |
+
+### 2.6.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `INT-PPT-002-OUT01` | 処理結果 | 数式注入完了真偽値 | 必須 | なし |
+
+### 2.6.3 例外
+| 発生条件 | 送出エラーコード |
+| :--- | :--- |
+| アーカイブ破損・XML不正時 | `ERR-SYS-999` |

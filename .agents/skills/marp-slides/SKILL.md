@@ -96,6 +96,7 @@ When `marp-slide-mcp` is active in the environment, call `generate_slide_deck` (
   - **`delete_slide`**: Delete page `N` (`targetPageNumber >= 2`).
   - **`update_deck_settings`**: Update theme color, size ratio, logo path, or title slide metadata.
   - **`export_to_pdf`**: Re-export PDF from `fileId` or custom Markdown path.
+  - **`export_to_pptx`**: Export native editable PowerPoint (`.pptx`) from `fileId` or custom Markdown path.
 
 ---
 

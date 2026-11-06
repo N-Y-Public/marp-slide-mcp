@@ -1,6 +1,6 @@
 # `marp-slide-mcp` Tools Reference
 
-The `marp-slide-mcp` MCP server exposes 7 specialized tools to manage the end-to-end lifecycle of Marp slide decks.
+The `marp-slide-mcp` MCP server exposes 8 specialized tools to manage the end-to-end lifecycle of Marp slide decks.
 
 ---
 
@@ -111,12 +111,22 @@ Updates deck-wide configuration (size, logo, banner, theme color, title slide) a
 Compiles a standalone Markdown file or existing slide ID directly to PDF and HTML using Marp CLI and Puppeteer.
 
 ### Parameters
-- `fileId` (string, optional): Slide ID in `output/`
+- `fileId` (string, optional): Slide ID in `slides/` or `output/`
 - `markdownPath` (string, optional): Relative or absolute path to a `.md` file
 
 ---
 
-## 8. Client Configuration & Registration
+## 8. `export_to_pptx`
+
+Compiles a standalone Markdown file or existing slide ID directly to a native editable PowerPoint (`.pptx`) file with Slide Masters, editable tables, Mermaid shape decomposition, and Office MathML (`<m:oMath>`) equations.
+
+### Parameters
+- `fileId` (string, optional): Slide ID in `slides/` or `output/`
+- `markdownPath` (string, optional): Relative or absolute path to a `.md` file
+
+---
+
+## 9. Client Configuration & Registration
 
 To register this MCP server in external MCP clients (e.g. Claude Desktop, Cursor, or global Antigravity):
 

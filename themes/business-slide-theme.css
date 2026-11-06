@@ -1129,8 +1129,11 @@ section.layout-2col > h4 + ol > li {
   height: 100% !important;
   max-height: 100% !important;
   overflow: hidden !important;
+  /* ボックスサイズ計算をborder-boxに固定します */
   box-sizing: border-box !important;
-  font-size: 16pt !important;
+  /* 10段階サイズ調整クラス（--txt-scale）を反映したフォントサイズを設定します */
+  font-size: calc(16pt * var(--txt-scale, 1)) !important;
+  /* 行の高さを設定します */
   line-height: 1.5 !important;
   margin: 0 !important;
   padding: 0 !important;
@@ -1193,9 +1196,13 @@ section.columns-2 > h4 + ul > li pre,
 section.columns-2 > h4 + ol > li pre,
 section.layout-2col > h4 + ul > li pre,
 section.layout-2col > h4 + ol > li pre {
+  /* 最大高さを100%に制限します */
   max-height: 100% !important;
-  font-size: 13pt !important;
+  /* コードサイズ調整クラス（--code-fs-base）を反映したフォントサイズを設定します */
+  font-size: var(--code-fs-base, 13pt) !important;
+  /* はみ出し時はスクロール可能にします */
   overflow: auto !important;
+  /* 外側マージンをリセットします */
   margin: 0 !important;
 }
 

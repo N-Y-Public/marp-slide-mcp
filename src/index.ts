@@ -12,6 +12,10 @@ import * as path from "path";
 import crypto from "crypto";
 // ESモジュールにおけるURLとファイルパスの相互変換関数をインポートします
 import { fileURLToPath } from "url";
+// 子プロセスを非同期実行するためのモジュールをインポートします
+import { execFile } from "child_process";
+// コールバック関数をPromise化するためのユーティリティをインポートします
+import { promisify } from "util";
 // Marp Coreライブラリ（Markdownからスライドを生成するエンジン）をインポートします
 import { Marp } from "@marp-team/marp-core";
 // ヘッドレスブラウザ制御用のPuppeteerをインポートします
@@ -449,6 +453,36 @@ async function renderMarkdownToHtmlAndPdf(mdFilepath: string, htmlFilepath: stri
     // 非対話実行時の標準入力待機を防止するオプションです
     "--no-stdin",
   ]);
+}
+
+// execFileをPromise化した非同期実行関数を定義します
+const execFileAsync = promisify(execFile);
+
+// カスタムPPTXコンバーター（pptx_converter/convert.js）を安全に実行してPPTXを出力する関数です
+async function renderMarkdownToPptx(mdFilepath: string, pptxFilepath: string) {
+  // 入力Markdownファイルの存在確認を行います
+  await fs.access(mdFilepath);
+  // PPTX変換スクリプト（pptx_converter/convert.js）の絶対パスを解決します
+  const converterScriptPath = path.join(ROOT_DIR, "pptx_converter", "convert.js");
+  // 子プロセスとしてPPTX変換スクリプトを実行し、stdoutがMCP通信に混入しないよう分離します
+  const { stdout, stderr } = await execFileAsync(
+    // 現在のNode.js実行バイナリパスを指定します
+    process.execPath,
+    // 変換スクリプトパス、入力Markdownパス、出力PPTXパスを引数として渡します
+    [converterScriptPath, mdFilepath, pptxFilepath],
+    // プロジェクトルートを作業ディレクトリとし、バッファ上限を拡張します
+    { cwd: ROOT_DIR, maxBuffer: 50 * 1024 * 1024 }
+  );
+  // 子プロセスの標準出力がある場合はMCPの標準エラー出力へ退避記録します
+  if (stdout) {
+    // 標準エラー出力へログを書き出します
+    process.stderr.write(stdout);
+  }
+  // 子プロセスの標準エラー出力がある場合も標準エラー出力へ記録します
+  if (stderr) {
+    // 標準エラー出力へエラーログを書き出します
+    process.stderr.write(stderr);
+  }
 }
 
 // JSONマスター保存とPDF/HTML再ビルド共通処理関数です
@@ -927,6 +961,101 @@ server.tool(
     } catch (e: any) {
       // エラーレスポンスを返却します
       return { content: [{ type: "text", text: `PDF出力エラー: ${e.message}` }], isError: true };
+    }
+  }
+);
+
+// @spec FN-SRV-008 exportToPptx
+// 8. PPTX出力専用ツールを登録します
+server.tool(
+  // ツール名を指定します
+  "export_to_pptx",
+  // ツールの説明文を記述します
+  "指定したスライドIDまたはMarkdownファイルからネイティブ編集可能なPowerPoint（.pptx）を出力します。",
+  // 引数パラメータのスキーマ定義です
+  {
+    // スライドIDです（任意）
+    fileId: z.string().optional().describe("スライドID（例: 'slide-c71a2252'）"),
+    // Markdownファイルパスです（任意）
+    markdownPath: z.string().optional().describe("Markdownファイルの相対または絶対パス（fileId未指定時に使用）"),
+  },
+  // ツールの実行ハンドラー関数です
+  async ({ fileId, markdownPath }) => {
+    // 処理ブロックを開始します
+    try {
+      // 出力ディレクトリを確保します
+      await ensureOutputDir();
+      // Markdownファイルパス変数を初期化します
+      let targetMdPath = "";
+      // PPTXファイルパス変数を初期化します
+      let targetPptxPath = "";
+
+      // スライドIDが指定された場合
+      if (fileId) {
+        // slides/<fileId>/ 配下の専用ディレクトリを優先探索します
+        const deckDir = path.join(SLIDES_DIR, fileId);
+        // 専用ディレクトリ配下のMarkdownパスを構築します
+        targetMdPath = path.join(deckDir, `${fileId}.md`);
+        // 専用ディレクトリ配下のPPTX出力パスを構築します
+        targetPptxPath = path.join(deckDir, `${fileId}.pptx`);
+
+        // 専用ディレクトリ内のMarkdown存在確認を試みます
+        try {
+          // Markdownファイルへのアクセス可否を確認します
+          await fs.access(targetMdPath);
+          // 出力先ディレクトリを確保します
+          await ensureOutputDir(deckDir);
+        // 存在しない場合は従来のoutputまたは平坦slidesディレクトリへフォールバックします
+        } catch {
+          // 従来の output/ 配下のMarkdownパスです
+          const outputMd = path.join(OUTPUT_DIR, `${fileId}.md`);
+          // output配下のアクセス確認を試みます
+          try {
+            // ファイルへのアクセス可否を確認します
+            await fs.access(outputMd);
+            // output配下のMarkdownパスを採用します
+            targetMdPath = outputMd;
+            // output配下のPPTXパスを設定します
+            targetPptxPath = path.join(OUTPUT_DIR, `${fileId}.pptx`);
+          // outputにも存在しない場合は平坦なslidesディレクトリを参照します
+          } catch {
+            // 平坦slides配下のMarkdownパスを設定します
+            targetMdPath = path.join(SLIDES_DIR, `${fileId}.md`);
+            // 平坦slides配下のPPTXパスを設定します
+            targetPptxPath = path.join(SLIDES_DIR, `${fileId}.pptx`);
+          }
+        }
+      // Markdownパスが直接指定された場合
+      } else if (markdownPath) {
+        // 絶対パスまたはROOT_DIR基準の絶対パスに解決します
+        targetMdPath = path.isAbsolute(markdownPath) ? markdownPath : path.resolve(ROOT_DIR, markdownPath);
+        // パスを要素分解します
+        const parsed = path.parse(targetMdPath);
+        // 入力Markdownと同階層にPPTX出力パスを設定します
+        targetPptxPath = path.join(parsed.dir, `${parsed.name}.pptx`);
+      // どちらも未指定の場合はエラーを投げます
+      } else {
+        // 例外をスローします
+        throw new Error("fileId または markdownPath のいずれかを指定してください。");
+      }
+
+      // カスタムPPTXコンバーターによるネイティブPPTX生成を実行します
+      await renderMarkdownToPptx(targetMdPath, targetPptxPath);
+
+      // 完了レスポンスを返却します
+      return {
+        // コンテンツ配列です
+        content: [{
+          // テキスト種別です
+          type: "text",
+          // 成功メッセージと各種パスです
+          text: `PPTX出力成功\n\nPPTX: ${targetPptxPath}\nMarkdown: ${targetMdPath}`,
+        }],
+      };
+    // エラーハンドリングです
+    } catch (e: any) {
+      // エラーレスポンスを返却します
+      return { content: [{ type: "text", text: `PPTX出力エラー: ${e.message}` }], isError: true };
     }
   }
 );
