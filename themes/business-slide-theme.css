@@ -2253,7 +2253,7 @@ section:not([data-marpit-pagination="1"]):has(> h3 ~ *:not(h4 ~ *, h5 ~ *, h6 ~ 
 /* ---- 12-2. 帯の背景を section::before に分離 --------------------------
    これにより、帯の中身が何ブロックあっても背景は 1 枚の矩形になります。
 */
-section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc):has(> h2 + *:not(h1, h2, h3, h4, h5, h6))::before {
+section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc):not(.section-divider):has(> h2 + *:not(h1, h2, h3, h4, h5, h6))::before {
   content: "" !important;
   position: absolute !important;
   top: 65px !important;
@@ -2267,7 +2267,7 @@ section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc):has(> h2 
 
 
 /* ---- 12-3. タイトル領域（h1 から次の見出しまでの全ブロック） ---------- */
-section:not([data-marpit-pagination="1"])>h1~*:not(h1, h2, h3, h4, h5, h6, ul, ol):not(h2 ~ *, h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) {
+section:not([data-marpit-pagination="1"]):not(.section-divider)>h1~*:not(h1, h2, h3, h4, h5, h6, ul, ol):not(h2 ~ *, h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) {
   position: absolute !important;
   top: 32.5px !important;
   transform: translateY(-50%) !important;
@@ -2300,7 +2300,7 @@ section:not([data-marpit-pagination="1"])>h1~*:not(h1, h2, h3, h4, h5, h6, ul, o
 }
 
 /* 2 ブロック目以降も同じ上下中央揃えを維持 */
-section:not([data-marpit-pagination="1"])>h1~*:not(h1, h2, h3, h4, h5, h6, ul, ol):not(h2 ~ *, h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *):not(h1 + *) {
+section:not([data-marpit-pagination="1"]):not(.section-divider)>h1~*:not(h1, h2, h3, h4, h5, h6, ul, ol):not(h2 ~ *, h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *):not(h1 + *) {
   top: 32.5px !important;
   bottom: auto !important;
   transform: translateY(-50%) !important;
@@ -2318,7 +2318,7 @@ section:not([data-marpit-pagination="1"]).wide-content>h1~*:not(h1, h2, h3, h4, 
 */
 
 /* 共通の見た目 */
-section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc)>h2~*:not(h1, h2, h3, h4, h5, h6):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) {
+section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc):not(.section-divider)>h2~*:not(h1, h2, h3, h4, h5, h6):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) {
   position: absolute !important;
   left: 0 !important;
   width: 100% !important;
@@ -2339,13 +2339,13 @@ section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc)>h2~*:not(
 }
 
 /* 箇条書きの体裁 */
-section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc)>h2~ :is(ul, ol):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) {
+section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc):not(.section-divider)>h2~ :is(ul, ol):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *) {
   padding-left: 3em !important;
   padding-top: 0 !important;
   list-style-position: outside !important;
 }
 
-section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc)>h2~ :is(ul, ol):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *)>li {
+section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc):not(.section-divider)>h2~ :is(ul, ol):not(h3 ~ *, h4 ~ *, h5 ~ *, h6 ~ *)>li {
   color: #ffffff !important;
   font-size: inherit !important;
   line-height: inherit !important;
@@ -2687,4 +2687,353 @@ section>link {
     /* 印刷レイアウト算出から除外するためdisplayをnoneに設定します */
     display: none !important;
   }
+}
+
+/* ========================================================================== */
+/* (h) 中見出し（セクションディバイダー）スライド専用スタイル (Issue #17 / PBI-020, PBI-021) */
+/* ========================================================================== */
+
+/* 中見出しスライドのコンテナ設定です（左寄せ・垂直中央配置） */
+section.section-divider {
+  /* Flexboxコンテナとして子要素を垂直配置します */
+  display: flex !important;
+  /* 縦方向に子要素を整列します */
+  flex-direction: column !important;
+  /* 上下中央（垂直中央）に配置します */
+  justify-content: center !important;
+  /* 左寄せ配置とします */
+  align-items: flex-start !important;
+  /* 下部40pxフッター帯を除いた領域で中央配置するため下部パディング40pxを確保します */
+  padding: 0 70px 40px 70px !important;
+  /* ボックスサイズを境界基準とします */
+  box-sizing: border-box !important;
+  /* テキストを左揃えにします */
+  text-align: left !important;
+  /* 背景を白色で確定します */
+  background: #ffffff !important;
+  /* 子要素の絶対配置基準点とします */
+  position: relative !important;
+}
+
+/* 中見出しスライドにおける主張グレー帯疑似要素を非表示にします */
+section.section-divider::before {
+  /* 疑似要素を非表示にします */
+  display: none !important;
+  /* コンテンツを空にします */
+  content: none !important;
+}
+
+/* 中見出しスライドにおける通常スライド用見出し記法（h1〜h5）自体を非表示にします */
+section.section-divider > h1,
+section.section-divider > h2,
+section.section-divider > h3,
+section.section-divider > h4,
+section.section-divider > h5 {
+  /* 画面表示を完全に消去します */
+  display: none !important;
+  /* 不可視化します */
+  visibility: hidden !important;
+}
+
+/* 通常スライド用左上ヘッダータイトル・主張・図表タイトル・出典コンテンツを非表示にします */
+section.section-divider > h1 + *,
+section.section-divider > h2 + *,
+section.section-divider > h3 + *,
+section.section-divider > h5 + *,
+section.section-divider > h1 ~ *:not(h4 ~ *):not(h6):not(h6 + *):not(header):not(header *),
+section.section-divider > h2 ~ *:not(h4 ~ *):not(h6):not(h6 + *):not(header):not(header *),
+section.section-divider > h3 ~ *:not(h4 ~ *):not(h6):not(h6 + *):not(header):not(header *),
+section.section-divider > h5 ~ *:not(h6):not(h6 + *):not(header):not(header *) {
+  /* 画面表示を完全に消去します */
+  display: none !important;
+  /* 不可視化します */
+  visibility: hidden !important;
+}
+
+/* フッター1つ目（コピーライト）を最下部フッター帯の左下に絶対配置します */
+section.section-divider > h6:nth-of-type(1) + * {
+  /* スライド内の絶対配置にします */
+  position: absolute !important;
+  /* 下端から12pxの位置に配置します */
+  bottom: 12px !important;
+  /* 左端から20pxの位置に配置します */
+  left: 20px !important;
+  /* 幅を自動計算します */
+  width: auto !important;
+  /* 左揃えにします */
+  text-align: left !important;
+  /* 文字サイズを12pxにします */
+  font-size: 12px !important;
+  /* 文字色を白にします */
+  color: #ffffff !important;
+  /* 背景を透明にします */
+  background: transparent !important;
+  /* マージンを0にします */
+  margin: 0 !important;
+  /* 重なり順を最前面にします */
+  z-index: 20 !important;
+  /* 可視化します */
+  visibility: visible !important;
+  /* ブロック要素として配置します */
+  display: block !important;
+}
+
+/* フッター2つ目（機密表示）を最下部フッター帯の右下に絶対配置します */
+section.section-divider > h6:nth-of-type(2) + * {
+  /* スライド内の絶対配置にします */
+  position: absolute !important;
+  /* 下端から8pxの位置に配置します */
+  bottom: 8px !important;
+  /* 右端から70px（ページ番号の左隣）の位置に配置します */
+  right: 70px !important;
+  /* 幅を自動計算します */
+  width: auto !important;
+  /* 右揃えにします */
+  text-align: right !important;
+  /* 文字サイズを19pxにします */
+  font-size: 19px !important;
+  /* 太字にします */
+  font-weight: bold !important;
+  /* 文字色を赤にします */
+  color: red !important;
+  /* 背景を透明にします */
+  background: transparent !important;
+  /* マージンを0にします */
+  margin: 0 !important;
+  /* 重なり順を最前面にします */
+  z-index: 20 !important;
+  /* 可視化します */
+  visibility: visible !important;
+  /* ブロック要素として配置します */
+  display: block !important;
+}
+
+/* 中見出しの章タイトルコンテナスタイルです */
+section.section-divider .chapter-header-main {
+  /* ブロック要素として表示します */
+  display: block !important;
+  /* 可視化を保証します */
+  visibility: visible !important;
+  /* 文書フローに従う配置とします */
+  position: static !important;
+  /* 横幅を100%確保します */
+  width: 100% !important;
+  /* 高さを自動計算とします */
+  height: auto !important;
+  /* 外側余白をリセットします */
+  margin: 0 !important;
+  /* 内側余白をリセットします */
+  padding: 0 !important;
+  /* マウスイベントを有効化します */
+  pointer-events: auto !important;
+}
+
+/* 中見出しの章タイトル見出しタグスタイルです */
+section.section-divider .chapter-title,
+section.section-divider div.chapter-title,
+section.section-divider p.chapter-title,
+section.section-divider h2.chapter-title {
+  /* ブロック要素として表示します */
+  display: block !important;
+  /* テーマ共通のh1-h6隠蔽設定を打ち消し確実に可視化します */
+  visibility: visible !important;
+  /* 文書フローに従う配置とします */
+  position: static !important;
+  /* 横幅を100%確保します */
+  width: 100% !important;
+  /* 高さを自動計算とします */
+  height: auto !important;
+  /* はみ出し領域を表示します */
+  overflow: visible !important;
+  /* 大見出しフォントサイズ（34pt）を設定します */
+  font-size: 34pt !important;
+  /* 太字にします */
+  font-weight: bold !important;
+  /* テーマカラーを設定します */
+  color: var(--primary-color, #1f497d) !important;
+  /* 行の高さを最適化します */
+  line-height: 1.25 !important;
+  /* 下部に24pxのマージンを設定します */
+  margin: 0 0 24px 0 !important;
+  /* パディングをリセットします */
+  padding: 0 !important;
+  /* 左側に太さ10pxのテーマカラーアクセントバーを描画します */
+  border-left: 10px solid var(--primary-color, #1f497d) !important;
+  /* アクセントバーと文字の間に20pxの余白を設けます */
+  padding-left: 20px !important;
+  /* テキストを左揃えにします */
+  text-align: left !important;
+  /* 日本語の自然な折り返しを許可します */
+  word-break: break-word !important;
+  /* マウスイベントを有効化します */
+  pointer-events: auto !important;
+}
+
+/* title-only パターンにおける章タイトルのスタイル調整です */
+section.section-divider.pattern-title-only .chapter-title {
+  /* 単体表示時はより大きな36ptで表示します */
+  font-size: 36pt !important;
+  /* 下部マージンを0にします */
+  margin-bottom: 0 !important;
+}
+
+/* 中見出し内のページ一覧リスト（ul）スタイルです */
+section.section-divider .chapter-pages-list {
+  /* ブロック要素として表示します */
+  display: block !important;
+  /* 標準の箇条書き記号を非表示にします */
+  list-style: none !important;
+  /* 外側余白をリセットします */
+  margin: 0 !important;
+  /* 左インデントを10pxに設定します */
+  padding-left: 10px !important;
+  /* 横幅を100%確保します */
+  width: 100% !important;
+}
+
+/* ページ一覧の各項目（li）スタイルです */
+section.section-divider .chapter-pages-list li {
+  /* ブロック要素として表示します */
+  display: block !important;
+  /* 文字サイズを17ptに設定します */
+  font-size: 17pt !important;
+  /* 文字色を濃いグレーにします */
+  color: #333333 !important;
+  /* 行の高さをゆったり1.8倍に設定します */
+  line-height: 1.8 !important;
+  /* 下部マージンを8pxに設定します */
+  margin-bottom: 8px !important;
+  /* ビュレット用の左パディングを24px確保します */
+  padding-left: 24px !important;
+  /* 疑似要素配置の基準点とします */
+  position: relative !important;
+}
+
+/* ページ項目の角丸四角ビュレット記号を描画します */
+section.section-divider .chapter-pages-list li::before {
+  /* 四角いビュレット文字を設定します */
+  content: "▪" !important;
+  /* 絶対配置とします */
+  position: absolute !important;
+  /* 左端0pxに配置します */
+  left: 0 !important;
+  /* ビュレット色をテーマカラーにします */
+  color: var(--primary-color, #1f497d) !important;
+  /* ビュレットサイズを14ptにします */
+  font-size: 14pt !important;
+}
+
+/* ページ内アンカーリンクの基本スタイルです */
+section.section-divider a {
+  /* リンク文字色をテーマカラーにします */
+  color: var(--primary-color, #1f497d) !important;
+  /* 下線を非表示にします */
+  text-decoration: none !important;
+  /* フォント太さを600（やや太字）にします */
+  font-weight: 600 !important;
+  /* カーソルをポインターにします */
+  cursor: pointer !important;
+}
+
+/* リンクホバー時の下線表示です */
+section.section-divider a:hover {
+  /* 下線を表示します */
+  text-decoration: underline !important;
+}
+
+/* 全章一覧リスト（ul）スタイルです */
+section.section-divider .all-chapters-list {
+  /* ブロック要素として表示します */
+  display: block !important;
+  /* 標準の箇条書き記号を非表示にします */
+  list-style: none !important;
+  /* 外側余白をリセットします */
+  margin: 0 !important;
+  /* 内側余白をリセットします */
+  padding: 0 !important;
+  /* 横幅を100%確保します */
+  width: 100% !important;
+}
+
+/* 全章一覧の各章項目（li）スタイルです */
+section.section-divider .all-chapters-list > li {
+  /* ブロック要素として表示します */
+  display: block !important;
+  /* 行の高さを1.5に設定します */
+  line-height: 1.5 !important;
+  /* 各章の間隔を12px設けます */
+  margin-bottom: 12px !important;
+  /* 記号用の左パディングを32px確保します */
+  padding-left: 32px !important;
+  /* 疑似要素配置の基準点とします */
+  position: relative !important;
+}
+
+/* カレント章項目（太字強調）スタイルです */
+section.section-divider .all-chapters-list > li.active-chapter,
+section.section-divider .all-chapters-list > li.active-chapter > strong {
+  /* 文字サイズを22ptに設定します */
+  font-size: 22pt !important;
+  /* 太字にします */
+  font-weight: bold !important;
+  /* テーマカラーで強調します */
+  color: var(--primary-color, #1f497d) !important;
+}
+
+/* カレント章項目の先頭アクセント記号（▶）です */
+section.section-divider .all-chapters-list > li.active-chapter::before {
+  /* 塗りつぶし三角形矢印を設定します */
+  content: "▶" !important;
+  /* 絶対配置とします */
+  position: absolute !important;
+  /* 左端4pxに配置します */
+  left: 4px !important;
+  /* テーマカラーに設定します */
+  color: var(--primary-color, #1f497d) !important;
+  /* 記号サイズを16ptにします */
+  font-size: 16pt !important;
+}
+
+/* 他章項目（普通太さ・薄色）スタイルです */
+section.section-divider .all-chapters-list > li.dim {
+  /* 文字サイズを19ptに設定します */
+  font-size: 19pt !important;
+  /* 普通の太さにします */
+  font-weight: normal !important;
+  /* 薄いグレー色に設定します */
+  color: #888888 !important;
+}
+
+/* 他章項目の先頭アクセント記号（▷）です */
+section.section-divider .all-chapters-list > li.dim::before {
+  /* 白抜き三角形矢印を設定します */
+  content: "▷" !important;
+  /* 絶対配置とします */
+  position: absolute !important;
+  /* 左端4pxに配置します */
+  left: 4px !important;
+  /* 薄いグレー色に設定します */
+  color: #bbbbbb !important;
+  /* 記号サイズを16ptにします */
+  font-size: 16pt !important;
+}
+
+/* 全章一覧配下にネストされたページ一覧リストのスタイル調整です */
+section.section-divider .all-chapters-list > li .chapter-pages-list {
+  /* 上部に8pxの余白を設けます */
+  margin-top: 8px !important;
+  /* 下部に4pxの余白を設けます */
+  margin-bottom: 4px !important;
+  /* 左インデントを16px確保します */
+  padding-left: 16px !important;
+}
+
+/* ネストされたページ項目の文字サイズを調整します */
+section.section-divider .all-chapters-list > li .chapter-pages-list li {
+  /* 文字サイズを15ptに設定します */
+  font-size: 15pt !important;
+  /* 行の高さを1.6に設定します */
+  line-height: 1.6 !important;
+  /* 下部マージンを4pxに設定します */
+  margin-bottom: 4px !important;
 }

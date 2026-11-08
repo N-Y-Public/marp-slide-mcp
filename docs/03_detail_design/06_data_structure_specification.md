@@ -2,9 +2,9 @@
 id: DOC-DD-006
 title: データ構造仕様書
 doc_type: detail_design
-version: 1.1.0
+version: 1.2.0
 status: Approved
-date: 2026-11-07
+date: 2026-11-08
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -30,6 +30,7 @@ tags:
 | :--- | :--- | :--- | :--- |
 | 1.0.0 | 2026-11-04 | PBI-016 | 初版作成（意味仕様と形式仕様の分離） |
 | 1.1.0 | 2026-11-07 | PBI-019 | Stageゲート審査結果構造体（DAT-TYP-008）およびレポートスケジュール構造体（DAT-TYP-009）の追加 |
+| 1.2.0 | 2026-11-08 | PBI-020 | 中見出しスライド構造体（DAT-TYP-010）およびNormalSlide拡張（DAT-TYP-003-F09）の追加 |
 
 # 2 データ構造
 
@@ -90,6 +91,7 @@ tags:
 | `DAT-TYP-003-F06` | 画像並列配列 | `imageGrid` | `ImageGridItem[]` | 2〜4 | [[#2.5 DAT-TYP-005 ImageGridItem|DAT-TYP-005]] の配列 | なし | 任意 |
 | `DAT-TYP-003-F07` | 出典・脚注 | `source` | `string` | 0〜100 | 単行文字列 | なし | 任意 |
 | `DAT-TYP-003-F08` | スタイルクラス群 | `classes` | `string[]` | 0〜10 | 登録済みクラス名配列 | `[]` | 任意 |
+| `DAT-TYP-003-F09` | 中見出し構造 | `sectionDivider` | `SectionDivider` | 1 | [[#2.10 DAT-TYP-010 SectionDivider|DAT-TYP-010]] | なし | 任意 |
 
 ## 2.4 DAT-TYP-004 TwoColumns
 | 項目 | 内容 |
@@ -181,3 +183,20 @@ tags:
 | `DAT-TYP-009-F01` | 日報配信時刻配列 | `daily_schedules_jst` | `string[]` | 3 | `['07:30', '11:50', '18:00']` | `['07:30', '11:50', '18:00']` | 必須 |
 | `DAT-TYP-009-F02` | 週報配信曜日 | `weekly_day_of_week` | `string` | 3 | `'WED'` | `'WED'` | 必須 |
 | `DAT-TYP-009-F03` | 週報配信時刻 | `weekly_time_jst` | `string` | 5 | `'16:00'` | `'16:00'` | 必須 |
+
+## 2.10 DAT-TYP-010 SectionDivider
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | なし |
+| 状態 | Approved |
+| 後継ID | なし |
+| 実装上の宣言位置 | `src/index.ts` |
+
+### 2.10.1 フィールド
+| フィールドID | 論理名 | 物理名 | 型 | 桁・長さ | 値域・書式 | 既定値 | 必須 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `DAT-TYP-010-F01` | パターン種別 | `pattern` | `string` | 10〜30 | `'title-only' \| 'title-and-pages' \| 'all-chapters' \| 'all-chapters-and-pages'` | なし | 必須 |
+| `DAT-TYP-010-F02` | 章タイトル | `chapterTitle` | `string` | 1〜100 | 単行文字列 | なし | 必須 |
+| `DAT-TYP-010-F03` | 当該章ページ配列 | `chapterPages` | `SectionPageItem[]` | 0〜30 | `{ title: string; pageNumber?: number }[]` | `[]` | 任意 |
+| `DAT-TYP-010-F04` | 全章タイトル配列 | `allChapters` | `string[]` | 0〜20 | 章タイトル配列 | `[]` | 任意 |
+| `DAT-TYP-010-F05` | カレント章インデックス | `currentChapterIndex` | `number` | 1〜2 | 0以上の整数 | なし | 任意 |

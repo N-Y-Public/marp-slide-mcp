@@ -1,0 +1,1511 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"><meta name="apple-mobile-web-app-capable" content="yes"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta property="og:type" content="website"><meta name="twitter:card" content="summary"><style>@media screen{body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button{-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none;background-color:transparent;border:0;color:inherit;cursor:pointer;font-size:inherit;opacity:.8;outline:none;padding:0;transition:opacity .2s linear}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:disabled,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:disabled,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:disabled,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:disabled{cursor:not-allowed;opacity:.15!important}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:hover,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:hover,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:hover,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:hover{opacity:1}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:active,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:active,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:hover:active,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:hover:active{opacity:.6}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:not(:disabled),body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:not(:disabled),body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:hover:not(:disabled),body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:hover:not(:disabled){transition:none}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev],body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button.bespoke-marp-presenter-info-page-prev{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNNjggOTAgMjggNTBsNDAtNDAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button.bespoke-marp-presenter-info-page-next{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJtMzIgOTAgNDAtNDAtNDAtNDAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen]{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDpub25lO3N0cm9rZTojZmZmO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2Utd2lkdGg6NXB4fTwvc3R5bGU+PC9kZWZzPjxyZWN0IHdpZHRoPSI4MCIgaGVpZ2h0PSI2MCIgeD0iMTAiIHk9IjIwIiBjbGFzcz0iYSIgcng9IjUuNjciLz48cGF0aCBkPSJNNDAgNzBIMjBWNTBtMjAgMEwyMCA3MG00MC00MGgyMHYyMG0tMjAgMCAyMC0yMCIgY2xhc3M9ImEiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button.exit[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button.exit[data-bespoke-marp-osc=fullscreen]{background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDpub25lO3N0cm9rZTojZmZmO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2Utd2lkdGg6NXB4fTwvc3R5bGU+PC9kZWZzPjxyZWN0IHdpZHRoPSI4MCIgaGVpZ2h0PSI2MCIgeD0iMTAiIHk9IjIwIiBjbGFzcz0iYSIgcng9IjUuNjciLz48cGF0aCBkPSJNMjAgNTBoMjB2MjBtLTIwIDAgMjAtMjBtNDAgMEg2MFYzMG0yMCAwTDYwIDUwIiBjbGFzcz0iYSIvPjwvc3ZnPg==")}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter]{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNODcuOCA0Ny41Qzg5IDUwIDg3LjcgNTIgODUgNTJIMzVhOC43IDguNyAwIDAgMS03LjItNC41bC0xNS42LTMxQzExIDE0IDEyLjIgMTIgMTUgMTJoNTBhOC44IDguOCAwIDAgMSA3LjIgNC41ek02MCA1MnYzNm0tMTAgMGgyME00NSA0MmgyMCIvPjwvc3ZnPg==") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button.bespoke-marp-presenter-note-bigger{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNMTIgNTBoODBNNTIgOTBWMTAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button.bespoke-marp-presenter-note-smaller{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNMTIgNTBoODAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}}@keyframes __bespoke_marp_transition_reduced_outgoing__{0%{opacity:1}to{opacity:0}}@keyframes __bespoke_marp_transition_reduced_incoming__{0%{mix-blend-mode:plus-lighter;opacity:0}to{mix-blend-mode:plus-lighter;opacity:1}}.bespoke-marp-note,.bespoke-marp-osc,.bespoke-progress-parent{display:none;transition:none}@media screen{::view-transition-group(*){animation-duration:var(--marp-bespoke-transition-animation-duration,.5s);animation-timing-function:ease}::view-transition-new(*),::view-transition-old(*){animation-delay:0s;animation-direction:var(--marp-bespoke-transition-animation-direction,normal);animation-duration:var(--marp-bespoke-transition-animation-duration,.5s);animation-fill-mode:both;animation-name:var(--marp-bespoke-transition-animation-name,var(--marp-bespoke-transition-animation-name-fallback,__bespoke_marp_transition_no_animation__));mix-blend-mode:normal}::view-transition-old(*){--marp-bespoke-transition-animation-name-fallback:__bespoke_marp_transition_reduced_outgoing__;animation-timing-function:ease}::view-transition-new(*){--marp-bespoke-transition-animation-name-fallback:__bespoke_marp_transition_reduced_incoming__;animation-timing-function:ease}::view-transition-new(root),::view-transition-old(root){animation-timing-function:linear}::view-transition-new(__bespoke_marp_transition_osc__),::view-transition-old(__bespoke_marp_transition_osc__){animation-duration:0s!important;animation-name:__bespoke_marp_transition_osc__!important}::view-transition-new(__bespoke_marp_transition_osc__){opacity:0!important}.bespoke-marp-transition-warming-up::view-transition-group(*),.bespoke-marp-transition-warming-up::view-transition-new(*),.bespoke-marp-transition-warming-up::view-transition-old(*){animation-play-state:paused!important}body,html{height:100%;margin:0}body{background:#000;overflow:hidden}svg.bespoke-marp-slide{content-visibility:hidden;opacity:0;pointer-events:none;z-index:-1}svg.bespoke-marp-slide:not(.bespoke-marp-active) *{view-transition-name:none!important}svg.bespoke-marp-slide.bespoke-marp-active{content-visibility:visible;opacity:1;pointer-events:auto;z-index:0}svg.bespoke-marp-slide.bespoke-marp-active.bespoke-marp-active-ready *{animation-name:__bespoke_marp__!important}@supports not (content-visibility:hidden){svg.bespoke-marp-slide[data-bespoke-marp-load=hideable]{display:none}svg.bespoke-marp-slide[data-bespoke-marp-load=hideable].bespoke-marp-active{display:block}}}@media screen and (prefers-reduced-motion:reduce){svg.bespoke-marp-slide *{view-transition-name:none!important}}@media screen{[data-bespoke-marp-fragment=inactive]{visibility:hidden}body[data-bespoke-view=""] .bespoke-marp-parent,body[data-bespoke-view=next] .bespoke-marp-parent{inset:0;position:absolute}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc{view-transition-name:__bespoke_marp_transition_osc__;background:rgba(0,0,0,.65);border-radius:7px;bottom:50px;color:#fff;contain:paint;display:block;font-family:Helvetica,Arial,sans-serif;font-size:16px;left:50%;line-height:0;opacity:1;padding:12px;position:absolute;touch-action:manipulation;transform:translateX(-50%);transition:opacity .2s linear;-webkit-user-select:none;user-select:none;white-space:nowrap;will-change:transform;z-index:1}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>*,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>*{margin-left:6px}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>:first-child,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>:first-child{margin-left:0}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>span,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>span{opacity:.8}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>span[data-bespoke-marp-osc=page],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>span[data-bespoke-marp-osc=page]{display:inline-block;min-width:140px;text-align:center}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter],body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev]{height:32px;line-height:32px;width:32px}body[data-bespoke-view=""] .bespoke-marp-parent.bespoke-marp-inactive,body[data-bespoke-view=next] .bespoke-marp-parent.bespoke-marp-inactive{cursor:none}body[data-bespoke-view=""] .bespoke-marp-parent.bespoke-marp-inactive>.bespoke-marp-osc,body[data-bespoke-view=next] .bespoke-marp-parent.bespoke-marp-inactive>.bespoke-marp-osc{opacity:0;pointer-events:none}body[data-bespoke-view=""] svg.bespoke-marp-slide,body[data-bespoke-view=next] svg.bespoke-marp-slide{height:100%;left:0;position:absolute;top:0;width:100%}body[data-bespoke-view=""] .bespoke-progress-parent{background:#222;display:flex;height:5px;width:100%}body[data-bespoke-view=""] .bespoke-progress-parent+.bespoke-marp-parent{top:5px}body[data-bespoke-view=""] .bespoke-progress-parent .bespoke-progress-bar{background:#0288d1;flex:0 0 0;transition:flex-basis .2s cubic-bezier(0,1,1,1)}body[data-bespoke-view=next]{background:transparent}body[data-bespoke-view=presenter]{background:#161616}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container{display:grid;font-family:Helvetica,Arial,sans-serif;grid-template:"current dragbar next" minmax(140px,1fr) "current dragbar note" 2fr "info    dragbar note" 3em;grid-template-columns:minmax(3px,var(--bespoke-marp-presenter-split-ratio,66%)) 0 minmax(3px,1fr);height:100%;left:0;position:absolute;top:0;width:100%}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-parent{grid-area:current;overflow:hidden;position:relative}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-parent svg.bespoke-marp-slide{height:calc(100% - 40px);left:20px;pointer-events:none;position:absolute;top:20px;-webkit-user-select:none;user-select:none;width:calc(100% - 40px)}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-parent svg.bespoke-marp-slide.bespoke-marp-active{filter:drop-shadow(0 3px 10px rgba(0,0,0,.5))}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-dragbar-container{background:#0288d1;cursor:col-resize;grid-area:dragbar;margin-left:-3px;opacity:0;position:relative;transition:opacity .4s linear .1s;width:6px;z-index:10}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-dragbar-container:hover{opacity:1}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-dragbar-container.active{opacity:1;transition-delay:0s}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-next-container{background:#222;cursor:pointer;display:none;grid-area:next;overflow:hidden;position:relative}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-next-container.active{display:block}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-next-container iframe.bespoke-marp-presenter-next{background:transparent;border:0;display:block;filter:drop-shadow(0 3px 10px rgba(0,0,0,.5));height:calc(100% - 40px);left:20px;pointer-events:none;position:absolute;top:20px;-webkit-user-select:none;user-select:none;width:calc(100% - 40px)}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container{background:#222;color:#eee;grid-area:note;position:relative;z-index:1}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button{height:1.5em;line-height:1.5em;width:1.5em}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-wrapper{display:block;inset:0;position:absolute}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-buttons{background:rgba(0,0,0,.65);border-radius:4px;bottom:0;display:flex;gap:4px;margin:12px;opacity:0;padding:6px;pointer-events:none;position:absolute;right:0;transition:opacity .2s linear}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-buttons:focus-within,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-wrapper:focus-within+.bespoke-marp-presenter-note-buttons,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container:hover .bespoke-marp-presenter-note-buttons{opacity:1;pointer-events:auto}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note{word-wrap:break-word;box-sizing:border-box;font-size:calc(1.1em*var(--bespoke-marp-note-font-scale, 1));height:calc(100% - 40px);margin:20px;overflow:auto;padding-right:3px;scrollbar-color:hsla(0,0%,93%,.5) transparent;scrollbar-width:thin;white-space:pre-wrap;width:calc(100% - 40px)}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note::-webkit-scrollbar{width:6px}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note::-webkit-scrollbar-track{background:transparent}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note::-webkit-scrollbar-thumb{background:hsla(0,0%,93%,.5);border-radius:6px}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note:empty{pointer-events:none}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note.active{display:block}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note p:first-child{margin-top:0}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note p:last-child{margin-bottom:0}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container{align-items:center;box-sizing:border-box;color:#eee;display:flex;flex-wrap:nowrap;grid-area:info;justify-content:center;overflow:hidden;padding:0 10px}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-page,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-time,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-timer{box-sizing:border-box;display:block;padding:0 10px;white-space:nowrap;width:100%}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button{height:1.5em;line-height:1.5em;width:1.5em}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-page{order:2;text-align:center}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-page .bespoke-marp-presenter-info-page-text{display:inline-block;min-width:120px;text-align:center}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-time{color:#999;order:1;text-align:left}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-timer{color:#999;order:3;text-align:right}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-timer:hover{cursor:pointer}}@media print{.bespoke-marp-presenter-info-container,.bespoke-marp-presenter-next-container,.bespoke-marp-presenter-note-container{display:none}}</style><style>@import url('./vendor/vs.min.css');@import '../../themes/business-slide-theme.css';div#\:\$p>svg>foreignObject>section{width:1280px;height:720px;box-sizing:border-box;overflow:hidden;position:relative;scroll-snap-align:center center}div#\:\$p>svg>foreignObject>section:after{bottom:0;content:attr(data-marpit-pagination);padding:inherit;pointer-events:none;position:absolute;right:0}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination]):after{display:none}/* Normalization */div#\:\$p>svg>foreignObject>section :is(h1,marp-h1){font-size:2em;margin:0.67em 0}div#\:\$p>svg>foreignObject>section video::-webkit-media-controls{will-change:transform}@page{size:960px 720px;margin:0}@media print{body,html{background-color:#fff;margin:0;page-break-inside:avoid;break-inside:avoid-page}div#\:\$p>svg>foreignObject>section{page-break-before:always;break-before:page}div#\:\$p>svg>foreignObject>section,div#\:\$p>svg>foreignObject>section *{-webkit-print-color-adjust:exact!important;animation-delay:0s!important;animation-duration:0s!important;color-adjust:exact!important;transition:none!important}div#\:\$p>svg[data-marpit-svg]{display:block;height:100vh;width:100vw}}div#\:\$p>svg>foreignObject>:where(section){container-type:size}div#\:\$p>svg>foreignObject>section img[data-marp-twemoji]{background:transparent;height:1em;margin:0 .05em 0 .1em;vertical-align:-.1em;width:1em}
+
+/*
+ * @theme business-slide
+ * @size 4:3 960px 720px
+ * @size 16:9 1280px 720px
+ */
+
+/* VS Code風（ライトテーマ）のシンタックスハイライトを読み込む */
+
+/*
+  0. テーマカラー・共通CSS変数の定義
+  スライド全体の基調となるテーマカラーを設定します。
+  外部のスタイルシートやMarkdown内の\3c style>タグから --primary-color または --theme-color を上書きすることで、
+  主張欄、フッター帯、吹き出しなどの色がすべて自動で連動して変更されます。
+*/div#\:\$p>svg>foreignObject>:where(section):not([root]){
+  /* 基底となるテーマカラー（未指定時はデフォルトのコーポレートブルー #1f497d を使用） */--primary-color:var(--theme-color,#1f497d);
+
+  /* 会話の吹き出し背景色（テーマカラーに白を混ぜて自動生成） */--bubble-bg-color:color-mix(in srgb,var(--primary-color) 40%,white);
+
+  /* 吹き出し内の文字色（読みやすい濃いグレー） */--bubble-text-color:#222222;
+
+  /*
+    表紙バナー画像の指定（CSS変数）
+    デフォルト値として標準の banner.svg（Acrobat互換のためmask要素を排したマスクレスSVG）を Data URI (Base64) で埋め込むことで、
+    スライドがどのディレクトリ階層に配置されても外部ファイルパスに依存せず100%確実に表示されます。
+    外部スタイルシートやMarkdown内の\3c style>タグ、MCPサーバーから上書き・差し替えが可能です。
+    バナーを非表示にする場合は --banner-image: none; を指定します。
+  */--banner-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NjAgMTAwIiB3aWR0aD0iOTYwIiBoZWlnaHQ9IjEwMCI+PHJlY3Qgd2lkdGg9Ijk2MCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiMxZjQ5N2QiLz48ZyBmaWxsPSIjMDAwMDAwIj48cGF0aCBkPSJNMCwyMGgyMHYyMGgtMjB6TTAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjE3NyIvPjxwYXRoIGQ9Ik0yMCwwaDIwdjIwaC0yMHpNMjAsNDBoMjB2MjBoLTIwek0yMCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTcxIi8+PHBhdGggZD0iTTQwLDIwaDIwdjIwaC0yMHpNNDAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjE2NCIvPjxwYXRoIGQ9Ik02MCwwaDIwdjIwaC0yMHpNNjAsNDBoMjB2MjBoLTIwek02MCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTU4Ii8+PHBhdGggZD0iTTgwLDIwaDIwdjIwaC0yMHpNODAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjE1MiIvPjxwYXRoIGQ9Ik0xMDAsMGgyMHYyMGgtMjB6TTEwMCw0MGgyMHYyMGgtMjB6TTEwMCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTQ2Ii8+PHBhdGggZD0iTTEyMCwyMGgyMHYyMGgtMjB6TTEyMCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTM5Ii8+PHBhdGggZD0iTTE0MCwwaDIwdjIwaC0yMHpNMTQwLDQwaDIwdjIwaC0yMHpNMTQwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4xMzMiLz48cGF0aCBkPSJNMTYwLDIwaDIwdjIwaC0yMHpNMTYwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4xMjciLz48cGF0aCBkPSJNMTgwLDBoMjB2MjBoLTIwek0xODAsNDBoMjB2MjBoLTIwek0xODAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjEyMSIvPjxwYXRoIGQ9Ik0yMDAsMjBoMjB2MjBoLTIwek0yMDAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjExNCIvPjxwYXRoIGQ9Ik0yMjAsMGgyMHYyMGgtMjB6TTIyMCw0MGgyMHYyMGgtMjB6TTIyMCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTA4Ii8+PHBhdGggZD0iTTI0MCwyMGgyMHYyMGgtMjB6TTI0MCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTAyIi8+PHBhdGggZD0iTTI2MCwwaDIwdjIwaC0yMHpNMjYwLDQwaDIwdjIwaC0yMHpNMjYwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wOTYiLz48cGF0aCBkPSJNMjgwLDIwaDIwdjIwaC0yMHpNMjgwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wOSIvPjxwYXRoIGQ9Ik0zMDAsMGgyMHYyMGgtMjB6TTMwMCw0MGgyMHYyMGgtMjB6TTMwMCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDg1Ii8+PHBhdGggZD0iTTMyMCwyMGgyMHYyMGgtMjB6TTMyMCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDgxIi8+PHBhdGggZD0iTTM0MCwwaDIwdjIwaC0yMHpNMzQwLDQwaDIwdjIwaC0yMHpNMzQwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wNzciLz48cGF0aCBkPSJNMzYwLDIwaDIwdjIwaC0yMHpNMzYwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wNzMiLz48cGF0aCBkPSJNMzgwLDBoMjB2MjBoLTIwek0zODAsNDBoMjB2MjBoLTIwek0zODAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjA2OSIvPjxwYXRoIGQ9Ik00MDAsMjBoMjB2MjBoLTIwek00MDAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjA2NSIvPjxwYXRoIGQ9Ik00MjAsMGgyMHYyMGgtMjB6TTQyMCw0MGgyMHYyMGgtMjB6TTQyMCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDYiLz48cGF0aCBkPSJNNDQwLDIwaDIwdjIwaC0yMHpNNDQwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wNTYiLz48cGF0aCBkPSJNNDYwLDBoMjB2MjBoLTIwek00NjAsNDBoMjB2MjBoLTIwek00NjAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjA1MiIvPjxwYXRoIGQ9Ik00ODAsMjBoMjB2MjBoLTIwek00ODAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjA0OCIvPjxwYXRoIGQ9Ik01MDAsMGgyMHYyMGgtMjB6TTUwMCw0MGgyMHYyMGgtMjB6TTUwMCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDQ0Ii8+PHBhdGggZD0iTTUyMCwyMGgyMHYyMGgtMjB6TTUyMCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDQiLz48cGF0aCBkPSJNNTQwLDBoMjB2MjBoLTIwek01NDAsNDBoMjB2MjBoLTIwek01NDAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAzNSIvPjxwYXRoIGQ9Ik01NjAsMjBoMjB2MjBoLTIwek01NjAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAzMSIvPjxwYXRoIGQ9Ik01ODAsMGgyMHYyMGgtMjB6TTU4MCw0MGgyMHYyMGgtMjB6TTU4MCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDI3Ii8+PHBhdGggZD0iTTYwMCwyMGgyMHYyMGgtMjB6TTYwMCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDIzIi8+PHBhdGggZD0iTTY2MCwwaDIwdjIwaC0yMHpNNjYwLDQwaDIwdjIwaC0yMHpNNjYwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMTciLz48cGF0aCBkPSJNNjIwLDBoMjB2MjBoLTIwek02MjAsNDBoMjB2MjBoLTIwek02MjAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAyIi8+PHBhdGggZD0iTTY0MCwyMGgyMHYyMGgtMjB6TTY0MCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDE4Ii8+PHBhdGggZD0iTTY4MCwyMGgyMHYyMGgtMjB6TTY4MCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDE2Ii8+PHBhdGggZD0iTTcwMCwwaDIwdjIwaC0yMHpNNzAwLDQwaDIwdjIwaC0yMHpNNzAwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMTUiLz48cGF0aCBkPSJNNzIwLDIwaDIwdjIwaC0yMHpNNzIwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMTQiLz48cGF0aCBkPSJNNzQwLDBoMjB2MjBoLTIwek03NDAsNDBoMjB2MjBoLTIwek03NDAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAxMyIvPjxwYXRoIGQ9Ik03NjAsMjBoMjB2MjBoLTIwek03NjAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAxMSIvPjxwYXRoIGQ9Ik03ODAsMGgyMHYyMGgtMjB6TTc4MCw0MGgyMHYyMGgtMjB6TTc4MCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDEiLz48cGF0aCBkPSJNODAwLDIwaDIwdjIwaC0yMHpNODAwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMDkiLz48cGF0aCBkPSJNODIwLDBoMjB2MjBoLTIwek04MjAsNDBoMjB2MjBoLTIwek04MjAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAwOCIvPjxwYXRoIGQ9Ik04NDAsMjBoMjB2MjBoLTIwek04NDAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAwNyIvPjxwYXRoIGQ9Ik04NjAsMGgyMHYyMGgtMjB6TTg2MCw0MGgyMHYyMGgtMjB6TTg2MCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDA1Ii8+PHBhdGggZD0iTTg4MCwyMGgyMHYyMGgtMjB6TTg4MCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDA0Ii8+PHBhdGggZD0iTTkwMCwwaDIwdjIwaC0yMHpNOTAwLDQwaDIwdjIwaC0yMHpNOTAwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMDMiLz48cGF0aCBkPSJNOTIwLDIwaDIwdjIwaC0yMHpNOTIwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMDIiLz48cGF0aCBkPSJNOTQwLDBoMjB2MjBoLTIwek05NDAsNDBoMjB2MjBoLTIwek05NDAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAwMSIvPjwvZz48ZyBmaWxsPSIjZmZmZmZmIj48cGF0aCBkPSJNMCwwaDIwdjIwaC0yMHpNMCw0MGgyMHYyMGgtMjB6TTAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjI0NiIvPjxwYXRoIGQ9Ik0yMCwyMGgyMHYyMGgtMjB6TTIwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4yMzkiLz48cGF0aCBkPSJNNDAsMGgyMHYyMGgtMjB6TTQwLDQwaDIwdjIwaC0yMHpNNDAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjIzMSIvPjxwYXRoIGQ9Ik02MCwyMGgyMHYyMGgtMjB6TTYwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4yMjMiLz48cGF0aCBkPSJNODAsMGgyMHYyMGgtMjB6TTgwLDQwaDIwdjIwaC0yMHpNODAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjIxNiIvPjxwYXRoIGQ9Ik0xMDAsMjBoMjB2MjBoLTIwek0xMDAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjIwOCIvPjxwYXRoIGQ9Ik0xMjAsMGgyMHYyMGgtMjB6TTEyMCw0MGgyMHYyMGgtMjB6TTEyMCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxwYXRoIGQ9Ik0xNDAsMjBoMjB2MjBoLTIwek0xNDAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjE5MyIvPjxwYXRoIGQ9Ik0xNjAsMGgyMHYyMGgtMjB6TTE2MCw0MGgyMHYyMGgtMjB6TTE2MCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTg1Ii8+PHBhdGggZD0iTTE4MCwyMGgyMHYyMGgtMjB6TTE4MCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTc3Ii8+PHBhdGggZD0iTTIwMCwwaDIwdjIwaC0yMHpNMjAwLDQwaDIwdjIwaC0yMHpNMjAwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4xNyIvPjxwYXRoIGQ9Ik0yMjAsMjBoMjB2MjBoLTIwek0yMjAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjE2MiIvPjxwYXRoIGQ9Ik0yNDAsMGgyMHYyMGgtMjB6TTI0MCw0MGgyMHYyMGgtMjB6TTI0MCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTU1Ii8+PHBhdGggZD0iTTI2MCwyMGgyMHYyMGgtMjB6TTI2MCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTQ3Ii8+PHBhdGggZD0iTTI4MCwwaDIwdjIwaC0yMHpNMjgwLDQwaDIwdjIwaC0yMHpNMjgwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4xMzkiLz48cGF0aCBkPSJNMzAwLDIwaDIwdjIwaC0yMHpNMzAwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4xMzMiLz48cGF0aCBkPSJNMzIwLDBoMjB2MjBoLTIwek0zMjAsNDBoMjB2MjBoLTIwek0zMjAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjEyNyIvPjxwYXRoIGQ9Ik0zNDAsMjBoMjB2MjBoLTIwek0zNDAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjEyMSIvPjxwYXRoIGQ9Ik0zNjAsMGgyMHYyMGgtMjB6TTM2MCw0MGgyMHYyMGgtMjB6TTM2MCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTE1Ii8+PHBhdGggZD0iTTM4MCwyMGgyMHYyMGgtMjB6TTM4MCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMTA5Ii8+PHBhdGggZD0iTTQwMCwwaDIwdjIwaC0yMHpNNDAwLDQwaDIwdjIwaC0yMHpNNDAwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4xMDMiLz48cGF0aCBkPSJNNDIwLDIwaDIwdjIwaC0yMHpNNDIwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wOTciLz48cGF0aCBkPSJNNDQwLDBoMjB2MjBoLTIwek00NDAsNDBoMjB2MjBoLTIwek00NDAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjA5MSIvPjxwYXRoIGQ9Ik00NjAsMjBoMjB2MjBoLTIwek00NjAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjA4NSIvPjxwYXRoIGQ9Ik00ODAsMGgyMHYyMGgtMjB6TTQ4MCw0MGgyMHYyMGgtMjB6TTQ4MCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDc5Ii8+PHBhdGggZD0iTTUwMCwyMGgyMHYyMGgtMjB6TTUwMCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDczIi8+PHBhdGggZD0iTTUyMCwwaDIwdjIwaC0yMHpNNTIwLDQwaDIwdjIwaC0yMHpNNTIwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wNjciLz48cGF0aCBkPSJNNTQwLDIwaDIwdjIwaC0yMHpNNTQwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wNjEiLz48cGF0aCBkPSJNNTYwLDBoMjB2MjBoLTIwek01NjAsNDBoMjB2MjBoLTIwek01NjAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjA1NSIvPjxwYXRoIGQ9Ik01ODAsMjBoMjB2MjBoLTIwek01ODAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjA0OSIvPjxwYXRoIGQ9Ik02MDAsMGgyMHYyMGgtMjB6TTYwMCw0MGgyMHYyMGgtMjB6TTYwMCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDQzIi8+PHBhdGggZD0iTTYyMCwyMGgyMHYyMGgtMjB6TTYyMCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDM5Ii8+PHBhdGggZD0iTTY0MCwwaDIwdjIwaC0yMHpNNjQwLDQwaDIwdjIwaC0yMHpNNjQwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMzciLz48cGF0aCBkPSJNNjYwLDIwaDIwdjIwaC0yMHpNNjYwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMzQiLz48cGF0aCBkPSJNNjgwLDBoMjB2MjBoLTIwek02ODAsNDBoMjB2MjBoLTIwek02ODAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAzMiIvPjxwYXRoIGQ9Ik03MDAsMjBoMjB2MjBoLTIwek03MDAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAzIi8+PHBhdGggZD0iTTcyMCwwaDIwdjIwaC0yMHpNNzIwLDQwaDIwdjIwaC0yMHpNNzIwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMjciLz48cGF0aCBkPSJNNzQwLDIwaDIwdjIwaC0yMHpNNzQwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMjUiLz48cGF0aCBkPSJNNzYwLDBoMjB2MjBoLTIwek03NjAsNDBoMjB2MjBoLTIwek03NjAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAyMyIvPjxwYXRoIGQ9Ik03ODAsMjBoMjB2MjBoLTIwek03ODAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAyIi8+PHBhdGggZD0iTTgwMCwwaDIwdjIwaC0yMHpNODAwLDQwaDIwdjIwaC0yMHpNODAwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMTgiLz48cGF0aCBkPSJNODIwLDIwaDIwdjIwaC0yMHpNODIwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMTUiLz48cGF0aCBkPSJNODQwLDBoMjB2MjBoLTIwek04NDAsNDBoMjB2MjBoLTIwek04NDAsODBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAxMyIvPjxwYXRoIGQ9Ik04NjAsMjBoMjB2MjBoLTIwek04NjAsNjBoMjB2MjBoLTIweiIgZmlsbC1vcGFjaXR5PSIwLjAxMSIvPjxwYXRoIGQ9Ik04ODAsMGgyMHYyMGgtMjB6TTg4MCw0MGgyMHYyMGgtMjB6TTg4MCw4MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDA4Ii8+PHBhdGggZD0iTTkwMCwyMGgyMHYyMGgtMjB6TTkwMCw2MGgyMHYyMGgtMjB6IiBmaWxsLW9wYWNpdHk9IjAuMDA2Ii8+PHBhdGggZD0iTTkyMCwwaDIwdjIwaC0yMHpNOTIwLDQwaDIwdjIwaC0yMHpNOTIwLDgwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMDQiLz48cGF0aCBkPSJNOTQwLDIwaDIwdjIwaC0yMHpNOTQwLDYwaDIwdjIwaC0yMHoiIGZpbGwtb3BhY2l0eT0iMC4wMDEiLz48L2c+PGxpbmUgeDE9IjAiIHkxPSI5OS41IiB4Mj0iOTYwIiB5Mj0iOTkuNSIgc3Ryb2tlPSIjMTYzNzVmIiBzdHJva2Utd2lkdGg9IjEiLz48L3N2Zz4=')}
+
+/*
+  1. 基本設定
+  スライド全体に関わる共通の設定を記述します。
+*/
+
+/*
+  @page ルールは、印刷時やPDF出力時のページサイズとマージンを定義します。
+  （ページサイズは Marp の @size ディレクティブにより 4:3 または 16:9 が自動設定されます）
+*/@page{
+  /* 印刷時のページ余白を0にします */margin:0}
+
+/*
+  section タグは、Marpにおいて「スライド1枚」を表すコンテナです。
+  ここに記述したスタイルが、スライドのデフォルトの見た目になります。
+*/div#\:\$p>svg>foreignObject>section{
+  /* スライドの幅・高さは Marp の @size（4:3: 960x720, 16:9: 1280x720）に従います */height:720px;
+  /* paddingやborderをwidth/heightに含める設定です（レイアウト崩れを防ぎます） */box-sizing:border-box;
+  /* フォント（書体）を指定します。CFFフォント由来のType3埋め込みを回避しTrueType（CIDFontType2）で埋め込まれる日本語・欧文フォントを優先します */font-family:'Meiryo','BIZ UDGothic','Yu Gothic','IPAPGothic','IPAGothic','DejaVu Sans',sans-serif!important;
+  /* 基本の文字色を黒 (#000000) に設定します */color:#000000;
+  /* 基本の文字サイズを 18ポイント に設定します */font-size:18pt;
+  /* 行の高さを文字サイズの1.5倍に設定し、読みやすくします */line-height:1.5;
+  /* マージン（外側の余白）をなくします */margin:0;
+  /* 要素をブロック要素として表示します */display:block;
+  /* 子要素を絶対配置(absolute)するための基準点とします */position:relative;
+
+  /*
+     本文開始位置の確保 (Reference: 230px)
+     上部に大きな余白(230px)を設けることで、ヘッダーやタイトル領域と本文が重ならないようにします。
+     !important は、他のスタイル設定よりも優先させるための記述です。
+  */padding:230px 40px 50px 40px!important;
+
+  /*
+     背景色およびフッター帯の設定（Issue #18 Acrobat白飛び防止対応）
+     全面 linear-gradient によるPDF PatternType 2（ShadingType 2）生成を廃止し、
+     単色白背景と内側下部40pxの単色矩形（inset box-shadow）でフッター帯を描画します。
+  */background:#ffffff!important;
+  /* 背景色を明示的に白（#ffffff）に固定します */background-color:#ffffff!important;
+  /* スライド下部40px（680px〜720px）にテーマカラーの単色フッター帯を描画します */box-shadow:inset 0 -40px 0 0 var(--primary-color)!important;
+  /* カラースキームをライトモードに固定しダークモード反転を防止します */color-scheme:light!important;
+  /* PDF出力・印刷時に背景色と文字色を正確に維持します（WebKit系） */-webkit-print-color-adjust:exact!important;
+  /* PDF出力・印刷時に背景色と文字色を正確に維持します（標準仕様） */print-color-adjust:exact!important;
+  /* 太字ウェイトを持たないTrueTypeフォント（IPAPGothic等）使用時にPDF Type3（反転FontBBox）合成が発生するのを防ぎます */font-synthesis:none!important}div#\:\$p>svg>foreignObject>section{--marpit-root-font-size:18pt}
+
+/* スライド内すべての要素に対して合成太字・合成斜体によるPDF Type3フォント化を防止します */div#\:\$p>svg>foreignObject>section *,div#\:\$p>svg>foreignObject>section :after,div#\:\$p>svg>foreignObject>section :before{
+  /* 合成太字・合成斜体を無効化しTrueType（CIDFontType2）アウトライン埋め込みを維持します */font-synthesis:none!important}
+
+/*
+   2. 見出しタグ自体の非表示
+
+   このテーマでは、Markdownの見出し（# タイトル、## サブタイトルなど）を
+   そのまま表示せず、「レイアウトの目印（アンカー）」として使用します。
+   そのため、h1～h5タグ自体は見えないように隠します。
+
+   実際の文字は、見出しタグの「次の要素」として記述された内容を表示させます。
+*/div#\:\$p>svg>foreignObject>section :is(h1,marp-h1),div#\:\$p>svg>foreignObject>section :is(h2,marp-h2),div#\:\$p>svg>foreignObject>section :is(h3,marp-h3),div#\:\$p>svg>foreignObject>section :is(h4,marp-h4),div#\:\$p>svg>foreignObject>section :is(h5,marp-h5),div#\:\$p>svg>foreignObject>section :is(h6,marp-h6){
+  /* 要素を見えなくしますが、DOM（文書構造）上には残します */visibility:hidden;
+  /* 文書の通常の流れから外し、絶対配置にします */position:absolute;
+  /* 幅を0にします */width:0;
+  /* 高さを0にします */height:0;
+  /* はみ出した部分を隠します */overflow:hidden;
+  /* 余白を0にします */margin:0;
+  /* 内側の余白を0にします */padding:0;
+  /* 枠線をなしにします */border:none;
+  /* マウスイベント（クリックなど）を無効にします */pointer-events:none}
+
+/*
+   3. タイトルページ (Page 1) のレイアウト
+
+   ここでは `section[data-marpit-pagination="1"]` というセレクタを使っています。
+   これは「ページ番号が1であるスライド」を意味します。
+
+   なぜ `section:first-child`（最初の要素）を使わないかというと、
+   MarpでSVG形式でエクスポートする際、各スライドが個別のコンテナに入ってしまい、
+   「すべてのスライドが first-child（最初の要素）」と判定されてしまう問題があるためです。
+   ページ番号属性を使うことで、確実に1ページ目だけを指定できます。
+*/
+
+/*
+   タイトルページのコンテナ設定 (Flexbox化)
+*/div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]{
+  /* 子要素をFlexbox配置とします */display:flex!important;
+  /* 縦方向に子要素を整列します */flex-direction:column!important;
+  /* 上揃え配置とします */justify-content:flex-start!important;
+  /* 左揃え配置とします */align-items:flex-start!important;
+  /* 内側余白をリセットします */padding:0!important;
+  /* 子要素および疑似要素の絶対配置の基準点とします */position:relative!important}
+
+/*
+   バナー画像 (banner.svg) の配置
+   タイトルページの最上部に表示します。
+*/div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]:before{content:""!important;display:block!important;position:absolute!important;top:0!important;left:0!important;width:100%!important;height:100px!important;background-image:var(--banner-image)!important;background-size:100% 100%!important;background-repeat:no-repeat!important;background-position:top center!important;z-index:5!important;pointer-events:none!important}
+
+/*
+   h1 content: メインタイトル
+   Flexboxアイテムとして配置し、上部余白とフォントサイズを基準設定します。
+*/
+/* メインタイトルの基準スタイル定義です */div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]>:is(h1,marp-h1)+*{
+  /* 文書フローに従うFlexアイテムとして配置します */position:static!important;
+  /* バナー下部との適度な余白として上部マージンを設定します */margin-top:220px!important;
+  /* スライド左端から50pxの位置に配置します */margin-left:50px!important;
+  /* 幅を左右余白50pxずつを除いた幅に設定します */width:calc(100% - 100px)!important;
+  /* テキストを左揃えにします */text-align:left!important;
+  /* 基本文字サイズを大見出し用の36ポイントにします */font-size:36pt!important;
+  /* 見出しの行間を読みやすく引き締めます */line-height:1.3!important;
+  /* 文字を太字にします */font-weight:bold!important;
+  /* 文字色を黒にします */color:#000000!important;
+  /* 背景を透明にします */background:transparent!important;
+  /* 右側マージンをリセットします */margin-right:0!important;
+  /* 下側マージンをリセットします */margin-bottom:0!important;
+  /* 長い単語での横溢れを防ぎ自動改行を許可します */word-break:break-word!important;
+  /* 任意の文字位置での安全な折り返しを許可します */overflow-wrap:anywhere!important;
+  /* 通常のテキスト折り返しを有効化します */white-space:normal!important;
+  /* 重なり順を前面表示に設定します */z-index:10!important;
+  /* 要素を表示状態にします */visibility:visible!important;
+  /* マウス操作を有効化します */pointer-events:auto!important}div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]>:is(h1,marp-h1)+div#\:\$p>svg>foreignObject>section section{--marpit-root-font-size:36pt!important}
+
+/*
+   h1 content: 2行タイトルの自動縮小・余白調整
+   改行タグを1つ含む場合、上部マージンとフォントサイズを適応縮小します。
+*/
+/* 2行タイトルのスタイル定義です */div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]>:is(h1,marp-h1)+:has(br){
+  /* 上部マージンを詰めて表示開始位置を引き上げます */margin-top:175px!important;
+  /* 文字サイズを30ポイントへ一段階縮小します */font-size:30pt!important;
+  /* 行の高さを最適化します */line-height:1.25!important}div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]>:is(h1,marp-h1)+div#\:\$p>svg>foreignObject>section section:has(br){--marpit-root-font-size:30pt!important}
+
+/*
+   h1 content: 3行以上タイトルの自動縮小・余白調整
+   改行タグを2つ以上含む場合、上部マージンを大幅に詰めフォントを縮小します。
+*/
+/* 3行以上タイトルのスタイル定義です */div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]>:is(h1,marp-h1)+:has(br+br){
+  /* 上部マージンをさらに詰めてバナー直下近くへ引き上げます */margin-top:145px!important;
+  /* 文字サイズを24ポイントへ縮小します */font-size:24pt!important;
+  /* 行の高さをコンパクトにします */line-height:1.2!important}
+
+/*
+   h1 content: 4行以上タイトルの自動縮小・余白調整
+   改行タグを3つ以上含む場合、フォントサイズを最小境界へ適応縮小します。
+*/
+/* 4行以上タイトルのスタイル定義です */div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]>:is(h1,marp-h1)+:has(br+br+br){
+  /* 上部マージンを最大限詰めます */margin-top:120px!important;
+  /* 文字サイズを20ポイントへ縮小します */font-size:20pt!important;
+  /* 行の高さを最小限に抑えます */line-height:1.15!important}
+
+/*
+   h2 content: サブタイトル
+   メインタイトルの直下に相対配置されます。
+*/
+/* サブタイトルの基準スタイル定義です */div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]>:is(h2,marp-h2)+*{
+  /* 文書フローに従うFlexアイテムとして配置します */position:static!important;
+  /* メインタイトルとの間隔を設定します */margin-top:20px!important;
+  /* スライド左端から50pxの位置に配置します */margin-left:50px!important;
+  /* 幅を左右余白50pxずつを除いた幅に設定します */width:calc(100% - 100px)!important;
+  /* テキストを左揃えにします */text-align:left!important;
+  /* 文字サイズを中見出し用の20ポイントにします */font-size:20pt!important;
+  /* 行の高さを設定します */line-height:1.4!important;
+  /* 文字色を落ち着いたグレーにします */color:#555555!important;
+  /* 背景を透明にします */background:transparent!important;
+  /* 右側マージンをリセットします */margin-right:0!important;
+  /* 下側マージンをリセットします */margin-bottom:0!important;
+  /* 長い単語での横溢れを防ぎ自動改行を許可します */word-break:break-word!important;
+  /* 任意の文字位置での安全な折り返しを許可します */overflow-wrap:anywhere!important;
+  /* 通常のテキスト折り返しを有効化します */white-space:normal!important;
+  /* 重なり順を前面表示に設定します */z-index:10!important;
+  /* 要素を表示状態にします */visibility:visible!important;
+  /* マウス操作を有効化します */pointer-events:auto!important}div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]>:is(h2,marp-h2)+div#\:\$p>svg>foreignObject>section section{--marpit-root-font-size:20pt!important}
+
+/*
+   タイトル行数に応じたサブタイトルの余白・フォント連動調整
+*/
+/* メインタイトルが2行の場合のサブタイトルスタイルです */div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]:has(>:is(h1,marp-h1)+:has(br))>:is(h2,marp-h2)+*{
+  /* タイトルとの余白を少し詰めます */margin-top:16px!important;
+  /* 文字サイズを19ポイントへ調整します */font-size:19pt!important}div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]:has(>:is(h1,marp-h1)+:has(br))>:is(h2,marp-h2)+div#\:\$p>svg>foreignObject>section section{--marpit-root-font-size:19pt!important}
+
+/* メインタイトルが3行以上の場合のサブタイトルスタイルです */div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]:has(>:is(h1,marp-h1)+:has(br+br))>:is(h2,marp-h2)+*{
+  /* タイトルとの余白を詰めます */margin-top:12px!important;
+  /* 文字サイズを18ポイントへ調整します */font-size:18pt!important}div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]:has(>:is(h1,marp-h1)+:has(br+br))>:is(h2,marp-h2)+div#\:\$p>svg>foreignObject>section section{--marpit-root-font-size:18pt!important}
+
+/* メインタイトルが4行以上の場合のサブタイトルスタイルです */div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]:has(>:is(h1,marp-h1)+:has(br+br+br))>:is(h2,marp-h2)+*{
+  /* タイトルとの余白を最大限詰めます */margin-top:10px!important;
+  /* 文字サイズを16ポイントへ調整します */font-size:16pt!important}div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]:has(>:is(h1,marp-h1)+:has(br+br+br))>:is(h2,marp-h2)+div#\:\$p>svg>foreignObject>section section{--marpit-root-font-size:16pt!important}
+
+/* サブタイトル自体が2行以上の場合の縮小スタイルです */div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]>:is(h2,marp-h2)+:has(br){
+  /* 文字サイズを17ポイントへ縮小します */font-size:17pt!important;
+  /* 行の高さを引き締めます */line-height:1.25!important}div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]>:is(h2,marp-h2)+div#\:\$p>svg>foreignObject>section section:has(br){--marpit-root-font-size:17pt!important}
+
+/* サブタイトル自体が3行以上の場合の縮小スタイルです */div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]>:is(h2,marp-h2)+:has(br+br){
+  /* 文字サイズを15ポイントへ縮小します */font-size:15pt!important;
+  /* 行の高さを最小限にします */line-height:1.2!important}
+
+/*
+   h3 content 1つ目: 図書番号
+   スライド下部右端に絶対配置し、タイトル行数の影響による押し出しを完全に防止します。
+*/
+/* 図書番号の配置スタイル定義です */div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]>:is(h3,marp-h3):first-of-type+*{
+  /* スライド下部に絶対配置して縦積み押し出しから独立させます */position:absolute!important;
+  /* ヘッダーロゴ（bottom: 50px、高さ50px）の上部に美しく整列する位置に配置します */bottom:110px!important;
+  /* スライド右端から50pxの位置に配置します */right:50px!important;
+  /* 自動幅とします */width:auto!important;
+  /* テキストを右寄せにします */text-align:right!important;
+  /* パディングをリセットします */padding:0!important;
+  /* マージンをリセットします */margin:0!important;
+  /* 文字サイズを14ポイントにします */font-size:14pt!important;
+  /* 文字色を黒にします */color:#000000!important;
+  /* 重なり順を設定します */z-index:10!important;
+  /* 要素を表示状態にします */visibility:visible!important;
+  /* マウス操作を有効化します */pointer-events:auto!important}div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]>:is(h3,marp-h3):first-of-type+div#\:\$p>svg>foreignObject>section section{--marpit-root-font-size:14pt!important}
+
+/*
+   h3 content 2つ目: 所属・氏名
+   スライド下部左端（作成日の直上）に絶対配置し、タイトル行数に関わらず安定表示します。
+*/
+/* 所属・氏名の配置スタイル定義です */div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]>:is(h3,marp-h3):last-of-type+*{
+  /* スライド下部に絶対配置して縦積み押し出しから独立させます */position:absolute!important;
+  /* 作成日の直上となる下からの基準高さに配置します */bottom:85px!important;
+  /* スライド左端から50pxの位置に配置します */left:50px!important;
+  /* 自動幅とします */width:auto!important;
+  /* テキストを左揃えにします */text-align:left!important;
+  /* 文字サイズを16ポイントにします */font-size:16pt!important;
+  /* 複数行時の行間を設定します */line-height:1.4!important;
+  /* 文字色を黒にします */color:#000000!important;
+  /* マージンをリセットします */margin:0!important;
+  /* パディングをリセットします */padding:0!important;
+  /* 重なり順を設定します */z-index:10!important;
+  /* 要素を表示状態にします */visibility:visible!important;
+  /* マウス操作を有効化します */pointer-events:auto!important}div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]>:is(h3,marp-h3):last-of-type+div#\:\$p>svg>foreignObject>section section{--marpit-root-font-size:16pt!important}
+
+/*
+   h4 content: 作成日・日付
+   スライド下部左端（フッター帯の直上）に絶対配置し、画面外はみ出しを確実に防止します。
+*/
+/* 作成日の配置スタイル定義です */div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]>:is(h4,marp-h4)+*{
+  /* スライド下部に絶対配置して縦積み押し出しから独立させます */position:absolute!important;
+  /* フッター帯（680px〜）の手前となる位置に配置します */bottom:50px!important;
+  /* スライド左端から50pxの位置に配置します */left:50px!important;
+  /* 自動幅とします */width:auto!important;
+  /* テキストを左揃えにします */text-align:left!important;
+  /* 文字サイズを14ポイントにします */font-size:14pt!important;
+  /* 文字色を黒にします */color:#000000!important;
+  /* マージンをリセットします */margin:0!important;
+  /* パディングをリセットします */padding:0!important;
+  /* 重なり順を設定します */z-index:10!important;
+  /* 要素を表示状態にします */visibility:visible!important;
+  /* マウス操作を有効化します */pointer-events:auto!important}div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]>:is(h4,marp-h4)+div#\:\$p>svg>foreignObject>section section{--marpit-root-font-size:14pt!important}
+
+/*
+   h4 content 内の画像中央寄せ
+   通常ページの本文エリアに配置された画像は中央寄せにします。
+   ただし、ヘッダー内のロゴ画像は除外します。
+*/div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"])>:not(header) img{display:block!important;margin:0 auto!important}
+
+
+/*
+   4. 通常ページ (Page 2以降) のレイアウト
+
+   `:not([data-marpit-pagination="1"])` は「1ページ目ではないスライド」
+   つまり2ページ目以降のすべてのスライドを対象にします。
+*/
+
+/*
+   h4 content: メインコンテンツ
+   ここにスライドの主な内容（本文、画像など）が入ります。
+   絶対配置は指定されておらず、sectionのpaddingに従って配置されます。
+*/div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"])>:is(h4,marp-h4)+*{
+  /* 表示設定 */visibility:visible!important;pointer-events:auto!important}
+
+/*
+   h5 content: フッター/出典
+   スライド右下に表示される出典元などのテキストです。
+*/div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"])>:is(h5,marp-h5)+*{
+  /* 絶対配置にします */position:absolute!important;
+  /* 下から50pxの位置に配置します */bottom:50px!important;
+  /* 右から20pxの位置に配置します */right:20px!important;
+  /* 幅は自動 */width:auto!important;
+  /* 右揃えにします */text-align:right!important;
+  /* 文字サイズを11ポイント（小さめ）にします */font-size:11pt!important;
+  /* 文字色は黒 */color:#000000!important;
+  /* 背景透明 */background:transparent!important;
+  /* 重なり順は10 */z-index:10!important;
+  /* 余白なし */margin:0!important;
+  /* ブロック要素 */display:block!important;
+
+  /* 表示設定 */visibility:visible!important;pointer-events:auto!important}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"])>:is(h5,marp-h5)+div#\:\$p>svg>foreignObject>section section{--marpit-root-font-size:11pt!important}
+
+/*
+   5. ページ番号
+   `section::after` 擬似要素を使って、スライドの右下にページ番号を表示します。
+   Marpは `paginate: true` の場合、ここにページ番号を出力します。
+*/div#\:\$p>svg>foreignObject>section:after{
+  /* 絶対配置にします */position:absolute!important;
+  /* 下から11pxの位置に配置します */bottom:11px!important;
+  /* 右から20pxの位置に配置します */right:20px!important;
+  /* 文字色を白にします（フッター帯の上に表示されるため） */color:#ffffff!important;
+  /* 文字サイズを19pxにします */font-size:19px!important;
+  /* 太字にします */font-weight:bold!important;
+  /* フォントをTrueType（CIDFontType2）で埋め込まれるArial・DejaVu Sans・IPAPGothic等に設定します */font-family:Arial,'DejaVu Sans','IPAPGothic',sans-serif!important;
+  /* 背景透明 */background:transparent!important;
+  /* 内側余白なし */padding:0!important;
+  /* 外側余白なし */margin:0!important;
+  /* 最前面（z-index: 100）に表示します */z-index:100!important;
+  /* 行の高さを1にします */line-height:1!important;
+  /* 右揃え */text-align:right!important}div#\:\$p>svg>foreignObject>section:after{--marpit-root-font-size:19px!important}
+
+/*
+   タイトルページではページ番号を消す
+   表紙にページ番号は不要なため、非表示にします。
+*/div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]:after{
+  /* 表示しない */display:none!important}
+
+/*
+   6. フッター文字列 (h6)
+   Markdownで `######` で指定された文字列をフッターに配置します。
+*/
+
+/*
+   h6 content 1つ目: コピーライト (左下)
+   Markdownで `###### コピーライト` と書いた要素です。
+*/div#\:\$p>svg>foreignObject>section>:is(h6,marp-h6):first-of-type+*{
+  /* スライド内の絶対配置にします */position:absolute!important;
+  /* 下端から12pxの位置に配置します */bottom:12px!important;
+  /* 左端から20pxの位置に配置します */left:20px!important;
+  /* 幅を文字数に応じた自動幅にします */width:auto!important;
+  /* 左揃えにします */text-align:left!important;
+  /* 文字サイズを12pxにします */font-size:12px!important;
+  /* 文字色を白にします */color:#ffffff!important;
+  /* フォントをTrueType（CIDFontType2）で埋め込まれるArial・DejaVu Sans・IPAPGothic等に設定します */font-family:Arial,'DejaVu Sans','IPAPGothic',sans-serif!important;
+  /* 背景を透明にします */background:transparent!important;
+  /* 外側余白を0にします */margin:0!important;
+  /* 重なり順を20に設定します */z-index:20!important;
+  /* 非表示設定を解除して可視化します */visibility:visible!important;
+  /* ポインターイベントを有効にします */pointer-events:auto!important}div#\:\$p>svg>foreignObject>section>:is(h6,marp-h6):first-of-type+div#\:\$p>svg>foreignObject>section section{--marpit-root-font-size:12px!important}
+
+/*
+   h6 content 2つ目: 機密表示 (右下)
+   Markdownで `###### 機密表示` と書いた要素です。
+*/div#\:\$p>svg>foreignObject>section>:is(h6,marp-h6):nth-of-type(2)+*{
+  /* スライド内の絶対配置にします */position:absolute!important;
+  /* 下端から8pxの位置に配置します */bottom:8px!important;
+  /* 右端から70pxの位置に配置します */right:70px!important;
+  /* 幅を文字数に応じた自動幅にします */width:auto!important;
+  /* 右揃えにします */text-align:right!important;
+  /* 文字サイズを19pxにします */font-size:19px!important;
+  /* 太字にします */font-weight:bold!important;
+  /* 文字色を赤にします */color:red!important;
+  /* フォントをTrueType（CIDFontType2）で埋め込まれるArial・DejaVu Sans・IPAPGothic等に設定します */font-family:Arial,'DejaVu Sans','IPAPGothic',sans-serif!important;
+  /* 背景を透明にします */background:transparent!important;
+  /* 外側余白を0にします */margin:0!important;
+  /* 重なり順を20に設定します */z-index:20!important;
+  /* 非表示設定を解除して可視化します */visibility:visible!important;
+  /* ポインターイベントを有効にします */pointer-events:auto!important}div#\:\$p>svg>foreignObject>section>:is(h6,marp-h6):nth-of-type(2)+div#\:\$p>svg>foreignObject>section section{--marpit-root-font-size:19px!important}
+
+/*
+   7. ヘッダーロゴ (header)
+   Marpの `header` ディレクティブで指定されたロゴ画像の配置設定。
+*/
+
+/* 共通設定 */div#\:\$p>svg>foreignObject>section header{position:absolute!important;z-index:100!important;background:transparent!important;pointer-events:none!important;display:block!important;visibility:visible!important}
+
+/* 画像サイズの制限 */div#\:\$p>svg>foreignObject>section header img{max-height:50px!important;width:auto!important;display:block!important;visibility:visible!important}
+
+/* タイトルページ: 右下（フッター直上） */div#\:\$p>svg>foreignObject>section[data-marpit-pagination="1"]>header{top:auto!important;bottom:50px!important;left:auto!important;right:20px!important}
+
+/* 通常ページ: 右上 */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"])>header{top:5px!important;bottom:auto!important;left:auto!important;right:20px!important}
+
+/*
+   8. Wide Content Layout
+   主張パート（灰色帯）を削除し、本文エリアを広くしたレイアウトです。
+   \3c !-- _class: wide-content --> で適用します。
+*/
+
+/* H2コンテンツ（灰色帯・主張）の非表示 */div#\:\$p>svg>foreignObject>section.wide-content :is(h2,marp-h2),div#\:\$p>svg>foreignObject>section.wide-content>:is(h2,marp-h2)+*,div#\:\$p>svg>foreignObject>section.wide-content>:is(h2,marp-h2)+ol,div#\:\$p>svg>foreignObject>section.wide-content>:is(h2,marp-h2)+ul{display:none!important}
+
+/* 本文エリアの開始位置調整 */div#\:\$p>svg>foreignObject>section.wide-content{padding-top:120px!important}
+
+/* H3コンテンツ（図表タイトル）の位置変更 */div#\:\$p>svg>foreignObject>section.wide-content :is(h3,marp-h3),div#\:\$p>svg>foreignObject>section.wide-content>:is(h3,marp-h3)+*{top:60px!important}
+
+/*
+   9. Conversation Content Layout
+   会話形式のレイアウトを定義します。
+   \3c !-- _class: conversation-content --> で適用されます。
+   ※ CSS変数は先頭の :root で定義されています。
+*/
+
+/* 本文エリアの調整などは通常ページレイアウトを完全に継承するため、ここでは会話専用のフレックスコンテナの部分のみを定義します。 */
+
+/*
+   フレックスボックスコンテナ: 会話のタイムライン
+*/div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ol,div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ul{display:flex!important;flex-direction:column!important;gap:20px!important;
+  /* 各発言(li)の間隔 */list-style:none!important;padding-left:0!important;margin-top:20px!important}
+
+/*
+   各発言 (li要素) = 吹き出しの本体
+*/div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ol>li,div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ul>li{
+  /* 疑似要素（しっぽ・アイコン）の基準位置とします */position:relative!important;
+  /* アイコン領域を除いた最大幅を制限します */max-width:calc(85% - 100px)!important;
+  /* 吹き出しの背景色をテーマ連動色で設定します */background-color:var(--bubble-bg-color)!important;
+  /* 吹き出し内の文字色を設定します */color:var(--bubble-text-color)!important;
+  /* 吹き出し内部の余白を設定します */padding:15px 20px!important;
+  /* 角丸を15pxに設定します */border-radius:15px!important;
+  /* PDF変換時のグレースケールJPEG SMask生成（Acrobat白飛び原因）を防ぐためドロップシャドウを無効化します */box-shadow:none!important;
+  /* 外側余白を0にします */margin:0!important;
+  /* 文字サイズを16ptに設定します */font-size:16pt!important;
+  /* ブロック要素として表示します */display:block!important}
+
+/* 奇数行 (人物A / 左側配置) */div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ol>li:nth-of-type(odd),div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ul>li:nth-of-type(odd){align-self:flex-start!important;margin-left:100px!important}
+
+/* 偶数行 (人物B / 右側配置) */div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ol>li:nth-of-type(2n),div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ul>li:nth-of-type(2n){align-self:flex-end!important;margin-right:100px!important}
+
+/* 奇数行（左側配置）の画像設定 */div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ol>li:nth-of-type(odd) img,div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ul>li:nth-of-type(odd) img{position:absolute!important;top:0px!important;left:-100px!important;width:80px!important;height:80px!important;border-radius:5px!important;object-fit:contain!important;background-color:transparent!important}
+
+/* 偶数行（右側配置）の画像設定 */div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ol>li:nth-of-type(2n) img,div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ul>li:nth-of-type(2n) img{position:absolute!important;top:0px!important;right:-100px!important;width:80px!important;height:80px!important;border-radius:5px!important;object-fit:contain!important;background-color:transparent!important}
+
+/* デフォルトアイコンの配置とデザイン (画像がない場合) */div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ol>li:not(:has(img)):before,div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ul>li:not(:has(img)):before{content:""!important;display:block!important;position:absolute!important;top:0px!important;width:80px!important;height:80px!important;border-radius:5px!important;background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg==')!important;background-size:70%!important;background-repeat:no-repeat!important;background-position:center bottom!important;background-color:#bbbbbb!important}
+
+/* デフォルトアイコンの配置位置 (左側) */div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ol>li:nth-of-type(odd):not(:has(img)):before,div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ul>li:nth-of-type(odd):not(:has(img)):before{left:-100px!important}
+
+/* デフォルトアイコンの配置位置 (右側) */div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ol>li:nth-of-type(2n):not(:has(img)):before,div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ul>li:nth-of-type(2n):not(:has(img)):before{right:-100px!important}
+
+/* ----------- 発言者の名前表示（アイコン下）ここから追加分 ----------- */
+/* 
+   箇条書き内で最初に指定された太字（**名前** = strong 要素）を名札として扱います。
+*/div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ol>li>strong:first-of-type,div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ul>li>strong:first-of-type{position:absolute!important;top:85px!important;
+  /* アイコン(80px)の下＋少し余白 */width:90px!important;
+  /* アイコン幅より少し広めに確保 */text-align:center!important;font-size:10pt!important;line-height:1.2!important;color:#555555!important;word-wrap:break-word!important;background:transparent!important;border:none!important;padding:0!important;box-shadow:none!important}
+
+/* 奇数行（左側配置）の名前位置 */div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ol>li:nth-of-type(odd)>strong:first-of-type,div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ul>li:nth-of-type(odd)>strong:first-of-type{left:-105px!important
+  /* アイコンの中央に揃える (アイコンのleft -100px - 追加幅5px) */}
+
+/* 偶数行（右側配置）の名前位置 */div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ol>li:nth-of-type(2n)>strong:first-of-type,div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ul>li:nth-of-type(2n)>strong:first-of-type{right:-105px!important}
+
+/* ---------------------------------------------------- */
+
+/* 吹き出しの中の p タグや div タグのリセット */div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ol>li>div,div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ol>li>p,div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ul>li>div,div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ul>li>p{background-color:transparent!important;color:inherit!important;padding:0!important;border-radius:0!important;box-shadow:none!important;margin:0!important;display:inline!important}
+
+/*
+   吹き出しのしっぽ（左側）
+*/div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ol>li:nth-of-type(odd):after,div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ul>li:nth-of-type(odd):after{content:""!important;position:absolute!important;top:20px!important;left:-15px!important;width:0!important;height:0!important;border-style:solid!important;border-width:10px 15px 10px 0!important;border-color:transparent var(--bubble-bg-color) transparent transparent!important}
+
+/*
+   吹き出しのしっぽ（右側）
+*/div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ol>li:nth-of-type(2n):after,div#\:\$p>svg>foreignObject>section.conversation-content>:is(h4,marp-h4)+ul>li:nth-of-type(2n):after{content:""!important;position:absolute!important;top:20px!important;right:-15px!important;width:0!important;height:0!important;border-style:solid!important;border-width:10px 0 10px 15px!important;border-color:transparent transparent transparent var(--bubble-bg-color)!important}
+
+/*
+   10. TOC Layout
+   目次スライドのレイアウトを定義します。
+   \3c !-- _class: toc --> で適用されます。
+*/
+
+/* H2コンテンツ（灰色帯・主張）の非表示 */div#\:\$p>svg>foreignObject>section.toc :is(h2,marp-h2),div#\:\$p>svg>foreignObject>section.toc>:is(h2,marp-h2)+*,div#\:\$p>svg>foreignObject>section.toc>:is(h2,marp-h2)+ol,div#\:\$p>svg>foreignObject>section.toc>:is(h2,marp-h2)+ul{display:none!important}
+
+/* 目次タイトルの左配置（目次リストの left: 50px と位置を揃える） */div#\:\$p>svg>foreignObject>section.toc>:is(h1,marp-h1)~:not(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6),ul,ol):not(:is(h2,marp-h2)~*,:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*){left:50px!important;width:calc(100% - 100px)!important}
+
+/* 目次のリスト (ul) の設定 */div#\:\$p>svg>foreignObject>section.toc>ol,div#\:\$p>svg>foreignObject>section.toc>ul{position:absolute!important;top:95px!important;left:50px!important;width:calc(100% - 100px)!important;list-style:none!important;padding:0!important;margin:0!important;z-index:10!important;display:block!important;line-height:1.45!important}
+
+/* 目次の各項目 (li) の設定 */div#\:\$p>svg>foreignObject>section.toc>ol>li.toc-item,div#\:\$p>svg>foreignObject>section.toc>ul>li.toc-item{display:block!important;margin-bottom:4px!important;width:100%!important}
+
+/* 
+   目次項目のPタグをFlexboxコンテナにします。
+   これにより、タイトル(左)、ドットリーダー線(中央)、ページ番号(右)を
+   横一直線に並ベ、隙間を自動で埋めるレイアウトが簡単に作れます。
+*/div#\:\$p>svg>foreignObject>section.toc>ol>li.toc-item>p,div#\:\$p>svg>foreignObject>section.toc>ul>li.toc-item>p{display:flex!important;align-items:baseline!important;
+  /* テキストのベースライン（下端）を揃える */width:100%!important;margin:0!important;padding:0!important}
+
+/* 目次タイトルリンク (左側に配置) */div#\:\$p>svg>foreignObject>section.toc>ol>li.toc-item>p>a,div#\:\$p>svg>foreignObject>section.toc>ul>li.toc-item>p>a{
+  /* Flexbox内の要素の並び順を先頭（一番左）に指定します */order:0!important;
+  /* リンク下線を非表示にして視認性を高めます */text-decoration:none!important;
+  /* タイトルテキストの文字色を黒に設定します */color:#000000!important;
+  /* 複数行に折り返された際の行間を自然な間隔（1.35倍）に設定します */line-height:1.35!important;
+
+  /* 文字数に応じた自動リサイズ（最小14px、最大26px）を適用します */font-size:clamp(14px,calc(800px / var(--char-count, 20)),26px)!important;
+
+  /* 1行に収まらない長いタイトルを自動で複数行に折り返します (Issue #10対応) */white-space:normal!important;
+  /* 日本語および英単語の任意の境界で枠外にはみ出さず安全に折り返します */overflow-wrap:anywhere!important;
+  /* 単語単位での折り返しをブラウザ互換性のために併用指定します */word-break:break-word!important;
+  /* 省略記号による切り捨てを解除し全文を表示させます */text-overflow:clip!important;
+  /* タイトル全体のボックスが親要素に合わせて適切に伸縮できるようにします */flex-shrink:1!important;
+  /* ドットリーダー線とページ番号の表示スペースを右端に確保するため最大幅を設定します */max-width:calc(100% - 100px)!important}
+
+/* 
+   ドットリーダー線 (中央・タイトルの末尾とページ番号の間) 
+   擬似要素(::after)を使って、HTMLにない要素をCSSだけで作り出します。
+   flex-grow: 1 を指定することで、タイトルとページ番号の間の「余った空間すべて」を
+   この線が自動的に埋めてくれる（伸びる）仕組みになっています。
+*/
+/* 箇条書きリスト内のドットリーダー線疑似要素 */div#\:\$p>svg>foreignObject>section.toc>ol>li.toc-item>p:after,div#\:\$p>svg>foreignObject>section.toc>ul>li.toc-item>p:after{
+  /* 疑似要素の内容を空文字として初期化します */content:""!important;
+  /* Flexbox内で2番目（中央）に配置します */order:1!important;
+  /* 空きスペースを全吸収して横に伸びる役割を指定します */flex-grow:1!important;
+  /* タイトルが長文でもドットリーダー線が完全に消失しないよう最低限の幅（30px）を確保します */min-width:30px!important;
+  /* ドット線を下線としてグレー色（#999999）で描画します */border-bottom:3px dotted #999999!important;
+  /* タイトル末尾およびページ番号との左右余白を15pxずつ設けます */margin:0 15px!important;
+
+  /* 文字のベースラインに合わせるための相対配置を指定します */position:relative!important;
+  /* ベースライン位置に合わせてドット線を上方向に6px微調整します */top:-6px!important}
+
+/* 
+   ページ番号 (右側に配置) 
+   order: 2 で一番右に配置されます。
+*/
+/* 箇条書きリスト内のページ番号要素 */div#\:\$p>svg>foreignObject>section.toc>ol>li.toc-item>p>:is(span,marp-span).toc-page,div#\:\$p>svg>foreignObject>section.toc>ul>li.toc-item>p>:is(span,marp-span).toc-page{
+  /* Flexbox内で一番右（末尾）に配置します */order:2!important;
+  /* ページ番号の文字サイズを24pxに設定します */font-size:24px!important;
+  /* ページ番号の文字の太さを太字（bold）に設定します */font-weight:bold!important;
+  /* ページ番号の文字色を黒に設定します */color:#000000!important;
+  /* ページ番号が横幅不足で縮小されないように保護します */flex-shrink:0!important;
+  /* ページ番号の数字自体が折り返されないよう1行に固定します */white-space:nowrap!important}
+
+/*
+   10-2. マルチカラムレイアウト（2段組・画像横並びレイアウト）
+   Issue #44（複数画像並列）および Issue #45（2段組レイアウト）に対応します。
+   
+   【使用可能なクラス】
+   - \3c !-- _class: columns-2 --> : 本文をスライド中央で左右2等分割する2段組
+   - \3c !-- _class: images-2 -->  : 画像を2枚横並びで配置（縦横比維持・自動最大化・中央揃えキャプション）
+   - \3c !-- _class: images-3 -->  : 画像を3枚横並びで配置
+   - \3c !-- _class: images-4 -->  : 画像を4枚横並びで配置
+   - \3c !-- _class: images-row -->: 画像を要素数に応じて等分割横並び配置
+   
+   ※ wide-content と併用可能: \3c !-- _class: wide-content columns-2 -->
+*/
+
+/* --- A. 共通マルチカラム基盤 (Grid Container) --- */div#\:\$p>svg>foreignObject>section.columns-2>:is(h4,marp-h4)+ol,div#\:\$p>svg>foreignObject>section.columns-2>:is(h4,marp-h4)+ul,div#\:\$p>svg>foreignObject>section.layout-2col>:is(h4,marp-h4)+ol,div#\:\$p>svg>foreignObject>section.layout-2col>:is(h4,marp-h4)+ul,div#\:\$p>svg>foreignObject>section[class*=images-]>:is(h4,marp-h4)+ol,div#\:\$p>svg>foreignObject>section[class*=images-]>:is(h4,marp-h4)+ul{display:grid!important;width:100%!important;max-width:100%!important;height:410px!important; /* 通常スライドの本文エリア有効高さ（フッター帯との干渉防止） */max-height:410px!important;margin:0!important;padding:0!important;list-style:none!important;box-sizing:border-box!important;gap:24px!important;align-items:stretch!important;position:relative!important;z-index:10!important}
+
+/* wide-content 併用時の高さ拡張 */div#\:\$p>svg>foreignObject>section.wide-content.columns-2>:is(h4,marp-h4)+ol,div#\:\$p>svg>foreignObject>section.wide-content.columns-2>:is(h4,marp-h4)+ul,div#\:\$p>svg>foreignObject>section.wide-content.layout-2col>:is(h4,marp-h4)+ol,div#\:\$p>svg>foreignObject>section.wide-content.layout-2col>:is(h4,marp-h4)+ul,div#\:\$p>svg>foreignObject>section.wide-content[class*=images-]>:is(h4,marp-h4)+ol,div#\:\$p>svg>foreignObject>section.wide-content[class*=images-]>:is(h4,marp-h4)+ul{height:520px!important; /* ワイドコンテンツの本文エリア有効高さ */max-height:520px!important}
+
+/* --- B. カラム数定義 --- */div#\:\$p>svg>foreignObject>section.columns-2>:is(h4,marp-h4)+ol,div#\:\$p>svg>foreignObject>section.columns-2>:is(h4,marp-h4)+ul,div#\:\$p>svg>foreignObject>section.images-2>:is(h4,marp-h4)+ol,div#\:\$p>svg>foreignObject>section.images-2>:is(h4,marp-h4)+ul,div#\:\$p>svg>foreignObject>section.layout-2col>:is(h4,marp-h4)+ol,div#\:\$p>svg>foreignObject>section.layout-2col>:is(h4,marp-h4)+ul{grid-template-columns:repeat(2,1fr)!important}div#\:\$p>svg>foreignObject>section.images-3>:is(h4,marp-h4)+ol,div#\:\$p>svg>foreignObject>section.images-3>:is(h4,marp-h4)+ul{grid-template-columns:repeat(3,1fr)!important;gap:18px!important}div#\:\$p>svg>foreignObject>section.images-4>:is(h4,marp-h4)+ol,div#\:\$p>svg>foreignObject>section.images-4>:is(h4,marp-h4)+ul{grid-template-columns:repeat(4,1fr)!important;gap:14px!important}div#\:\$p>svg>foreignObject>section.images-row>:is(h4,marp-h4)+ol,div#\:\$p>svg>foreignObject>section.images-row>:is(h4,marp-h4)+ul{grid-auto-flow:column!important;grid-auto-columns:1fr!important}
+
+/* --- C. 【Issue #45】2段組レイアウト (columns-2 / layout-2col) --- */div#\:\$p>svg>foreignObject>section.columns-2>:is(h4,marp-h4)+ol>li,div#\:\$p>svg>foreignObject>section.columns-2>:is(h4,marp-h4)+ul>li,div#\:\$p>svg>foreignObject>section.layout-2col>:is(h4,marp-h4)+ol>li,div#\:\$p>svg>foreignObject>section.layout-2col>:is(h4,marp-h4)+ul>li{display:flex!important;flex-direction:column!important;justify-content:flex-start!important;height:100%!important;max-height:100%!important;overflow:hidden!important;
+  /* ボックスサイズ計算をborder-boxに固定します */box-sizing:border-box!important;
+  /* 10段階サイズ調整クラス（--txt-scale）を反映したフォントサイズを設定します */font-size:calc(16pt * var(--txt-scale, 1))!important;
+  /* 行の高さを設定します */line-height:1.5!important;margin:0!important;padding:0!important;background:transparent!important;border-radius:0!important;box-shadow:none!important}
+
+/* 2段組内の子要素スタイル */div#\:\$p>svg>foreignObject>section.columns-2>:is(h4,marp-h4)+ol>li>*,div#\:\$p>svg>foreignObject>section.columns-2>:is(h4,marp-h4)+ul>li>*,div#\:\$p>svg>foreignObject>section.layout-2col>:is(h4,marp-h4)+ol>li>*,div#\:\$p>svg>foreignObject>section.layout-2col>:is(h4,marp-h4)+ul>li>*{max-width:100%!important}
+
+/* 2段組内の箇条書きリスト */div#\:\$p>svg>foreignObject>section.columns-2>:is(h4,marp-h4)+ol>li ul,div#\:\$p>svg>foreignObject>section.columns-2>:is(h4,marp-h4)+ul>li ul,div#\:\$p>svg>foreignObject>section.layout-2col>:is(h4,marp-h4)+ol>li ul,div#\:\$p>svg>foreignObject>section.layout-2col>:is(h4,marp-h4)+ul>li ul{list-style:disc!important;padding-left:24px!important;margin:0 0 10px 0!important}div#\:\$p>svg>foreignObject>section.columns-2>:is(h4,marp-h4)+ol>li ol,div#\:\$p>svg>foreignObject>section.columns-2>:is(h4,marp-h4)+ul>li ol,div#\:\$p>svg>foreignObject>section.layout-2col>:is(h4,marp-h4)+ol>li ol,div#\:\$p>svg>foreignObject>section.layout-2col>:is(h4,marp-h4)+ul>li ol{list-style:decimal!important;padding-left:24px!important;margin:0 0 10px 0!important}
+
+/* 2段組内のMermaid図 */div#\:\$p>svg>foreignObject>section.columns-2>:is(h4,marp-h4)+ol>li .mermaid,div#\:\$p>svg>foreignObject>section.columns-2>:is(h4,marp-h4)+ul>li .mermaid,div#\:\$p>svg>foreignObject>section.layout-2col>:is(h4,marp-h4)+ol>li .mermaid,div#\:\$p>svg>foreignObject>section.layout-2col>:is(h4,marp-h4)+ul>li .mermaid{width:100%!important;height:100%!important;display:flex!important;justify-content:center!important;align-items:center!important;margin:auto 0!important}div#\:\$p>svg>foreignObject>section.columns-2>:is(h4,marp-h4)+ol>li .mermaid svg,div#\:\$p>svg>foreignObject>section.columns-2>:is(h4,marp-h4)+ul>li .mermaid svg,div#\:\$p>svg>foreignObject>section.layout-2col>:is(h4,marp-h4)+ol>li .mermaid svg,div#\:\$p>svg>foreignObject>section.layout-2col>:is(h4,marp-h4)+ul>li .mermaid svg{max-width:100%!important;max-height:100%!important;height:auto!important}
+
+/* 2段組内のコードブロック */div#\:\$p>svg>foreignObject>section.columns-2>:is(h4,marp-h4)+ol>li :is(pre,marp-pre),div#\:\$p>svg>foreignObject>section.columns-2>:is(h4,marp-h4)+ul>li :is(pre,marp-pre),div#\:\$p>svg>foreignObject>section.layout-2col>:is(h4,marp-h4)+ol>li :is(pre,marp-pre),div#\:\$p>svg>foreignObject>section.layout-2col>:is(h4,marp-h4)+ul>li :is(pre,marp-pre){
+  /* 最大高さを100%に制限します */max-height:100%!important;
+  /* コードサイズ調整クラス（--code-fs-base）を反映したフォントサイズを設定します */font-size:var(--code-fs-base,13pt)!important;
+  /* はみ出し時はスクロール可能にします */overflow:auto!important;
+  /* 外側マージンをリセットします */margin:0!important}
+
+/* 2段組内の画像 */div#\:\$p>svg>foreignObject>section.columns-2>:is(h4,marp-h4)+ol>li img,div#\:\$p>svg>foreignObject>section.columns-2>:is(h4,marp-h4)+ul>li img,div#\:\$p>svg>foreignObject>section.layout-2col>:is(h4,marp-h4)+ol>li img,div#\:\$p>svg>foreignObject>section.layout-2col>:is(h4,marp-h4)+ul>li img{max-width:100%!important;max-height:100%!important;object-fit:contain!important;margin:auto!important}
+
+/* --- D. 【Issue #44】画像横並びレイアウト (images-*) --- */div#\:\$p>svg>foreignObject>section[class*=images-]>:is(h4,marp-h4)+ol>li,div#\:\$p>svg>foreignObject>section[class*=images-]>:is(h4,marp-h4)+ul>li{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;height:100%!important;max-height:100%!important;box-sizing:border-box!important;margin:0!important;padding:0!important;background:transparent!important;border-radius:0!important;box-shadow:none!important;text-align:center!important;overflow:hidden!important;position:relative!important}
+
+/* li 直下の p 要素：画像とキャプションを縦並びで中央配置（直下にキャプションを配置） */div#\:\$p>svg>foreignObject>section[class*=images-]>:is(h4,marp-h4)+ol>li>p,div#\:\$p>svg>foreignObject>section[class*=images-]>:is(h4,marp-h4)+ul>li>p{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;width:100%!important;height:100%!important;max-height:100%!important;margin:0!important;padding:0!important;box-sizing:border-box!important;overflow:hidden!important;gap:8px!important}
+
+/* 画像スタイル：縦横比維持・キャプション分を除いた利用可能領域内で最大化 */div#\:\$p>svg>foreignObject>section[class*=images-]>:is(h4,marp-h4)+ol>li img,div#\:\$p>svg>foreignObject>section[class*=images-]>:is(h4,marp-h4)+ul>li img{display:block!important;width:auto!important;height:auto!important;max-width:100%!important;max-height:calc(100% - 2.6em)!important;object-fit:contain!important;object-position:center!important;margin:0 auto!important;padding:0!important;flex:0 1 auto!important}
+
+/* 画像にキャプションがない場合は100%使用 */div#\:\$p>svg>foreignObject>section[class*=images-]>:is(h4,marp-h4)+ul>li:not(:has(strong)):not(:has(em)):not(:has(:is(span,marp-span))) img{max-height:100%!important}
+
+/* キャプション（タイトル）：画像の直下に左右中心を揃えて配置 */div#\:\$p>svg>foreignObject>section[class*=images-]>:is(h4,marp-h4)+ol>li,div#\:\$p>svg>foreignObject>section[class*=images-]>:is(h4,marp-h4)+ol>li>p,div#\:\$p>svg>foreignObject>section[class*=images-]>:is(h4,marp-h4)+ul>li,div#\:\$p>svg>foreignObject>section[class*=images-]>:is(h4,marp-h4)+ul>li>p{text-align:center!important;font-size:14pt!important;font-weight:bold!important;color:#222222!important;line-height:1.25!important;word-break:break-word!important}div#\:\$p>svg>foreignObject>section[class*=images-]>:is(h4,marp-h4)+ol>li>p>strong,div#\:\$p>svg>foreignObject>section[class*=images-]>:is(h4,marp-h4)+ol>li>strong,div#\:\$p>svg>foreignObject>section[class*=images-]>:is(h4,marp-h4)+ul>li>p>strong,div#\:\$p>svg>foreignObject>section[class*=images-]>:is(h4,marp-h4)+ul>li>strong{display:block!important;width:100%!important;text-align:center!important;font-size:14pt!important;font-weight:bold!important;color:#222222!important;line-height:1.25!important;margin-top:0!important;margin-bottom:0!important;flex:0 0 auto!important}
+
+/* 3枚並び・4枚並び時のキャプションフォント自動縮小 */div#\:\$p>svg>foreignObject>section.images-3>:is(h4,marp-h4)+ol>li,div#\:\$p>svg>foreignObject>section.images-3>:is(h4,marp-h4)+ol>li>p,div#\:\$p>svg>foreignObject>section.images-3>:is(h4,marp-h4)+ol>li>p>strong,div#\:\$p>svg>foreignObject>section.images-3>:is(h4,marp-h4)+ol>li>strong,div#\:\$p>svg>foreignObject>section.images-3>:is(h4,marp-h4)+ul>li,div#\:\$p>svg>foreignObject>section.images-3>:is(h4,marp-h4)+ul>li>p,div#\:\$p>svg>foreignObject>section.images-3>:is(h4,marp-h4)+ul>li>p>strong,div#\:\$p>svg>foreignObject>section.images-3>:is(h4,marp-h4)+ul>li>strong{font-size:12pt!important}div#\:\$p>svg>foreignObject>section.images-4>:is(h4,marp-h4)+ol>li,div#\:\$p>svg>foreignObject>section.images-4>:is(h4,marp-h4)+ol>li>p,div#\:\$p>svg>foreignObject>section.images-4>:is(h4,marp-h4)+ol>li>p>strong,div#\:\$p>svg>foreignObject>section.images-4>:is(h4,marp-h4)+ol>li>strong,div#\:\$p>svg>foreignObject>section.images-4>:is(h4,marp-h4)+ul>li,div#\:\$p>svg>foreignObject>section.images-4>:is(h4,marp-h4)+ul>li>p,div#\:\$p>svg>foreignObject>section.images-4>:is(h4,marp-h4)+ul>li>p>strong,div#\:\$p>svg>foreignObject>section.images-4>:is(h4,marp-h4)+ul>li>strong{font-size:10.5pt!important}
+
+/*
+   11. 自動リサイズ・オーバーフロー対策（第3版：本文テキストとの共存対応）
+
+   本文エリアの実寸
+     通常ページ    : 幅 880px × 高さ 440px
+     wide-content : 幅 880px × 高さ 550px
+*/
+
+/* ---- 11-0. 本文テキスト量の判定（共通基盤） ---------------------------- */
+
+/*
+   仕組み:
+     「本文ブロック数」と「改行(<br>)の数」をそれぞれ独立した変数に立て、
+     calc() で合算して密度スコア --txt-w を求めます。
+     変数ごとにルールを分けているため、詳細度の競合が原理的に起きません。
+
+     スコア1 = 倍率1.0（表や画像だけのスライド）
+     スコアが1増えるごとに 10% ずつ縮小し、下限は 50% です。
+
+   重要:
+     このブロックの中に他のルールを入れ子にしないでください。
+     変数の初期値(0)が失われると calc() 全体が無効になり、
+     font-size が親から継承されて表やコードが巨大化します。
+*/div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]){
+  /* 本文ブロック数（初期値。必ず 0 を宣言しておくこと） */--b2:0;--b3:0;--b4:0;--b5:0;
+
+  /* 段落内の改行数（初期値。必ず 0 を宣言しておくこと） */--r1:0;--r2:0;--r3:0;--r4:0;
+
+  /*
+     var() の第2引数はフォールバック値です。
+     万が一いずれかの初期値が失われても 0 として扱われ、
+     レイアウト全体が崩れないようにする保険です。
+  */--txt-w:calc(1 + var(--b2, 0) + var(--b3, 0) + var(--b4, 0) + var(--b5, 0) + var(--r1, 0) + var(--r2, 0) + var(--r3, 0) + var(--r4, 0));--txt-scale:clamp(0.5,calc(1 - (var(--txt-w, 1) - 1) * 0.1),1)}
+
+/* 本文ブロック数のカウント（h5/h6 以降のフッター類は数えません） */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h4,marp-h4)+:not(:is(h5,marp-h5),:is(h6,marp-h6),script,style,link)+:not(:is(h5,marp-h5),:is(h6,marp-h6),script,style,link)){--b2:1}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h4,marp-h4)+:not(:is(h5,marp-h5),:is(h6,marp-h6),script,style,link)+:not(:is(h5,marp-h5),:is(h6,marp-h6),script,style,link)+:not(:is(h5,marp-h5),:is(h6,marp-h6),script,style,link)){--b3:1}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h4,marp-h4)+:not(:is(h5,marp-h5),:is(h6,marp-h6),script,style,link)+:not(:is(h5,marp-h5),:is(h6,marp-h6),script,style,link)+:not(:is(h5,marp-h5),:is(h6,marp-h6),script,style,link)+:not(:is(h5,marp-h5),:is(h6,marp-h6),script,style,link)){--b4:1}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h4,marp-h4)+:not(:is(h5,marp-h5),:is(h6,marp-h6),script,style,link)+:not(:is(h5,marp-h5),:is(h6,marp-h6),script,style,link)+:not(:is(h5,marp-h5),:is(h6,marp-h6),script,style,link)+:not(:is(h5,marp-h5),:is(h6,marp-h6),script,style,link)+:not(:is(h5,marp-h5),:is(h6,marp-h6),script,style,link)){--b5:1}
+
+/* 段落内の改行数のカウント（フッター類は集計から除外します） */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h4,marp-h4)~p:not(:is(h5,marp-h5)~*,:is(h6,marp-h6)~*) br){--r1:1}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h4,marp-h4)~p:not(:is(h5,marp-h5)~*,:is(h6,marp-h6)~*) br~br){--r2:1}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h4,marp-h4)~p:not(:is(h5,marp-h5)~*,:is(h6,marp-h6)~*) br~br~br){--r3:1}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h4,marp-h4)~p:not(:is(h5,marp-h5)~*,:is(h6,marp-h6)~*) br~br~br~br){--r4:1}
+
+
+/* 手動で倍率を上書きしたい場合: \3c !-- _class: text-3 --> 等（10段階統一数字クラスおよび後方互換エイリアス） */
+/* 本文サイズ 段階1（最大・標準倍率 1.0）です */div#\:\$p>svg>foreignObject>section.body-1,div#\:\$p>svg>foreignObject>section.roomy,div#\:\$p>svg>foreignObject>section.text-1{
+  /* 本文拡大率を等倍の1.0に固定します */--txt-scale:1!important}
+
+/* 本文サイズ 段階2（倍率 0.92）です */div#\:\$p>svg>foreignObject>section.body-2,div#\:\$p>svg>foreignObject>section.text-2{
+  /* 本文拡大率を0.92倍に縮小します */--txt-scale:0.92!important}
+
+/* 本文サイズ 段階3（倍率 0.84）です */div#\:\$p>svg>foreignObject>section.body-3,div#\:\$p>svg>foreignObject>section.text-3{
+  /* 本文拡大率を0.84倍に縮小します */--txt-scale:0.84!important}
+
+/* 本文サイズ 段階4（倍率 0.76）です */div#\:\$p>svg>foreignObject>section.body-4,div#\:\$p>svg>foreignObject>section.dense,div#\:\$p>svg>foreignObject>section.text-4{
+  /* 本文拡大率を0.76（旧0.75相当）倍に縮小します */--txt-scale:0.76!important}
+
+/* 本文サイズ 段階5（倍率 0.68）です */div#\:\$p>svg>foreignObject>section.body-5,div#\:\$p>svg>foreignObject>section.text-5{
+  /* 本文拡大率を0.68倍に縮小します */--txt-scale:0.68!important}
+
+/* 本文サイズ 段階6（倍率 0.60）です */div#\:\$p>svg>foreignObject>section.body-6,div#\:\$p>svg>foreignObject>section.denser,div#\:\$p>svg>foreignObject>section.text-6{
+  /* 本文拡大率を0.60倍に縮小します */--txt-scale:0.6!important}
+
+/* 本文サイズ 段階7（倍率 0.55）です */div#\:\$p>svg>foreignObject>section.body-7,div#\:\$p>svg>foreignObject>section.text-7{
+  /* 本文拡大率を0.55倍に縮小します */--txt-scale:0.55!important}
+
+/* 本文サイズ 段階8（倍率 0.50: 従来の最小値）です */div#\:\$p>svg>foreignObject>section.body-8,div#\:\$p>svg>foreignObject>section.densest,div#\:\$p>svg>foreignObject>section.text-8{
+  /* 本文拡大率を従来の最小値である0.50倍に縮小します */--txt-scale:0.5!important}
+
+/* 本文サイズ 段階9（倍率 0.42: 従来の最小値より1段階小さいサイズ）です */div#\:\$p>svg>foreignObject>section.body-9,div#\:\$p>svg>foreignObject>section.text-9{
+  /* 本文拡大率を従来の最小値より1段階小さい0.42倍に縮小します */--txt-scale:0.42!important}
+
+/* 本文サイズ 段階10（倍率 0.35: 従来の最小値よりさらに2段階小さい極小サイズ）です */div#\:\$p>svg>foreignObject>section.body-10,div#\:\$p>svg>foreignObject>section.text-10{
+  /* 本文拡大率を従来の最小値よりさらに2段階小さい極小の0.35倍に縮小します */--txt-scale:0.35!important}
+
+
+/* ---- 11-1. 本文テキストの自動縮小 -------------------------------------- */
+
+/*
+   :not(h5 ~ *, h6 ~ *) について
+     h5（出典）や h6（コピーライト・機密表示）より後ろにある要素を除外します。
+     以前は個別に打ち消していましたが、詳細度で本文ルールに負けていたため、
+     最初からマッチさせない方式に変更しました。
+     本文は h4 の直後、h5/h6 より前に置く前提です（テーマの想定どおりの順序）。
+*/div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~blockquote:not(:is(h5,marp-h5)~*,:is(h6,marp-h6)~*),div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~ol:not(:is(h5,marp-h5)~*,:is(h6,marp-h6)~*),div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~p:not(:is(h5,marp-h5)~*,:is(h6,marp-h6)~*),div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~ul:not(:is(h5,marp-h5)~*,:is(h6,marp-h6)~*){font-size:calc(18pt * var(--txt-scale))!important;line-height:1.5!important;margin-top:calc(0.7em * var(--txt-scale))!important;margin-bottom:calc(0.7em * var(--txt-scale))!important}
+
+/*
+   フッター類（h5 出典 / h6 コピーライト・機密表示）は
+   セクション4・6の元の指定をそのまま使うため、ここでは何も上書きしません。
+*/
+
+
+/* ---- 11-2. 表の自動サイズ調整 ------------------------------------------ */div#\:\$p>svg>foreignObject>section table{--tbl-fs-rows:28pt;--tbl-fs-cols:28pt;--tbl-pad:6px 10px;--tbl-lh:1.4;max-width:100%!important;width:100%!important;table-layout:auto!important;word-wrap:break-word!important;overflow-wrap:break-word!important;margin:0 auto!important;border-collapse:collapse!important;border-spacing:0!important;box-sizing:border-box!important;
+
+  /* 行数・列数で決めたサイズに、本文との共存倍率を掛けます */font-size:calc(min(var(--tbl-fs-rows), var(--tbl-fs-cols)) * var(--txt-scale))!important;line-height:var(--tbl-lh)!important}div#\:\$p>svg>foreignObject>section table:has(tbody tr:nth-child(3)){--tbl-fs-rows:24pt}div#\:\$p>svg>foreignObject>section table:has(tbody tr:nth-child(4)){--tbl-fs-rows:22pt}div#\:\$p>svg>foreignObject>section table:has(tbody tr:nth-child(5)){--tbl-fs-rows:20pt}div#\:\$p>svg>foreignObject>section table:has(tbody tr:nth-child(6)){--tbl-fs-rows:18pt;--tbl-pad:4px 8px}div#\:\$p>svg>foreignObject>section table:has(tbody tr:nth-child(7)){--tbl-fs-rows:16pt;--tbl-lh:1.35}div#\:\$p>svg>foreignObject>section table:has(tbody tr:nth-child(9)){--tbl-fs-rows:13pt;--tbl-lh:1.3;--tbl-pad:3px 8px}div#\:\$p>svg>foreignObject>section table:has(tbody tr:nth-child(11)){--tbl-fs-rows:11pt;--tbl-lh:1.25;--tbl-pad:2px 6px}div#\:\$p>svg>foreignObject>section table:has(tbody tr:nth-child(14)){--tbl-fs-rows:9pt;--tbl-lh:1.2;--tbl-pad:2px 5px}div#\:\$p>svg>foreignObject>section table:has(tbody tr:nth-child(18)){--tbl-fs-rows:7.5pt;--tbl-lh:1.15;--tbl-pad:1px 4px}div#\:\$p>svg>foreignObject>section table:has(thead th:nth-child(3)){--tbl-fs-cols:24pt}div#\:\$p>svg>foreignObject>section table:has(thead th:nth-child(4)){--tbl-fs-cols:20pt}div#\:\$p>svg>foreignObject>section table:has(thead th:nth-child(5)){--tbl-fs-cols:12pt}div#\:\$p>svg>foreignObject>section table:has(thead th:nth-child(6)){--tbl-fs-cols:11pt}div#\:\$p>svg>foreignObject>section table:has(thead th:nth-child(7)){--tbl-fs-cols:10pt}div#\:\$p>svg>foreignObject>section table:has(thead th:nth-child(8)){--tbl-fs-cols:9pt}div#\:\$p>svg>foreignObject>section table:has(thead th:nth-child(10)){--tbl-fs-cols:7.5pt}div#\:\$p>svg>foreignObject>section.wide-content table:has(tbody tr:nth-child(6)){--tbl-fs-rows:20pt}div#\:\$p>svg>foreignObject>section.wide-content table:has(tbody tr:nth-child(7)){--tbl-fs-rows:18pt}div#\:\$p>svg>foreignObject>section.wide-content table:has(tbody tr:nth-child(9)){--tbl-fs-rows:15pt}div#\:\$p>svg>foreignObject>section.wide-content table:has(tbody tr:nth-child(11)){--tbl-fs-rows:13pt}div#\:\$p>svg>foreignObject>section.wide-content table:has(tbody tr:nth-child(14)){--tbl-fs-rows:11pt}div#\:\$p>svg>foreignObject>section.wide-content table:has(tbody tr:nth-child(18)){--tbl-fs-rows:9pt}div#\:\$p>svg>foreignObject>section table td,div#\:\$p>svg>foreignObject>section table th{
+  /* 親テーブルで指定されたフォントサイズをセル内へ確実に継承します */font-size:inherit!important;
+  /* 親テーブルで指定された行の高さをセル内へ確実に継承します */line-height:inherit!important;
+  /* セルの余白を指定します */padding:var(--tbl-pad)!important;
+  /* 通常のテキスト折り返しを行います */white-space:normal!important;
+  /* 単語単位での折り返しを許可します */word-wrap:break-word!important;
+  /* 領域超過時の折り返しを許可します */overflow-wrap:break-word!important;
+  /* 枠線を薄いグレーに設定します */border:1px solid #cccccc!important;
+  /* パディングを含めたボックスサイズ計算を行います */box-sizing:border-box!important;
+  /* 縦方向の文字配置を中央揃えにします */vertical-align:middle!important}div#\:\$p>svg>foreignObject>section table th{font-weight:bold!important;background-color:color-mix(in srgb,var(--primary-color) 15%,#ffffff)!important;border-bottom:2px solid var(--primary-color)!important;color:#000000!important}div#\:\$p>svg>foreignObject>section table td{background-color:#ffffff!important}
+
+/* 表の手動サイズ調整クラス（10段階統一数字クラスおよび後方互換エイリアス） */
+/* 表サイズ 段階1（最大サイズ 26pt）です */div#\:\$p>svg>foreignObject>section.table-1 table,div#\:\$p>svg>foreignObject>section.table-xl table{
+  /* 表の行基準フォントサイズを26pt（xlは28pt相当）に設定します */--tbl-fs-rows:26pt!important;
+  /* 表の列基準フォントサイズを26ptに設定します */--tbl-fs-cols:26pt!important}
+
+/* 表サイズ 段階2（大サイズ 22pt）です */div#\:\$p>svg>foreignObject>section.table-2 table,div#\:\$p>svg>foreignObject>section.table-lg table{
+  /* 表の行基準フォントサイズを22ptに設定します */--tbl-fs-rows:22pt!important;
+  /* 表の列基準フォントサイズを22ptに設定します */--tbl-fs-cols:22pt!important}
+
+/* 表サイズ 段階3（中大サイズ 19pt）です */div#\:\$p>svg>foreignObject>section.table-3 table{
+  /* 表の行基準フォントサイズを19ptに設定します */--tbl-fs-rows:19pt!important;
+  /* 表の列基準フォントサイズを19ptに設定します */--tbl-fs-cols:19pt!important}
+
+/* 表サイズ 段階4（中サイズ 16.5pt）です */div#\:\$p>svg>foreignObject>section.table-4 table,div#\:\$p>svg>foreignObject>section.table-md table{
+  /* 表の行基準フォントサイズを16.5pt（md相当）に設定します */--tbl-fs-rows:16.5pt!important;
+  /* 表の列基準フォントサイズを16.5ptに設定します */--tbl-fs-cols:16.5pt!important}
+
+/* 表サイズ 段階5（やや小さめ 13.5pt）です */div#\:\$p>svg>foreignObject>section.table-5 table,div#\:\$p>svg>foreignObject>section.table-sm table{
+  /* 表の行基準フォントサイズを13.5pt（sm相当）に設定します */--tbl-fs-rows:13.5pt!important;
+  /* 表の列基準フォントサイズを13.5ptに設定します */--tbl-fs-cols:13.5pt!important}
+
+/* 表サイズ 段階6（小サイズ 11.5pt）です */div#\:\$p>svg>foreignObject>section.table-6 table{
+  /* 表の行基準フォントサイズを11.5ptに設定します */--tbl-fs-rows:11.5pt!important;
+  /* 表の列基準フォントサイズを11.5ptに設定します */--tbl-fs-cols:11.5pt!important;
+  /* セルの内側余白を小さくします */--tbl-pad:3px 6px!important;
+  /* 行の高さを少し引き締めます */--tbl-lh:1.25!important}
+
+/* 表サイズ 段階7（極小サイズ 10pt）です */div#\:\$p>svg>foreignObject>section.table-7 table,div#\:\$p>svg>foreignObject>section.table-xs table{
+  /* 表の行基準フォントサイズを10ptに設定します */--tbl-fs-rows:10pt!important;
+  /* 表の列基準フォントサイズを10ptに設定します */--tbl-fs-cols:10pt!important;
+  /* セルの内側余白を小さくします */--tbl-pad:2px 5px!important;
+  /* 行の高さを引き締めます */--tbl-lh:1.2!important}
+
+/* 表サイズ 段階8（超極小サイズ 8pt: 従来の最小値）です */div#\:\$p>svg>foreignObject>section.table-8 table,div#\:\$p>svg>foreignObject>section.table-xxs table{
+  /* 表の行基準フォントサイズを8ptに設定します */--tbl-fs-rows:8pt!important;
+  /* 表の列基準フォントサイズを8ptに設定します */--tbl-fs-cols:8pt!important;
+  /* セルの内側余白を最小限にします */--tbl-pad:1px 4px!important;
+  /* 行の高さを詰めます */--tbl-lh:1.15!important}
+
+/* 表サイズ 段階9（従来の最小値より1段階小さいサイズ 7pt）です */div#\:\$p>svg>foreignObject>section.table-9 table{
+  /* 表の行基準フォントサイズを7ptに設定します */--tbl-fs-rows:7pt!important;
+  /* 表の列基準フォントサイズを7ptに設定します */--tbl-fs-cols:7pt!important;
+  /* セルの内側余白を極限まで詰めます */--tbl-pad:1px 3px!important;
+  /* 行の高さをさらに詰めます */--tbl-lh:1.12!important}
+
+/* 表サイズ 段階10（従来の最小値よりさらに2段階小さい極小サイズ 6pt）です */div#\:\$p>svg>foreignObject>section.table-10 table{
+  /* 表の行基準フォントサイズを6ptに設定します */--tbl-fs-rows:6pt!important;
+  /* 表の列基準フォントサイズを6ptに設定します */--tbl-fs-cols:6pt!important;
+  /* セルの内側余白を最小限に抑えます */--tbl-pad:1px 2px!important;
+  /* 行の高さを限界まで詰めます */--tbl-lh:1.1!important}
+
+
+/* ---- 11-3. コードブロックの自動サイズ調整 ------------------------------ */
+
+/*
+   注意: コードの行数はCSSから数えられないため、基準値＋手動クラスで制御します。
+   基準 14pt は約14行（折り返し込み）まで収まる想定です。
+*/div#\:\$p>svg>foreignObject>section :is(pre,marp-pre){
+  /* コードブロックの基本文字サイズを14ptに定義します */--code-fs-base:14pt;
+  /* TrueType（CIDFontType2）で埋め込まれる等幅・日本語フォントを優先指定します */font-family:'Consolas','Meiryo','BIZ UDGothic','IPAGothic','DejaVu Sans Mono',monospace!important;
+  /* 最大幅を親要素の100%に制限します */max-width:100%!important;
+  /* スケール係数を乗じた文字サイズを設定します */font-size:calc(var(--code-fs-base) * var(--txt-scale))!important;
+  /* 行の高さを1.35に設定します */line-height:1.35!important;
+  /* 改行と空白を保持しつつ自動折り返しを有効にします */white-space:pre-wrap!important;
+  /* 長い単語の途中でも折り返しを許可します（レガシー互換） */word-wrap:break-word!important;
+  /* 長い単語の途中でも折り返しを許可します（標準仕様） */overflow-wrap:break-word!important;
+  /* 内側余白を10pxに設定します */padding:10px!important;
+  /* パディングとボーダーを幅・高さに含めます */box-sizing:border-box!important;
+  /* 上下のマージンをスケールに応じて設定します */margin:calc(0.6em * var(--txt-scale)) 0!important;
+  /* 背景色を薄いグレー（#f5f5f5）に設定します */background:#f5f5f5!important;
+  /* 1pxのグレー境界線を設定します */border:1px solid #dddddd!important;
+  /* 角丸を4pxに設定します */border-radius:4px!important}
+
+/* コードブロックおよびインラインコード要素のスタイル設定 */div#\:\$p>svg>foreignObject>section code,div#\:\$p>svg>foreignObject>section kbd,div#\:\$p>svg>foreignObject>section samp{
+  /* TrueType（CIDFontType2）で埋め込まれる等幅・日本語フォントを優先指定します */font-family:'Consolas','Meiryo','BIZ UDGothic','IPAGothic','DejaVu Sans Mono',monospace!important}
+
+/* コードブロック内部のcode要素のスタイル設定 */div#\:\$p>svg>foreignObject>section :is(pre,marp-pre) code{
+  /* 親要素（pre）のフォントファミリーを継承します */font-family:inherit!important;
+  /* 親要素の文字サイズを継承します */font-size:inherit!important;
+  /* 親要素の行の高さを継承します */line-height:inherit!important;
+  /* 改行を保持しつつ自動折り返しを有効にします */white-space:pre-wrap!important;
+  /* 単語の途中での折り返しを許可します */word-break:break-word!important;
+  /* ブロック要素として表示します */display:block!important;
+  /* 背景をなしにします */background:none!important;
+  /* 背景色を透明にします */background-color:transparent!important;
+  /* ボックスシャドウを無効化します */box-shadow:none!important;
+  /* ボーダーを無効化します */border:none!important;
+  /* 内側余白を0にします */padding:0!important}
+
+/* コードブロックの手動サイズ調整クラス（10段階統一数字クラスおよび後方互換エイリアス） */
+/* コードサイズ 段階1（大サイズ 18pt）です */div#\:\$p>svg>foreignObject>section.code-1 :is(pre,marp-pre),div#\:\$p>svg>foreignObject>section.code-lg :is(pre,marp-pre){
+  /* コードの基準フォントサイズを18ptに設定します */--code-fs-base:18pt!important}
+
+/* コードサイズ 段階2（中大サイズ 16pt）です */div#\:\$p>svg>foreignObject>section.code-2 :is(pre,marp-pre){
+  /* コードの基準フォントサイズを16ptに設定します */--code-fs-base:16pt!important}
+
+/* コードサイズ 段階3（標準サイズ 14pt）です */div#\:\$p>svg>foreignObject>section.code-3 :is(pre,marp-pre){
+  /* コードの基準フォントサイズを14ptに設定します */--code-fs-base:14pt!important}
+
+/* コードサイズ 段階4（やや小さめ 12.5pt）です */div#\:\$p>svg>foreignObject>section.code-4 :is(pre,marp-pre){
+  /* コードの基準フォントサイズを12.5ptに設定します */--code-fs-base:12.5pt!important}
+
+/* コードサイズ 段階5（小サイズ 11pt）です */div#\:\$p>svg>foreignObject>section.code-5 :is(pre,marp-pre),div#\:\$p>svg>foreignObject>section.code-sm :is(pre,marp-pre){
+  /* コードの基準フォントサイズを11ptに設定します */--code-fs-base:11pt!important}
+
+/* コードサイズ 段階6（やや極小 9.5pt）です */div#\:\$p>svg>foreignObject>section.code-6 :is(pre,marp-pre){
+  /* コードの基準フォントサイズを9.5ptに設定します */--code-fs-base:9.5pt!important}
+
+/* コードサイズ 段階7（極小サイズ 8pt）です */div#\:\$p>svg>foreignObject>section.code-7 :is(pre,marp-pre),div#\:\$p>svg>foreignObject>section.code-xs :is(pre,marp-pre){
+  /* コードの基準フォントサイズを8pt（旧xs相当）に設定します */--code-fs-base:8pt!important}
+
+/* コードサイズ 段階8（超極小サイズ 7pt: 従来の最小値）です */div#\:\$p>svg>foreignObject>section.code-8 :is(pre,marp-pre),div#\:\$p>svg>foreignObject>section.code-xxs :is(pre,marp-pre){
+  /* コードの基準フォントサイズを7ptに設定します */--code-fs-base:7pt!important}
+
+/* コードサイズ 段階9（従来の最小値より1段階小さいサイズ 6pt）です */div#\:\$p>svg>foreignObject>section.code-9 :is(pre,marp-pre){
+  /* コードの基準フォントサイズを6ptに設定します */--code-fs-base:6pt!important}
+
+/* コードサイズ 段階10（従来の最小値よりさらに2段階小さい極小サイズ 5pt）です */div#\:\$p>svg>foreignObject>section.code-10 :is(pre,marp-pre){
+  /* コードの基準フォントサイズを極小の5ptに設定します */--code-fs-base:5pt!important}div#\:\$p>svg>foreignObject>section code{white-space:pre-wrap!important;word-break:break-word!important;box-decoration-break:clone!important;-webkit-box-decoration-break:clone!important}div#\:\$p>svg>foreignObject>section :not(:is(pre,marp-pre))>code{background-color:rgba(0,0,0,0.06)!important;padding:0.1em 0.35em!important;border-radius:3px!important}
+
+
+/* ---- 11-4. 画像の自動フィット（フレックスによる厳密な残余割り当て） ---- */
+
+/*
+   画像を含むスライドだけを縦フレックスにします。
+   画像段落に flex:1 と min-height:0 を与えることで、
+   テキストが消費した残りの高さがそのまま画像の上限になります。
+   段階指定ではなく厳密なフィットです。
+*/div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h4,marp-h4)~p>img){display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important}
+
+/* テキスト段落など、画像以外の要素は自然な高さのまま（フッター類は対象外） */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h4,marp-h4)~p>img)>:is(h4,marp-h4)~:not(:has(>img)):not(:is(h5,marp-h5),:is(h6,marp-h6)):not(:is(h5,marp-h5)~*,:is(h6,marp-h6)~*){flex:0 0 auto!important}
+
+/* 画像を含む段落が残余スペースを受け取ります */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~p:has(>img){flex:1 1 auto!important;min-height:0!important;display:flex!important;align-items:center!important;justify-content:center!important;margin:calc(0.5em * var(--txt-scale)) 0!important}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~p:has(>img)>img{max-width:100%!important;max-height:100%!important;width:auto!important;height:auto!important;object-fit:contain!important;margin:0 auto!important}
+
+/* フレックス化しないスライド用のフォールバック上限 */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]) img{max-width:100%!important;max-height:440px!important;object-fit:contain!important}div#\:\$p>svg>foreignObject>section.wide-content img{max-height:550px!important}
+
+/* ---- 11-4-1. 画像の手動サイズ調整クラス（10段階統一数字クラス） -------- */
+/* 画像最大高さの基準変数（通常440px、wide-contentは550px）を設定します */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]){
+  /* 画像の基準高さを440pxとします */--img-max-h:440px;
+  /* 画像の拡大縮小倍率をデフォルトで1.0とします */--img-max-h-scale:1}
+
+/* ワイドコンテンツ時の画像基準高さを設定します */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]).wide-content{
+  /* ワイド時の画像基準高さを550pxとします */--img-max-h:550px}
+
+/* 画像サイズ 段階1（最大サイズ 100%）です */div#\:\$p>svg>foreignObject>section.image-1,div#\:\$p>svg>foreignObject>section.img-1{
+  /* 画像最大高さ倍率を等倍（1.0）にします */--img-max-h-scale:1!important}
+
+/* 画像サイズ 段階2（90%）です */div#\:\$p>svg>foreignObject>section.image-2,div#\:\$p>svg>foreignObject>section.img-2{
+  /* 画像最大高さ倍率を0.90倍に縮小します */--img-max-h-scale:0.9!important}
+
+/* 画像サイズ 段階3（80%）です */div#\:\$p>svg>foreignObject>section.image-3,div#\:\$p>svg>foreignObject>section.img-3{
+  /* 画像最大高さ倍率を0.80倍に縮小します */--img-max-h-scale:0.8!important}
+
+/* 画像サイズ 段階4（70%）です */div#\:\$p>svg>foreignObject>section.image-4,div#\:\$p>svg>foreignObject>section.img-4{
+  /* 画像最大高さ倍率を0.70倍に縮小します */--img-max-h-scale:0.7!important}
+
+/* 画像サイズ 段階5（60%）です */div#\:\$p>svg>foreignObject>section.image-5,div#\:\$p>svg>foreignObject>section.img-5{
+  /* 画像最大高さ倍率を0.60倍に縮小します */--img-max-h-scale:0.6!important}
+
+/* 画像サイズ 段階6（50%）です */div#\:\$p>svg>foreignObject>section.image-6,div#\:\$p>svg>foreignObject>section.img-6{
+  /* 画像最大高さ倍率を0.50倍に縮小します */--img-max-h-scale:0.5!important}
+
+/* 画像サイズ 段階7（40%）です */div#\:\$p>svg>foreignObject>section.image-7,div#\:\$p>svg>foreignObject>section.img-7{
+  /* 画像最大高さ倍率を0.40倍に縮小します */--img-max-h-scale:0.4!important}
+
+/* 画像サイズ 段階8（35%）です */div#\:\$p>svg>foreignObject>section.image-8,div#\:\$p>svg>foreignObject>section.img-8{
+  /* 画像最大高さ倍率を0.35倍に縮小します */--img-max-h-scale:0.35!important}
+
+/* 画像サイズ 段階9（28%）です */div#\:\$p>svg>foreignObject>section.image-9,div#\:\$p>svg>foreignObject>section.img-9{
+  /* 画像最大高さ倍率を0.28倍に縮小します */--img-max-h-scale:0.28!important}
+
+/* 画像サイズ 段階10（極小サイズ 20%）です */div#\:\$p>svg>foreignObject>section.image-10,div#\:\$p>svg>foreignObject>section.img-10{
+  /* 画像最大高さ倍率を極小の0.20倍に縮小します */--img-max-h-scale:0.2!important}
+
+/* 手動サイズ指定クラスが適用された場合の画像要素の最大高さ制御です */div#\:\$p>svg>foreignObject>section[class*=image-]:not([data-marpit-pagination="1"]) img:not(header img),div#\:\$p>svg>foreignObject>section[class*=image-]:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~p:has(>img)>img,div#\:\$p>svg>foreignObject>section[class*=img-]:not([data-marpit-pagination="1"]) img:not(header img),div#\:\$p>svg>foreignObject>section[class*=img-]:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~p:has(>img)>img{
+  /* 変数に基づき最大高さを制限します */max-height:calc(var(--img-max-h, 440px) * var(--img-max-h-scale, 1))!important}
+
+/* ヘッダーロゴは上記の影響を受けないよう再指定 */div#\:\$p>svg>foreignObject>section.wide-content header img,div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]) header img{max-height:50px!important;max-width:none!important;width:auto!important}
+
+/* =====================================================================
+   12. 領域グルーピングと自動フォントフィッティング（v2）
+
+   設計:
+     ・帯（主張）の背景は section::before で描き、要素から切り離す
+     ・「ある見出しから次の見出しまでの全ブロック」を1つの領域として扱う
+     ・各領域の固定高さと検出行数から、収まる最大フォントサイズを算出する
+     ・本文量（--txt-scale）とは完全に独立。本文が多くても見出しは縮まない
+
+   算出式: font-size = clamp(下限, 領域高 ÷ (行数 × 行間), 上限)
+   ===================================================================== */
+
+/* ---- 12-0. 変数（このブロックに他のルールを入れ子にしないこと） -------
+   初期値が失われると calc() が無効化され、font-size が section の 18pt を
+   継承して巨大化します（以前発生した不具合と同じ原因です）。
+*/div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]){
+  /* --- タイトル領域: top 1px 〜 帯 top 65px --- */--h1-box:58px;--h1-lh:1.25;--h1-lines:1;--h1-fs-max:20pt;--h1-fs-min:11pt;--h1-fs:clamp(var(--h1-fs-min,11pt),calc(var(--h1-box, 58px) / (var(--h1-lines, 1) * var(--h1-lh, 1.25))),var(--h1-fs-max,20pt));
+
+  /* --- 主張（帯）領域: 110px − 上下パディング --- */--cl-p:0;--cl-b1:0;--cl-b2:0;--cl-b3:0;--cl-b4:0;--cl-l1:0;--cl-l2:0;--cl-l3:0;--cl-l4:0;--cl-l5:0;--cl-l6:0;--cl-l7:0;--cl-l8:0;
+
+  /* 折り返し余裕。短い主張は上限で頭打ちになるため副作用はありません。
+     日本語の長文が多い資料では 2 まで上げてください。 */--h2-wrap:1;--h2-lines:max(1,calc(var(--cl-p, 0) + var(--cl-b1, 0) + var(--cl-b2, 0) + var(--cl-b3, 0) + var(--cl-b4, 0) + var(--cl-l1, 0) + var(--cl-l2, 0) + var(--cl-l3, 0) + var(--cl-l4, 0) + var(--cl-l5, 0) + var(--cl-l6, 0) + var(--cl-l7, 0) + var(--cl-l8, 0) + var(--h2-wrap, 0)));--h2-box:100px;--h2-lh:1.4;--h2-fs-max:18pt;--h2-fs:clamp(8px,calc(var(--h2-box, 100px) / (var(--h2-lines, 1) * var(--h2-lh, 1.4))),var(--h2-fs-max,18pt));
+
+  /* --- 図表タイトル領域: top 180px 〜 本文開始 230px --- */--h3-box:46px;--h3-lh:1.3;--h3-lines:1;--h3-fs-max:18pt;--h3-fs-min:10pt;--h3-fs:clamp(var(--h3-fs-min,10pt),calc(var(--h3-box, 46px) / (var(--h3-lines, 1) * var(--h3-lh, 1.3))),var(--h3-fs-max,18pt))}
+
+/* wide-content は帯がないため領域寸法が変わります */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]).wide-content{--h1-box:52px;--h3-box:56px}
+
+
+/* ---- 12-1. 行数カウント（Markdown の改行 <br> と li の数） ------------ */
+
+/* タイトル */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h1,marp-h1)~:not(:is(h2,marp-h2)~*,:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*) br){--h1-lines:2}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h1,marp-h1)~:not(:is(h2,marp-h2)~*,:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*) br~br){--h1-lines:3}
+
+/* 主張: 段落の有無と、段落内の明示的な改行 */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h2,marp-h2)~:is(p,blockquote):not(:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*)){--cl-p:1}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h2,marp-h2)~:is(p,blockquote):not(:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*) br){--cl-b1:1}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h2,marp-h2)~:is(p,blockquote):not(:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*) br~br){--cl-b2:1}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h2,marp-h2)~:is(p,blockquote):not(:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*) br~br~br){--cl-b3:1}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h2,marp-h2)~:is(p,blockquote):not(:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*) br~br~br~br){--cl-b4:1}
+
+/* 主張: 箇条書きの項目数 */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h2,marp-h2)~:is(ul,ol):not(:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*)>li:first-child){--cl-l1:1}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h2,marp-h2)~:is(ul,ol):not(:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*)>li:nth-child(2)){--cl-l2:1}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h2,marp-h2)~:is(ul,ol):not(:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*)>li:nth-child(3)){--cl-l3:1}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h2,marp-h2)~:is(ul,ol):not(:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*)>li:nth-child(4)){--cl-l4:1}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h2,marp-h2)~:is(ul,ol):not(:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*)>li:nth-child(5)){--cl-l5:1}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h2,marp-h2)~:is(ul,ol):not(:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*)>li:nth-child(6)){--cl-l6:1}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h2,marp-h2)~:is(ul,ol):not(:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*)>li:nth-child(7)){--cl-l7:1}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h2,marp-h2)~:is(ul,ol):not(:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*)>li:nth-child(8)){--cl-l8:1}
+
+/* 図表タイトル */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h3,marp-h3)~:not(:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*) br){--h3-lines:2}
+
+
+/* ---- 12-2. 帯の背景を section::before に分離 --------------------------
+   これにより、帯の中身が何ブロックあっても背景は 1 枚の矩形になります。
+*/div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc):not(.section-divider):has(>:is(h2,marp-h2)+:not(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6))):before{content:""!important;position:absolute!important;top:65px!important;left:0!important;width:100%!important;height:110px!important;background-color:var(--primary-color)!important;z-index:40!important;pointer-events:none!important}
+
+
+/* ---- 12-3. タイトル領域（h1 から次の見出しまでの全ブロック） ---------- */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):not(.section-divider)>:is(h1,marp-h1)~:not(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6),ul,ol):not(:is(h2,marp-h2)~*,:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*){position:absolute!important;top:32.5px!important;transform:translateY(-50%)!important;left:20px!important;width:calc(100% - 40px)!important;
+
+  /* セクション4 の height:33px を明示的に打ち消します（今回の不具合の原因） */height:auto!important;min-height:0!important;max-height:var(--h1-box,58px)!important;
+
+  /* 行の途中で切らず、行単位で打ち切ります（超過時は末尾に … が出ます） */display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:var(--h1-lines,1)!important;line-clamp:var(--h1-lines,1)!important;overflow:hidden!important;font-size:var(--h1-fs)!important;line-height:var(--h1-lh,1.25)!important;font-weight:bold!important;color:#000000!important;background:transparent!important;margin:0!important;padding:0!important;z-index:5!important;overflow-wrap:anywhere!important;visibility:visible!important;pointer-events:auto!important}
+
+/* 2 ブロック目以降も同じ上下中央揃えを維持 */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):not(.section-divider)>:is(h1,marp-h1)~:not(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6),ul,ol):not(:is(h2,marp-h2)~*,:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*):not(:is(h1,marp-h1)+*){top:32.5px!important;bottom:auto!important;transform:translateY(-50%)!important}
+
+/* wide-content のタイトル領域（0px〜60px）の中央に合わせる */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]).wide-content>:is(h1,marp-h1)~:not(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6),ul,ol):not(:is(h2,marp-h2)~*,:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*){top:30px!important}
+
+
+/* ---- 12-4. 主張領域（h2 から次の見出しまでの全ブロック） --------------
+   ここが今回の本丸です。段落・箇条書き・引用が何個続いても、
+   すべて帯の中に配置されます。
+*/
+
+/* 共通の見た目 */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc):not(.section-divider)>:is(h2,marp-h2)~:not(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6)):not(:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*){position:absolute!important;left:0!important;width:100%!important;padding:0 20px!important;box-sizing:border-box!important;margin:0!important;background:transparent!important;color:#ffffff!important;font-size:var(--h2-fs)!important;line-height:var(--h2-lh,1.4)!important;max-height:var(--h2-box,100px)!important;overflow:hidden!important;overflow-wrap:anywhere!important;z-index:50!important;display:block!important;visibility:visible!important;pointer-events:auto!important}
+
+/* 箇条書きの体裁 */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc):not(.section-divider)>:is(h2,marp-h2)~:is(ul,ol):not(:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*){padding-left:3em!important;padding-top:0!important;list-style-position:outside!important}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc):not(.section-divider)>:is(h2,marp-h2)~:is(ul,ol):not(:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*)>li{color:#ffffff!important;font-size:inherit!important;line-height:inherit!important;margin:0!important}
+
+/* (a) 主張が 1 ブロックだけ → 帯の中央（従来どおりの見え方） */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc)>:is(h2,marp-h2)+:not(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6)):is(:has(+:is(h3,marp-h3)),:has(+:is(h4,marp-h4)),:has(+:is(h5,marp-h5)),:has(+:is(h6,marp-h6)),:last-child){top:120px!important;bottom:auto!important;transform:translateY(-50%)!important}
+
+/* (b) 複数ある場合の先頭ブロック → 帯の上端に寄せる */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc)>:is(h2,marp-h2)+:not(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6)):not(:has(+:is(h3,marp-h3))):not(:has(+:is(h4,marp-h4))):not(:has(+:is(h5,marp-h5))):not(:has(+:is(h6,marp-h6))):not(:last-child){top:70px!important;bottom:auto!important;transform:none!important}
+
+/* (c) 末尾ブロック → 帯の下端に寄せる */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc)>:is(h2,marp-h2)~:not(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6)):not(:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*):not(:is(h2,marp-h2)+*):is(:has(+:is(h3,marp-h3)),:has(+:is(h4,marp-h4)),:has(+:is(h5,marp-h5)),:has(+:is(h6,marp-h6)),:last-child){top:auto!important;bottom:550px!important;transform:none!important}
+
+/* (d) 中間ブロック（3 ブロック以上のとき） → 帯の中央 */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):not(.wide-content):not(.toc)>:is(h2,marp-h2)~:not(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6)):not(:is(h3,marp-h3)~*,:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*):not(:is(h2,marp-h2)+*):not(:has(+:is(h3,marp-h3))):not(:has(+:is(h4,marp-h4))):not(:has(+:is(h5,marp-h5))):not(:has(+:is(h6,marp-h6))):not(:last-child){top:120px!important;bottom:auto!important;transform:translateY(-50%)!important}
+
+
+/* ---- 12-5. 図表タイトル領域（h3 から h4 までの全ブロック） ------------ */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"])>:is(h3,marp-h3)~:not(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6)):not(:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*){position:absolute!important;top:180px!important;left:0!important;width:100%!important;padding:0 40px!important;box-sizing:border-box!important;height:auto!important;min-height:0!important;max-height:var(--h3-box,46px)!important;display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:var(--h3-lines,1)!important;line-clamp:var(--h3-lines,1)!important;overflow:hidden!important;text-align:center!important;font-size:var(--h3-fs)!important;line-height:var(--h3-lh,1.3)!important;font-weight:bold!important;margin:0!important;z-index:5!important;background:transparent!important;overflow-wrap:anywhere!important;visibility:visible!important;pointer-events:auto!important}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"])>:is(h3,marp-h3)~:not(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6)):not(:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*):not(:is(h3,marp-h3)+*){top:auto!important;bottom:490px!important}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]).wide-content>:is(h3,marp-h3)~:not(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6)):not(:is(h4,marp-h4)~*,:is(h5,marp-h5)~*,:is(h6,marp-h6)~*){top:60px!important}
+
+
+
+/* ---- 12-6. 手動オーバーライド ------------------------------------------
+   折り返しで行数が増える場合に、実際の行数を伝えます。
+   例: \3c !-- _class: title-2 claim-5 fig-2 -->
+*/div#\:\$p>svg>foreignObject>section.title-1{--h1-lines:1!important}div#\:\$p>svg>foreignObject>section.title-2{--h1-lines:2!important}div#\:\$p>svg>foreignObject>section.title-3{--h1-lines:3!important}div#\:\$p>svg>foreignObject>section.claim-1{--h2-lines:1!important}div#\:\$p>svg>foreignObject>section.claim-2{--h2-lines:2!important}div#\:\$p>svg>foreignObject>section.claim-3{--h2-lines:3!important}div#\:\$p>svg>foreignObject>section.claim-4{--h2-lines:4!important}div#\:\$p>svg>foreignObject>section.claim-5{--h2-lines:5!important}div#\:\$p>svg>foreignObject>section.claim-6{--h2-lines:6!important}div#\:\$p>svg>foreignObject>section.claim-7{--h2-lines:7!important}div#\:\$p>svg>foreignObject>section.claim-8{--h2-lines:8!important}div#\:\$p>svg>foreignObject>section.fig-1{--h3-lines:1!important}div#\:\$p>svg>foreignObject>section.fig-2{--h3-lines:2!important}div#\:\$p>svg>foreignObject>section.fig-3{--h3-lines:3!important}
+
+
+/* ---- 12-7. Mermaid ダイアグラム ----------------------------------------
+   前提DOM: <div class="mermaid"><svg>…</svg></div>
+   ```mermaid フェンスを 1ページ目のローダースクリプトが変換します。
+   ---------------------------------------------------------------------- */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]){--mmd-max-h:440px}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]).wide-content{--mmd-max-h:550px}
+
+/* (a) 変換前のソースコードを隠します。
+      描画完了までの一瞬コードが見えるのを防ぎます。
+      図が出ない原因を調べたいときは、この1ブロックだけコメントアウトすると
+      生のMermaid記法が確認でき、フェンスが認識されているか判別できます。 */div#\:\$p>svg>foreignObject>section :is(:is(pre,marp-pre),marp-pre):has(>code.language-mermaid:not([data-mermaid-failed])){visibility:hidden!important;position:absolute!important;height:0!important;margin:0!important;padding:0!important;overflow:hidden!important}
+
+/* (b) 図のコンテナ */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]) .mermaid{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;max-width:100%!important;max-height:var(--mmd-max-h,440px)!important;margin:calc(0.5em * var(--txt-scale)) auto!important;padding:0!important;background:transparent!important;overflow:hidden!important;text-align:center!important}
+
+/* Mermaid図の文字サイズ基準。継承の起点だけを整え、
+   SVG内部の個別要素へは干渉しない（mermaid 自身の計算値を尊重する） */div#\:\$p>svg>foreignObject>section .mermaid,div#\:\$p>svg>foreignObject>section .mermaid svg,div#\:\$p>svg>foreignObject>section .mermaid svg foreignObject,div#\:\$p>svg>foreignObject>section .mermaid svg foreignObject *,div#\:\$p>svg>foreignObject>section .mermaid svg text,div#\:\$p>svg>foreignObject>section .mermaid svg tspan{
+  /* Mermaid図内の基準文字サイズを14pxに設定します */font-size:14px!important;
+  /* TrueType（CIDFontType2）で埋め込まれる日本語・欧文フォントを優先指定します */font-family:'Meiryo','BIZ UDGothic','Yu Gothic','IPAPGothic','IPAGothic','DejaVu Sans',sans-serif!important;
+  /* 行の高さを1.2に設定します */line-height:1.2!important}div#\:\$p>svg>foreignObject>section .mermaid svg foreignObject div#\:\$p>svg>foreignObject>section section,div#\:\$p>svg>foreignObject>section div#\:\$p>svg>foreignObject>section section.mermaid{--marpit-root-font-size:14px!important}
+
+
+/* (c) 生成されたSVG本体。
+      mermaid は svg に style="max-width:NNNpx" をインライン付与しますが、
+      作者スタイルシートの !important はインラインスタイルより優先されるため
+      確実に打ち消せます。viewBox 付きSVGは縦横比を保って縮小されます。 */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]) .mermaid>svg{display:block!important;
+  /* width は宣言しない。mermaid の width 属性を自然サイズとして活かす */height:auto!important;
+  /* 縮小時に縦横比を維持 */max-width:100%!important;
+  /* 880px を超えたときだけ縮む */max-height:100%!important; 
+  /* 100% → 実寸に変更 */margin:0 auto!important}
+
+
+/* (d) 図を含むスライドを縦フレックス化し、
+      テキストが消費した残りの高さをそのまま図の上限にします（11-4 と同じ設計） */div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h4,marp-h4)~.mermaid){display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~.mermaid{flex:1 1 auto!important;min-height:0!important;max-height:none!important}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination="1"]):has(>:is(h4,marp-h4)~.mermaid)>:is(h4,marp-h4)~:not(.mermaid):not(:is(h5,marp-h5),:is(h6,marp-h6)):not(:is(h5,marp-h5)~*,:is(h6,marp-h6)~*){flex:0 0 auto!important}
+
+/* (e) 手動調整用クラス   \3c !-- _class: mermaid-3 --> 等（10段階統一数字クラスおよび後方互換エイリアス） */
+/* Mermaid図サイズ 段階1（最大サイズ 100%）です */div#\:\$p>svg>foreignObject>section.mermaid-1 .mermaid,div#\:\$p>svg>foreignObject>section.mermaid-1:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~.mermaid{
+  /* 最大高さを基準値の100%に設定します */max-height:var(--mmd-max-h,440px)!important}
+
+/* Mermaid図サイズ 段階2（90%）です */div#\:\$p>svg>foreignObject>section.mermaid-2 .mermaid,div#\:\$p>svg>foreignObject>section.mermaid-2:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~.mermaid{
+  /* 最大高さを基準値の90%に縮小します */max-height:calc(var(--mmd-max-h, 440px) * 0.90)!important}
+
+/* Mermaid図サイズ 段階3（82%）です */div#\:\$p>svg>foreignObject>section.mermaid-3 .mermaid,div#\:\$p>svg>foreignObject>section.mermaid-3:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~.mermaid{
+  /* 最大高さを基準値の82%に縮小します */max-height:calc(var(--mmd-max-h, 440px) * 0.82)!important}
+
+/* Mermaid図サイズ 段階4（75%）です */div#\:\$p>svg>foreignObject>section.mermaid-4 .mermaid,div#\:\$p>svg>foreignObject>section.mermaid-4:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~.mermaid,div#\:\$p>svg>foreignObject>section.mermaid-sm .mermaid,div#\:\$p>svg>foreignObject>section.mermaid-sm:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~.mermaid{
+  /* 最大高さを基準値の75%（旧sm相当）に縮小します */max-height:calc(var(--mmd-max-h, 440px) * 0.75)!important}
+
+/* Mermaid図サイズ 段階5（68%）です */div#\:\$p>svg>foreignObject>section.mermaid-5 .mermaid,div#\:\$p>svg>foreignObject>section.mermaid-5:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~.mermaid{
+  /* 最大高さを基準値の68%に縮小します */max-height:calc(var(--mmd-max-h, 440px) * 0.68)!important}
+
+/* Mermaid図サイズ 段階6（60%）です */div#\:\$p>svg>foreignObject>section.mermaid-6 .mermaid,div#\:\$p>svg>foreignObject>section.mermaid-6:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~.mermaid{
+  /* 最大高さを基準値の60%に縮小します */max-height:calc(var(--mmd-max-h, 440px) * 0.60)!important}
+
+/* Mermaid図サイズ 段階7（55%: 従来の最小値）です */div#\:\$p>svg>foreignObject>section.mermaid-7 .mermaid,div#\:\$p>svg>foreignObject>section.mermaid-7:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~.mermaid,div#\:\$p>svg>foreignObject>section.mermaid-xs .mermaid,div#\:\$p>svg>foreignObject>section.mermaid-xs:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~.mermaid{
+  /* 最大高さを従来の最小値である55%（旧xs相当）に縮小します */max-height:calc(var(--mmd-max-h, 440px) * 0.55)!important}
+
+/* Mermaid図サイズ 段階8（48%）です */div#\:\$p>svg>foreignObject>section.mermaid-8 .mermaid,div#\:\$p>svg>foreignObject>section.mermaid-8:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~.mermaid{
+  /* 最大高さを基準値の48%に縮小します */max-height:calc(var(--mmd-max-h, 440px) * 0.48)!important}
+
+/* Mermaid図サイズ 段階9（38%: 従来の最小値より1段階小さいサイズ）です */div#\:\$p>svg>foreignObject>section.mermaid-9 .mermaid,div#\:\$p>svg>foreignObject>section.mermaid-9:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~.mermaid{
+  /* 最大高さを従来の最小値より1段階小さい38%に縮小します */max-height:calc(var(--mmd-max-h, 440px) * 0.38)!important}
+
+/* Mermaid図サイズ 段階10（28%: 従来の最小値よりさらに2段階小さい極小サイズ）です */div#\:\$p>svg>foreignObject>section.mermaid-10 .mermaid,div#\:\$p>svg>foreignObject>section.mermaid-10:not([data-marpit-pagination="1"])>:is(h4,marp-h4)~.mermaid{
+  /* 最大高さを従来の最小値よりさらに2段階小さい極小の28%に縮小します */max-height:calc(var(--mmd-max-h, 440px) * 0.28)!important}
+
+/* (f) ローダースクリプト等がブロック数カウントに混入しないようにします */div#\:\$p>svg>foreignObject>section>link,div#\:\$p>svg>foreignObject>section>script,div#\:\$p>svg>foreignObject>section>style{display:none!important}
+
+/* ========================================================================== */
+/* (g) 印刷・PDF出力時における不要な白紙最終ページの抑止 (Issue #16 是正) */
+/* ========================================================================== */
+
+/* 印刷（PDF出力）メディアクエリを定義します */@media print{
+  /* Mermaid動的レンダリング用作業領域を印刷対象から完全に除外します */div#\:\$p>svg>foreignObject>section #mermaid-workspace,div#\:\$p>svg>foreignObject>section .mermaidTooltip{
+    /* 印刷レイアウト算出から除外するためdisplayをnoneに設定します */display:none!important}}
+
+/* ========================================================================== */
+/* (h) 中見出し（セクションディバイダー）スライド専用スタイル (Issue #17 / PBI-020, PBI-021) */
+/* ========================================================================== */
+
+/* 中見出しスライドのコンテナ設定です（左寄せ・垂直中央配置） */div#\:\$p>svg>foreignObject>section.section-divider{
+  /* Flexboxコンテナとして子要素を垂直配置します */display:flex!important;
+  /* 縦方向に子要素を整列します */flex-direction:column!important;
+  /* 上下中央（垂直中央）に配置します */justify-content:center!important;
+  /* 左寄せ配置とします */align-items:flex-start!important;
+  /* 下部40pxフッター帯を除いた領域で中央配置するため下部パディング40pxを確保します */padding:0 70px 40px 70px!important;
+  /* ボックスサイズを境界基準とします */box-sizing:border-box!important;
+  /* テキストを左揃えにします */text-align:left!important;
+  /* 背景を白色で確定します */background:#ffffff!important;
+  /* 子要素の絶対配置基準点とします */position:relative!important}
+
+/* 中見出しスライドにおける主張グレー帯疑似要素を非表示にします */div#\:\$p>svg>foreignObject>section.section-divider:before{
+  /* 疑似要素を非表示にします */display:none!important;
+  /* コンテンツを空にします */content:none!important}
+
+/* 中見出しスライドにおける通常スライド用見出し記法（h1〜h5）自体を非表示にします */div#\:\$p>svg>foreignObject>section.section-divider>:is(h1,marp-h1),div#\:\$p>svg>foreignObject>section.section-divider>:is(h2,marp-h2),div#\:\$p>svg>foreignObject>section.section-divider>:is(h3,marp-h3),div#\:\$p>svg>foreignObject>section.section-divider>:is(h4,marp-h4),div#\:\$p>svg>foreignObject>section.section-divider>:is(h5,marp-h5){
+  /* 画面表示を完全に消去します */display:none!important;
+  /* 不可視化します */visibility:hidden!important}
+
+/* 通常スライド用左上ヘッダータイトル・主張・図表タイトル・出典コンテンツを非表示にします */div#\:\$p>svg>foreignObject>section.section-divider>:is(h1,marp-h1)+*,div#\:\$p>svg>foreignObject>section.section-divider>:is(h1,marp-h1)~:not(:is(h4,marp-h4)~*):not(:is(h6,marp-h6)):not(:is(h6,marp-h6)+*):not(header):not(header *),div#\:\$p>svg>foreignObject>section.section-divider>:is(h2,marp-h2)+*,div#\:\$p>svg>foreignObject>section.section-divider>:is(h2,marp-h2)~:not(:is(h4,marp-h4)~*):not(:is(h6,marp-h6)):not(:is(h6,marp-h6)+*):not(header):not(header *),div#\:\$p>svg>foreignObject>section.section-divider>:is(h3,marp-h3)+*,div#\:\$p>svg>foreignObject>section.section-divider>:is(h3,marp-h3)~:not(:is(h4,marp-h4)~*):not(:is(h6,marp-h6)):not(:is(h6,marp-h6)+*):not(header):not(header *),div#\:\$p>svg>foreignObject>section.section-divider>:is(h5,marp-h5)+*,div#\:\$p>svg>foreignObject>section.section-divider>:is(h5,marp-h5)~:not(:is(h6,marp-h6)):not(:is(h6,marp-h6)+*):not(header):not(header *){
+  /* 画面表示を完全に消去します */display:none!important;
+  /* 不可視化します */visibility:hidden!important}
+
+/* フッター1つ目（コピーライト）を最下部フッター帯の左下に絶対配置します */div#\:\$p>svg>foreignObject>section.section-divider>:is(h6,marp-h6):first-of-type+*{
+  /* スライド内の絶対配置にします */position:absolute!important;
+  /* 下端から12pxの位置に配置します */bottom:12px!important;
+  /* 左端から20pxの位置に配置します */left:20px!important;
+  /* 幅を自動計算します */width:auto!important;
+  /* 左揃えにします */text-align:left!important;
+  /* 文字サイズを12pxにします */font-size:12px!important;
+  /* 文字色を白にします */color:#ffffff!important;
+  /* 背景を透明にします */background:transparent!important;
+  /* マージンを0にします */margin:0!important;
+  /* 重なり順を最前面にします */z-index:20!important;
+  /* 可視化します */visibility:visible!important;
+  /* ブロック要素として配置します */display:block!important}div#\:\$p>svg>foreignObject>section.section-divider>:is(h6,marp-h6):first-of-type+div#\:\$p>svg>foreignObject>section section{--marpit-root-font-size:12px!important}
+
+/* フッター2つ目（機密表示）を最下部フッター帯の右下に絶対配置します */div#\:\$p>svg>foreignObject>section.section-divider>:is(h6,marp-h6):nth-of-type(2)+*{
+  /* スライド内の絶対配置にします */position:absolute!important;
+  /* 下端から8pxの位置に配置します */bottom:8px!important;
+  /* 右端から70px（ページ番号の左隣）の位置に配置します */right:70px!important;
+  /* 幅を自動計算します */width:auto!important;
+  /* 右揃えにします */text-align:right!important;
+  /* 文字サイズを19pxにします */font-size:19px!important;
+  /* 太字にします */font-weight:bold!important;
+  /* 文字色を赤にします */color:red!important;
+  /* 背景を透明にします */background:transparent!important;
+  /* マージンを0にします */margin:0!important;
+  /* 重なり順を最前面にします */z-index:20!important;
+  /* 可視化します */visibility:visible!important;
+  /* ブロック要素として配置します */display:block!important}div#\:\$p>svg>foreignObject>section.section-divider>:is(h6,marp-h6):nth-of-type(2)+div#\:\$p>svg>foreignObject>section section{--marpit-root-font-size:19px!important}
+
+/* 中見出しの章タイトルコンテナスタイルです */div#\:\$p>svg>foreignObject>section.section-divider .chapter-header-main{
+  /* ブロック要素として表示します */display:block!important;
+  /* 可視化を保証します */visibility:visible!important;
+  /* 文書フローに従う配置とします */position:static!important;
+  /* 横幅を100%確保します */width:100%!important;
+  /* 高さを自動計算とします */height:auto!important;
+  /* 外側余白をリセットします */margin:0!important;
+  /* 内側余白をリセットします */padding:0!important;
+  /* マウスイベントを有効化します */pointer-events:auto!important}
+
+/* 中見出しの章タイトル見出しタグスタイルです */div#\:\$p>svg>foreignObject>section.section-divider .chapter-title,div#\:\$p>svg>foreignObject>section.section-divider :is(h2,marp-h2).chapter-title,div#\:\$p>svg>foreignObject>section.section-divider div.chapter-title,div#\:\$p>svg>foreignObject>section.section-divider p.chapter-title{
+  /* ブロック要素として表示します */display:block!important;
+  /* テーマ共通のh1-h6隠蔽設定を打ち消し確実に可視化します */visibility:visible!important;
+  /* 文書フローに従う配置とします */position:static!important;
+  /* 横幅を100%確保します */width:100%!important;
+  /* 高さを自動計算とします */height:auto!important;
+  /* はみ出し領域を表示します */overflow:visible!important;
+  /* 大見出しフォントサイズ（34pt）を設定します */font-size:34pt!important;
+  /* 太字にします */font-weight:bold!important;
+  /* テーマカラーを設定します */color:var(--primary-color,#1f497d)!important;
+  /* 行の高さを最適化します */line-height:1.25!important;
+  /* 下部に24pxのマージンを設定します */margin:0 0 24px 0!important;
+  /* パディングをリセットします */padding:0!important;
+  /* 左側に太さ10pxのテーマカラーアクセントバーを描画します */border-left:10px solid var(--primary-color,#1f497d)!important;
+  /* アクセントバーと文字の間に20pxの余白を設けます */padding-left:20px!important;
+  /* テキストを左揃えにします */text-align:left!important;
+  /* 日本語の自然な折り返しを許可します */word-break:break-word!important;
+  /* マウスイベントを有効化します */pointer-events:auto!important}div#\:\$p>svg>foreignObject>section.section-divider div#\:\$p>svg>foreignObject>section section.chapter-title{--marpit-root-font-size:34pt!important}
+
+/* title-only パターンにおける章タイトルのスタイル調整です */div#\:\$p>svg>foreignObject>section.section-divider.pattern-title-only .chapter-title{
+  /* 単体表示時はより大きな36ptで表示します */font-size:36pt!important;
+  /* 下部マージンを0にします */margin-bottom:0!important}div#\:\$p>svg>foreignObject>section.section-divider.pattern-title-only div#\:\$p>svg>foreignObject>section section.chapter-title{--marpit-root-font-size:36pt!important}
+
+/* 中見出し内のページ一覧リスト（ul）スタイルです */div#\:\$p>svg>foreignObject>section.section-divider .chapter-pages-list{
+  /* ブロック要素として表示します */display:block!important;
+  /* 標準の箇条書き記号を非表示にします */list-style:none!important;
+  /* 外側余白をリセットします */margin:0!important;
+  /* 左インデントを10pxに設定します */padding-left:10px!important;
+  /* 横幅を100%確保します */width:100%!important}
+
+/* ページ一覧の各項目（li）スタイルです */div#\:\$p>svg>foreignObject>section.section-divider .chapter-pages-list li{
+  /* ブロック要素として表示します */display:block!important;
+  /* 文字サイズを17ptに設定します */font-size:17pt!important;
+  /* 文字色を濃いグレーにします */color:#333333!important;
+  /* 行の高さをゆったり1.8倍に設定します */line-height:1.8!important;
+  /* 下部マージンを8pxに設定します */margin-bottom:8px!important;
+  /* ビュレット用の左パディングを24px確保します */padding-left:24px!important;
+  /* 疑似要素配置の基準点とします */position:relative!important}
+
+/* ページ項目の角丸四角ビュレット記号を描画します */div#\:\$p>svg>foreignObject>section.section-divider .chapter-pages-list li:before{
+  /* 四角いビュレット文字を設定します */content:"▪"!important;
+  /* 絶対配置とします */position:absolute!important;
+  /* 左端0pxに配置します */left:0!important;
+  /* ビュレット色をテーマカラーにします */color:var(--primary-color,#1f497d)!important;
+  /* ビュレットサイズを14ptにします */font-size:14pt!important}
+
+/* ページ内アンカーリンクの基本スタイルです */div#\:\$p>svg>foreignObject>section.section-divider a{
+  /* リンク文字色をテーマカラーにします */color:var(--primary-color,#1f497d)!important;
+  /* 下線を非表示にします */text-decoration:none!important;
+  /* フォント太さを600（やや太字）にします */font-weight:600!important;
+  /* カーソルをポインターにします */cursor:pointer!important}
+
+/* リンクホバー時の下線表示です */div#\:\$p>svg>foreignObject>section.section-divider a:hover{
+  /* 下線を表示します */text-decoration:underline!important}
+
+/* 全章一覧リスト（ul）スタイルです */div#\:\$p>svg>foreignObject>section.section-divider .all-chapters-list{
+  /* ブロック要素として表示します */display:block!important;
+  /* 標準の箇条書き記号を非表示にします */list-style:none!important;
+  /* 外側余白をリセットします */margin:0!important;
+  /* 内側余白をリセットします */padding:0!important;
+  /* 横幅を100%確保します */width:100%!important}
+
+/* 全章一覧の各章項目（li）スタイルです */div#\:\$p>svg>foreignObject>section.section-divider .all-chapters-list>li{
+  /* ブロック要素として表示します */display:block!important;
+  /* 行の高さを1.5に設定します */line-height:1.5!important;
+  /* 各章の間隔を12px設けます */margin-bottom:12px!important;
+  /* 記号用の左パディングを32px確保します */padding-left:32px!important;
+  /* 疑似要素配置の基準点とします */position:relative!important}
+
+/* カレント章項目（太字強調）スタイルです */div#\:\$p>svg>foreignObject>section.section-divider .all-chapters-list>li.active-chapter,div#\:\$p>svg>foreignObject>section.section-divider .all-chapters-list>li.active-chapter>strong{
+  /* 文字サイズを22ptに設定します */font-size:22pt!important;
+  /* 太字にします */font-weight:bold!important;
+  /* テーマカラーで強調します */color:var(--primary-color,#1f497d)!important}
+
+/* カレント章項目の先頭アクセント記号（▶）です */div#\:\$p>svg>foreignObject>section.section-divider .all-chapters-list>li.active-chapter:before{
+  /* 塗りつぶし三角形矢印を設定します */content:"▶"!important;
+  /* 絶対配置とします */position:absolute!important;
+  /* 左端4pxに配置します */left:4px!important;
+  /* テーマカラーに設定します */color:var(--primary-color,#1f497d)!important;
+  /* 記号サイズを16ptにします */font-size:16pt!important}
+
+/* 他章項目（普通太さ・薄色）スタイルです */div#\:\$p>svg>foreignObject>section.section-divider .all-chapters-list>li.dim{
+  /* 文字サイズを19ptに設定します */font-size:19pt!important;
+  /* 普通の太さにします */font-weight:normal!important;
+  /* 薄いグレー色に設定します */color:#888888!important}
+
+/* 他章項目の先頭アクセント記号（▷）です */div#\:\$p>svg>foreignObject>section.section-divider .all-chapters-list>li.dim:before{
+  /* 白抜き三角形矢印を設定します */content:"▷"!important;
+  /* 絶対配置とします */position:absolute!important;
+  /* 左端4pxに配置します */left:4px!important;
+  /* 薄いグレー色に設定します */color:#bbbbbb!important;
+  /* 記号サイズを16ptにします */font-size:16pt!important}
+
+/* 全章一覧配下にネストされたページ一覧リストのスタイル調整です */div#\:\$p>svg>foreignObject>section.section-divider .all-chapters-list>li .chapter-pages-list{
+  /* 上部に8pxの余白を設けます */margin-top:8px!important;
+  /* 下部に4pxの余白を設けます */margin-bottom:4px!important;
+  /* 左インデントを16px確保します */padding-left:16px!important}
+
+/* ネストされたページ項目の文字サイズを調整します */div#\:\$p>svg>foreignObject>section.section-divider .all-chapters-list>li .chapter-pages-list li{
+  /* 文字サイズを15ptに設定します */font-size:15pt!important;
+  /* 行の高さを1.6に設定します */line-height:1.6!important;
+  /* 下部マージンを4pxに設定します */margin-bottom:4px!important}div#\:\$p>svg>foreignObject>section{width:960px;height:720px}div#\:\$p>svg>foreignObject>:where(section):not([root]){--banner-image:url('banner.svg')}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]{columns:initial!important;display:block!important;padding:0!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]:after,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]:before,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content]:after,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content]:before{display:none!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]{all:initial;display:flex;flex-direction:row;height:100%;overflow:hidden;width:100%}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container][data-marpit-advanced-background-direction=vertical]{flex-direction:column}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background][data-marpit-advanced-background-split]>div[data-marpit-advanced-background-container]{width:var(--marpit-advanced-background-split,50%)}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background][data-marpit-advanced-background-split=right]>div[data-marpit-advanced-background-container]{margin-left:calc(100% - var(--marpit-advanced-background-split, 50%))}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]>figure{all:initial;background-position:center;background-repeat:no-repeat;background-size:cover;flex:auto;margin:0}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]>figure>figcaption{position:absolute;border:0;clip:rect(0,0,0,0);height:1px;margin:-1px;overflow:hidden;padding:0;white-space:nowrap;width:1px}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content],div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=pseudo]{background:transparent!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=pseudo],div#\:\$p>svg[data-marpit-svg]>foreignObject[data-marpit-advanced-background=pseudo]{pointer-events:none!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background-split]{width:100%;height:100%}</style></head><body><div class="bespoke-marp-osc"><button data-bespoke-marp-osc="prev" tabindex="-1" title="Previous slide">Previous slide</button><span data-bespoke-marp-osc="page"></span><button data-bespoke-marp-osc="next" tabindex="-1" title="Next slide">Next slide</button><button data-bespoke-marp-osc="fullscreen" tabindex="-1" title="Toggle fullscreen (f)">Toggle fullscreen</button><button data-bespoke-marp-osc="presenter" tabindex="-1" title="Open presenter view (p)">Open presenter view</button></div><div id=":$p"><svg data-marpit-svg="" viewBox="0 0 960 720"><foreignObject width="960" height="720"><section id="1" data-paginate="true" data-header="![](N-Y-Public_Logo.jpg)" data-theme="business-slide" lang="ja-JP" data-marpit-pagination="1" style="--paginate:true;--header:![](N-Y-Public_Logo.jpg);--theme:business-slide;" data-marpit-pagination-total="12" data-size="4:3">
+<header><img src="N-Y-Public_Logo.jpg" alt="" /></header>
+<script defer="" src="../../themes/vendor/mermaid.min.js"></script>
+<script defer="" src="../../themes/vendor/marp-mermaid-loader.js"></script>
+<h1 id="%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB">タイトル</h1>
+<p>中見出しスライド機能 活用サンプル</p>
+<h2 id="%E3%82%B5%E3%83%96%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB">サブタイトル</h2>
+<p>～4大レイアウトパターンと章別目次モード（PBI-020 / Issue #17）～</p>
+<h3 id="%E5%9B%B3%E6%9B%B8%E7%95%AA%E5%8F%B7">図書番号</h3>
+<p>図書番号：D01-000003</p>
+<h3 id="%E6%89%80%E5%B1%9E%E3%83%BB%E6%B0%8F%E5%90%8D">所属・氏名</h3>
+<p>オープンソース推進部<br />
+ROLE-DEV</p>
+<h6 id="%E3%82%B3%E3%83%94%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%88">コピーライト</h6>
+<p>© 2026 N-Y-Public</p>
+<h6 id="%E6%A9%9F%E5%AF%86%E6%8C%87%E5%AE%9A">機密指定</h6>
+<p>CONFIDENTIAL</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 960 720"><foreignObject width="960" height="720"><section id="2" data-paginate="true" data-header="![](N-Y-Public_Logo.jpg)" data-class="toc toc-chapters-only" data-theme="business-slide" lang="ja-JP" class="toc toc-chapters-only" data-marpit-pagination="2" style="--paginate:true;--header:![](N-Y-Public_Logo.jpg);--class:toc toc-chapters-only;--theme:business-slide;" data-marpit-pagination-total="12" data-size="4:3">
+<header><img src="N-Y-Public_Logo.jpg" alt="" /></header>
+<h1 id=""></h1>
+<p>目次</p>
+<ul>
+<li class="toc-item" style="--char-count: 15">
+<p><a href="#3">第1章 中見出し機能の概要</a><span class="toc-page">3</span></p>
+</li>
+<li class="toc-item" style="--char-count: 16">
+<p><a href="#5">第2章 設計とアンカーリンク仕様</a><span class="toc-page">5</span></p>
+</li>
+<li class="toc-item" style="--char-count: 15">
+<p><a href="#8">第3章 全章一覧と視覚的強調</a><span class="toc-page">8</span></p>
+</li>
+<li class="toc-item" style="--char-count: 15">
+<p><a href="#10">第4章 章別目次モードとまとめ</a><span class="toc-page">10</span></p>
+</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 960 720"><foreignObject width="960" height="720"><section id="3" data-paginate="true" data-header="![](N-Y-Public_Logo.jpg)" data-class="section-divider pattern-title-only" data-theme="business-slide" lang="ja-JP" class="section-divider pattern-title-only" data-marpit-pagination="3" style="--paginate:true;--header:![](N-Y-Public_Logo.jpg);--class:section-divider pattern-title-only;--theme:business-slide;" data-marpit-pagination-total="12" data-size="4:3">
+<header><img src="N-Y-Public_Logo.jpg" alt="" /></header>
+
+<h1 id="%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB">ページタイトル</h1>
+<p>第1章 中見出し機能の概要</p>
+<h4 id="%E6%9C%AC%E6%96%87">本文</h4>
+<div class="chapter-header-main">
+  <div class="chapter-title">第1章 中見出し機能の概要</div>
+</div>
+<h6 id="%E3%82%B3%E3%83%94%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%88-1">コピーライト</h6>
+<p>© 2026 N-Y-Public</p>
+<h6 id="%E6%A9%9F%E5%AF%86%E6%8C%87%E5%AE%9A-1">機密指定</h6>
+<p>CONFIDENTIAL</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 960 720"><foreignObject width="960" height="720"><section id="4" data-paginate="true" data-header="![](N-Y-Public_Logo.jpg)" data-theme="business-slide" lang="ja-JP" data-marpit-pagination="4" style="--paginate:true;--header:![](N-Y-Public_Logo.jpg);--theme:business-slide;" data-marpit-pagination-total="12" data-size="4:3">
+<header><img src="N-Y-Public_Logo.jpg" alt="" /></header>
+<h1 id="%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB-1">ページタイトル</h1>
+<p>中見出し（セクションディバイダー）の目的と課題解決</p>
+<h2 id="%E3%83%9A%E3%83%BC%E3%82%B8%E4%B8%BB%E5%BC%B5">ページ主張</h2>
+<ul>
+<li>長大なスライド資料における現在地の明確化と構成の可視化を実現
+<ul>
+<li>ページ数の多いプレゼンテーションでも聴衆の集中を維持し論理構造を明示</li>
+</ul>
+</li>
+</ul>
+<h3 id="%E4%B8%BB%E5%BC%B5%E8%A3%9C%E8%B6%B3%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB">主張補足タイトル</h3>
+<p>背景と解決アプローチ</p>
+<h4 id="%E6%9C%AC%E6%96%87-1">本文</h4>
+<ul>
+<li><strong>課題</strong>: 30ページを超える長大な資料では、現在のスライドが全体のどの章・文脈に位置するのか見失いやすい</li>
+<li><strong>解決策</strong>: 章の区切りとなる4種類の中見出し（セクションディバイダー）スライドを標準テンプレートとして提供
+<ul>
+<li><code>title-only</code>: 章タイトルのみを大きく表示する標準的な区切り</li>
+<li><code>title-and-pages</code>: 章タイトルと章内のページ一覧・アンカーリンクを表示</li>
+<li><code>all-chapters</code>: 全章一覧の中でカレント章を太字強調、他章を薄色（dim）表示</li>
+<li><code>all-chapters-and-pages</code>: 全章一覧とカレント章配下のページリンクを複合表示</li>
+</ul>
+</li>
+</ul>
+<h5 id="%E5%9B%B3%E8%A1%A8%E5%87%BA%E5%85%B8">図表出典</h5>
+<p>図表出典：Issue #17 / PBI-020 要求仕様書</p>
+<h6 id="%E3%82%B3%E3%83%94%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%88-2">コピーライト</h6>
+<p>© 2026 N-Y-Public</p>
+<h6 id="%E6%A9%9F%E5%AF%86%E6%8C%87%E5%AE%9A-2">機密指定</h6>
+<p>CONFIDENTIAL</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 960 720"><foreignObject width="960" height="720"><section id="5" data-paginate="true" data-header="![](N-Y-Public_Logo.jpg)" data-class="section-divider pattern-title-and-pages" data-theme="business-slide" lang="ja-JP" class="section-divider pattern-title-and-pages" data-marpit-pagination="5" style="--paginate:true;--header:![](N-Y-Public_Logo.jpg);--class:section-divider pattern-title-and-pages;--theme:business-slide;" data-marpit-pagination-total="12" data-size="4:3">
+<header><img src="N-Y-Public_Logo.jpg" alt="" /></header>
+
+<h1 id="%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB-2">ページタイトル</h1>
+<p>第2章 設計とアンカーリンク仕様</p>
+<h4 id="%E6%9C%AC%E6%96%87-2">本文</h4>
+<div class="chapter-header-main">
+  <div class="chapter-title">第2章 設計とアンカーリンク仕様</div>
+</div>
+<ul class="chapter-pages-list">
+  <li><a href="#6">データ構造とZodスキーマ定義</a></li>
+  <li><a href="#7">ページ内アンカーリンクの動作仕様</a></li>
+</ul>
+<h6 id="%E3%82%B3%E3%83%94%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%88-3">コピーライト</h6>
+<p>© 2026 N-Y-Public</p>
+<h6 id="%E6%A9%9F%E5%AF%86%E6%8C%87%E5%AE%9A-3">機密指定</h6>
+<p>CONFIDENTIAL</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 960 720"><foreignObject width="960" height="720"><section id="6" data-paginate="true" data-header="![](N-Y-Public_Logo.jpg)" data-theme="business-slide" lang="ja-JP" data-marpit-pagination="6" style="--paginate:true;--header:![](N-Y-Public_Logo.jpg);--theme:business-slide;" data-marpit-pagination-total="12" data-size="4:3">
+<header><img src="N-Y-Public_Logo.jpg" alt="" /></header>
+<h1 id="%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB-3">ページタイトル</h1>
+<p>データ構造とZodスキーマ定義</p>
+<h2 id="%E3%83%9A%E3%83%BC%E3%82%B8%E4%B8%BB%E5%BC%B5-1">ページ主張</h2>
+<ul>
+<li>MCPサーバーの全スライド操作ツールで型安全に中見出しを指定可能
+<ul>
+<li><code>generate_slide_deck</code>、<code>insert_slide</code>、<code>update_slide</code> の共通スキーマとして統合</li>
+</ul>
+</li>
+</ul>
+<h3 id="%E4%B8%BB%E5%BC%B5%E8%A3%9C%E8%B6%B3%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB-1">主張補足タイトル</h3>
+<p><code>SectionDividerSchema</code> のデータ構造</p>
+<h4 id="%E6%9C%AC%E6%96%87-3">本文</h4>
+<pre><code class="language-typescript"><span class="hljs-comment">// 中見出しスライド定義スキーマ (DAT-TYP-010)</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">SectionDividerSchema</span> = z.<span class="hljs-title function_">object</span>({
+  <span class="hljs-attr">pattern</span>: z.<span class="hljs-title function_">enum</span>([<span class="hljs-string">&quot;title-only&quot;</span>, <span class="hljs-string">&quot;title-and-pages&quot;</span>, <span class="hljs-string">&quot;all-chapters&quot;</span>, <span class="hljs-string">&quot;all-chapters-and-pages&quot;</span>]),
+  <span class="hljs-attr">chapterTitle</span>: z.<span class="hljs-title function_">string</span>().<span class="hljs-title function_">describe</span>(<span class="hljs-string">&quot;章のタイトル（例: &#x27;第1章 プロジェクト概要&#x27;）&quot;</span>),
+  <span class="hljs-attr">chapterPages</span>: z.<span class="hljs-title function_">array</span>(<span class="hljs-title class_">SectionPageItemSchema</span>).<span class="hljs-title function_">optional</span>().<span class="hljs-title function_">describe</span>(<span class="hljs-string">&quot;章配下のページ一覧&quot;</span>),
+  <span class="hljs-attr">allChapters</span>: z.<span class="hljs-title function_">array</span>(z.<span class="hljs-title function_">string</span>()).<span class="hljs-title function_">optional</span>().<span class="hljs-title function_">describe</span>(<span class="hljs-string">&quot;全章のタイトル一覧&quot;</span>),
+  <span class="hljs-attr">currentChapterIndex</span>: z.<span class="hljs-title function_">number</span>().<span class="hljs-title function_">int</span>().<span class="hljs-title function_">optional</span>().<span class="hljs-title function_">describe</span>(<span class="hljs-string">&quot;カレント章のインデックス&quot;</span>),
+});
+</code></pre>
+<ul>
+<li>既存の <code>NormalSlideSchema</code> に <code>sectionDivider?: SectionDividerSchema</code> としてオプショナル追加</li>
+<li>既存スライド定義への完全な後方互換性を担保</li>
+</ul>
+<h5 id="%E5%9B%B3%E8%A1%A8%E5%87%BA%E5%85%B8-1">図表出典</h5>
+<p>図表出典：docs/03_detail_design/06_data_structure_specification.md (DAT-TYP-010)</p>
+<h6 id="%E3%82%B3%E3%83%94%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%88-4">コピーライト</h6>
+<p>© 2026 N-Y-Public</p>
+<h6 id="%E6%A9%9F%E5%AF%86%E6%8C%87%E5%AE%9A-4">機密指定</h6>
+<p>CONFIDENTIAL</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 960 720"><foreignObject width="960" height="720"><section id="7" data-paginate="true" data-header="![](N-Y-Public_Logo.jpg)" data-theme="business-slide" lang="ja-JP" data-marpit-pagination="7" style="--paginate:true;--header:![](N-Y-Public_Logo.jpg);--theme:business-slide;" data-marpit-pagination-total="12" data-size="4:3">
+<header><img src="N-Y-Public_Logo.jpg" alt="" /></header>
+<h1 id="%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB-4">ページタイトル</h1>
+<p>ページ内アンカーリンクの動作仕様</p>
+<h2 id="%E3%83%9A%E3%83%BC%E3%82%B8%E4%B8%BB%E5%BC%B5-2">ページ主張</h2>
+<ul>
+<li>PDFおよびHTML出力においてクリック可能なページ内ハイパーリンクを実現
+<ul>
+<li>スライド番号（<code>#スライド番号</code>）による直接ジャンプ機能を提供</li>
+</ul>
+</li>
+</ul>
+<h3 id="%E4%B8%BB%E5%BC%B5%E8%A3%9C%E8%B6%B3%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB-2">主張補足タイトル</h3>
+<p>アンカーリンク生成メカニズム</p>
+<h4 id="%E6%9C%AC%E6%96%87-4">本文</h4>
+<ul>
+<li><code>chapterPages</code> 配下の各項目に <code>pageNumber</code> が設定されている場合、Markdownリンク構文 <code>[タイトル](#ページ番号)</code> へ自動変換</li>
+<li>Marp CLI および Headless Chromium によるPDFエクスポート時にもネイティブなPDF注釈リンク（Link Annotation）として保持</li>
+<li>プレゼンテーション実行時や資料配布後の閲覧時に、目次や中見出しから目的のページへ即座に移動可能</li>
+</ul>
+<h5 id="%E5%9B%B3%E8%A1%A8%E5%87%BA%E5%85%B8-2">図表出典</h5>
+<p>図表出典：docs/01_requirements/01_requirements_specification.md (REQ-FNC-012-AC02)</p>
+<h6 id="%E3%82%B3%E3%83%94%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%88-5">コピーライト</h6>
+<p>© 2026 N-Y-Public</p>
+<h6 id="%E6%A9%9F%E5%AF%86%E6%8C%87%E5%AE%9A-5">機密指定</h6>
+<p>CONFIDENTIAL</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 960 720"><foreignObject width="960" height="720"><section id="8" data-paginate="true" data-header="![](N-Y-Public_Logo.jpg)" data-class="section-divider pattern-all-chapters" data-theme="business-slide" lang="ja-JP" class="section-divider pattern-all-chapters" data-marpit-pagination="8" style="--paginate:true;--header:![](N-Y-Public_Logo.jpg);--class:section-divider pattern-all-chapters;--theme:business-slide;" data-marpit-pagination-total="12" data-size="4:3">
+<header><img src="N-Y-Public_Logo.jpg" alt="" /></header>
+
+<h1 id="%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB-5">ページタイトル</h1>
+<p>第3章 全章一覧と視覚的強調</p>
+<h4 id="%E6%9C%AC%E6%96%87-5">本文</h4>
+<ul class="all-chapters-list">
+  <li class="dim">第1章 中見出し機能の概要</li>
+  <li class="dim">第2章 設計とアンカーリンク仕様</li>
+  <li class="active-chapter"><strong>第3章 全章一覧と視覚的強調</strong></li>
+  <li class="dim">第4章 章別目次モードとまとめ</li>
+</ul>
+<h6 id="%E3%82%B3%E3%83%94%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%88-6">コピーライト</h6>
+<p>© 2026 N-Y-Public</p>
+<h6 id="%E6%A9%9F%E5%AF%86%E6%8C%87%E5%AE%9A-6">機密指定</h6>
+<p>CONFIDENTIAL</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 960 720"><foreignObject width="960" height="720"><section id="9" data-paginate="true" data-header="![](N-Y-Public_Logo.jpg)" data-theme="business-slide" lang="ja-JP" data-marpit-pagination="9" style="--paginate:true;--header:![](N-Y-Public_Logo.jpg);--theme:business-slide;" data-marpit-pagination-total="12" data-size="4:3">
+<header><img src="N-Y-Public_Logo.jpg" alt="" /></header>
+<h1 id="%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB-6">ページタイトル</h1>
+<p>CSSスタイリングとカレント章の強調</p>
+<h2 id="%E3%83%9A%E3%83%BC%E3%82%B8%E4%B8%BB%E5%BC%B5-3">ページ主張</h2>
+<ul>
+<li>聴衆へ認知負荷を与えずに全体の進行状況と現在地を直感的に伝達
+<ul>
+<li>カレント章を太字・プライマリカラーで強調し、他章は透過（dim）スタイルを適用</li>
+</ul>
+</li>
+</ul>
+<h3 id="%E4%B8%BB%E5%BC%B5%E8%A3%9C%E8%B6%B3%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB-3">主張補足タイトル</h3>
+<p>ビジネステーマスタイル拡張仕様</p>
+<h4 id="%E6%9C%AC%E6%96%87-6">本文</h4>
+<ul>
+<li><strong>上下中央垂直配置</strong>:
+<ul>
+<li><code>section.section-divider</code>: flexbox による縦方向中央寄せ（<code>justify-content: center</code>）</li>
+</ul>
+</li>
+<li><strong>不要要素の自動非表示</strong>:
+<ul>
+<li>中見出しスライドでは不要となる主張バー（<code>h2</code>）、図表タイトル（<code>h3</code>）、図表出典（<code>h5</code>）を非表示化</li>
+</ul>
+</li>
+<li><strong>コントラスト設計</strong>:
+<ul>
+<li><code>.active-chapter</code>: 太字かつ明瞭なフォントウェイトで現在地を強調</li>
+<li><code>.dim</code>: <code>opacity: 0.45</code> または薄色カラーで他章を目立たせず背景化</li>
+</ul>
+</li>
+</ul>
+<h5 id="%E5%9B%B3%E8%A1%A8%E5%87%BA%E5%85%B8-3">図表出典</h5>
+<p>図表出典：themes/business-slide-theme.css (MOD-THM-001)</p>
+<h6 id="%E3%82%B3%E3%83%94%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%88-7">コピーライト</h6>
+<p>© 2026 N-Y-Public</p>
+<h6 id="%E6%A9%9F%E5%AF%86%E6%8C%87%E5%AE%9A-7">機密指定</h6>
+<p>CONFIDENTIAL</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 960 720"><foreignObject width="960" height="720"><section id="10" data-paginate="true" data-header="![](N-Y-Public_Logo.jpg)" data-class="section-divider pattern-all-chapters-and-pages" data-theme="business-slide" lang="ja-JP" class="section-divider pattern-all-chapters-and-pages" data-marpit-pagination="10" style="--paginate:true;--header:![](N-Y-Public_Logo.jpg);--class:section-divider pattern-all-chapters-and-pages;--theme:business-slide;" data-marpit-pagination-total="12" data-size="4:3">
+<header><img src="N-Y-Public_Logo.jpg" alt="" /></header>
+
+<h1 id="%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB-7">ページタイトル</h1>
+<p>第4章 章別目次モードとまとめ</p>
+<h4 id="%E6%9C%AC%E6%96%87-7">本文</h4>
+<ul class="all-chapters-list">
+  <li class="dim">第1章 中見出し機能の概要</li>
+  <li class="dim">第2章 設計とアンカーリンク仕様</li>
+  <li class="dim">第3章 全章一覧と視覚的強調</li>
+  <li class="active-chapter">
+    <strong>第4章 章別目次モードとまとめ</strong>
+    <ul class="chapter-pages-list">
+      <li><a href="#11">章別目次モード（toc-chapters-only）の仕組み</a></li>
+      <li><a href="#12">まとめと今後の展望</a></li>
+    </ul>
+  </li>
+</ul>
+<h6 id="%E3%82%B3%E3%83%94%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%88-8">コピーライト</h6>
+<p>© 2026 N-Y-Public</p>
+<h6 id="%E6%A9%9F%E5%AF%86%E6%8C%87%E5%AE%9A-8">機密指定</h6>
+<p>CONFIDENTIAL</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 960 720"><foreignObject width="960" height="720"><section id="11" data-paginate="true" data-header="![](N-Y-Public_Logo.jpg)" data-theme="business-slide" lang="ja-JP" data-marpit-pagination="11" style="--paginate:true;--header:![](N-Y-Public_Logo.jpg);--theme:business-slide;" data-marpit-pagination-total="12" data-size="4:3">
+<header><img src="N-Y-Public_Logo.jpg" alt="" /></header>
+<h1 id="%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB-8">ページタイトル</h1>
+<p>章別目次モード（toc-chapters-only）の仕組み</p>
+<h2 id="%E3%83%9A%E3%83%BC%E3%82%B8%E4%B8%BB%E5%BC%B5-4">ページ主張</h2>
+<ul>
+<li>目次スライドを章単位のハイレベルアジェンダに集約可能
+<ul>
+<li>通常スライドの細かなタイトルを自動除外し、中見出しタイトルのみを抽出して目次を構築</li>
+</ul>
+</li>
+</ul>
+<h3 id="%E4%B8%BB%E5%BC%B5%E8%A3%9C%E8%B6%B3%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB-4">主張補足タイトル</h3>
+<p><code>marpTocPlugin</code> の抽出フィルタリング論理</p>
+<h4 id="%E6%9C%AC%E6%96%87-8">本文</h4>
+<ul>
+<li><strong>通常目次モード (<code>&lt;!-- _class: toc --&gt;</code>)</strong>:
+<ul>
+<li>中見出しスライドを除外し、各スライドの <code>h1</code> 見出し（タイトル）を抽出して目次を生成</li>
+</ul>
+</li>
+<li><strong>章別目次モード (<code>&lt;!-- _class: toc toc-chapters-only --&gt;</code>)</strong>:
+<ul>
+<li><code>section-divider</code> クラスを持つ中見出しスライドの章タイトルとページ番号のみを抽出</li>
+<li>長大なデッキでもアジェンダが1〜2ページに整然と収まり、エグゼクティブサマリーに最適</li>
+</ul>
+</li>
+</ul>
+<h5 id="%E5%9B%B3%E8%A1%A8%E5%87%BA%E5%85%B8-4">図表出典</h5>
+<p>図表出典：marp.config.js (FN-ENG-001 marpTocPlugin)</p>
+<h6 id="%E3%82%B3%E3%83%94%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%88-9">コピーライト</h6>
+<p>© 2026 N-Y-Public</p>
+<h6 id="%E6%A9%9F%E5%AF%86%E6%8C%87%E5%AE%9A-9">機密指定</h6>
+<p>CONFIDENTIAL</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 960 720"><foreignObject width="960" height="720"><section id="12" data-paginate="true" data-header="![](N-Y-Public_Logo.jpg)" data-theme="business-slide" lang="ja-JP" data-marpit-pagination="12" style="--paginate:true;--header:![](N-Y-Public_Logo.jpg);--theme:business-slide;" data-marpit-pagination-total="12" data-size="4:3">
+<header><img src="N-Y-Public_Logo.jpg" alt="" /></header>
+<h1 id="%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB-9">ページタイトル</h1>
+<p>まとめと今後の展望</p>
+<h2 id="%E3%83%9A%E3%83%BC%E3%82%B8%E4%B8%BB%E5%BC%B5-5">ページ主張</h2>
+<ul>
+<li>PBI-020の要件をすべて満たし、IPA共通フレーム2013準拠の完全な品質ゲートを通過
+<ul>
+<li>100%自動テスト合格、トレーサビリティ断絶0件を達成</li>
+</ul>
+</li>
+</ul>
+<h3 id="%E4%B8%BB%E5%BC%B5%E8%A3%9C%E8%B6%B3%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB-5">主張補足タイトル</h3>
+<p>開発成果と品質保証のまとめ</p>
+<h4 id="%E6%9C%AC%E6%96%87-9">本文</h4>
+<ul>
+<li><strong>実装完了機能</strong>:
+<ul>
+<li>4種類の中見出しレイアウト、ページ内アンカーリンク、章別目次モード</li>
+</ul>
+</li>
+<li><strong>品質指標 (QCD)</strong>:
+<ul>
+<li>単体テスト <code>TEST-UT-006</code> および総合テスト <code>TEST-ST-012</code> 含む全19テストケース 100% 合格</li>
+<li>要件追跡マトリクス（RTM）断絶 0件、設計図書規約違反 0件</li>
+</ul>
+</li>
+<li><strong>利用方法</strong>:
+<ul>
+<li>MCPツール経由での自動生成、または本サンプルのMarkdown構文を直接活用可能</li>
+</ul>
+</li>
+</ul>
+<h5 id="%E5%9B%B3%E8%A1%A8%E5%87%BA%E5%85%B8-5">図表出典</h5>
+<p>図表出典：docs/04_test/02_test_report.md (DOC-TST-002)</p>
+<h6 id="%E3%82%B3%E3%83%94%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%88-10">コピーライト</h6>
+<p>© 2026 N-Y-Public</p>
+<h6 id="%E6%A9%9F%E5%AF%86%E6%8C%87%E5%AE%9A-10">機密指定</h6>
+<p>CONFIDENTIAL</p>
+</section>
+<script>!function(){"use strict";const t={h1:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"1"},style:"display: block; font-size: 2em; margin-block-start: 0.67em; margin-block-end: 0.67em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h2:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"2"},style:"display: block; font-size: 1.5em; margin-block-start: 0.83em; margin-block-end: 0.83em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h3:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"3"},style:"display: block; font-size: 1.17em; margin-block-start: 1em; margin-block-end: 1em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h4:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"4"},style:"display: block; margin-block-start: 1.33em; margin-block-end: 1.33em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h5:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"5"},style:"display: block; font-size: 0.83em; margin-block-start: 1.67em; margin-block-end: 1.67em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h6:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"6"},style:"display: block; font-size: 0.67em; margin-block-start: 2.33em; margin-block-end: 2.33em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},span:{proto:()=>HTMLSpanElement},pre:{proto:()=>HTMLElement,style:"display: block; font-family: monospace; white-space: pre; margin: 1em 0; --marp-auto-scaling-white-space: pre;"}},e="data-marp-auto-scaling-wrapper",i="data-marp-auto-scaling-svg",n="data-marp-auto-scaling-container";class s extends HTMLElement{constructor(){super(),this.svgPreserveAspectRatio="xMinYMid meet";const t=t=>([e])=>{const{width:i,height:n}=e.contentRect;this[t]={width:i,height:n},this.updateSVGRect()};this.attachShadow({mode:"open"}),this.containerObserver=new ResizeObserver(t("containerSize")),this.wrapperObserver=new ResizeObserver(((...e)=>{t("wrapperSize")(...e),this.flushSvgDisplay()}))}static get observedAttributes(){return["data-downscale-only"]}connectedCallback(){var t,s,o,r,a;this.shadowRoot.innerHTML=`\n<style>\n  svg[${i}] { display: block; width: 100%; height: auto; vertical-align: top; }\n  span[${n}] { display: table; white-space: var(--marp-auto-scaling-white-space, nowrap); width: max-content; }\n</style>\n<div ${e}>\n  <svg part="svg" ${i}>\n    <foreignObject><span ${n}><slot></slot></span></foreignObject>\n  </svg>\n</div>\n    `.split(/\n\s*/).join(""),this.wrapper=null!==(t=this.shadowRoot.querySelector(`div[${e}]`))&&void 0!==t?t:void 0;const l=this.svg;this.svg=null!==(o=null===(s=this.wrapper)||void 0===s?void 0:s.querySelector(`svg[${i}]`))&&void 0!==o?o:void 0,this.svg!==l&&(this.svgComputedStyle=this.svg?window.getComputedStyle(this.svg):void 0),this.container=null!==(a=null===(r=this.svg)||void 0===r?void 0:r.querySelector(`span[${n}]`))&&void 0!==a?a:void 0,this.observe()}disconnectedCallback(){this.svg=void 0,this.svgComputedStyle=void 0,this.wrapper=void 0,this.container=void 0,this.observe()}attributeChangedCallback(){this.observe()}flushSvgDisplay(){const{svg:t}=this;t&&(t.style.display="inline",requestAnimationFrame((()=>{t.style.display=""})))}observe(){this.containerObserver.disconnect(),this.wrapperObserver.disconnect(),this.wrapper&&this.wrapperObserver.observe(this.wrapper),this.container&&this.containerObserver.observe(this.container),this.svgComputedStyle&&this.observeSVGStyle(this.svgComputedStyle)}observeSVGStyle(t){const e=()=>{const i=(()=>{const e=t.getPropertyValue("--preserve-aspect-ratio");if(e)return e.trim();return`x${(({textAlign:t,direction:e})=>{if(t.endsWith("left"))return"Min";if(t.endsWith("right"))return"Max";if("start"===t||"end"===t){let i="rtl"===e;return"end"===t&&(i=!i),i?"Max":"Min"}return"Mid"})(t)}YMid meet`})();i!==this.svgPreserveAspectRatio&&(this.svgPreserveAspectRatio=i,this.updateSVGRect()),t===this.svgComputedStyle&&requestAnimationFrame(e)};e()}updateSVGRect(){var t,e,i,n,s,o,r;let a=Math.ceil(null!==(e=null===(t=this.containerSize)||void 0===t?void 0:t.width)&&void 0!==e?e:0);const l=Math.ceil(null!==(n=null===(i=this.containerSize)||void 0===i?void 0:i.height)&&void 0!==n?n:0);void 0!==this.dataset.downscaleOnly&&(a=Math.max(a,null!==(o=null===(s=this.wrapperSize)||void 0===s?void 0:s.width)&&void 0!==o?o:0));const c=null===(r=this.svg)||void 0===r?void 0:r.querySelector(":scope > foreignObject");if(null==c||c.setAttribute("width",`${a}`),null==c||c.setAttribute("height",`${l}`),this.svg&&(this.svg.setAttribute("viewBox",`0 0 ${a} ${l}`),this.svg.setAttribute("preserveAspectRatio",this.svgPreserveAspectRatio),this.svg.style.height=a<=0||l<=0?"0":""),this.container){const t=this.svgPreserveAspectRatio.toLowerCase();this.container.style.marginLeft=t.startsWith("xmid")||t.startsWith("xmax")?"auto":"0",this.container.style.marginRight=t.startsWith("xmi")?"auto":"0"}}}const o=(t,{attrs:e={},style:i})=>class extends t{constructor(...t){super(...t);for(const[t,i]of Object.entries(e))this.hasAttribute(t)||this.setAttribute(t,i);this.attachShadow({mode:"open"})}static get observedAttributes(){return["data-auto-scaling"]}connectedCallback(){this._update()}attributeChangedCallback(){this._update()}_update(){const t=i?`<style>:host { ${i} }</style>`:"";let e="<slot></slot>";const{autoScaling:n}=this.dataset;if(void 0!==n){e=`<marp-auto-scaling exportparts="svg:auto-scaling" ${"downscale-only"===n?"data-downscale-only":""}>${e}</marp-auto-scaling>`}this.shadowRoot.innerHTML=t+e}};let r;const a=Symbol();let l;const c="marpitSVGPolyfill:setZoomFactor,",d=Symbol(),g=Symbol();const h=()=>{const t="Apple Computer, Inc."===navigator.vendor,e=t?[u]:[],i={then:e=>(t?(async()=>{if(void 0===l){const t=document.createElement("canvas");t.width=10,t.height=10;const e=t.getContext("2d"),i=new Image(10,10),n=new Promise((t=>{i.addEventListener("load",(()=>t()))}));i.crossOrigin="anonymous",i.src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%201%201%22%3E%3CforeignObject%20width%3D%221%22%20height%3D%221%22%20requiredExtensions%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxhtml%22%3E%3Cdiv%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxhtml%22%20style%3D%22width%3A%201px%3B%20height%3A%201px%3B%20background%3A%20red%3B%20position%3A%20relative%22%3E%3C%2Fdiv%3E%3C%2FforeignObject%3E%3C%2Fsvg%3E",await n,e.drawImage(i,0,0),l=e.getImageData(5,5,1,1).data[3]<128}return l})().then((t=>{null==e||e(t?[u]:[])})):null==e||e([]),i)};return Object.assign(e,i)};let p,m;function u(t){const e="object"==typeof t&&t.target||document,i="object"==typeof t?t.zoom:t;window[g]||(Object.defineProperty(window,g,{configurable:!0,value:!0}),document.body.style.zoom=1.0001,document.body.offsetHeight,document.body.style.zoom=1,window.addEventListener("message",(({data:t,origin:e})=>{if(e===window.origin)try{if(t&&"string"==typeof t&&t.startsWith(c)){const[,e]=t.split(","),i=Number.parseFloat(e);Number.isNaN(i)||(m=i)}}catch(t){console.error(t)}})));let n=!1;Array.from(e.querySelectorAll("svg[data-marpit-svg]"),(t=>{var e,s,o,r;t.style.transform||(t.style.transform="translateZ(0)");const a=i||m||t.currentScale||1;p!==a&&(p=a,n=a);const l=t.getBoundingClientRect(),{length:c}=t.children;for(let i=0;i<c;i+=1){const n=t.children[i];if(n.getScreenCTM){const t=n.getScreenCTM();if(t){const i=null!==(s=null===(e=n.x)||void 0===e?void 0:e.baseVal.value)&&void 0!==s?s:0,c=null!==(r=null===(o=n.y)||void 0===o?void 0:o.baseVal.value)&&void 0!==r?r:0,d=n.children.length;for(let e=0;e<d;e+=1){const s=n.children[e];if("SECTION"===s.tagName){const{style:e}=s;e.transformOrigin||(e.transformOrigin=`${-i}px ${-c}px`),e.transform=`scale(${a}) matrix(${t.a}, ${t.b}, ${t.c}, ${t.d}, ${t.e-l.left}, ${t.f-l.top}) translateZ(0.0001px)`;break}}}}}})),!1!==n&&Array.from(e.querySelectorAll("iframe"),(({contentWindow:t})=>{null==t||t.postMessage(`${c}${n}`,"null"===window.origin?"*":window.origin)}))}function v({once:t=!1,target:e=document}={}){const i=function(t=document){if(t[d])return t[d];let e=!0;const i=()=>{e=!1,delete t[d]};Object.defineProperty(t,d,{configurable:!0,value:i});let n=[],s=!1;(async()=>{try{n=await h()}finally{s=!0}})();const o=()=>{for(const e of n)e({target:t});s&&0===n.length||e&&window.requestAnimationFrame(o)};return o(),i}(e);return t?(i(),()=>{}):i}p=1,m=void 0;const b=Symbol(),w=(e=document)=>{if("undefined"==typeof window)throw new Error("Marp Core's browser script is valid only in browser context.");if(((e=document)=>{const i=window[a];i||customElements.define("marp-auto-scaling",s);for(const n of Object.keys(t)){const s=`marp-${n}`,a=t[n].proto();null!=r||(r=!!document.createElement("div",{is:"marp-auto-scaling"}).outerHTML.startsWith("<div is")),r&&a!==HTMLElement?i||customElements.define(s,o(a,{style:t[n].style}),{extends:n}):(i||customElements.define(s,o(HTMLElement,t[n])),e.querySelectorAll(`${n}[is="${s}"]`).forEach((t=>{t.outerHTML=t.outerHTML.replace(new RegExp(`^<${n}`,"i"),`<${s}`).replace(new RegExp(`</${n}>$`,"i"),`</${s}>`)})))}window[a]=!0})(e),e[b])return e[b];const i=v({target:e}),n=()=>{i(),delete e[b]},l=Object.assign(n,{cleanup:n,update:()=>w(e)});return Object.defineProperty(e,b,{configurable:!0,value:l}),l},y=document.currentScript;w(y?y.getRootNode():document)}();
+</script></foreignObject></svg></div><script>/*!! License: https://unpkg.com/@marp-team/marp-cli@3.4.0/lib/bespoke.js.LICENSE.txt */
+!function(){"use strict";function e(e){return e&&e.__esModule&&Object.prototype.hasOwnProperty.call(e,"default")?e.default:e}var t={from:function(e,t){var n,r=1===(e.parent||e).nodeType?e.parent||e:document.querySelector(e.parent||e),o=[].filter.call("string"==typeof e.slides?r.querySelectorAll(e.slides):e.slides||r.children,(function(e){return"SCRIPT"!==e.nodeName})),i={},a=function(e,t){return(t=t||{}).index=o.indexOf(e),t.slide=e,t},s=function(e,t){i[e]=(i[e]||[]).filter((function(e){return e!==t}))},l=function(e,t){return(i[e]||[]).reduce((function(e,n){return e&&!1!==n(t)}),!0)},c=function(e,t){o[e]&&(n&&l("deactivate",a(n,t)),n=o[e],l("activate",a(n,t)))},d=function(e,t){var r=o.indexOf(n)+e;l(e>0?"next":"prev",a(n,t))&&c(r,t)},u={off:s,on:function(e,t){return(i[e]||(i[e]=[])).push(t),s.bind(null,e,t)},fire:l,slide:function(e,t){if(!arguments.length)return o.indexOf(n);l("slide",a(o[e],t))&&c(e,t)},next:d.bind(null,1),prev:d.bind(null,-1),parent:r,slides:o,destroy:function(e){l("destroy",a(n,e)),i={}}};return(t||[]).forEach((function(e){e(u)})),n||c(0),u}},n=e(t);const r=document.body,o=(...e)=>history.replaceState(...e),i="presenter",a="next",s=["",i,a],l="bespoke-marp-",c=`data-${l}`,d=(e,{protocol:t,host:n,pathname:r,hash:o}=location)=>{const i=e.toString();return`${t}//${n}${r}${i?"?":""}${i}${o}`},u=()=>r.dataset.bespokeView,f=e=>new URLSearchParams(location.search).get(e),m=(e,t={})=>{var n;const r={location,setter:o,...t},i=new URLSearchParams(r.location.search);for(const t of Object.keys(e)){const n=e[t];"string"==typeof n?i.set(t,n):i.delete(t)}try{r.setter({...null!==(n=window.history.state)&&void 0!==n?n:{}},"",d(i,r.location))}catch(e){console.error(e)}},g=(()=>{const e="bespoke-marp";try{return localStorage.setItem(e,e),localStorage.removeItem(e),!0}catch(e){return!1}})(),p=e=>{try{return localStorage.getItem(e)}catch(e){return null}},v=(e,t)=>{try{return localStorage.setItem(e,t),!0}catch(e){return!1}},h=e=>{try{return localStorage.removeItem(e),!0}catch(e){return!1}},y=(e,t)=>{const n="aria-hidden";t?e.setAttribute(n,"true"):e.removeAttribute(n)},b=e=>{e.parent.classList.add(`${l}parent`),e.slides.forEach((e=>e.classList.add(`${l}slide`))),e.on("activate",(t=>{const n=`${l}active`,r=t.slide,o=r.classList,i=!o.contains(n);if(e.slides.forEach((e=>{e.classList.remove(n),y(e,!0)})),o.add(n),y(r,!1),i){const e=`${n}-ready`;o.add(e),document.body.clientHeight,o.remove(e)}}))},w=e=>{let t=0,n=0;Object.defineProperty(e,"fragments",{enumerable:!0,value:e.slides.map((e=>[null,...e.querySelectorAll("[data-marpit-fragment]")]))});const r=r=>void 0!==e.fragments[t][n+r],o=(r,o)=>{t=r,n=o,e.fragments.forEach(((e,t)=>{e.forEach(((e,n)=>{if(null==e)return;const i=t<r||t===r&&n<=o;e.setAttribute(`${c}fragment`,(i?"":"in")+"active");const a=`${c}current-fragment`;t===r&&n===o?e.setAttribute(a,"current"):e.removeAttribute(a)}))})),e.fragmentIndex=o;const i={slide:e.slides[r],index:r,fragments:e.fragments[r],fragmentIndex:o};e.fire("fragment",i)};e.on("next",(({fragment:i=!0})=>{if(i){if(r(1))return o(t,n+1),!1;const i=t+1;e.fragments[i]&&o(i,0)}else{const r=e.fragments[t].length;if(n+1<r)return o(t,r-1),!1;const i=e.fragments[t+1];i&&o(t+1,i.length-1)}})),e.on("prev",(({fragment:i=!0})=>{if(r(-1)&&i)return o(t,n-1),!1;const a=t-1;e.fragments[a]&&o(a,e.fragments[a].length-1)})),e.on("slide",(({index:t,fragment:n})=>{let r=0;if(void 0!==n){const o=e.fragments[t];if(o){const{length:e}=o;r=-1===n?e-1:Math.min(Math.max(n,0),e-1)}}o(t,r)})),o(0,0)},x=document,k=()=>!(!x.fullscreenEnabled&&!x.webkitFullscreenEnabled),$=()=>!(!x.fullscreenElement&&!x.webkitFullscreenElement),E=e=>{e.fullscreen=()=>{k()&&(async()=>{return $()?null===(e=x.exitFullscreen||x.webkitExitFullscreen)||void 0===e?void 0:e.call(x):((e=x.body)=>{var t;return null===(t=e.requestFullscreen||e.webkitRequestFullscreen)||void 0===t?void 0:t.call(e)})();var e})()},document.addEventListener("keydown",(t=>{"f"!==t.key&&"F11"!==t.key||t.altKey||t.ctrlKey||t.metaKey||!k()||(e.fullscreen(),t.preventDefault())}))},L=`${l}inactive`,S=(e=2e3)=>({parent:t,fire:n})=>{const r=t.classList,o=e=>n(`marp-${e?"":"in"}active`);let i;const a=()=>{i&&clearTimeout(i),i=setTimeout((()=>{r.add(L),o()}),e),r.contains(L)&&(r.remove(L),o(!0))};for(const e of["mousedown","mousemove","touchend"])document.addEventListener(e,a);setTimeout(a,0)},P=["AUDIO","BUTTON","INPUT","SELECT","TEXTAREA","VIDEO"],_=e=>{e.parent.addEventListener("keydown",(e=>{if(!e.target)return;const t=e.target;(P.includes(t.nodeName)||"true"===t.contentEditable)&&e.stopPropagation()}))},T=e=>{window.addEventListener("load",(()=>{for(const t of e.slides){const e=t.querySelector("marp-auto-scaling, [data-auto-scaling], [data-marp-fitting]");t.setAttribute(`${c}load`,e?"":"hideable")}}))},I=({interval:e=250}={})=>t=>{document.addEventListener("keydown",(e=>{if(" "===e.key&&e.shiftKey)t.prev();else if("ArrowLeft"===e.key||"ArrowUp"===e.key||"PageUp"===e.key)t.prev({fragment:!e.shiftKey});else if(" "!==e.key||e.shiftKey)if("ArrowRight"===e.key||"ArrowDown"===e.key||"PageDown"===e.key)t.next({fragment:!e.shiftKey});else if("End"===e.key)t.slide(t.slides.length-1,{fragment:-1});else{if("Home"!==e.key)return;t.slide(0)}else t.next();e.preventDefault()}));let n,r,o=0;t.parent.addEventListener("wheel",(i=>{let a=!1;const s=(e,t)=>{e&&(a=a||((e,t)=>((e,t)=>{const n="X"===t?"Width":"Height";return e[`client${n}`]<e[`scroll${n}`]})(e,t)&&((e,t)=>{const{overflow:n}=e,r=e[`overflow${t}`];return"auto"===n||"scroll"===n||"auto"===r||"scroll"===r})(getComputedStyle(e),t))(e,t)),(null==e?void 0:e.parentElement)&&s(e.parentElement,t)};if(0!==i.deltaX&&s(i.target,"X"),0!==i.deltaY&&s(i.target,"Y"),a)return;i.preventDefault();const l=Math.sqrt(i.deltaX**2+i.deltaY**2);if(void 0!==i.wheelDelta){if(void 0===i.webkitForce&&Math.abs(i.wheelDelta)<40)return;if(i.deltaMode===i.DOM_DELTA_PIXEL&&l<4)return}else if(i.deltaMode===i.DOM_DELTA_PIXEL&&l<12)return;r&&clearTimeout(r),r=setTimeout((()=>{n=0}),e);const c=Date.now()-o<e,d=l<=n;if(n=l,c||d)return;let u;(i.deltaX>0||i.deltaY>0)&&(u="next"),(i.deltaX<0||i.deltaY<0)&&(u="prev"),u&&(t[u](),o=Date.now())}))},M=(e=`.${l}osc`)=>{const t=document.querySelector(e);if(!t)return()=>{};const n=(e,n)=>{t.querySelectorAll(`[${c}osc=${JSON.stringify(e)}]`).forEach(n)};return k()||n("fullscreen",(e=>e.style.display="none")),g||n("presenter",(e=>{e.disabled=!0,e.title="Presenter view is disabled due to restricted localStorage."})),e=>{t.addEventListener("click",(t=>{if(t.target instanceof HTMLElement){const{bespokeMarpOsc:n}=t.target.dataset;n&&t.target.blur();const r={fragment:!t.shiftKey};"next"===n?e.next(r):"prev"===n?e.prev(r):"fullscreen"===n?null==e||e.fullscreen():"presenter"===n&&e.openPresenterView()}})),e.parent.appendChild(t),e.on("activate",(({index:t})=>{n("page",(n=>n.textContent=`Page ${t+1} of ${e.slides.length}`))})),e.on("fragment",(({index:t,fragments:r,fragmentIndex:o})=>{n("prev",(e=>e.disabled=0===t&&0===o)),n("next",(n=>n.disabled=t===e.slides.length-1&&o===r.length-1))})),e.on("marp-active",(()=>y(t,!1))),e.on("marp-inactive",(()=>y(t,!0))),k()&&(e=>{for(const t of["","webkit"])x.addEventListener(t+"fullscreenchange",e)})((()=>n("fullscreen",(e=>e.classList.toggle("exit",k()&&$())))))}},O=e=>{window.addEventListener("message",(t=>{if(t.origin!==window.origin)return;const[n,r]=t.data.split(":");if("navigate"===n){const[t,n]=r.split(",");let o=Number.parseInt(t,10),i=Number.parseInt(n,10)+1;i>=e.fragments[o].length&&(o+=1,i=0),e.slide(o,{fragment:i})}}))};var A=["area","base","br","col","command","embed","hr","img","input","keygen","link","meta","param","source","track","wbr"];let C=e=>String(e).replace(/[&<>"']/g,(e=>`&${D[e]};`)),D={"&":"amp","<":"lt",">":"gt",'"':"quot","'":"apos"},N="dangerouslySetInnerHTML",B={className:"class",htmlFor:"for"},q={};function K(e,t){let n=[],r="";t=t||{};for(let e=arguments.length;e-- >2;)n.push(arguments[e]);if("function"==typeof e)return t.children=n.reverse(),e(t);if(e){if(r+="<"+e,t)for(let e in t)!1!==t[e]&&null!=t[e]&&e!==N&&(r+=` ${B[e]?B[e]:C(e)}="${C(t[e])}"`);r+=">"}if(-1===A.indexOf(e)){if(t[N])r+=t[N].__html;else for(;n.length;){let e=n.pop();if(e)if(e.pop)for(let t=e.length;t--;)n.push(e[t]);else r+=!0===q[e]?e:C(e)}r+=e?`</${e}>`:""}return q[r]=!0,r}const j=({children:e})=>K(null,null,...e),F=`${l}presenter-`,V={container:`${F}container`,dragbar:`${F}dragbar-container`,next:`${F}next`,nextContainer:`${F}next-container`,noteContainer:`${F}note-container`,noteWrapper:`${F}note-wrapper`,noteButtons:`${F}note-buttons`,infoContainer:`${F}info-container`,infoPage:`${F}info-page`,infoPageText:`${F}info-page-text`,infoPagePrev:`${F}info-page-prev`,infoPageNext:`${F}info-page-next`,noteButtonsBigger:`${F}note-bigger`,noteButtonsSmaller:`${F}note-smaller`,infoTime:`${F}info-time`,infoTimer:`${F}info-timer`},U=e=>{const{title:t}=document;document.title="[Presenter view]"+(t?` - ${t}`:"");const n={},r=e=>(n[e]=n[e]||document.querySelector(`.${e}`),n[e]);document.body.appendChild((e=>{const t=document.createElement("div");return t.className=V.container,t.appendChild(e),t.insertAdjacentHTML("beforeend",K(j,null,K("div",{class:V.nextContainer},K("iframe",{class:V.next,src:"?view=next"})),K("div",{class:V.dragbar}),K("div",{class:V.noteContainer},K("div",{class:V.noteWrapper}),K("div",{class:V.noteButtons},K("button",{class:V.noteButtonsSmaller,tabindex:"-1",title:"Smaller notes font size"},"Smaller notes font size"),K("button",{class:V.noteButtonsBigger,tabindex:"-1",title:"Bigger notes font size"},"Bigger notes font size"))),K("div",{class:V.infoContainer},K("div",{class:V.infoPage},K("button",{class:V.infoPagePrev,tabindex:"-1",title:"Previous"},"Previous"),K("span",{class:V.infoPageText}),K("button",{class:V.infoPageNext,tabindex:"-1",title:"Next"},"Next")),K("time",{class:V.infoTime,title:"Current time"}),K("time",{class:V.infoTimer,title:"Timer"})))),t})(e.parent)),(e=>{let t=!1;r(V.dragbar).addEventListener("mousedown",(()=>{t=!0,r(V.dragbar).classList.add("active")})),window.addEventListener("mouseup",(()=>{t=!1,r(V.dragbar).classList.remove("active")})),window.addEventListener("mousemove",(e=>{if(!t)return;const n=e.clientX/document.documentElement.clientWidth*100;r(V.container).style.setProperty("--bespoke-marp-presenter-split-ratio",`${Math.max(0,Math.min(100,n))}%`)})),r(V.nextContainer).addEventListener("click",(()=>e.next()));const n=r(V.next),o=(i=n,(e,t)=>{var n;return null===(n=i.contentWindow)||void 0===n?void 0:n.postMessage(`navigate:${e},${t}`,"null"===window.origin?"*":window.origin)});var i;n.addEventListener("load",(()=>{r(V.nextContainer).classList.add("active"),o(e.slide(),e.fragmentIndex),e.on("fragment",(({index:e,fragmentIndex:t})=>o(e,t)))}));const a=document.querySelectorAll(".bespoke-marp-note");a.forEach((e=>{e.addEventListener("keydown",(e=>e.stopPropagation())),r(V.noteWrapper).appendChild(e)})),e.on("activate",(()=>a.forEach((t=>t.classList.toggle("active",t.dataset.index==e.slide())))));let s=0;const l=e=>{s=Math.max(-5,s+e),r(V.noteContainer).style.setProperty("--bespoke-marp-note-font-scale",(1.2**s).toFixed(4))},c=()=>l(1),d=()=>l(-1),u=r(V.noteButtonsBigger),f=r(V.noteButtonsSmaller);u.addEventListener("click",(()=>{u.blur(),c()})),f.addEventListener("click",(()=>{f.blur(),d()})),document.addEventListener("keydown",(e=>{"+"===e.key&&c(),"-"===e.key&&d()}),!0),e.on("activate",(({index:t})=>{r(V.infoPageText).textContent=`${t+1} / ${e.slides.length}`}));const m=r(V.infoPagePrev),g=r(V.infoPageNext);m.addEventListener("click",(t=>{m.blur(),e.prev({fragment:!t.shiftKey})})),g.addEventListener("click",(t=>{g.blur(),e.next({fragment:!t.shiftKey})})),e.on("fragment",(({index:t,fragments:n,fragmentIndex:r})=>{m.disabled=0===t&&0===r,g.disabled=t===e.slides.length-1&&r===n.length-1}));let p=new Date;const v=()=>{const e=new Date,t=e=>`${Math.floor(e)}`.padStart(2,"0"),n=e.getTime()-p.getTime(),o=t(n/1e3%60),i=t(n/1e3/60%60),a=t(n/36e5%24);r(V.infoTime).textContent=e.toLocaleTimeString(),r(V.infoTimer).textContent=`${a}:${i}:${o}`};v(),setInterval(v,250),r(V.infoTimer).addEventListener("click",(()=>{p=new Date}))})(e)},X=e=>{if(!(e=>e.syncKey&&"string"==typeof e.syncKey)(e))throw new Error("The current instance of Bespoke.js is invalid for Marp bespoke presenter plugin.");Object.defineProperties(e,{openPresenterView:{enumerable:!0,value:H},presenterUrl:{enumerable:!0,get:R}}),g&&document.addEventListener("keydown",(t=>{"p"!==t.key||t.altKey||t.ctrlKey||t.metaKey||(t.preventDefault(),e.openPresenterView())}))};function H(){const{max:e,floor:t}=Math,n=e(t(.85*window.innerWidth),640),r=e(t(.85*window.innerHeight),360);return window.open(this.presenterUrl,F+this.syncKey,`width=${n},height=${r},menubar=no,toolbar=no`)}function R(){const e=new URLSearchParams(location.search);return e.set("view","presenter"),e.set("sync",this.syncKey),d(e)}const W=e=>{const t=u();return t===a&&e.appendChild(document.createElement("span")),{"":X,[i]:U,[a]:O}[t]},J=e=>{e.on("activate",(t=>{document.querySelectorAll(".bespoke-progress-parent > .bespoke-progress-bar").forEach((n=>{n.style.flexBasis=100*t.index/(e.slides.length-1)+"%"}))}))},Y=e=>{const t=Number.parseInt(e,10);return Number.isNaN(t)?null:t},z=(e={})=>{const t={history:!0,...e};return e=>{let n=!0;const r=e=>{const t=n;try{return n=!0,e()}finally{n=t}},o=(t={fragment:!0})=>{let n=t.fragment?Y(f("f")||""):null;((t,n)=>{const{min:r,max:o}=Math,{fragments:i,slides:a}=e,s=o(0,r(t,a.length-1)),l=o(0,r(n||0,i[s].length-1));s===e.slide()&&l===e.fragmentIndex||e.slide(s,{fragment:l})})((()=>{var t,r;if(location.hash){const[o]=location.hash.slice(1).split(":~:");if(/^\d+$/.test(o))return(null!==(t=Y(o))&&void 0!==t?t:1)-1;const i=document.getElementById(o)||document.querySelector(`a[name="${CSS.escape(o)}"]`);if(i){const{length:t}=e.slides;for(let o=0;o<t;o+=1)if(e.slides[o].contains(i)){const t=null===(r=e.fragments)||void 0===r?void 0:r[o],a=i.closest("[data-marpit-fragment]");if(t&&a){const e=t.indexOf(a);e>=0&&(n=e)}return o}}}return 0})(),n)};e.on("fragment",(({index:e,fragmentIndex:r})=>{n||m({f:0===r||r.toString()},{location:{...location,hash:`#${e+1}`},setter:(...e)=>t.history?history.pushState(...e):history.replaceState(...e)})})),setTimeout((()=>{o(),window.addEventListener("hashchange",(()=>r((()=>{o({fragment:!1}),m({f:void 0})})))),window.addEventListener("popstate",(()=>{n||r((()=>o()))})),n=!1}),0)}},G=(e={})=>{var t;const n=e.key||(null===(t=window.history.state)||void 0===t?void 0:t.marpBespokeSyncKey)||Math.random().toString(36).slice(2),r=`bespoke-marp-sync-${n}`;var i;i={marpBespokeSyncKey:n},m({},{setter:(e,...t)=>o({...e,...i},...t)});const a=()=>{const e=p(r);return e?JSON.parse(e):Object.create(null)},s=e=>{const t=a(),n={...t,...e(t)};return v(r,JSON.stringify(n)),n},l=()=>{window.removeEventListener("pageshow",l),s((e=>({reference:(e.reference||0)+1})))};return e=>{l(),Object.defineProperty(e,"syncKey",{value:n,enumerable:!0});let t=!0;setTimeout((()=>{e.on("fragment",(e=>{t&&s((()=>({index:e.index,fragmentIndex:e.fragmentIndex})))}))}),0),window.addEventListener("storage",(n=>{if(n.key===r&&n.oldValue&&n.newValue){const r=JSON.parse(n.oldValue),o=JSON.parse(n.newValue);if(r.index!==o.index||r.fragmentIndex!==o.fragmentIndex)try{t=!1,e.slide(o.index,{fragment:o.fragmentIndex,forSync:!0})}finally{t=!0}}}));const o=()=>{const{reference:e}=a();void 0===e||e<=1?h(r):s((()=>({reference:e-1})))};window.addEventListener("pagehide",(e=>{e.persisted&&window.addEventListener("pageshow",l),o()})),e.on("destroy",o)}},{PI:Q,abs:Z,sqrt:ee,atan2:te}=Math,ne={passive:!0},re=({slope:e=-.7,swipeThreshold:t=30}={})=>n=>{let r;const o=n.parent,i=e=>{const t=o.getBoundingClientRect();return{x:e.pageX-(t.left+t.right)/2,y:e.pageY-(t.top+t.bottom)/2}};o.addEventListener("touchstart",(({touches:e})=>{r=1===e.length?i(e[0]):void 0}),ne),o.addEventListener("touchmove",(e=>{if(r)if(1===e.touches.length){e.preventDefault();const t=i(e.touches[0]),n=t.x-r.x,o=t.y-r.y;r.delta=ee(Z(n)**2+Z(o)**2),r.radian=te(n,o)}else r=void 0})),o.addEventListener("touchend",(o=>{if(r){if(r.delta&&r.delta>=t&&r.radian){const t=(r.radian-e+Q)%(2*Q)-Q;n[t<0?"next":"prev"](),o.stopPropagation()}r=void 0}}),ne)},oe=new Map;oe.clear(),oe.set("none",{backward:{both:void 0,incoming:void 0,outgoing:void 0},forward:{both:void 0,incoming:void 0,outgoing:void 0}});const ie={both:"",outgoing:"outgoing-",incoming:"incoming-"},ae={forward:"",backward:"-backward"},se=e=>`--marp-bespoke-transition-animation-${e}`,le=e=>`--marp-transition-${e}`,ce=se("name"),de=se("duration"),ue=e=>new Promise((t=>{const n={},r=document.createElement("div"),o=e=>{r.remove(),t(e)};r.addEventListener("animationstart",(()=>o(n))),Object.assign(r.style,{animationName:e,animationDuration:"1s",animationFillMode:"both",animationPlayState:"paused",position:"absolute",pointerEvents:"none"}),document.body.appendChild(r);const i=getComputedStyle(r).getPropertyValue(le("duration"));i&&(n.defaultDuration=i),((e,t)=>{requestAnimationFrame((()=>{e.style.animationPlayState="running",requestAnimationFrame((()=>t(void 0)))}))})(r,o)})),fe=async e=>oe.has(e)?oe.get(e):(e=>{const t={},n=[];for(const[r,o]of Object.entries(ie))for(const[i,a]of Object.entries(ae)){const s=`marp-${o}transition${a}-${e}`;n.push(ue(s).then((e=>{t[i]=t[i]||{},t[i][r]=e?{...e,name:s}:void 0})))}return Promise.all(n).then((()=>t))})(e).then((t=>(oe.set(e,t),t))),me=e=>Object.values(e).flatMap(Object.values).every((e=>!e)),ge=(e,{type:t,backward:n})=>{const r=e[n?"backward":"forward"],o=(()=>{const e=r[t],n=e=>({[ce]:e.name});if(e)return n(e);if(r.both){const e=n(r.both);return"incoming"===t&&(e[se("direction")]="reverse"),e}})();return!o&&n?ge(e,{type:t,backward:!1}):o||{[ce]:"__bespoke_marp_transition_no_animation__"}},pe=e=>{if(e)try{const t=JSON.parse(e);if((e=>{if("object"!=typeof e)return!1;const t=e;return"string"==typeof t.name&&(void 0===t.duration||"string"==typeof t.duration)})(t))return t}catch(e){}},ve="_tSId",he="_tA",ye="bespoke-marp-transition-warming-up",be=window.matchMedia("(prefers-reduced-motion: reduce)"),we="__bespoke_marp_transition_reduced_outgoing__",xe="__bespoke_marp_transition_reduced_incoming__",ke={forward:{both:void 0,incoming:{name:xe},outgoing:{name:we}},backward:{both:void 0,incoming:{name:xe},outgoing:{name:we}}},$e=e=>{if(!document.startViewTransition)return;const t=t=>(void 0!==t&&(e._tD=t),e._tD);let n;t(!1),((...e)=>{const t=[...new Set(e).values()];return Promise.all(t.map((e=>fe(e)))).then()})(...Array.from(document.querySelectorAll("section[data-transition], section[data-transition-back]")).flatMap((e=>[e.dataset.transition,e.dataset.transitionBack].flatMap((e=>{const t=pe(e);return[null==t?void 0:t.name,(null==t?void 0:t.builtinFallback)?`__builtin__${t.name}`:void 0]})).filter((e=>!!e))))).then((()=>{document.querySelectorAll("style").forEach((e=>{e.innerHTML=e.innerHTML.replace(/--marp-transition-duration:[^;}]*[;}]/g,(e=>e.slice(0,-1)+"!important"+e.slice(-1)))}))}));const r=(n,{back:r,cond:o})=>i=>{var a;const s=t();if(s)return!!i[he]||!("object"!=typeof s||(s.skipTransition(),!i.forSync));if(!o(i))return!0;const l=e.slides[e.slide()],c=()=>{var e;return null!==(e=i.back)&&void 0!==e?e:r},d="data-transition"+(c()?"-back":""),u=l.querySelector(`section[${d}]`);if(!u)return!0;const f=pe(null!==(a=u.getAttribute(d))&&void 0!==a?a:void 0);return!f||((async(e,{builtinFallback:t=!0}={})=>{let n=await fe(e);if(me(n)){if(!t)return;return n=await fe(`__builtin__${e}`),me(n)?void 0:n}return n})(f.name,{builtinFallback:f.builtinFallback}).then((e=>{if(!e){t(!0);try{n(i)}finally{t(!1)}return}let r=e;be.matches&&(console.warn("Use a constant animation to transition because preferring reduced motion by viewer has detected."),r=ke);const o=document.getElementById(ve);o&&o.remove();const a=document.createElement("style");a.id=ve,document.head.appendChild(a),((e,t)=>{const n=[`:root{${le("direction")}:${t.backward?-1:1};}`,":root:has(.bespoke-marp-inactive){cursor:none;}"],r=t=>{var n,o,i;const a=(null===(n=e[t].both)||void 0===n?void 0:n.defaultDuration)||(null===(o=e[t].outgoing)||void 0===o?void 0:o.defaultDuration)||(null===(i=e[t].incoming)||void 0===i?void 0:i.defaultDuration);return"forward"===t?a:a||r("forward")},o=t.duration||r(t.backward?"backward":"forward");void 0!==o&&n.push(`::view-transition-group(*){${de}:${o};}`);const i=e=>Object.entries(e).map((([e,t])=>`${e}:${t};`)).join("");return n.push(`::view-transition-old(root){${i(ge(e,{...t,type:"outgoing"}))}}`,`::view-transition-new(root){${i(ge(e,{...t,type:"incoming"}))}}`),n})(r,{backward:c(),duration:f.duration}).forEach((e=>{var t;return null===(t=a.sheet)||void 0===t?void 0:t.insertRule(e)}));const s=document.documentElement.classList;s.add(ye);let l=!1;const d=()=>{l||(n(i),l=!0,s.remove(ye))},u=()=>{t(!1),a.remove(),s.remove(ye)};try{t(!0);const e=document.startViewTransition(d);t(e),e.finished.finally(u)}catch(e){console.error(e),d(),u()}})),!1)};e.on("prev",r((t=>e.prev({...t,[he]:!0})),{back:!0,cond:e=>{var t;return e.index>0&&!((null===(t=e.fragment)||void 0===t||t)&&n.fragmentIndex>0)}})),e.on("next",r((t=>e.next({...t,[he]:!0})),{cond:t=>t.index+1<e.slides.length&&!(n.fragmentIndex+1<n.fragments.length)})),setTimeout((()=>{e.on("slide",r((t=>e.slide(t.index,{...t,[he]:!0})),{cond:t=>{const n=e.slide();return t.index!==n&&(t.back=t.index<n,!0)}}))}),0),e.on("fragment",(e=>{n=e}))};let Ee;const Le=()=>(void 0===Ee&&(Ee="wakeLock"in navigator&&navigator.wakeLock),Ee),Se=async()=>{const e=Le();if(e)try{return await e.request("screen")}catch(e){console.warn(e)}return null},Pe=async()=>{if(!Le())return;let e;const t=()=>{e&&"visible"===document.visibilityState&&Se()};for(const e of["visibilitychange","fullscreenchange"])document.addEventListener(e,t);return e=await Se(),e};((e=document.getElementById(":$p"))=>{(()=>{const e=f("view");r.dataset.bespokeView=e===a||e===i?e:""})();const t=(e=>{const t=f(e);return m({[e]:void 0}),t})("sync")||void 0;n.from(e,((...e)=>{const t=s.findIndex((e=>u()===e));return e.map((([e,n])=>e[t]&&n)).filter((e=>e))})([[1,1,0],G({key:t})],[[1,1,1],W(e)],[[1,1,0],_],[[1,1,1],b],[[1,0,0],S()],[[1,1,1],T],[[1,1,1],z({history:!1})],[[1,1,0],I()],[[1,1,0],E],[[1,0,0],J],[[1,1,0],re()],[[1,0,0],M()],[[1,0,0],$e],[[1,1,1],w],[[1,1,0],Pe]))})()}();</script></body></html>

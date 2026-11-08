@@ -2,9 +2,9 @@
 id: DOC-DD-001
 title: ソフトウェア構造設計書
 doc_type: detail_design
-version: 1.1.0
+version: 1.2.0
 status: Approved
-date: 2026-11-07
+date: 2026-11-08
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -32,6 +32,7 @@ tags:
 | :--- | :--- | :--- | :--- |
 | 1.0.0 | 2026-11-04 | PBI-016 | 規約 DOC-GOV-003 準拠への再編およびデータ構造分離 |
 | 1.1.0 | 2026-11-07 | PBI-019 | 24H365D自律開発統制・レポーティングモジュール（MOD-AUT-001）の追加 |
+| 1.2.0 | 2026-11-08 | PBI-020 | 中見出しスライド生成および章別目次機能に伴う MOD-SRV-001 および MOD-ENG-001 の責務拡張 |
 
 # 2 モジュール構成
 
@@ -42,7 +43,7 @@ tags:
 | 状態 | Approved |
 | 後継ID | なし |
 | 主要ファイル | `src/index.ts` |
-| 責務 | MCPプロトコル処理、Zodスキーマ検証、Markdown変換、CRUDロジック |
+| 責務 | MCPプロトコル処理、Zodスキーマ検証、Markdown変換、中見出しスライド生成、CRUDロジック |
 
 ### 2.1.1 依存関係
 ```mermaid
@@ -58,7 +59,7 @@ flowchart LR
 | 状態 | Approved |
 | 後継ID | なし |
 | 主要ファイル | `marp.config.js` |
-| 責務 | 目次自動生成プラグイン、Markdown-itトークン走査、静的リサイズ |
+| 責務 | 目次自動生成プラグイン（章別目次モード抽出含む）、Markdown-itトークン走査、静的リサイズ |
 
 ### 2.2.1 依存関係
 ```mermaid

@@ -2,9 +2,9 @@
 id: DOC-BD-002
 title: 機能仕様書
 doc_type: basic_design
-version: 1.1.0
+version: 1.2.0
 status: Approved
-date: 2026-11-07
+date: 2026-11-08
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -31,6 +31,8 @@ tags:
 | :--- | :--- | :--- | :--- |
 | 1.0.0 | 2026-11-04 | PBI-016 | 規約 DOC-GOV-003 準拠への再編および画面仕様分離 |
 | 1.1.0 | 2026-11-07 | PBI-019 | 24H365D自律開発統制・日報週報生成機能（FNC-011）の追加 |
+| 1.2.0 | 2026-11-08 | PBI-020 | 中見出しスライド生成および章別目次機能（FNC-012）の追加 |
+| 1.3.0 | 2026-11-08 | PBI-021 | 中見出しスライドの表示位置・機密表示配置・リンクHTML化・4:3比率適用の品質是正 |
 
 # 2 機能仕様
 
@@ -154,6 +156,17 @@ MCPツール（`generate_slide_deck`, `get_slide_deck`, `insert_slide`, `update_
 
 ### 2.11.1 振る舞い
 未対応Issueを優先度と依存関係に基づき選定し、Stage A起票エージェントが作成したPBIを独立した審査エージェント（`stage-gate-reviewer-agent`）が審査して合格（`PASS`）時のみStage Bへ移行させる。毎日3回（`07:30`, `11:50`, `18:00`）にメンテナー向け日報を `tpl_96_daily_report.md` から生成し、毎週水曜 `16:00` にはプロジェクトとりまとめ向け週報を `tpl_97_weekly_report.md` から併せて生成する。インターフェース詳細は [[03_external_interface_specification#2.11 EXT-CLI-003 autonomous_dev_loop|EXT-CLI-003]] および [[03_external_interface_specification#2.12 EXT-CLI-004 generate_reports|EXT-CLI-004]] を参照する。
+
+## 2.12 FNC-012 中見出し（セクションディバイダー）スライド生成および章別目次機能
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | `REQ-FNC-012` |
+| 状態 | Approved |
+| 後継ID | なし |
+| 概要 | 複数ページを章として区切る4種類の中見出し（セクションディバイダー）スライド生成、ページ内アンカーリンク遷移、専用CSSスタイル、および章タイトルのみを抽出する章別目次モードの提供 |
+
+### 2.12.1 振る舞い
+スライドデッキ生成・更新時に中見出しスライド（`SectionDividerSlide`）を受け入れ、4つのパターン（`title-only`, `title-and-pages`, `all-chapters`, `all-chapters-and-pages`）に応じて左寄せ垂直中央配置の構造化HTMLと専用クラス `section-divider` を出力する。通常スライド左上のヘッダータイトル（h1コンテンツ）は中見出しスライドでは非表示化され、章題名がスライド中央の適正位置に大見出し（32pt以上太字・テーマカラー装飾バー）として表示される。ページタイトル一覧には生MarkdownではなくクリッカブルなHTMLアンカーリンク（`<a href="#スライド番号">`）をセマンティックに出力し、他章タイトルは `.dim` クラスで薄色表示する。フッター（コピーライト・機密指定区分）は通常スライドと同一の最下部フッター帯（`bottom: 12px`, `bottom: 8px`）の絶対位置を維持する。また `marp.config.js` において `toc-chapters-only` クラスを持つ目次スライドを検知した場合、中見出しスライドの章タイトルとページ番号のみを抽出して目次を自動生成する。さらに 4:3（960x720）および 16:9（1280x720）の両画面比率においてピクセルパーフェクトなレイアウト描画を担保する。インターフェース詳細は [[03_external_interface_specification#2.1 EXT-MCP-001 generate_slide_deck|EXT-MCP-001]] を参照する。
 
 # 3 業務フローおよび状態遷移
 

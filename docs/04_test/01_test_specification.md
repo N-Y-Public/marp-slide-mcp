@@ -2,9 +2,9 @@
 id: DOC-TST-001
 title: テスト仕様書
 doc_type: test
-version: 1.1.0
+version: 1.2.0
 status: Approved
-date: 2026-11-07
+date: 2026-11-08
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -30,6 +30,8 @@ tags:
 | :--- | :--- | :--- | :--- |
 | 1.0.0 | 2026-11-04 | PBI-016 | 初版作成（DOC-GOV-003およびDOC-GOV-004準拠） |
 | 1.1.0 | 2026-11-07 | PBI-019 | 24H365D自律開発統制および日報・週報テンプレート生成テスト（TEST-UT-005, TEST-ST-011）の追加 |
+| 1.2.0 | 2026-11-08 | PBI-020 | 中見出しスライド単体テスト（TEST-UT-006）および総合テスト（TEST-ST-012）の追加 |
+| 1.3.0 | 2026-11-08 | PBI-021 | 中見出しスライド品質是正単体テスト（TEST-UT-007）および総合テスト（TEST-ST-013）の追加 |
 
 # 2 テストケース
 
@@ -41,6 +43,8 @@ tags:
 | `TEST-UT-003` | [[03_program_specification#2.3.1 FN-PPT-001 convertToPptx\|FN-PPT-001]] | 96DPI基準のDOM矩形座標情報が準備されている | convertToPptxの座標変換論理を実行する | ピクセル値が正確なPowerPointインチ単位へ変換され中間HTMLファイルが削除される | [[01_requirements_specification#3.5 REQ-FNC-005 ネイティブPPTX変換機能\|REQ-FNC-005-AC01]] |
 | `TEST-UT-004` | [[03_program_specification#2.6.1 FN-DOC-001 verifyDocSyntax\|FN-DOC-001]] | 各種規約適合図書および意図的な違反を含む検査用図書が準備されている | verifyDocSyntaxを実行する | 規約適合図書は違反0件で終了コード0、違反図書は該当エラーコードで検出され終了コード1となる | [[01_requirements_specification#4.7 REQ-NFR-007 設計図書の記述一貫性・追跡性\|REQ-NFR-007]] |
 | `TEST-UT-005` | [[03_program_specification#2.7.2 FN-AUT-002 evaluateStageAToBGate\|FN-AUT-002]] | 複数Issue、PBIドラフト、および同一/別エージェントIDペアが準備されている | Issue選定、Stage A→Bゲート審査、フィードバック解析を実行する | 最高優先度Issueが選定され、同一エージェントの自己承認はREJECT、独立レビュアー審査時のみPASSとなり、コメント指示が反映される | [[01_requirements_specification#3.11 REQ-FNC-011 24H365D自律開発オーケストレーション・階層別定期レポート生成機能\|REQ-FNC-011-AC01]] |
+| `TEST-UT-006` | [[03_program_specification#2.1.9 FN-SRV-009 resolveSectionDividerSlide\|FN-SRV-009]] | 4種類の中見出しパターンデータおよびページ一覧が準備されている | 中見出しMarkdown解決およびアンカーリンク生成を実行する | パターンに応じたクラスディレクティブと章タイトル・太字他章薄色・ページアンカーリンクが生成される | [[01_requirements_specification#3.12 REQ-FNC-012 中見出し（セクションディバイダー）スライド生成・章別目次機能\|REQ-FNC-012-AC01]] |
+| `TEST-UT-007` | [[03_program_specification#2.1.9 FN-SRV-009 resolveSectionDividerSlide\|FN-SRV-009]] | ページ一覧を含む中見出しデータが準備されている | `resolveSectionDividerSlide` を実行する | 生Markdown（`- [...]`）が混入せず、純粋なHTMLタグ（`<ul>`, `<li>`, `<a>`）としてアンカーリンクが生成される | [[01_requirements_specification#3.12 REQ-FNC-012 中見出し（セクションディバイダー）スライド生成・章別目次機能\|REQ-FNC-012-AC07]] |
 
 ## 2.2 結合テスト
 | テストID | 対象ID | 前提（Given） | 手順（When） | 期待結果（Then） | 上位ID |
@@ -66,6 +70,8 @@ tags:
 | `TEST-ST-009` | [[01_software_structure_design#2.2 MOD-ENG-001 カスタムMarpエンジン\|MOD-ENG-001]] | Mermaid図を含むスライドおよび表紙のみのスライドが準備されている | PDFを出力しFlateDecodeストリームからページ数を機械検査する | 余分な白紙ページが0件でありスライド枚数とPDFページ数が完全一致する | [[01_requirements_specification#4.1 REQ-NFR-001 可用性・信頼性\|REQ-NFR-001]] |
 | `TEST-ST-010` | [[01_software_structure_design#2.7 MOD-DOC-001 設計図書規約・構文検査モジュール\|MOD-DOC-001]] | docs配下の設計図書群が配置されている | verify_doc_syntax.pyおよびverify_rtm.pyを実行する | 規約対象全図書で違反0件、RTM断絶0件で終了コード0となる | [[01_requirements_specification#4.7 REQ-NFR-007 設計図書の記述一貫性・追跡性\|REQ-NFR-007]] |
 | `TEST-ST-011` | [[01_software_structure_design#2.8 MOD-AUT-001 24H365D自律開発統制・レポーティングモジュール\|MOD-AUT-001]] | 日報テンプレート（tpl_96）と週報テンプレート（tpl_97）およびスケジュール設定が配置されている | 1日3回（07:30/11:50/18:00）の日報生成と水曜16:00の週報生成を実行する | メンテナー向け日報3枠およびプロジェクトとりまとめ向け週報（課題・解決・結果・新たな宿題と期限）が韓国語混入0件で生成される | [[01_requirements_specification#3.11 REQ-FNC-011 24H365D自律開発オーケストレーション・階層別定期レポート生成機能\|REQ-FNC-011-AC02]] |
+| `TEST-ST-012` | [[01_software_structure_design#2.1 MOD-SRV-001 MCPサービスモジュール\|MOD-SRV-001]] | 中見出しスライドおよび章別目次スライドを含むデッキが準備されている | Dockerコンテナ内でMarpビルド・テスト検証を実行する | 中見出しスライドが正常描画され、目次に中見出しの章タイトルのみが抽出表示される | [[01_requirements_specification#3.12 REQ-FNC-012 中見出し（セクションディバイダー）スライド生成・章別目次機能\|REQ-FNC-012-AC04]] |
+| `TEST-ST-013` | [[01_software_structure_design#2.1 MOD-SRV-001 MCPサービスモジュール\|MOD-SRV-001]] | 中見出しスライド（4パターン全て）およびショウケースデッキ（4:3比率）が準備されている | Dockerコンテナ内でHTML/PDFビルドを実行しDOMおよびCSSレンダリングを検証する | 通常ヘッダー非表示、章題名大見出し表示、フッター帯内への機密・著作権絶対配置、生Markdown露出0件、および4:3比率での正常出力が検証される | [[01_requirements_specification#3.12 REQ-FNC-012 中見出し（セクションディバイダー）スライド生成・章別目次機能\|REQ-FNC-012-AC05]] |
 
 # 3 実行手順
 

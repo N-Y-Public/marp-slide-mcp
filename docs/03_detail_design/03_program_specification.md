@@ -2,9 +2,9 @@
 id: DOC-DD-003
 title: プログラム仕様書
 doc_type: detail_design
-version: 1.2.0
+version: 1.3.0
 status: Approved
-date: 2026-11-07
+date: 2026-11-08
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -34,6 +34,8 @@ tags:
 | 1.0.0 | 2026-11-04 | PBI-016 | 初版作成（DOC-GOV-003およびDOC-GOV-004準拠） |
 | 1.1.0 | 2026-11-04 | PBI-014 | PPTX変換スクリプト（PRG-PPT-001）詳細処理論理およびexportToPptx（FN-SRV-008）の追加 |
 | 1.2.0 | 2026-11-07 | PBI-019 | 自律開発オーケストレーター（PRG-AUT-001）および日報・週報テンプレート生成ツール（PRG-AUT-002）の追加 |
+| 1.3.0 | 2026-11-08 | PBI-020 | 中見出しスライド解決処理（FN-SRV-009）の追加 |
+| 1.4.0 | 2026-11-08 | PBI-021 | 中見出しスライドのHTMLセマンティックタグ直接出力および生Markdown露出根絶論理の追加 |
 
 # 2 プログラム
 
@@ -285,6 +287,37 @@ tags:
 | :--- | :--- | :--- |
 | 対象ファイル不在 | `ERR-NOT-002` | 対象不在エラーメッセージを返却する |
 | 変換失敗 | `ERR-SYS-999` | 例外エラーメッセージを返却する |
+
+### 2.1.9 FN-SRV-009 resolveSectionDividerSlide
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[#2.1 PRG-SRV-001 MCPサーバー本体|PRG-SRV-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
+
+#### 2.1.9.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-SRV-009-IN01` | 中見出し定義 | 中見出しパターン・タイトル・章構成情報 | 必須 | [[06_data_structure_specification#2.10 DAT-TYP-010 SectionDivider|DAT-TYP-010]] |
+
+#### 2.1.9.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-SRV-009-OUT01` | 解決後コンテンツ | 中見出し用Markdown本文およびクラスディレクティブ | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
+
+#### 2.1.9.3 処理論理
+1. 中見出しパターン（`title-only`, `title-and-pages`, `all-chapters`, `all-chapters-and-pages`）を判定する。
+2. HTMLブロック内にMarkdown構文を混在させることによるテキスト未パース（生Markdown露出）を防止するため、純粋なセマンティックHTML（`<ul>`, `<li>`, `<a>`）を生成する。
+3. `title-only`: テーマ共通のh1-h6隠蔽ルールを回避するため `<div class="chapter-header-main"><div class="chapter-title">章タイトル</div></div>` を出力する。
+4. `title-and-pages`: 章タイトル（`<div class="chapter-header-main"><div class="chapter-title">章タイトル</div></div>`）と、属するページタイトル一覧（`<ul class="chapter-pages-list"><li><a href="#スライド番号">タイトル</a></li></ul>`）をセマンティックHTMLで出力する。
+5. `all-chapters`: 全章タイトル一覧（`<ul class="all-chapters-list">`）を出力し、カレント章を `<li class="active-chapter"><strong>章タイトル</strong></li>`、他章を `<li class="dim">章タイトル</li>` で出力する。
+6. `all-chapters-and-pages`: 全章タイトル一覧（カレント太字、他章 `.dim`）に加え、カレント章の子リストとして属するページタイトル一覧（`<ul class="chapter-pages-list"><li><a href="#スライド番号">タイトル</a></li></ul>`）を出力する。
+7. `section-divider` クラスおよび `pattern-{pattern}` クラスをクラス配列に付与する。
+
+#### 2.1.9.4 異常系
+| 条件 | エラーコード | 動作 |
+| :--- | :--- | :--- |
+| 不正なパターン指定 | `ERR-VAL-001` | バリデーションエラーとして処理を中断する |
 
 ## 2.2 PRG-ENG-001 カスタムMarpエンジン
 | 項目 | 内容 |

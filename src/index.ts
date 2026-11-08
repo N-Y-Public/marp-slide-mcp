@@ -139,6 +139,40 @@ const ImageGridItemSchema = z.object({
   alt: z.string().optional().describe("画像の代替テキスト"),
 });
 
+// 中見出しスライドに含めるページタイトル項目のスキーマを定義します
+const SectionPageItemSchema = z.object({
+  // ページタイトル文字列です
+  title: z.string().describe("ページタイトル"),
+  // リンク先のスライドページ番号（任意）です
+  pageNumber: z.number().int().positive().optional().describe("リンク先ページ番号（1始まり）"),
+});
+
+// 中見出しのレイアウトパターン種別を定義します
+const SectionDividerPatternEnum = z.enum([
+  // 当該章のタイトルのみが大きく中央左寄せに記述されるタイプです
+  "title-only",
+  // 当該章のタイトルと、属するページタイトル一覧が箇条書きされるタイプです
+  "title-and-pages",
+  // 全章のタイトル一覧が箇条書きされ、当該章は太字、他章は薄色で表示されるタイプです
+  "all-chapters",
+  // 全章タイトル一覧に加え、当該章の下にのみ属するページタイトル一覧が箇条書きされるタイプです
+  "all-chapters-and-pages",
+]);
+
+// 中見出しスライドのデータ構造スキーマを定義します
+const SectionDividerSchema = z.object({
+  // 中見出しのレイアウトパターンです
+  pattern: SectionDividerPatternEnum.describe("中見出しパターン"),
+  // 当該章のタイトルです
+  chapterTitle: z.string().describe("当該章のタイトル"),
+  // 当該章に属するページタイトル配列（任意）です
+  chapterPages: z.array(SectionPageItemSchema).optional().describe("当該章に属するページタイトル配列"),
+  // 全章のタイトル配列（all-chapters系パターン用、任意）です
+  allChapters: z.array(z.string()).optional().describe("全章のタイトル配列"),
+  // カレント章のインデックス（0始まり、任意）です
+  currentChapterIndex: z.number().int().nonnegative().optional().describe("カレント章のインデックス（0始まり）"),
+});
+
 // 2枚目以降の通常コンテンツスライドのデータスキーマを定義します
 const NormalSlideSchema = z.object({
   // ページタイトル（最大60文字）です
@@ -153,6 +187,8 @@ const NormalSlideSchema = z.object({
   twoColumns: TwoColumnContentSchema.optional().describe("2段組レイアウト用の構造化コンテンツ（指定時は自動でcolumns-2クラスと2カラムMarkdownが適用されます）"),
   // 画像横並びレイアウト用の画像配列です
   imageGrid: z.array(ImageGridItemSchema).optional().describe("画像横並びレイアウト用の画像配列（指定時は自動でimages-Nクラスと画像Markdownが適用されます）"),
+  // 中見出し（セクションディバイダー）レイアウト用の構造化コンテンツです
+  sectionDivider: SectionDividerSchema.optional().describe("中見出し（セクションディバイダー）レイアウト用の構造化コンテンツ"),
   // 図表の出典や脚注情報（任意）です
   source: z.string().optional().describe("図表出典（任意）"),
   // 著作権・コピーライト表記です（デフォルト値: © 2026 N-Y-Public）
@@ -186,15 +222,141 @@ const SlideDeckSchema = z.object({
 // スライドデッキのTypeScript型定義を推論します
 type SlideDeck = z.infer<typeof SlideDeckSchema>;
 
+// @spec FN-SRV-009 resolveSectionDividerSlide
+// 中見出しスライド（セクションディバイダー）の構造化定義からHTML本文および適用クラスを生成する関数です
+export function resolveSectionDividerSlide(divider: z.infer<typeof SectionDividerSchema>): { bodyContent: string; classes: string[] } {
+  // 基本クラス配列を初期化します
+  const classes: string[] = ["section-divider"];
+  // パターン種別に応じた専用クラスを追加します
+  classes.push(`pattern-${divider.pattern}`);
+  // 生成するHTML本文の行配列を初期化します
+  const lines: string[] = [];
+
+  // 1. title-only パターンの場合
+  if (divider.pattern === "title-only") {
+    // 章タイトルコンテナの開始タグを追加します
+    lines.push('<div class="chapter-header-main">');
+    // テーマ共通のh1-h6隠蔽ルールを回避するためdivタグで章タイトルの大見出し要素を追加します
+    lines.push(`  <div class="chapter-title">${divider.chapterTitle}</div>`);
+    // 章タイトルコンテナの終了タグを追加します
+    lines.push("</div>");
+  // 2. title-and-pages パターンの場合
+  } else if (divider.pattern === "title-and-pages") {
+    // 章タイトルコンテナの開始タグを追加します
+    lines.push('<div class="chapter-header-main">');
+    // テーマ共通のh1-h6隠蔽ルールを回避するためdivタグで章タイトルの大見出し要素を追加します
+    lines.push(`  <div class="chapter-title">${divider.chapterTitle}</div>`);
+    // 章タイトルコンテナの終了タグを追加します
+    lines.push("</div>");
+    // ページ一覧が存在する場合
+    if (divider.chapterPages && divider.chapterPages.length > 0) {
+      // ページ一覧リストの開始タグを追加します
+      lines.push('<ul class="chapter-pages-list">');
+      // 各ページ項目を走査します
+      for (const p of divider.chapterPages) {
+        // ページ番号の有無に応じてリンクHTMLタグまたはプレーンテキストを生成します
+        const linkHtml = p.pageNumber !== undefined ? `<a href="#${p.pageNumber}">${p.title}</a>` : p.title;
+        // リスト項目タグを追加します
+        lines.push(`  <li>${linkHtml}</li>`);
+      }
+      // ページ一覧リストの終了タグを追加します
+      lines.push("</ul>");
+    }
+  // 3. all-chapters パターンの場合
+  } else if (divider.pattern === "all-chapters") {
+    // 全章タイトル配列を取得します
+    const chapters = divider.allChapters || (divider.chapterTitle ? [divider.chapterTitle] : []);
+    // カレント章のインデックスを解決します
+    const currIdx = divider.currentChapterIndex !== undefined ? divider.currentChapterIndex : chapters.indexOf(divider.chapterTitle);
+    // 全章一覧リストの開始タグを追加します
+    lines.push('<ul class="all-chapters-list">');
+    // 各章を走査します
+    for (let i = 0; i < chapters.length; i++) {
+      // 章タイトルを取得します
+      const ch = chapters[i];
+      // カレント章であるか判定します
+      if (i === currIdx || ch === divider.chapterTitle) {
+        // カレント章は強調リスト項目として追加します
+        lines.push(`  <li class="active-chapter"><strong>${ch}</strong></li>`);
+      // 他の章である場合
+      } else {
+        // 他章は薄色リスト項目として追加します
+        lines.push(`  <li class="dim">${ch}</li>`);
+      }
+    }
+    // 全章一覧リストの終了タグを追加します
+    lines.push("</ul>");
+  // 4. all-chapters-and-pages パターンの場合
+  } else if (divider.pattern === "all-chapters-and-pages") {
+    // 全章タイトル配列を取得します
+    const chapters = divider.allChapters || (divider.chapterTitle ? [divider.chapterTitle] : []);
+    // カレント章のインデックスを解決します
+    const currIdx = divider.currentChapterIndex !== undefined ? divider.currentChapterIndex : chapters.indexOf(divider.chapterTitle);
+    // 全章一覧リストの開始タグを追加します
+    lines.push('<ul class="all-chapters-list">');
+    // 各章を走査します
+    for (let i = 0; i < chapters.length; i++) {
+      // 章タイトルを取得します
+      const ch = chapters[i];
+      // カレント章であるか判定します
+      if (i === currIdx || ch === divider.chapterTitle) {
+        // カレント章の開始タグを追加します
+        lines.push('  <li class="active-chapter">');
+        // カレント章タイトルを太字タグで追加します
+        lines.push(`    <strong>${ch}</strong>`);
+        // 当該章に属するページ一覧が存在する場合
+        if (divider.chapterPages && divider.chapterPages.length > 0) {
+          // サブページ一覧リストの開始タグを追加します
+          lines.push('    <ul class="chapter-pages-list">');
+          // 各ページ項目を走査します
+          for (const p of divider.chapterPages) {
+            // ページ番号の有無に応じてリンクHTMLタグまたはプレーンテキストを生成します
+            const linkHtml = p.pageNumber !== undefined ? `<a href="#${p.pageNumber}">${p.title}</a>` : p.title;
+            // リスト項目タグを追加します
+            lines.push(`      <li>${linkHtml}</li>`);
+          }
+          // サブページ一覧リストの終了タグを追加します
+          lines.push("    </ul>");
+        }
+        // カレント章の終了タグを追加します
+        lines.push("  </li>");
+      // 他の章である場合
+      } else {
+        // 他章は薄色リスト項目として追加します
+        lines.push(`  <li class="dim">${ch}</li>`);
+      }
+    }
+    // 全章一覧リストの終了タグを追加します
+    lines.push("</ul>");
+  }
+
+  // 結合されたHTML本文とクラス配列を返却します
+  return { bodyContent: lines.join("\n"), classes };
+}
+
 // スライド本文およびクラスの解決（構造化データと直接指定の統合）を行う関数です
-function resolveSlideContent(slide: z.infer<typeof NormalSlideSchema>): { bodyContent: string; classes: string[] } {
+export function resolveSlideContent(slide: z.infer<typeof NormalSlideSchema>): { bodyContent: string; classes: string[] } {
   // 指定されたクラス配列をコピーして初期化します
   let classes = slide.classes ? [...slide.classes] : [];
   // 本文文字列を取得します
   let body = slide.bodyContent || "";
 
+  // 中見出し（セクションディバイダー）レイアウトが指定されている場合
+  if (slide.sectionDivider) {
+    // 中見出し解決関数を実行して本文とクラスを生成します
+    const resolvedDivider = resolveSectionDividerSlide(slide.sectionDivider);
+    // 本文を中見出しコンテンツで設定します
+    body = resolvedDivider.bodyContent;
+    // 生成された各クラスを走査します
+    for (const cls of resolvedDivider.classes) {
+      // 未登録クラスであれば追加します
+      if (!classes.includes(cls)) {
+        // クラス配列へ追加します
+        classes.push(cls);
+      }
+    }
   // 2段組（左右2カラム）レイアウトが指定されている場合
-  if (slide.twoColumns) {
+  } else if (slide.twoColumns) {
     // 2カラム用クラスが未付与であれば追加します
     if (!classes.includes("columns-2") && !classes.includes("layout-2col")) {
       // columns-2 クラスを追加します
@@ -246,7 +408,7 @@ function resolveSlideContent(slide: z.infer<typeof NormalSlideSchema>): { bodyCo
 }
 
 // スライドデッキ構造化データからMarp形式のMarkdownテキストを生成する関数です
-function generateMarpMarkdown(deck: SlideDeck): string {
+export function generateMarpMarkdown(deck: SlideDeck): string {
   // ヘッダーロゴ指定がある場合はMarpのheaderディレクティブを生成します
   const headerDirective = deck.logoPath ? `\nheader: '![](${deck.logoPath})'` : "";
   
@@ -1060,8 +1222,8 @@ server.tool(
   }
 );
 
-// テストや外部モジュール連携用にサーバーインスタンスをエクスポートします
-export { server };
+// テストや外部モジュール連携用にサーバーインスタンスおよびスキーマ・関数をエクスポートします
+export { server, SectionDividerSchema, NormalSlideSchema, SlideDeckSchema };
 
 // サーバーメイン起動関数です
 async function main() {

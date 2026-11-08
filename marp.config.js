@@ -33,6 +33,10 @@ export default {
         let tocEndIndex = -1;
         // 現在処理中のスライドが目次スライドかどうかを判定するフラグです
         let isTocSlide = false;
+        // 章別目次モード（中見出しスライドのみを抽出するモード）フラグを初期化します
+        let isChaptersOnlyToc = false;
+        // 現在のスライドが中見出しスライドかどうかを判定するフラグです
+        let isCurrentSectionDivider = false;
         
         // 各スライドのタイトルとページ番号を格納する配列です
         const headings = [];
@@ -53,9 +57,18 @@ export default {
             const directives = token.meta && token.meta.marpitDirectives ? token.meta.marpitDirectives : {};
             // スライドに付与されたクラス名を取得します
             const classStr = directives.class || '';
+            // スライドクラス一覧を配列として取得します
+            const classList = classStr.split(' ');
+            // 現在のスライドが中見出しスライドであるか判定します
+            isCurrentSectionDivider = classList.includes('section-divider');
             
             // クラス名に 'toc' が含まれる場合は目次スライドとしてマークします
-            if (classStr.split(' ').includes('toc')) {
+            if (classList.includes('toc')) {
+              // 章別目次モード（toc-chapters-only）の指定があるか確認します
+              if (classList.includes('toc-chapters-only')) {
+                // 章別目次フラグを有効化します
+                isChaptersOnlyToc = true;
+              }
               // 最初の目次スライドの位置を記録します
               if (tocStartIndex === -1) {
                 // 開始位置を保存します
@@ -121,8 +134,8 @@ export default {
 
             // 表紙（1ページ目）は除外し、タイトルが取得でき、かつ未登録のページであれば目次リストに追加します
             if (currentSlide > 1 && title && !headings.find(h => h.page === currentSlide)) {
-              // タイトルとページ番号のペアを保存します
-              headings.push({ title, page: currentSlide });
+              // タイトルとページ番号、および中見出し判定フラグを保存します
+              headings.push({ title, page: currentSlide, isSectionDivider: isCurrentSectionDivider });
             }
           }
         }
@@ -182,14 +195,16 @@ export default {
             return clone;
           };
 
+          // 対象見出し配列を決定します（章別目次モード時は中見出しスライドのみを抽出します）
+          const targetHeadings = isChaptersOnlyToc ? (headings.filter(h => h.isSectionDivider).length > 0 ? headings.filter(h => h.isSectionDivider) : headings) : headings;
           // 1スライドあたりに収める目次項目数を定義します（あふれ防止）
           const ITEMS_PER_SLIDE = 12;
           // 目次項目をスライドごとに分割した配列です
           const chunks = [];
           // 見出しリストを上限件数ごとに分割します
-          for (let i = 0; i < headings.length; i += ITEMS_PER_SLIDE) {
+          for (let i = 0; i < targetHeadings.length; i += ITEMS_PER_SLIDE) {
             // 12件ごとにスライスしてチャンクに追加します
-            chunks.push(headings.slice(i, i + ITEMS_PER_SLIDE));
+            chunks.push(targetHeadings.slice(i, i + ITEMS_PER_SLIDE));
           }
           
           // 目次によって生成される総スライド数を取得します
