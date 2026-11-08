@@ -75,11 +75,16 @@ flowchart LR
 ```
 
 ### Stage A: Issue・要求からのPBI起票フェーズ
-ユーザーから「Issue #xxx に対応せよ」または機能要望が提示された場合：
+ユーザーから「Issue #xxx に対応せよ」または機能要望が提示された場合、または24H365D自律ループによりIssueが選定された場合：
 0. **タスク開始時プロトコル（ブランチ自動検査・是正）**:
    セッション開始時、必ず現在のブランチ名（`git branch --show-current`）を確認する。Antigravity 2.0 等の自動採番による規約外ブランチ名（`resolve_issue_xxx` 等）の場合、直ちに `git branch -m <compliant_branch_name>`（例: `fix/antigravity-2.0/issue-8/worktree-branch-naming-compliance`）を実行して是正してからPBI起票を行う。
 1. 直ちに設計書やコードを編集せず、`docs/templates/tpl_98_pbi_template.md` のフォーマットに従い `docs/backlog/todo/PBI-xxx_<slug>.md` を作成する。
-2. 曖昧さ4分類（【未定義】【多義】【暗黙】【矛盾】）を検出し、ユーザーにPBIの内容（Why / What / Given-When-Then形式のAC）の確認を求める。
+2. 曖昧さ4分類（【未定義】【多義】【暗黙】【矛盾】）を検出し、対話モード時はユーザーにPBIの内容（Why / What / Given-When-Then形式のAC）の確認を求める。
+3. **24H365D自律運用時のマルチエージェントStage A→Stage B移行ゲート審査**:
+   24H365D自律開発体制においては、Stage AからStage Bへの移行ゲートの判断は、**必ずStage Aを実行した起票エージェント（`pbi-drafter-agent` / `ROLE-PM`）とは異なる独立した厳格なレビュアーエージェント（`stage-gate-reviewer-agent` / `ROLE-ARCH`）**が行うこととする（同一エージェントによる自己承認は `ERR-VAL-005` として拒否）。レビュアーエージェントが `PASS` と判定したPBIのみがStage Bへ移行し、人間判断が必要な事項は `ESCALATE` として日報へ計上する。
+4. **定型テンプレートによる日報（1日3回）・週報（毎週水曜16:00）の発行**:
+   - **日報**: 毎日 `07:30`（朝刊）、`11:50`（昼刊）、`18:00`（夕刊）の3回、必ず正本テンプレート `docs/templates/tpl_96_daily_report.md` を用いてメンテナー向けに生成する（`scripts/generate_reports.py`）。
+   - **週報**: 毎週水曜日 `16:00` に日報と併せて、必ず正本テンプレート `docs/templates/tpl_97_weekly_report.md` を用いてプロジェクトとりまとめ（メンテナーの上司層）向けに生成する。週報は細かな実装詳細ではなく「何が課題または先週からの宿題で、どのような解決を行って、結果がどうで、新たな宿題事項はいつまでの何なのか」が一目でわかる構成とする。
 
 ### Stage B: PBI承認後の一気通貫オーケストレーション実行フェーズ
 ユーザーから「問題ない。設計・実装・テストまで完了させよ」等の実行指示を受けた場合、次節（第4章）の **Input解析およびStep 1〜Step 5** を順序通りに実行する。

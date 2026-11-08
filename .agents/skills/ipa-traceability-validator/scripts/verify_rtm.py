@@ -395,7 +395,7 @@ def verify_code_trace_tags(repo_root: Path, defined_sets: Dict[str, Set[str]]) -
     defined_fns = defined_sets.get("fns", set())
 
     # 1. ソースコード走査対象ファイルの探索
-    src_patterns = ["src/**/*.ts", "marp.config.js", "pptx_converter/**/*.js", ".agents/skills/ipa-traceability-validator/scripts/*.py"]
+    src_patterns = ["src/**/*.ts", "marp.config.js", "pptx_converter/**/*.js", "scripts/**/*.py", ".agents/skills/ipa-traceability-validator/scripts/*.py"]
     # 走査対象ソースファイルのリストを初期化します
     source_files: List[Path] = []
     # 各パターンに合致するファイルを収集します

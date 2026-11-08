@@ -2,9 +2,9 @@
 id: DOC-DD-006
 title: データ構造仕様書
 doc_type: detail_design
-version: 1.0.0
+version: 1.1.0
 status: Approved
-date: 2026-11-04
+date: 2026-11-07
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -29,6 +29,7 @@ tags:
 | 版 | 日付 | 起因PBI | 変更概要 |
 | :--- | :--- | :--- | :--- |
 | 1.0.0 | 2026-11-04 | PBI-016 | 初版作成（意味仕様と形式仕様の分離） |
+| 1.1.0 | 2026-11-07 | PBI-019 | Stageゲート審査結果構造体（DAT-TYP-008）およびレポートスケジュール構造体（DAT-TYP-009）の追加 |
 
 # 2 データ構造
 
@@ -148,3 +149,35 @@ tags:
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `DAT-TYP-007-F01` | コンテンツ配列 | `content` | `object[]` | 1〜10 | `{ type: 'text', text: string }` | なし | 必須 |
 | `DAT-TYP-007-F02` | エラーフラグ | `isError` | `boolean` | 1 | `true` または `false` | `false` | 任意 |
+
+## 2.8 DAT-TYP-008 StageGateReviewResult
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | なし |
+| 状態 | Approved |
+| 後継ID | なし |
+| 実装上の宣言位置 | `scripts/autonomous_dev_loop.py` |
+
+### 2.8.1 フィールド
+| フィールドID | 論理名 | 物理名 | 型 | 桁・長さ | 値域・書式 | 既定値 | 必須 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `DAT-TYP-008-F01` | 対象PBI識別子 | `pbi_id` | `string` | 7 | `^PBI-\d{3}$` | なし | 必須 |
+| `DAT-TYP-008-F02` | 起票エージェントID | `drafter_agent_id` | `string` | 1〜60 | `'pbi-drafter-agent'` または `'ROLE-PM'` | なし | 必須 |
+| `DAT-TYP-008-F03` | 審査エージェントID | `reviewer_agent_id` | `string` | 1〜60 | `drafter_agent_id` と異なる識別子 | なし | 必須 |
+| `DAT-TYP-008-F04` | ゲート判定結果 | `decision` | `string` | 4〜8 | `'PASS'` `'REJECT'` `'ESCALATE'` | なし | 必須 |
+| `DAT-TYP-008-F05` | 違反・指摘一覧 | `violations` | `string[]` | 0〜50 | 指摘メッセージ文字列配列 | `[]` | 必須 |
+
+## 2.9 DAT-TYP-009 ReportScheduleConfig
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | なし |
+| 状態 | Approved |
+| 後継ID | なし |
+| 実装上の宣言位置 | `scripts/generate_reports.py` |
+
+### 2.9.1 フィールド
+| フィールドID | 論理名 | 物理名 | 型 | 桁・長さ | 値域・書式 | 既定値 | 必須 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `DAT-TYP-009-F01` | 日報配信時刻配列 | `daily_schedules_jst` | `string[]` | 3 | `['07:30', '11:50', '18:00']` | `['07:30', '11:50', '18:00']` | 必須 |
+| `DAT-TYP-009-F02` | 週報配信曜日 | `weekly_day_of_week` | `string` | 3 | `'WED'` | `'WED'` | 必須 |
+| `DAT-TYP-009-F03` | 週報配信時刻 | `weekly_time_jst` | `string` | 5 | `'16:00'` | `'16:00'` | 必須 |

@@ -2,9 +2,9 @@
 id: DOC-DD-002
 title: 内部I/F仕様書
 doc_type: detail_design
-version: 1.1.0
+version: 1.2.0
 status: Approved
-date: 2026-11-04
+date: 2026-11-07
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -31,6 +31,7 @@ tags:
 | :--- | :--- | :--- | :--- |
 | 1.0.0 | 2026-11-04 | PBI-016 | 規約 DOC-GOV-003 準拠への再編および意味／形式仕様の分離 |
 | 1.1.0 | 2026-11-04 | PBI-014 | PPTX変換およびOffice MathML数式注入I/F（INT-PPT-002）の追加 |
+| 1.2.0 | 2026-11-07 | PBI-019 | マルチエージェントStage A→Bゲート審査I/F（INT-AUT-001）および定期レポート生成I/F（INT-AUT-002）の追加 |
 
 # 2 内部インターフェース
 
@@ -184,3 +185,54 @@ tags:
 | 発生条件 | 送出エラーコード |
 | :--- | :--- |
 | アーカイブ破損・XML不正時 | `ERR-SYS-999` |
+
+## 2.7 INT-AUT-001 evaluateStageAToBGate
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | `MOD-AUT-001` |
+| 状態 | Approved |
+| 後継ID | なし |
+| 目的 | Stage A起票エージェントとは異なる独立審査エージェントがPBIドラフトのStage B移行可否を判定する |
+| 提供元 | `MOD-AUT-001` (`scripts/autonomous_dev_loop.py`) |
+| 利用元 | `MOD-AUT-001` |
+
+### 2.7.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `INT-AUT-001-IN01` | PBIファイルパス | 審査対象のPBIドラフトMarkdownパス | 必須 | [[05_file_format_specification#2.1 DAT-FIL-001 MarpMarkdownFile|DAT-FIL-001]] |
+| `INT-AUT-001-IN02` | エージェント識別子ペア | 起票エージェントIDと審査エージェントID | 必須 | [[06_data_structure_specification#2.8 DAT-TYP-008 StageGateReviewResult|DAT-TYP-008]] |
+
+### 2.7.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `INT-AUT-001-OUT01` | ゲート審査結果 | 判定（`PASS` / `REJECT` / `ESCALATE`）と指摘事項配列 | 必須 | [[06_data_structure_specification#2.8 DAT-TYP-008 StageGateReviewResult|DAT-TYP-008]] |
+
+### 2.7.3 例外
+| 発生条件 | 送出エラーコード |
+| :--- | :--- |
+| 起票エージェントと審査エージェントが同一の場合 | `ERR-VAL-005` |
+
+## 2.8 INT-AUT-002 renderScheduledReports
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | `MOD-AUT-001` |
+| 状態 | Approved |
+| 後継ID | なし |
+| 目的 | テンプレートから日報（07:30/11:50/18:00）および週報（毎週水曜16:00）を生成する |
+| 提供元 | `MOD-AUT-001` (`scripts/generate_reports.py`) |
+| 利用元 | `MOD-AUT-001` |
+
+### 2.8.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `INT-AUT-002-IN01` | スケジュール・基準日時 | 実行日時および対象スロット指定 | 必須 | [[06_data_structure_specification#2.9 DAT-TYP-009 ReportScheduleConfig|DAT-TYP-009]] |
+
+### 2.8.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `INT-AUT-002-OUT01` | 生成レポートパス一覧 | 出力された日報・週報ファイルのパス配列 | 必須 | [[05_file_format_specification#2.6 DAT-FIL-006 AutonomousReportMarkdownFile|DAT-FIL-006]] |
+
+### 2.8.3 例外
+| 発生条件 | 送出エラーコード |
+| :--- | :--- |
+| 正本テンプレートファイル不在時 | `ERR-NOT-002` |

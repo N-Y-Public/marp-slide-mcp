@@ -127,10 +127,14 @@ class VerifyDocSyntaxTest(unittest.TestCase):
     def test_templates_complete(self):
         # 雛形ファイルの一覧を取得します
         templates = sorted((REPO_ROOT / "docs" / "templates").glob("tpl_*.md"))
-        # 雛形が設計図書19件+PBIテンプレート1件の計20件であることを検証します
-        self.assertEqual(len(templates), 20)
-        # PBIテンプレートが存在することを検証します
+        # 雛形が設計図書19件+PBIテンプレート1件+日報・週報テンプレート2件の計22件であることを検証します
+        self.assertEqual(len(templates), 22)
+        # PBIテンプレートおよび日報・週報テンプレートが存在することを検証します
         self.assertTrue((REPO_ROOT / "docs" / "templates" / "tpl_98_pbi_template.md").is_file())
+        # 日報テンプレートが存在することを検証します
+        self.assertTrue((REPO_ROOT / "docs" / "templates" / "tpl_96_daily_report.md").is_file())
+        # 週報テンプレートが存在することを検証します
+        self.assertTrue((REPO_ROOT / "docs" / "templates" / "tpl_97_weekly_report.md").is_file())
         # 画面仕様書雛形の見出し一覧を取得します
         headings = MODULE.list_headings(REPO_ROOT / "docs" / "templates" / "tpl_07_screen_specification.md")
         # 画面遷移図・遷移定義・見た目・画面部品の見出しが存在することを検証します

@@ -2,9 +2,9 @@
 id: DOC-DD-001
 title: ソフトウェア構造設計書
 doc_type: detail_design
-version: 1.0.0
+version: 1.1.0
 status: Approved
-date: 2026-11-04
+date: 2026-11-07
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -31,6 +31,7 @@ tags:
 | 版 | 日付 | 起因PBI | 変更概要 |
 | :--- | :--- | :--- | :--- |
 | 1.0.0 | 2026-11-04 | PBI-016 | 規約 DOC-GOV-003 準拠への再編およびデータ構造分離 |
+| 1.1.0 | 2026-11-07 | PBI-019 | 24H365D自律開発統制・レポーティングモジュール（MOD-AUT-001）の追加 |
 
 # 2 モジュール構成
 
@@ -139,6 +140,22 @@ flowchart LR
 ```mermaid
 flowchart LR
     MOD_DOC["MOD-DOC-001 (規約・検査)"] --> DOCS["docs/ 配下の全設計図書"]
+```
+
+## 2.8 MOD-AUT-001 24H365D自律開発統制・レポーティングモジュール
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | `FNC-011` |
+| 状態 | Approved |
+| 後継ID | なし |
+| 主要ファイル | `scripts/autonomous_dev_loop.py`, `scripts/generate_reports.py`, `scripts/autonomous_config.json`, `docs/templates/tpl_96_daily_report.md`, `docs/templates/tpl_97_weekly_report.md` |
+| 責務 | Issue優先度選定、Stage A→B別エージェント審査ゲート、非同期フィードバック解析、およびテンプレート駆動の日報（1日3回）・週報（毎週水曜16:00）生成 |
+
+### 2.8.1 依存関係
+```mermaid
+flowchart LR
+    MOD_AUT["MOD-AUT-001 (自律開発・レポート)"] --> MOD_DOC["MOD-DOC-001 (規約・RTM検査)"]
+    MOD_AUT --> MOD_SKL["MOD-SKL-001 (GitHub運用スキル)"]
 ```
 
 # 3 クラス構成

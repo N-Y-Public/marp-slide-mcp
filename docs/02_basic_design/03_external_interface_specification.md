@@ -2,9 +2,9 @@
 id: DOC-BD-003
 title: 外部I/F仕様書
 doc_type: basic_design
-version: 1.0.0
+version: 1.1.0
 status: Approved
-date: 2026-11-04
+date: 2026-11-07
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -32,6 +32,7 @@ tags:
 | 版 | 日付 | 起因PBI | 変更概要 |
 | :--- | :--- | :--- | :--- |
 | 1.0.0 | 2026-11-04 | PBI-016 | 規約 DOC-GOV-003 準拠への再編および意味／形式仕様の分離 |
+| 1.1.0 | 2026-11-07 | PBI-019 | 24H365D自律開発統制CLI（EXT-CLI-003）および日報・週報生成CLI（EXT-CLI-004）の追加 |
 
 # 2 外部インターフェース
 
@@ -232,6 +233,45 @@ tags:
 | :--- | :--- | :--- | :--- | :--- |
 | `EXT-CLI-002-OUT01` | PPTXファイル | 編集可能なネイティブPowerPointファイル | 必須 | [[05_file_format_specification#2.3 DAT-FIL-003 PptxOutputFile|DAT-FIL-003]] |
 
+## 2.11 EXT-CLI-003 autonomous_dev_loop
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | `FNC-011` |
+| 状態 | Approved |
+| 後継ID | なし |
+| 目的 | Issue優先度選定、Stage A→B独立エージェントゲート審査、およびメンテナーフィードバック反映を実行する |
+| 前提条件 | Dockerコンテナ内のPython 3実行環境および自律開発設定ファイルが存在すること |
+
+### 2.11.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `EXT-CLI-003-IN01` | 実行サブコマンド | 実行する制御コマンド（`select-issue`, `review-gate`, `apply-feedback`） | 必須 | [[05_file_format_specification#2.5 DAT-FIL-005 AutonomousConfigFile|DAT-FIL-005]] |
+| `EXT-CLI-003-IN02` | 審査エージェント識別子 | Stage A起票エージェントおよびStage A→B審査エージェントの識別子 | 任意 | [[06_data_structure_specification#2.8 DAT-TYP-008 StageGateReviewResult|DAT-TYP-008]] |
+
+### 2.11.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `EXT-CLI-003-OUT01` | オーケストレーション結果 | 選定されたIssue情報、Stage A→Bゲート判定結果、またはフィードバック反映結果JSON | 必須 | [[06_data_structure_specification#2.8 DAT-TYP-008 StageGateReviewResult|DAT-TYP-008]] |
+
+## 2.12 EXT-CLI-004 generate_reports
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | `FNC-011` |
+| 状態 | Approved |
+| 後継ID | なし |
+| 目的 | 指定日時または時間枠に基づき、テンプレートからメンテナー向け日報（1日3回）およびプロジェクトとりまとめ向け週報（毎週水曜16:00）を生成する |
+| 前提条件 | 日報テンプレート（`tpl_96_daily_report.md`）および週報テンプレート（`tpl_97_weekly_report.md`）が存在すること |
+
+### 2.12.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `EXT-CLI-004-IN01` | レポート種別・日時指定 | 生成対象種別（`daily`, `weekly`, `auto`）および基準日時（JST） | 必須 | [[06_data_structure_specification#2.9 DAT-TYP-009 ReportScheduleConfig|DAT-TYP-009]] |
+
+### 2.12.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `EXT-CLI-004-OUT01` | レポートファイル群 | 生成された日報Markdownおよび週報Markdownのパス情報 | 必須 | [[05_file_format_specification#2.6 DAT-FIL-006 AutonomousReportMarkdownFile|DAT-FIL-006]] |
+
 # 3 エラー体系
 
 ## 3.1 エラーコード表
@@ -241,4 +281,5 @@ tags:
 | `ERR-NOT-002` | リソース不在エラー | 指定されたファイルIDまたはスライドが存在しない | 対象ファイルが見つかりません | 全MCPツール |
 | `ERR-RNG-003` | 範囲外エラー | ページ番号がスライド総数を超過または2未満 | ページ番号が範囲外です | `insert_slide`, `update_slide`, `delete_slide` |
 | `ERR-ENV-004` | 環境実行エラー | Chromiumバイナリの探索失敗 | ブラウザ実行環境が見つかりません | `export_to_pdf`, `EXT-CLI-002` |
+| `ERR-VAL-005` | 自己承認・ゲート審査違反エラー | Stage A起票エージェントとStage A→B審査エージェントが同一、またはPBI審査基準不適合 | 独立レビュアーによるゲート審査要件を満たしていません | `EXT-CLI-003` |
 | `ERR-SYS-999` | 上記以外（未定義エラー） | 上記のいずれにも該当しない想定外の例外 | 内部エラーが発生しました | 全I/F |

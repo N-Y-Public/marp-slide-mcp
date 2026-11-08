@@ -2,9 +2,9 @@
 id: DOC-RTM-001
 title: 要件追跡マトリクス
 doc_type: traceability
-version: 1.0.0
+version: 1.1.0
 status: Approved
-date: 2026-11-04
+date: 2026-11-07
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -30,6 +30,7 @@ tags:
 | 版 | 日付 | 起因PBI | 変更概要 |
 | :--- | :--- | :--- | :--- |
 | 1.0.0 | 2026-11-04 | PBI-016 | 初版作成（DOC-GOV-003およびDOC-GOV-004準拠） |
+| 1.1.0 | 2026-11-07 | PBI-019 | 24H365D自律開発統制・日報週報テンプレート生成（PBI-019）の追跡行追加 |
 
 # 2 追跡表
 
@@ -65,12 +66,16 @@ tags:
 | [[PBI-012_fix_acrobat_pdf_white_text\|PBI-012]] | [[01_requirements_specification#4.6 REQ-NFR-006 システム環境・互換性\|REQ-NFR-006]] | [[02_functional_specification#2.1 FNC-001 スライドテーマ・スタイリング機能\|FNC-001]] | [[03_external_interface_specification#2.7 EXT-MCP-007 export_to_pdf\|EXT-MCP-007]] | [[07_screen_specification#3.2 SCR-002 通常スライド\|SCR-002]] | [[01_software_structure_design#2.4 MOD-THM-001 ビジネステーマスタイル\|MOD-THM-001]] | [[03_program_specification#2.4 PRG-THM-001 ビジネステーマスタイル\|PRG-THM-001]] | [[03_program_specification#2.1.7 FN-SRV-007 exportToPdf\|FN-SRV-007]] | [[01_test_specification#2.3 総合テスト\|TEST-ST-008]] | [[02_test_report#3.1 結果表\|TRS-ST-008-R01]] |
 | [[PBI-017_migrate_docs_to_new_standard\|PBI-017]] | [[01_requirements_specification#4.7 REQ-NFR-007 設計図書の記述一貫性・追跡性\|REQ-NFR-007]] | [[02_functional_specification#2.10 FNC-010 設計図書記述規約・構文検査機能\|FNC-010]] | [[03_external_interface_specification#2.9 EXT-CLI-001 marp_cli_pdf\|EXT-CLI-001]] | [[07_screen_specification#3.1 SCR-001 表紙スライド\|SCR-001]] | [[01_software_structure_design#2.7 MOD-DOC-001 設計図書規約・構文検査モジュール\|MOD-DOC-001]] | [[03_program_specification#2.6 PRG-DOC-001 設計図書構文検査器\|PRG-DOC-001]] | [[03_program_specification#2.6.1 FN-DOC-001 verifyDocSyntax\|FN-DOC-001]] | [[01_test_specification#2.1 単体テスト\|TEST-UT-004]] | [[02_test_report#3.1 結果表\|TRS-UT-004-R01]] |
 | [[PBI-018_adapt_tooling_to_new_id_system\|PBI-018]] | [[01_requirements_specification#4.7 REQ-NFR-007 設計図書の記述一貫性・追跡性\|REQ-NFR-007]] | [[02_functional_specification#2.10 FNC-010 設計図書記述規約・構文検査機能\|FNC-010]] | [[03_external_interface_specification#2.9 EXT-CLI-001 marp_cli_pdf\|EXT-CLI-001]] | [[07_screen_specification#3.1 SCR-001 表紙スライド\|SCR-001]] | [[01_software_structure_design#2.7 MOD-DOC-001 設計図書規約・構文検査モジュール\|MOD-DOC-001]] | [[03_program_specification#2.6 PRG-DOC-001 設計図書構文検査器\|PRG-DOC-001]] | [[03_program_specification#2.6.1 FN-DOC-001 verifyDocSyntax\|FN-DOC-001]] | [[01_test_specification#2.3 総合テスト\|TEST-ST-010]] | [[02_test_report#3.1 結果表\|TRS-ST-010-R01]] |
+| [[PBI-019_24h_autonomous_development_system\|PBI-019]] | [[01_requirements_specification#3.11 REQ-FNC-011 24H365D自律開発オーケストレーション・階層別定期レポート生成機能\|REQ-FNC-011]] | [[02_functional_specification#2.11 FNC-011 24H365D自律開発統制・日報週報生成機能\|FNC-011]] | [[03_external_interface_specification#2.11 EXT-CLI-003 autonomous_dev_loop\|EXT-CLI-003]] | [[07_screen_specification#3.1 SCR-001 表紙スライド\|SCR-001]] | [[01_software_structure_design#2.8 MOD-AUT-001 24H365D自律開発統制・レポーティングモジュール\|MOD-AUT-001]] | [[03_program_specification#2.7 PRG-AUT-001 自律開発オーケストレーター\|PRG-AUT-001]] | [[03_program_specification#2.7.1 FN-AUT-001 selectNextPriorityIssue\|FN-AUT-001]] | [[01_test_specification#2.1 単体テスト\|TEST-UT-005]] | [[02_test_report#3.1 結果表\|TRS-UT-005-R01]] |
+| [[PBI-019_24h_autonomous_development_system\|PBI-019]] | [[01_requirements_specification#3.11 REQ-FNC-011 24H365D自律開発オーケストレーション・階層別定期レポート生成機能\|REQ-FNC-011]] | [[02_functional_specification#2.11 FNC-011 24H365D自律開発統制・日報週報生成機能\|FNC-011]] | [[03_external_interface_specification#2.11 EXT-CLI-003 autonomous_dev_loop\|EXT-CLI-003]] | [[07_screen_specification#3.1 SCR-001 表紙スライド\|SCR-001]] | [[01_software_structure_design#2.8 MOD-AUT-001 24H365D自律開発統制・レポーティングモジュール\|MOD-AUT-001]] | [[03_program_specification#2.7 PRG-AUT-001 自律開発オーケストレーター\|PRG-AUT-001]] | [[03_program_specification#2.7.3 FN-AUT-003 applyMaintainerFeedback\|FN-AUT-003]] | [[01_test_specification#2.1 単体テスト\|TEST-UT-005]] | [[02_test_report#3.1 結果表\|TRS-UT-005-R01]] |
+| [[PBI-019_24h_autonomous_development_system\|PBI-019]] | [[01_requirements_specification#3.11 REQ-FNC-011 24H365D自律開発オーケストレーション・階層別定期レポート生成機能\|REQ-FNC-011]] | [[02_functional_specification#2.11 FNC-011 24H365D自律開発統制・日報週報生成機能\|FNC-011]] | [[03_external_interface_specification#2.12 EXT-CLI-004 generate_reports\|EXT-CLI-004]] | [[07_screen_specification#3.1 SCR-001 表紙スライド\|SCR-001]] | [[01_software_structure_design#2.8 MOD-AUT-001 24H365D自律開発統制・レポーティングモジュール\|MOD-AUT-001]] | [[03_program_specification#2.8 PRG-AUT-002 日報・週報テンプレート生成ツール\|PRG-AUT-002]] | [[03_program_specification#2.8.1 FN-AUT-004 generateDailyAndWeeklyReports\|FN-AUT-004]] | [[01_test_specification#2.3 総合テスト\|TEST-ST-011]] | [[02_test_report#3.1 結果表\|TRS-ST-011-R01]] |
+| [[PBI-019_24h_autonomous_development_system\|PBI-019]] | [[01_requirements_specification#4.8 REQ-NFR-008 マルチエージェント相互牽制・生成と検証の分離統制\|REQ-NFR-008]] | [[02_functional_specification#2.11 FNC-011 24H365D自律開発統制・日報週報生成機能\|FNC-011]] | [[03_external_interface_specification#2.11 EXT-CLI-003 autonomous_dev_loop\|EXT-CLI-003]] | [[07_screen_specification#3.1 SCR-001 表紙スライド\|SCR-001]] | [[01_software_structure_design#2.8 MOD-AUT-001 24H365D自律開発統制・レポーティングモジュール\|MOD-AUT-001]] | [[03_program_specification#2.7 PRG-AUT-001 自律開発オーケストレーター\|PRG-AUT-001]] | [[03_program_specification#2.7.2 FN-AUT-002 evaluateStageAToBGate\|FN-AUT-002]] | [[01_test_specification#2.1 単体テスト\|TEST-UT-005]] | [[02_test_report#3.1 結果表\|TRS-UT-005-R01]] |
 
 ## 2.2 集計
 | 追跡指標 | 対象総数 | 追跡完了数 | 断絶数 |
 | :--- | :--- | :--- | :--- |
-| PBI追跡 | 18 | 18 | 0 |
-| 機能要件追跡 | 10 | 10 | 0 |
-| 非機能要件追跡 | 7 | 7 | 0 |
-| モジュール追跡 | 7 | 7 | 0 |
-| テストケース追跡 | 20 | 20 | 0 |
+| PBI追跡 | 19 | 19 | 0 |
+| 機能要件追跡 | 11 | 11 | 0 |
+| 非機能要件追跡 | 8 | 8 | 0 |
+| モジュール追跡 | 8 | 8 | 0 |
+| テストケース追跡 | 22 | 22 | 0 |

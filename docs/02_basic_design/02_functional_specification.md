@@ -2,9 +2,9 @@
 id: DOC-BD-002
 title: 機能仕様書
 doc_type: basic_design
-version: 1.0.0
+version: 1.1.0
 status: Approved
-date: 2026-11-04
+date: 2026-11-07
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -30,6 +30,7 @@ tags:
 | 版 | 日付 | 起因PBI | 変更概要 |
 | :--- | :--- | :--- | :--- |
 | 1.0.0 | 2026-11-04 | PBI-016 | 規約 DOC-GOV-003 準拠への再編および画面仕様分離 |
+| 1.1.0 | 2026-11-07 | PBI-019 | 24H365D自律開発統制・日報週報生成機能（FNC-011）の追加 |
 
 # 2 機能仕様
 
@@ -142,6 +143,17 @@ MCPツール（`generate_slide_deck`, `get_slide_deck`, `insert_slide`, `update_
 
 ### 2.10.1 振る舞い
 `verify_doc_syntax.py` が `doc_standard` を持つ図書を自動走査し、規約違反を検出する。
+
+## 2.11 FNC-011 24H365D自律開発統制・日報週報生成機能
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | `REQ-FNC-011` |
+| 状態 | Approved |
+| 後継ID | なし |
+| 概要 | Issue優先度選定、Stage A→B別エージェント審査、1日3回の日報生成、毎週水曜16:00の週報生成、および非同期フィードバック反映 |
+
+### 2.11.1 振る舞い
+未対応Issueを優先度と依存関係に基づき選定し、Stage A起票エージェントが作成したPBIを独立した審査エージェント（`stage-gate-reviewer-agent`）が審査して合格（`PASS`）時のみStage Bへ移行させる。毎日3回（`07:30`, `11:50`, `18:00`）にメンテナー向け日報を `tpl_96_daily_report.md` から生成し、毎週水曜 `16:00` にはプロジェクトとりまとめ向け週報を `tpl_97_weekly_report.md` から併せて生成する。インターフェース詳細は [[03_external_interface_specification#2.11 EXT-CLI-003 autonomous_dev_loop|EXT-CLI-003]] および [[03_external_interface_specification#2.12 EXT-CLI-004 generate_reports|EXT-CLI-004]] を参照する。
 
 # 3 業務フローおよび状態遷移
 

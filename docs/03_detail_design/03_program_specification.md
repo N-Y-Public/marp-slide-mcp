@@ -2,9 +2,9 @@
 id: DOC-DD-003
 title: プログラム仕様書
 doc_type: detail_design
-version: 1.1.0
+version: 1.2.0
 status: Approved
-date: 2026-11-04
+date: 2026-11-07
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -33,6 +33,7 @@ tags:
 | :--- | :--- | :--- | :--- |
 | 1.0.0 | 2026-11-04 | PBI-016 | 初版作成（DOC-GOV-003およびDOC-GOV-004準拠） |
 | 1.1.0 | 2026-11-04 | PBI-014 | PPTX変換スクリプト（PRG-PPT-001）詳細処理論理およびexportToPptx（FN-SRV-008）の追加 |
+| 1.2.0 | 2026-11-07 | PBI-019 | 自律開発オーケストレーター（PRG-AUT-001）および日報・週報テンプレート生成ツール（PRG-AUT-002）の追加 |
 
 # 2 プログラム
 
@@ -498,3 +499,132 @@ tags:
 | :--- | :--- | :--- |
 | 入力パス不在 | `ERR-NOT-001` | 終了コード2で終了する |
 | ファイル読込不可 | `ERR-SYS-001` | 終了コード2で終了する |
+
+## 2.7 PRG-AUT-001 自律開発オーケストレーター
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[01_software_structure_design#2.8 MOD-AUT-001 24H365D自律開発統制・レポーティングモジュール|MOD-AUT-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
+| 実装ファイル | `scripts/autonomous_dev_loop.py` |
+| 所属モジュール | `MOD-AUT-001` |
+
+### 2.7.1 FN-AUT-001 selectNextPriorityIssue
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[#2.7 PRG-AUT-001 自律開発オーケストレーター|PRG-AUT-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
+
+#### 2.7.1.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-AUT-001-IN01` | Issue候補配列 | 未対応Issueおよび優先度ラベル・依存関係情報の配列 | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
+
+#### 2.7.1.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-AUT-001-OUT01` | 最優先Issue情報 | 選定されたIssue番号、規約準拠ブランチ名、優先度スコア | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
+
+#### 2.7.1.3 処理論理
+1. 入力された未対応Issue配列から、未完了の別Issueによってブロックされている（`blocked_by` が空でない）項目を除外する。
+2. メンテナー指示による優先度オーバーライドが存在する場合は最優先スコアを付与する。
+3. ラベル優先度（`priority:high` > `bugfix` > `feature` > `enhancement`）およびIssue番号昇順でソートする。
+4. 先頭のIssueを選定し、`{type}/antigravity-2.0/issue-{number}/{slug}` 形式の規約準拠ブランチ名を導出して返却する。
+
+#### 2.7.1.4 異常系
+| 条件 | エラーコード | 動作 |
+| :--- | :--- | :--- |
+| 着手可能なIssueが0件 | `ERR-NOT-002` | 着手可能タスクなしとして空結果を返し正常待機する |
+
+### 2.7.2 FN-AUT-002 evaluateStageAToBGate
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[#2.7 PRG-AUT-001 自律開発オーケストレーター|PRG-AUT-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
+
+#### 2.7.2.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-AUT-002-IN01` | PBIファイルパス | 審査対象のPBIドラフトパス | 必須 | [[05_file_format_specification#2.1 DAT-FIL-001 MarpMarkdownFile|DAT-FIL-001]] |
+| `FN-AUT-002-IN02` | エージェント識別子ペア | 起票エージェントIDおよび審査エージェントID | 必須 | [[06_data_structure_specification#2.8 DAT-TYP-008 StageGateReviewResult|DAT-TYP-008]] |
+
+#### 2.7.2.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-AUT-002-OUT01` | ゲート審査結果 | 判定結果（`PASS` / `REJECT` / `ESCALATE`）と違反リスト | 必須 | [[06_data_structure_specification#2.8 DAT-TYP-008 StageGateReviewResult|DAT-TYP-008]] |
+
+#### 2.7.2.3 処理論理
+1. 起票エージェントID（`drafter_agent_id`）と審査エージェントID（`reviewer_agent_id`）を比較し、同一または空である場合は自己承認違反として直ちに `REJECT`（`ERR-VAL-005`）を返す。
+2. PBIファイルのYAML Frontmatter必須キーおよび5章構造（`### 2.1 やること (In Scope)`, `### 2.2 やらないこと (Out of Scope)` 含む）を検査する。
+3. 受け入れ基準（AC）がすべて `Given` / `When` / `Then` を含み、かつ禁止曖昧語を含まないことを検査する。
+4. 個人実名、ホスト絶対パス、およびハングル文字コード（`U+AC00`〜`U+D7A3`）の混入がないことを検査する。
+5. 未解決の仮定マーカー（`【仮定: ASM-`）が残存しメンテナー未承認の場合は `ESCALATE`、構文・AC違反がある場合は `REJECT`、全基準適合時は `PASS` を返す。
+
+#### 2.7.2.4 異常系
+| 条件 | エラーコード | 動作 |
+| :--- | :--- | :--- |
+| 同一エージェントによる自己審査 | `ERR-VAL-005` | 審査結果を `REJECT` としStage Bへの移行を遮断する |
+
+### 2.7.3 FN-AUT-003 applyMaintainerFeedback
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[#2.7 PRG-AUT-001 自律開発オーケストレーター|PRG-AUT-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
+
+#### 2.7.3.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-AUT-003-IN01` | 日報またはコメント文字列 | メンテナー指示コメントを含むテキスト | 必須 | [[05_file_format_specification#2.6 DAT-FIL-006 AutonomousReportMarkdownFile|DAT-FIL-006]] |
+
+#### 2.7.3.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-AUT-003-OUT01` | 反映済み状態辞書 | 承認済みID、差し戻しID、優先度リストを持つ状態オブジェクト | 必須 | [[06_data_structure_specification#2 データ構造|データ構造]] |
+
+#### 2.7.3.3 処理論理
+1. 入力テキストから `[APPROVE: <ID>]`、`[REJECT: <ID>]`、`[PRIORITY: <Issueリスト>]` ディレクティブを正規表現で抽出する。
+2. 抽出した承認・差し戻し・優先度変更を状態管理データへマージし、永続化して返却する。
+
+#### 2.7.3.4 異常系
+| 条件 | エラーコード | 動作 |
+| :--- | :--- | :--- |
+| 不正フォーマットのタグ | `ERR-VAL-001` | 無効タグをスキップし既存状態を維持する |
+
+## 2.8 PRG-AUT-002 日報・週報テンプレート生成ツール
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[01_software_structure_design#2.8 MOD-AUT-001 24H365D自律開発統制・レポーティングモジュール|MOD-AUT-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
+| 実装ファイル | `scripts/generate_reports.py` |
+| 所属モジュール | `MOD-AUT-001` |
+
+### 2.8.1 FN-AUT-004 generateDailyAndWeeklyReports
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[#2.8 PRG-AUT-002 日報・週報テンプレート生成ツール|PRG-AUT-002]] |
+| 状態 | Approved |
+| 後継ID | なし |
+
+#### 2.8.1.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-AUT-004-IN01` | スケジュール・実行日時パラメータ | 実行モード（日報3回枠：`07:30`, `11:50`, `18:00` / 週報枠：水曜 `16:00`） | 必須 | [[06_data_structure_specification#2.9 DAT-TYP-009 ReportScheduleConfig|DAT-TYP-009]] |
+
+#### 2.8.1.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-AUT-004-OUT01` | 生成ファイルパス配列 | 出力された日報および週報のファイルパスリスト | 必須 | [[05_file_format_specification#2.6 DAT-FIL-006 AutonomousReportMarkdownFile|DAT-FIL-006]] |
+
+#### 2.8.1.3 処理論理
+1. 設定ファイル（`scripts/autonomous_config.json`）から日報スケジュール（`07:30`, `11:50`, `18:00` JST）および週報スケジュール（`WED` `16:00` JST）を読み込む。
+2. 日報生成時は正本テンプレート `docs/templates/tpl_96_daily_report.md` を読み込み、バックログ状態・Stage A→B独立審査結果・品質ゲート実測値・エスカレーション事項を埋め込んで `docs/reports/daily/YYYY-MM-DD_{morning|midday|evening}.md` に出力する。
+3. 指定日時が水曜日 `16:00`（または明示的な週報生成指定時）の場合は、日報に加えて正本テンプレート `docs/templates/tpl_97_weekly_report.md` を読み込み、プロジェクトとりまとめ（上司層）向けに「課題または先週からの宿題」「実施した解決策」「結果・定量的効果」「新たな宿題事項と完了期限」「上位マネジメントへの相談・エスカレーション事項」を構造化して `docs/reports/weekly/YYYY-Wnn_weekly_report.md` に出力する。
+
+#### 2.8.1.4 異常系
+| 条件 | エラーコード | 動作 |
+| :--- | :--- | :--- |
+| 正本テンプレート不在 | `ERR-NOT-002` | エラーメッセージを出力し終了コード1で終了する |

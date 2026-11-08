@@ -2,9 +2,9 @@
 id: DOC-DD-005
 title: ファイル形式仕様書
 doc_type: detail_design
-version: 1.0.0
+version: 1.1.0
 status: Approved
-date: 2026-11-04
+date: 2026-11-07
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -28,6 +28,7 @@ tags:
 | 版 | 日付 | 起因PBI | 変更概要 |
 | :--- | :--- | :--- | :--- |
 | 1.0.0 | 2026-11-04 | PBI-016 | 初版作成（意味仕様と形式仕様の分離） |
+| 1.1.0 | 2026-11-07 | PBI-019 | 自律開発設定ファイル（DAT-FIL-005）および日報・週報Markdownファイル（DAT-FIL-006）の追加 |
 
 # 2 ファイル形式
 
@@ -134,4 +135,72 @@ size: 4:3
     }
   }
 }
+```
+
+## 2.5 DAT-FIL-005 AutonomousConfigFile
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | なし |
+| 状態 | Approved |
+| 後継ID | なし |
+| 拡張子 | `.json` |
+| 文字コード | UTF-8 |
+| 改行コード | LF |
+| 構文 | JSON |
+
+### 2.5.1 キーまたは列
+| フィールドID | 論理名 | 物理名 | 型 | 桁・長さ | 値域・書式 | 既定値 | 必須 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `DAT-FIL-005-F01` | 日報設定 | `daily_report` | `object` | — | スケジュール配列（`07:30`, `11:50`, `18:00`）とテンプレートパス | なし | 必須 |
+| `DAT-FIL-005-F02` | 週報設定 | `weekly_report` | `object` | — | 曜日（`WED`）、時刻（`16:00`）、テンプレートパス | なし | 必須 |
+| `DAT-FIL-005-F03` | マルチエージェント審査設定 | `multi_agent_gate` | `object` | — | 別エージェント審査強制フラグおよび最大リトライ回数 | なし | 必須 |
+
+### 2.5.2 記述例
+```json
+{
+  "daily_report": {
+    "enabled": true,
+    "schedules_jst": ["07:30", "11:50", "18:00"],
+    "template_path": "docs/templates/tpl_96_daily_report.md",
+    "output_dir": "docs/reports/daily"
+  },
+  "weekly_report": {
+    "enabled": true,
+    "day_of_week": "WED",
+    "time_jst": "16:00",
+    "template_path": "docs/templates/tpl_97_weekly_report.md",
+    "output_dir": "docs/reports/weekly"
+  }
+}
+```
+
+## 2.6 DAT-FIL-006 AutonomousReportMarkdownFile
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | なし |
+| 状態 | Approved |
+| 後継ID | なし |
+| 拡張子 | `.md` |
+| 文字コード | UTF-8 |
+| 改行コード | LF |
+| 構文 | YAML Frontmatter + GitHub Flavored Markdown |
+
+### 2.6.1 キーまたは列
+| フィールドID | 論理名 | 物理名 | 型 | 桁・長さ | 値域・書式 | 既定値 | 必須 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `DAT-FIL-006-F01` | レポートID | `report_id` | `string` | 5〜30 | `^DR-\d{8}-(AM\|MD\|PM)$` または `^WR-\d{4}-W\d{2}$` | なし | 必須 |
+| `DAT-FIL-006-F02` | レポート種別 | `report_type` | `string` | 5〜6 | `'daily'` または `'weekly'` | なし | 必須 |
+| `DAT-FIL-006-F03` | 対象読者ロール | `target_audience` | `string` | 1〜30 | `'ROLE-MAINTAINER'` または `'ROLE-PROJECT-DIRECTOR'` | なし | 必須 |
+
+### 2.6.2 記述例
+```markdown
+---
+report_id: "DR-20261107-AM"
+report_type: "daily"
+date: "2026-11-07"
+slot: "morning"
+schedule_time_jst: "07:30"
+target_audience: "ROLE-MAINTAINER"
+generated_by: "report-generator-agent"
+---
 ```

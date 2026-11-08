@@ -1,0 +1,50 @@
+{
+  "daily_report": {
+    "enabled": true,
+    "schedules_jst": [
+      "07:30",
+      "11:50",
+      "18:00"
+    ],
+    "slot_mapping": {
+      "07:30": {
+        "slot": "morning",
+        "code": "AM",
+        "label": "朝刊"
+      },
+      "11:50": {
+        "slot": "midday",
+        "code": "MD",
+        "label": "昼刊"
+      },
+      "18:00": {
+        "slot": "evening",
+        "code": "PM",
+        "label": "夕刊"
+      }
+    },
+    "template_path": "docs/templates/tpl_96_daily_report.md",
+    "output_dir": "docs/reports/daily",
+    "target_audience": "ROLE-MAINTAINER"
+  },
+  "weekly_report": {
+    "enabled": true,
+    "day_of_week": "WED",
+    "time_jst": "16:00",
+    "also_emit_daily_report": true,
+    "template_path": "docs/templates/tpl_97_weekly_report.md",
+    "output_dir": "docs/reports/weekly",
+    "target_audience": "ROLE-PROJECT-DIRECTOR"
+  },
+  "multi_agent_gate": {
+    "enforce_distinct_stage_reviewer": true,
+    "drafter_role": "ROLE-PM",
+    "reviewer_role": "ROLE-ARCH",
+    "qa_auditor_role": "ROLE-QA",
+    "max_stage_a_retry": 2
+  },
+  "identity_gate": {
+    "expected_github_login": "N-Y-Public",
+    "expected_github_id": 330902043
+  }
+}

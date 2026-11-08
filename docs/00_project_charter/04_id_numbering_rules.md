@@ -2,9 +2,9 @@
 id: DOC-GOV-004
 title: ID附番規則
 doc_type: standard
-version: 1.0.0
-status: Draft
-date: 2026-11-04
+version: 1.1.0
+status: Approved
+date: 2026-11-07
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -33,6 +33,7 @@ tags:
 | 版 | 日付 | 起因PBI | 変更概要 |
 | :--- | :--- | :--- | :--- |
 | 1.0.0 | 2026-11-04 | PBI-016 | 初版作成 |
+| 1.1.0 | 2026-11-07 | PBI-019 | 分類コード台帳に自律開発統制・レポーティング（`AUT`）を追加 |
 
 # 2 ID書式の共通規則
 
@@ -112,6 +113,7 @@ tags:
 | `INF` | 実行基盤 | `MOD` `PRG` |
 | `SKL` | エージェントスキル | `MOD` `PRG` |
 | `DOC` | 設計図書規約・検査 | `MOD` `PRG` `INT` `FN` `EXT` |
+| `AUT` | 自律開発統制・レポーティング | `MOD` `PRG` `INT` `FN` `EXT` `CLS` |
 | `MCP` | MCPツール | `EXT` |
 | `CLI` | コマンドライン | `EXT` |
 | `LIB` | 外部ライブラリ | `EXT` |
