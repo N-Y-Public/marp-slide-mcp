@@ -2,9 +2,9 @@
 id: DOC-BD-003
 title: 外部I/F仕様書
 doc_type: basic_design
-version: 1.1.0
+version: 1.2.0
 status: Approved
-date: 2026-11-07
+date: 2026-11-09
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -33,6 +33,7 @@ tags:
 | :--- | :--- | :--- | :--- |
 | 1.0.0 | 2026-11-04 | PBI-016 | 規約 DOC-GOV-003 準拠への再編および意味／形式仕様の分離 |
 | 1.1.0 | 2026-11-07 | PBI-019 | 24H365D自律開発統制CLI（EXT-CLI-003）および日報・週報生成CLI（EXT-CLI-004）の追加 |
+| 1.2.0 | 2026-11-09 | PBI-022 | 常駐PythonオーケストレーターデーモンCLI（EXT-CLI-005）の追加 |
 
 # 2 外部インターフェース
 
@@ -271,6 +272,25 @@ tags:
 | 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
 | :--- | :--- | :--- | :--- | :--- |
 | `EXT-CLI-004-OUT01` | レポートファイル群 | 生成された日報Markdownおよび週報Markdownのパス情報 | 必須 | [[05_file_format_specification#2.6 DAT-FIL-006 AutonomousReportMarkdownFile|DAT-FIL-006]] |
+
+## 2.13 EXT-CLI-005 autonomous_daemon
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | `FNC-013` |
+| 状態 | Approved |
+| 後継ID | なし |
+| 目的 | 常駐Pythonオーケストレーターデーモンを起動し、定時レポート出力、日報フィードバックスキャン、工程別ステートレスAIワーカー実行、DoD検証、PR生成、および次Issueへの連続自律遷移を実行する |
+| 前提条件 | Dockerコンテナ内のPython 3実行環境および自律開発設定ファイルが存在すること |
+
+### 2.13.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `EXT-CLI-005-IN01` | デーモン起動パラメータ | 反復回数上限、ポーリング秒数、GitHub自動取得対象リポジトリ、並行Issue上限（既定値 `1`）、任意のローカルIssue JSONパス、および状態保存パス | 必須 | [[06_data_structure_specification#2.11 DAT-TYP-011 DaemonStateConfig|DAT-TYP-011]] |
+
+### 2.13.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `EXT-CLI-005-OUT01` | デーモン実行サマリー | 実行されたサイクル数、生成レポート一覧、完了Issue一覧、保留Issue一覧、およびPR出力パスを含むJSON結果 | 必須 | [[06_data_structure_specification#2.11 DAT-TYP-011 DaemonStateConfig|DAT-TYP-011]] |
 
 # 3 エラー体系
 

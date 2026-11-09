@@ -510,6 +510,38 @@ def main(argv: Optional[List[str]] = None) -> int:
     # 状態保存先JSONファイルのパス引数を追加します
     p_fb.add_argument("--state-json", type=Path, default=None, help="更新対象の状態JSONファイルパス")
 
+    # 4. run-daemon サブコマンドを定義します
+    p_daemon = subparsers.add_parser("run-daemon", help="常駐Pythonオーケストレーターデーモンを起動します")
+    # リポジトリルートパス引数を追加します
+    p_daemon.add_argument("--repo-root", type=Path, default=Path(__file__).resolve().parents[1], help="リポジトリルートパス")
+    # Issue一覧JSONファイルパス引数を追加します（省略時はGitHub APIから自動取得）
+    p_daemon.add_argument(
+        "--issues-json",
+        type=Path,
+        default=None,
+        help="ローカルIssue配列JSONファイルパス（省略時はGitHub Open Issueを自動監視・取得）",
+    )
+    # 監視対象のGitHubリポジトリ引数を追加します
+    p_daemon.add_argument("--github-repo", type=str, default=None, help="監視対象のGitHubリポジトリ（例: N-Y-Public/marp-slide-mcp）")
+    # GitHub API自動取得を無効化するフラグ引数を追加します
+    p_daemon.add_argument("--no-github-fetch", action="store_true", help="GitHub REST APIからのIssue自動取得を無効化します")
+    # 1度に並行して取り組む最大Issue数引数を追加します（デフォルト: 1）
+    p_daemon.add_argument("--max-concurrent-issues", type=int, default=1, help="1度に並行して取り組む最大Issue数（デフォルト: 1）")
+    # 状態保存先JSONファイルパス引数を追加します
+    p_daemon.add_argument("--state-json", type=Path, default=None, help="デーモン状態保存先JSONファイルパス")
+    # 最大反復回数引数を追加します
+    p_daemon.add_argument("--max-iterations", type=int, default=None, help="最大サイクル反復回数")
+    # 1サイクル実行フラグを追加します
+    p_daemon.add_argument("--once", action="store_true", help="1サイクルのみ実行して終了します")
+    # ポーリング間隔秒数引数を追加します
+    p_daemon.add_argument("--poll-interval", type=float, default=0.0, help="サイクル間の待機秒数")
+    # 起票ロールID引数を追加します
+    p_daemon.add_argument("--drafter", type=str, default="ROLE-PM", help="Stage A起票エージェントロールID")
+    # 審査ロールID引数を追加します
+    p_daemon.add_argument("--reviewer", type=str, default="ROLE-ARCH", help="Stage A→B独立審査エージェントロールID")
+    # リアルタイムコンソール進捗ログ出力を抑制するフラグ引数を追加します
+    p_daemon.add_argument("--quiet", action="store_true", help="リアルタイム進捗ログ出力を抑制します")
+
     # 引数を解析します
     args = parser.parse_args(argv)
 
@@ -551,6 +583,41 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.state_json.write_text(json.dumps(updated, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         # 結果を標準出力へ表示します
         print(json.dumps(updated, ensure_ascii=False, indent=2))
+        # 正常終了コード0を返します
+        return 0
+
+    # run-daemon コマンドの処理です
+    if args.command == "run-daemon":
+        # 同一ディレクトリの常駐デーモン関数を動的にインポートします
+        from autonomous_daemon import run_master_orchestrator_daemon
+        # リポジトリルートを絶対パスへ解決します
+        repo_root = args.repo_root.resolve()
+        # --issues-json が指定され実在すれば読み込み、未指定時はNone（GitHub自動取得）とします
+        issues_data = (
+            json.loads(args.issues_json.read_text(encoding="utf-8"))
+            if (args.issues_json and args.issues_json.is_file())
+            else None
+        )
+        # 状態ファイルパスを決定します
+        state_path = args.state_json or (repo_root / "docs" / "reports" / "daemon_state.json")
+        # 最大反復回数を決定します
+        max_iter = 1 if args.once else args.max_iterations
+        # 常駐デーモンを実行します
+        daemon_res = run_master_orchestrator_daemon(
+            repo_root=repo_root,
+            issues=issues_data,
+            state_json_path=state_path,
+            max_iterations=max_iter,
+            poll_interval_seconds=args.poll_interval,
+            drafter_role=args.drafter,
+            reviewer_role=args.reviewer,
+            max_concurrent_issues=args.max_concurrent_issues,
+            github_repo=args.github_repo,
+            fetch_github_issues=not args.no_github_fetch,
+            verbose=not args.quiet,
+        )
+        # 実行結果をJSON出力します
+        print(json.dumps(daemon_res, ensure_ascii=False, indent=2))
         # 正常終了コード0を返します
         return 0
 

@@ -2,9 +2,9 @@
 id: DOC-DD-001
 title: ソフトウェア構造設計書
 doc_type: detail_design
-version: 1.2.0
+version: 1.3.0
 status: Approved
-date: 2026-11-08
+date: 2026-11-09
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -33,6 +33,7 @@ tags:
 | 1.0.0 | 2026-11-04 | PBI-016 | 規約 DOC-GOV-003 準拠への再編およびデータ構造分離 |
 | 1.1.0 | 2026-11-07 | PBI-019 | 24H365D自律開発統制・レポーティングモジュール（MOD-AUT-001）の追加 |
 | 1.2.0 | 2026-11-08 | PBI-020 | 中見出しスライド生成および章別目次機能に伴う MOD-SRV-001 および MOD-ENG-001 の責務拡張 |
+| 1.3.0 | 2026-11-09 | PBI-022 | 常駐Pythonオーケストレーターデーモン（`scripts/autonomous_daemon.py`）の追加に伴う MOD-AUT-001 の拡張 |
 
 # 2 モジュール構成
 
@@ -146,11 +147,11 @@ flowchart LR
 ## 2.8 MOD-AUT-001 24H365D自律開発統制・レポーティングモジュール
 | 項目 | 内容 |
 | :--- | :--- |
-| 上位ID | `FNC-011` |
+| 上位ID | `FNC-011` `FNC-013` |
 | 状態 | Approved |
 | 後継ID | なし |
-| 主要ファイル | `scripts/autonomous_dev_loop.py`, `scripts/generate_reports.py`, `scripts/autonomous_config.json`, `docs/templates/tpl_96_daily_report.md`, `docs/templates/tpl_97_weekly_report.md` |
-| 責務 | Issue優先度選定、Stage A→B別エージェント審査ゲート、非同期フィードバック解析、およびテンプレート駆動の日報（1日3回）・週報（毎週水曜16:00）生成 |
+| 主要ファイル | `scripts/autonomous_daemon.py`, `scripts/autonomous_dev_loop.py`, `scripts/generate_reports.py`, `scripts/autonomous_config.json`, `docs/templates/tpl_96_daily_report.md`, `docs/templates/tpl_97_weekly_report.md` |
+| 責務 | 常駐監視デーモンループ、時計監視による日報（1日3回）・週報（毎週水曜16:00）自動生成、非同期フィードバック定期スキャン、Issue優先度選定、工程別ステートレスAIワーカー呼び出し、Stage A→B別エージェント審査ゲート、DoD自動検証、およびPRドラフト生成 |
 
 ### 2.8.1 依存関係
 ```mermaid

@@ -2,9 +2,9 @@
 id: DOC-TST-001
 title: テスト仕様書
 doc_type: test
-version: 1.2.0
+version: 1.4.0
 status: Approved
-date: 2026-11-08
+date: 2026-11-09
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -32,6 +32,7 @@ tags:
 | 1.1.0 | 2026-11-07 | PBI-019 | 24H365D自律開発統制および日報・週報テンプレート生成テスト（TEST-UT-005, TEST-ST-011）の追加 |
 | 1.2.0 | 2026-11-08 | PBI-020 | 中見出しスライド単体テスト（TEST-UT-006）および総合テスト（TEST-ST-012）の追加 |
 | 1.3.0 | 2026-11-08 | PBI-021 | 中見出しスライド品質是正単体テスト（TEST-UT-007）および総合テスト（TEST-ST-013）の追加 |
+| 1.4.0 | 2026-11-09 | PBI-022 | 常駐マスターオーケストレーターデーモン単体テスト（TEST-UT-008）および総合テスト（TEST-ST-014）の追加 |
 
 # 2 テストケース
 
@@ -45,6 +46,7 @@ tags:
 | `TEST-UT-005` | [[03_program_specification#2.7.2 FN-AUT-002 evaluateStageAToBGate\|FN-AUT-002]] | 複数Issue、PBIドラフト、および同一/別エージェントIDペアが準備されている | Issue選定、Stage A→Bゲート審査、フィードバック解析を実行する | 最高優先度Issueが選定され、同一エージェントの自己承認はREJECT、独立レビュアー審査時のみPASSとなり、コメント指示が反映される | [[01_requirements_specification#3.11 REQ-FNC-011 24H365D自律開発オーケストレーション・階層別定期レポート生成機能\|REQ-FNC-011-AC01]] |
 | `TEST-UT-006` | [[03_program_specification#2.1.9 FN-SRV-009 resolveSectionDividerSlide\|FN-SRV-009]] | 4種類の中見出しパターンデータおよびページ一覧が準備されている | 中見出しMarkdown解決およびアンカーリンク生成を実行する | パターンに応じたクラスディレクティブと章タイトル・太字他章薄色・ページアンカーリンクが生成される | [[01_requirements_specification#3.12 REQ-FNC-012 中見出し（セクションディバイダー）スライド生成・章別目次機能\|REQ-FNC-012-AC01]] |
 | `TEST-UT-007` | [[03_program_specification#2.1.9 FN-SRV-009 resolveSectionDividerSlide\|FN-SRV-009]] | ページ一覧を含む中見出しデータが準備されている | `resolveSectionDividerSlide` を実行する | 生Markdown（`- [...]`）が混入せず、純粋なHTMLタグ（`<ul>`, `<li>`, `<a>`）としてアンカーリンクが生成される | [[01_requirements_specification#3.12 REQ-FNC-012 中見出し（セクションディバイダー）スライド生成・章別目次機能\|REQ-FNC-012-AC07]] |
+| `TEST-UT-008` | [[03_program_specification#2.9.3 FN-AUT-007 runMasterOrchestratorDaemon\|FN-AUT-007]] | 疑似JST時計（07:30, 11:50, 18:00, 水曜16:00）、メンテナーコメント記入日報、GitHub Issues APIレスポンスモック、同一または別エージェント審査設定、並行上限設定が準備されている | `checkAndEmitScheduledReports`、`fetch_open_issues_from_github`、`executeStatelessWorkerStage`、および `executeMasterDaemonCycle` を実行する | 定刻でのみ重複なく日報・週報が生成され、GitHub APIからPRを除いたOpen Issueと依存関係が抽出され、並行上限1件が強制され、自己承認は `ERR-VAL-005` で拒否、上限超過時は `escalated_issues` へ退避される | [[01_requirements_specification#3.13 REQ-FNC-013 常駐Pythonオーケストレーターによる24H365D自律開発デーモン基盤機能\|REQ-FNC-013-AC01]] |
 
 ## 2.2 結合テスト
 | テストID | 対象ID | 前提（Given） | 手順（When） | 期待結果（Then） | 上位ID |
@@ -72,6 +74,7 @@ tags:
 | `TEST-ST-011` | [[01_software_structure_design#2.8 MOD-AUT-001 24H365D自律開発統制・レポーティングモジュール\|MOD-AUT-001]] | 日報テンプレート（tpl_96）と週報テンプレート（tpl_97）およびスケジュール設定が配置されている | 1日3回（07:30/11:50/18:00）の日報生成と水曜16:00の週報生成を実行する | メンテナー向け日報3枠およびプロジェクトとりまとめ向け週報（課題・解決・結果・新たな宿題と期限）が韓国語混入0件で生成される | [[01_requirements_specification#3.11 REQ-FNC-011 24H365D自律開発オーケストレーション・階層別定期レポート生成機能\|REQ-FNC-011-AC02]] |
 | `TEST-ST-012` | [[01_software_structure_design#2.1 MOD-SRV-001 MCPサービスモジュール\|MOD-SRV-001]] | 中見出しスライドおよび章別目次スライドを含むデッキが準備されている | Dockerコンテナ内でMarpビルド・テスト検証を実行する | 中見出しスライドが正常描画され、目次に中見出しの章タイトルのみが抽出表示される | [[01_requirements_specification#3.12 REQ-FNC-012 中見出し（セクションディバイダー）スライド生成・章別目次機能\|REQ-FNC-012-AC04]] |
 | `TEST-ST-013` | [[01_software_structure_design#2.1 MOD-SRV-001 MCPサービスモジュール\|MOD-SRV-001]] | 中見出しスライド（4パターン全て）およびショウケースデッキ（4:3比率）が準備されている | Dockerコンテナ内でHTML/PDFビルドを実行しDOMおよびCSSレンダリングを検証する | 通常ヘッダー非表示、章題名大見出し表示、フッター帯内への機密・著作権絶対配置、生Markdown露出0件、および4:3比率での正常出力が検証される | [[01_requirements_specification#3.12 REQ-FNC-012 中見出し（セクションディバイダー）スライド生成・章別目次機能\|REQ-FNC-012-AC05]] |
+| `TEST-ST-014` | [[01_software_structure_design#2.8 MOD-AUT-001 24H365D自律開発統制・レポーティングモジュール\|MOD-AUT-001]] | 複数の未対応Issue、状態ファイル、および取扱説明書スライド一式が準備されている | `runMasterOrchestratorDaemon`（または `autonomous_dev_loop.py run-daemon`）を実行し、複数Issueの連続消化および取扱説明書PDF出力を検証する | 各ステージが独立ワーカーで実行され、1件目の完了およびPRドラフト生成後に停止せず2件目のIssueへ自動遷移し、取扱説明書スライドPDFが正常出力される | [[01_requirements_specification#3.13 REQ-FNC-013 常駐Pythonオーケストレーターによる24H365D自律開発デーモン基盤機能\|REQ-FNC-013-AC03]] |
 
 # 3 実行手順
 

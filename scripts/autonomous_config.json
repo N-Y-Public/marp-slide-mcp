@@ -46,5 +46,22 @@
   "identity_gate": {
     "expected_github_login": "N-Y-Public",
     "expected_github_id": 330902043
+  },
+  "daemon": {
+    "github_repo": "N-Y-Public/marp-slide-mcp",
+    "max_concurrent_issues": 1,
+    "poll_interval_seconds": 30,
+    "state_file_path": "docs/reports/daemon_state.json",
+    "pr_drafts_dir": "docs/reports/pr_drafts",
+    "worker_commands": {
+      "stage_a": "agy chat --headless --prompt \"Issue #{issue_number} に対して Stage A (PBI起票) のみを実行せよ\"",
+      "review_gate": "python3 scripts/autonomous_dev_loop.py review-gate --pbi {pbi_path} --drafter {drafter_role} --reviewer {reviewer_role}",
+      "stage_b": "agy chat --headless --prompt \"PBI {pbi_id} ({pbi_path}) に対して Stage B (設計・実装・テスト・RTM更新) を完遂せよ\""
+    },
+    "dod_commands": [
+      "npm run build",
+      "python3 -m unittest discover -s tests -p \"test_*.py\"",
+      "python3 .agents/skills/ipa-traceability-validator/scripts/verify_rtm.py"
+    ]
   }
 }

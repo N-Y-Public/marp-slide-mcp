@@ -2,9 +2,9 @@
 id: DOC-DD-003
 title: プログラム仕様書
 doc_type: detail_design
-version: 1.3.0
+version: 1.5.0
 status: Approved
-date: 2026-11-08
+date: 2026-11-09
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -36,6 +36,7 @@ tags:
 | 1.2.0 | 2026-11-07 | PBI-019 | 自律開発オーケストレーター（PRG-AUT-001）および日報・週報テンプレート生成ツール（PRG-AUT-002）の追加 |
 | 1.3.0 | 2026-11-08 | PBI-020 | 中見出しスライド解決処理（FN-SRV-009）の追加 |
 | 1.4.0 | 2026-11-08 | PBI-021 | 中見出しスライドのHTMLセマンティックタグ直接出力および生Markdown露出根絶論理の追加 |
+| 1.5.0 | 2026-11-09 | PBI-022 | 常駐Pythonオーケストレーターデーモン（PRG-AUT-003, FN-AUT-005, FN-AUT-006, FN-AUT-007）の追加 |
 
 # 2 プログラム
 
@@ -661,3 +662,100 @@ tags:
 | 条件 | エラーコード | 動作 |
 | :--- | :--- | :--- |
 | 正本テンプレート不在 | `ERR-NOT-002` | エラーメッセージを出力し終了コード1で終了する |
+
+## 2.9 PRG-AUT-003 常駐Pythonオーケストレーターデーモン
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[01_software_structure_design#2.8 MOD-AUT-001 24H365D自律開発統制・レポーティングモジュール|MOD-AUT-001]] |
+| 状態 | Approved |
+| 後継ID | なし |
+| 実装ファイル | `scripts/autonomous_daemon.py` |
+| 所属モジュール | `MOD-AUT-001` |
+
+### 2.9.1 FN-AUT-005 checkAndEmitScheduledReports
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[#2.9 PRG-AUT-003 常駐Pythonオーケストレーターデーモン|PRG-AUT-003]] |
+| 状態 | Approved |
+| 後継ID | なし |
+
+#### 2.9.1.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-AUT-005-IN01` | 基準日時・状態データ | JST現在日時、リポジトリルート、および発行済みスロット記録を持つ状態辞書 | 必須 | [[06_data_structure_specification#2.11 DAT-TYP-011 DaemonStateConfig|DAT-TYP-011]] |
+
+#### 2.9.1.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-AUT-005-OUT01` | 生成レポート結果 | 当該チェックで新規生成されたレポートファイル一覧および更新後の発行済み記録 | 必須 | [[05_file_format_specification#2.6 DAT-FIL-006 AutonomousReportMarkdownFile|DAT-FIL-006]] |
+
+#### 2.9.1.3 処理論理
+1. JST現在時刻（`HH:MM`）および日付（`YYYY-MM-DD`）・曜日を取得する。
+2. 設定ファイルの日報スケジュール（`07:30`, `11:50`, `18:00`）および週報スケジュール（水曜 `16:00`）と照合し、到達している対象スロットを特定する。
+3. 状態辞書の `emitted_reports` を確認し、当該日付・スロットが未発行である場合のみ `generate_daily_and_weekly_reports` を呼び出してレポートを出力する。
+4. 発行完了したスロット識別子を `emitted_reports` に記録し、同一スロットの重複生成を防止する。
+
+#### 2.9.1.4 異常系
+| 条件 | エラーコード | 動作 |
+| :--- | :--- | :--- |
+| レポートテンプレート不在 | `ERR-NOT-002` | エラーをログ記録しデーモンループを停止せず次処理へ進む |
+
+### 2.9.2 FN-AUT-006 executeStatelessWorkerStage
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[#2.9 PRG-AUT-003 常駐Pythonオーケストレーターデーモン|PRG-AUT-003]] |
+| 状態 | Approved |
+| 後継ID | なし |
+
+#### 2.9.2.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-AUT-006-IN01` | 工程・ワーカー実行設定 | 実行対象工程（`stage_a` / `review_gate` / `stage_b`）、対象Issue情報、およびエージェントロールID | 必須 | [[06_data_structure_specification#2.11 DAT-TYP-011 DaemonStateConfig|DAT-TYP-011]] |
+
+#### 2.9.2.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-AUT-006-OUT01` | ワーカー実行結果 | 独立ワーカーセッションの終了コード、生成PBIパス、および標準出力ログ | 必須 | [[06_data_structure_specification#2.11 DAT-TYP-011 DaemonStateConfig|DAT-TYP-011]] |
+
+#### 2.9.2.3 処理論理
+1. 対象工程（`stage_a` 起票、`review_gate` 独立審査、`stage_b` 実装）に対応するプロンプトおよびコマンドテンプレートを構築する。
+2. 新規サブプロセス（`agy` CLI / SDK または設定済みワーカーコマンド）を独立セッションとして起動し、完了まで待機する。
+3. 工程完了後にサブプロセスを終了させてコンテキストを完全に破棄し、実行結果（終了コード・出力パス）を返却する。
+
+#### 2.9.2.4 異常系
+| 条件 | エラーコード | 動作 |
+| :--- | :--- | :--- |
+| ワーカープロセス異常終了またはタイムアウト | `ERR-SYS-999` | 失敗ステータスとエラーログを返却し呼び出し元でリトライまたは保留遷移を行う |
+
+### 2.9.3 FN-AUT-007 runMasterOrchestratorDaemon
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | [[#2.9 PRG-AUT-003 常駐Pythonオーケストレーターデーモン|PRG-AUT-003]] |
+| 状態 | Approved |
+| 後継ID | なし |
+
+#### 2.9.3.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-AUT-007-IN01` | デーモン実行オプション | リポジトリルート、Issueリスト、状態ファイルパス、最大反復回数、およびスリープ間隔 | 必須 | [[06_data_structure_specification#2.11 DAT-TYP-011 DaemonStateConfig|DAT-TYP-011]] |
+
+#### 2.9.3.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `FN-AUT-007-OUT01` | デーモン稼働結果辞書 | 総サイクル数、完了Issue番号リスト、保留Issue番号リスト、発行レポート配列、および生成PRドラフト配列 | 必須 | [[06_data_structure_specification#2.11 DAT-TYP-011 DaemonStateConfig|DAT-TYP-011]] |
+
+#### 2.9.3.3 処理論理
+1. `SIGINT` および `SIGTERM` シグナルハンドラを登録し、常駐ループ（`while not stop_requested`）を開始する。
+2. `checkAndEmitScheduledReports`（`FN-AUT-005`）を実行し、定時レポート（日報3回・水曜週報）の到達スロットがあれば即時生成する。
+3. `docs/reports/daily/` 配下の日報ファイルを走査し、`apply_maintainer_feedback`（`FN-AUT-003`）によりメンテナーの非同期指示タグを状態データへ反映する。
+4. `--issues-json` が未指定の場合は GitHub REST API（`/repos/{owner}/{repo}/issues?state=open`）を自動照会して Open Issue 一覧を取得し（Pull Request を除外し本文から依存関係を抽出）、同時並行Issue上限（デフォルト `max_concurrent_issues = 1`）を確認した上で、完了済み（`completed_issues`）およびエスカレーション保留中（`escalated_issues`）を除いた未対応Issueから `select_next_priority_issue`（`FN-AUT-001`）で最優先Issueを1件選定する。
+5. 最優先Issueに対して `executeStatelessWorkerStage`（`FN-AUT-006`）で Stage A ワーカーを起動し、続けて起票者（`ROLE-PM`）とは異なる独立審査者（`ROLE-ARCH`）で `evaluate_stage_a_to_b_gate`（`FN-AUT-002`）を実行する。
+6. 審査結果が `REJECT` の場合は最大リトライ回数（2回）まで Stage A を再実行し、超過時または `ESCALATE` 時は当該Issueを `escalated_issues` に記録して次サイクルで別Issueへ自動遷移する。
+7. 審査結果が `PASS` の場合は Stage B ワーカーを新規セッションで起動し、完了後に DoD 検証（ビルド・テスト・`verify_rtm.py`）および `verify_github_identity_gate` を実行する。
+8. DoD 合格時は `.github/pull_request_template.md` 準拠のPRドラフトを生成して当該Issueを `completed_issues` に記録し、停止せず次の未対応Issueのサイクルへ遷移する。
+
+#### 2.9.3.4 異常系
+| 条件 | エラーコード | 動作 |
+| :--- | :--- | :--- |
+| 同一エージェントによる自己審査またはアカウント不一致 | `ERR-VAL-005` | Stage B移行またはPR発行を遮断し保留リストへ記録して次Issueへ進む |
+| DoD検証失敗 | `ERR-SYS-999` | PR発行を行わず失敗理由を状態ファイルに記録して次Issueへ進む |

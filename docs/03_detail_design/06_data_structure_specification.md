@@ -2,9 +2,9 @@
 id: DOC-DD-006
 title: データ構造仕様書
 doc_type: detail_design
-version: 1.2.0
+version: 1.3.0
 status: Approved
-date: 2026-11-08
+date: 2026-11-09
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -31,6 +31,7 @@ tags:
 | 1.0.0 | 2026-11-04 | PBI-016 | 初版作成（意味仕様と形式仕様の分離） |
 | 1.1.0 | 2026-11-07 | PBI-019 | Stageゲート審査結果構造体（DAT-TYP-008）およびレポートスケジュール構造体（DAT-TYP-009）の追加 |
 | 1.2.0 | 2026-11-08 | PBI-020 | 中見出しスライド構造体（DAT-TYP-010）およびNormalSlide拡張（DAT-TYP-003-F09）の追加 |
+| 1.3.0 | 2026-11-09 | PBI-022 | 常駐オーケストレーター状態・構成構造体（DAT-TYP-011）の追加 |
 
 # 2 データ構造
 
@@ -200,3 +201,22 @@ tags:
 | `DAT-TYP-010-F03` | 当該章ページ配列 | `chapterPages` | `SectionPageItem[]` | 0〜30 | `{ title: string; pageNumber?: number }[]` | `[]` | 任意 |
 | `DAT-TYP-010-F04` | 全章タイトル配列 | `allChapters` | `string[]` | 0〜20 | 章タイトル配列 | `[]` | 任意 |
 | `DAT-TYP-010-F05` | カレント章インデックス | `currentChapterIndex` | `number` | 1〜2 | 0以上の整数 | なし | 任意 |
+
+## 2.11 DAT-TYP-011 DaemonStateConfig
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | なし |
+| 状態 | Approved |
+| 後継ID | なし |
+| 実装上の宣言位置 | `scripts/autonomous_daemon.py` |
+
+### 2.11.1 フィールド
+| フィールドID | 論理名 | 物理名 | 型 | 桁・長さ | 値域・書式 | 既定値 | 必須 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `DAT-TYP-011-F01` | 完了済みIssue配列 | `completed_issues` | `number[]` | 0〜1000 | 正の整数の配列 | `[]` | 必須 |
+| `DAT-TYP-011-F02` | 保留Issue配列 | `escalated_issues` | `number[]` | 0〜1000 | 正の整数の配列 | `[]` | 必須 |
+| `DAT-TYP-011-F03` | 発行済みレポート識別子配列 | `emitted_reports` | `string[]` | 0〜5000 | `YYYY-MM-DD_{slot}` または `YYYY-Wnn_weekly` | `[]` | 必須 |
+| `DAT-TYP-011-F04` | 優先Issue順序配列 | `priority_order` | `number[]` | 0〜100 | 正の整数の配列 | `[]` | 任意 |
+| `DAT-TYP-011-F05` | 生成PRドラフト配列 | `generated_prs` | `string[]` | 0〜1000 | 相対ファイルパスの配列 | `[]` | 任意 |
+| `DAT-TYP-011-F06` | 進行中Issue配列 | `in_progress_issues` | `number[]` | 0〜10 | 現在着手中のIssue番号の配列 | `[]` | 任意 |
+| `DAT-TYP-011-F07` | 最大同時並行Issue数 | `max_concurrent_issues` | `number` | 1〜2 | 1以上の整数 | `1` | 必須 |

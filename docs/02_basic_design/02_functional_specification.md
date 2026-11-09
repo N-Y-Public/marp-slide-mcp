@@ -2,9 +2,9 @@
 id: DOC-BD-002
 title: 機能仕様書
 doc_type: basic_design
-version: 1.2.0
+version: 1.4.0
 status: Approved
-date: 2026-11-08
+date: 2026-11-09
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -33,6 +33,7 @@ tags:
 | 1.1.0 | 2026-11-07 | PBI-019 | 24H365D自律開発統制・日報週報生成機能（FNC-011）の追加 |
 | 1.2.0 | 2026-11-08 | PBI-020 | 中見出しスライド生成および章別目次機能（FNC-012）の追加 |
 | 1.3.0 | 2026-11-08 | PBI-021 | 中見出しスライドの表示位置・機密表示配置・リンクHTML化・4:3比率適用の品質是正 |
+| 1.4.0 | 2026-11-09 | PBI-022 | 常駐Pythonオーケストレーターによる24H365D自律開発デーモン機能（FNC-013）の追加 |
 
 # 2 機能仕様
 
@@ -167,6 +168,17 @@ MCPツール（`generate_slide_deck`, `get_slide_deck`, `insert_slide`, `update_
 
 ### 2.12.1 振る舞い
 スライドデッキ生成・更新時に中見出しスライド（`SectionDividerSlide`）を受け入れ、4つのパターン（`title-only`, `title-and-pages`, `all-chapters`, `all-chapters-and-pages`）に応じて左寄せ垂直中央配置の構造化HTMLと専用クラス `section-divider` を出力する。通常スライド左上のヘッダータイトル（h1コンテンツ）は中見出しスライドでは非表示化され、章題名がスライド中央の適正位置に大見出し（32pt以上太字・テーマカラー装飾バー）として表示される。ページタイトル一覧には生MarkdownではなくクリッカブルなHTMLアンカーリンク（`<a href="#スライド番号">`）をセマンティックに出力し、他章タイトルは `.dim` クラスで薄色表示する。フッター（コピーライト・機密指定区分）は通常スライドと同一の最下部フッター帯（`bottom: 12px`, `bottom: 8px`）の絶対位置を維持する。また `marp.config.js` において `toc-chapters-only` クラスを持つ目次スライドを検知した場合、中見出しスライドの章タイトルとページ番号のみを抽出して目次を自動生成する。さらに 4:3（960x720）および 16:9（1280x720）の両画面比率においてピクセルパーフェクトなレイアウト描画を担保する。インターフェース詳細は [[03_external_interface_specification#2.1 EXT-MCP-001 generate_slide_deck|EXT-MCP-001]] を参照する。
+
+## 2.13 FNC-013 常駐Pythonオーケストレーターによる24H365D自律開発デーモン機能
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | `REQ-FNC-013` |
+| 状態 | Approved |
+| 後継ID | なし |
+| 概要 | 常駐デーモンループによる定時レポート自動生成、メンテナー指示定期スキャン、工程別ステートレスAIワーカー起動、独立ゲート審査強制、DoD自動検証、PR生成、および次Issueへの連続自律遷移 |
+
+### 2.13.1 振る舞い
+常駐Pythonデーモン（`scripts/autonomous_daemon.py` および `scripts/autonomous_dev_loop.py run-daemon`）がメインループを継続実行する。各サイクルにおいてJST現在時刻を監視し、日報スケジュール（`07:30`, `11:50`, `18:00`）および週報スケジュール（水曜 `16:00`）の到来時に未発行であればAIを介さず直接レポートを生成して発行済みスロットを記録する。次に `docs/reports/daily/` 配下の日報ファイルからメンテナー指示タグをスキャンして状態管理データへ反映する。`--issues-json` が未指定（デフォルト）の場合は GitHub REST API から対象リポジトリ（`N-Y-Public/marp-slide-mcp`）の Open Issue 一覧を自動取得し、1度に並行して取り組むIssue数の上限（デフォルト `max_concurrent_issues = 1`）に従って未着手Issueから最優先タスクを1件選定する。選定されたIssueに対して、Stage A（PBI起票）、Stage A→B独立ゲート審査（`ROLE-PM` とは異なる `ROLE-ARCH` による審査）、Stage B（設計・実装・テスト）をそれぞれ独立したステートレスAIワーカープロセスとして起動・破棄する。Stage B完了後にDoD検証（ビルド・自動テスト・`verify_rtm.py`）および事前アカウント検証ゲートを実行し、合格時は `.github/pull_request_template.md` 準拠のPRドラフトを生成して当該Issueを完了記録し、停止せず次の未対応Issueへ自動遷移する。インターフェース詳細は [[03_external_interface_specification#2.13 EXT-CLI-005 autonomous_daemon|EXT-CLI-005]] を参照する。
 
 # 3 業務フローおよび状態遷移
 

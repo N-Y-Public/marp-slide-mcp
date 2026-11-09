@@ -2,9 +2,9 @@
 id: DOC-RTM-001
 title: 要件追跡マトリクス
 doc_type: traceability
-version: 1.2.0
+version: 1.4.0
 status: Approved
-date: 2026-11-08
+date: 2026-11-09
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -33,6 +33,7 @@ tags:
 | 1.1.0 | 2026-11-07 | PBI-019 | 24H365D自律開発統制・日報週報テンプレート生成（PBI-019）の追跡行追加 |
 | 1.2.0 | 2026-11-08 | PBI-020 | 中見出しスライド生成・章別目次機能（PBI-020）の追跡行追加 |
 | 1.3.0 | 2026-11-08 | PBI-021 | 中見出しスライド品質是正（PBI-021）の追跡行追加 |
+| 1.4.0 | 2026-11-09 | PBI-022 | 常駐マスターオーケストレーターデーモン基盤（PBI-022）の追跡行追加 |
 
 # 2 追跡表
 
@@ -76,12 +77,15 @@ tags:
 | [[PBI-020_add_section_divider_slide\|PBI-020]] | [[01_requirements_specification#3.12 REQ-FNC-012 中見出し（セクションディバイダー）スライド生成・章別目次機能\|REQ-FNC-012]] | [[02_functional_specification#2.12 FNC-012 中見出し（セクションディバイダー）スライド生成および章別目次機能\|FNC-012]] | [[03_external_interface_specification#2.1 EXT-MCP-001 generate_slide_deck\|EXT-MCP-001]] | [[07_screen_specification#3.3 SCR-003 目次スライド\|SCR-003]] | [[01_software_structure_design#2.2 MOD-ENG-001 カスタムMarpエンジン\|MOD-ENG-001]] | [[03_program_specification#2.2 PRG-ENG-001 カスタムMarpエンジン\|PRG-ENG-001]] | [[03_program_specification#2.2.1 FN-ENG-001 marpTocPlugin\|FN-ENG-001]] | [[01_test_specification#2.3 総合テスト\|TEST-ST-012]] | [[02_test_report#3.1 結果表\|TRS-ST-012-R01]] |
 | [[PBI-021_fix_section_divider_quality_and_layout\|PBI-021]] | [[01_requirements_specification#3.12 REQ-FNC-012 中見出し（セクションディバイダー）スライド生成・章別目次機能\|REQ-FNC-012]] | [[02_functional_specification#2.12 FNC-012 中見出し（セクションディバイダー）スライド生成および章別目次機能\|FNC-012]] | [[03_external_interface_specification#2.1 EXT-MCP-001 generate_slide_deck\|EXT-MCP-001]] | [[07_screen_specification#3.2 SCR-002 通常スライド\|SCR-002]] | [[01_software_structure_design#2.1 MOD-SRV-001 MCPサービスモジュール\|MOD-SRV-001]] | [[03_program_specification#2.1 PRG-SRV-001 MCPサーバー本体\|PRG-SRV-001]] | [[03_program_specification#2.1.9 FN-SRV-009 resolveSectionDividerSlide\|FN-SRV-009]] | [[01_test_specification#2.1 単体テスト\|TEST-UT-007]] | [[02_test_report#3.1 結果表\|TRS-UT-007-R01]] |
 | [[PBI-021_fix_section_divider_quality_and_layout\|PBI-021]] | [[01_requirements_specification#3.12 REQ-FNC-012 中見出し（セクションディバイダー）スライド生成・章別目次機能\|REQ-FNC-012]] | [[02_functional_specification#2.12 FNC-012 中見出し（セクションディバイダー）スライド生成および章別目次機能\|FNC-012]] | [[03_external_interface_specification#2.1 EXT-MCP-001 generate_slide_deck\|EXT-MCP-001]] | [[07_screen_specification#3.2 SCR-002 通常スライド\|SCR-002]] | [[01_software_structure_design#2.1 MOD-SRV-001 MCPサービスモジュール\|MOD-SRV-001]] | [[03_program_specification#2.1 PRG-SRV-001 MCPサーバー本体\|PRG-SRV-001]] | [[03_program_specification#2.1.9 FN-SRV-009 resolveSectionDividerSlide\|FN-SRV-009]] | [[01_test_specification#2.3 総合テスト\|TEST-ST-013]] | [[02_test_report#3.1 結果表\|TRS-ST-013-R01]] |
+| [[PBI-022_autonomous_master_daemon_orchestrator\|PBI-022]] | [[01_requirements_specification#3.13 REQ-FNC-013 常駐Pythonオーケストレーターによる24H365D自律開発デーモン基盤機能\|REQ-FNC-013]] | [[02_functional_specification#2.13 FNC-013 常駐Pythonオーケストレーターによる24H365D自律開発デーモン機能\|FNC-013]] | [[03_external_interface_specification#2.13 EXT-CLI-005 autonomous_daemon\|EXT-CLI-005]] | [[07_screen_specification#3.1 SCR-001 表紙スライド\|SCR-001]] | [[01_software_structure_design#2.8 MOD-AUT-001 24H365D自律開発統制・レポーティングモジュール\|MOD-AUT-001]] | [[03_program_specification#2.9 PRG-AUT-003 常駐Pythonオーケストレーターデーモン\|PRG-AUT-003]] | [[03_program_specification#2.9.1 FN-AUT-005 checkAndEmitScheduledReports\|FN-AUT-005]] | [[01_test_specification#2.1 単体テスト\|TEST-UT-008]] | [[02_test_report#3.1 結果表\|TRS-UT-008-R01]] |
+| [[PBI-022_autonomous_master_daemon_orchestrator\|PBI-022]] | [[01_requirements_specification#4.8 REQ-NFR-008 マルチエージェント相互牽制・生成と検証の分離統制\|REQ-NFR-008]] | [[02_functional_specification#2.13 FNC-013 常駐Pythonオーケストレーターによる24H365D自律開発デーモン機能\|FNC-013]] | [[03_external_interface_specification#2.13 EXT-CLI-005 autonomous_daemon\|EXT-CLI-005]] | [[07_screen_specification#3.1 SCR-001 表紙スライド\|SCR-001]] | [[01_software_structure_design#2.8 MOD-AUT-001 24H365D自律開発統制・レポーティングモジュール\|MOD-AUT-001]] | [[03_program_specification#2.9 PRG-AUT-003 常駐Pythonオーケストレーターデーモン\|PRG-AUT-003]] | [[03_program_specification#2.9.2 FN-AUT-006 executeStatelessWorkerStage\|FN-AUT-006]] | [[01_test_specification#2.1 単体テスト\|TEST-UT-008]] | [[02_test_report#3.1 結果表\|TRS-UT-008-R01]] |
+| [[PBI-022_autonomous_master_daemon_orchestrator\|PBI-022]] | [[01_requirements_specification#3.13 REQ-FNC-013 常駐Pythonオーケストレーターによる24H365D自律開発デーモン基盤機能\|REQ-FNC-013]] | [[02_functional_specification#2.13 FNC-013 常駐Pythonオーケストレーターによる24H365D自律開発デーモン機能\|FNC-013]] | [[03_external_interface_specification#2.13 EXT-CLI-005 autonomous_daemon\|EXT-CLI-005]] | [[07_screen_specification#3.1 SCR-001 表紙スライド\|SCR-001]] | [[01_software_structure_design#2.8 MOD-AUT-001 24H365D自律開発統制・レポーティングモジュール\|MOD-AUT-001]] | [[03_program_specification#2.9 PRG-AUT-003 常駐Pythonオーケストレーターデーモン\|PRG-AUT-003]] | [[03_program_specification#2.9.3 FN-AUT-007 runMasterOrchestratorDaemon\|FN-AUT-007]] | [[01_test_specification#2.3 総合テスト\|TEST-ST-014]] | [[02_test_report#3.1 結果表\|TRS-ST-014-R01]] |
 
 ## 2.2 集計
 | 追跡指標 | 対象総数 | 追跡完了数 | 断絶数 |
 | :--- | :--- | :--- | :--- |
-| PBI追跡 | 21 | 21 | 0 |
-| 機能要件追跡 | 12 | 12 | 0 |
+| PBI追跡 | 22 | 22 | 0 |
+| 機能要件追跡 | 13 | 13 | 0 |
 | 非機能要件追跡 | 8 | 8 | 0 |
 | モジュール追跡 | 8 | 8 | 0 |
-| テストケース追跡 | 26 | 26 | 0 |
+| テストケース追跡 | 28 | 28 | 0 |

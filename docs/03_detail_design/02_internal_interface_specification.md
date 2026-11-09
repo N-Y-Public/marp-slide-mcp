@@ -2,9 +2,9 @@
 id: DOC-DD-002
 title: 内部I/F仕様書
 doc_type: detail_design
-version: 1.2.0
+version: 1.3.0
 status: Approved
-date: 2026-11-07
+date: 2026-11-09
 author: N-Y-Public
 doc_standard: DOC-GOV-003@1.0.0
 tags:
@@ -32,6 +32,7 @@ tags:
 | 1.0.0 | 2026-11-04 | PBI-016 | 規約 DOC-GOV-003 準拠への再編および意味／形式仕様の分離 |
 | 1.1.0 | 2026-11-04 | PBI-014 | PPTX変換およびOffice MathML数式注入I/F（INT-PPT-002）の追加 |
 | 1.2.0 | 2026-11-07 | PBI-019 | マルチエージェントStage A→Bゲート審査I/F（INT-AUT-001）および定期レポート生成I/F（INT-AUT-002）の追加 |
+| 1.3.0 | 2026-11-09 | PBI-022 | 常駐オーケストレーターサイクル実行I/F（INT-AUT-003）の追加 |
 
 # 2 内部インターフェース
 
@@ -236,3 +237,28 @@ tags:
 | 発生条件 | 送出エラーコード |
 | :--- | :--- |
 | 正本テンプレートファイル不在時 | `ERR-NOT-002` |
+
+## 2.9 INT-AUT-003 executeMasterDaemonCycle
+| 項目 | 内容 |
+| :--- | :--- |
+| 上位ID | `MOD-AUT-001` |
+| 状態 | Approved |
+| 後継ID | なし |
+| 目的 | 常駐オーケストレーターの1サイクル（定時レポート判定・日報フィードバックスキャン・工程別ステートレスAIワーカー呼び出し・独立ゲート審査・DoD検証・PR生成・次Issue遷移）を実行する |
+| 提供元 | `MOD-AUT-001` (`scripts/autonomous_daemon.py`) |
+| 利用元 | `MOD-AUT-001` (`scripts/autonomous_dev_loop.py`) |
+
+### 2.9.1 入力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `INT-AUT-003-IN01` | デーモン状態・実行構成 | リポジトリパス、Issueリスト、状態管理辞書、現在日時、およびワーカーランナー構成 | 必須 | [[06_data_structure_specification#2.11 DAT-TYP-011 DaemonStateConfig|DAT-TYP-011]] |
+
+### 2.9.2 出力項目
+| 項目ID | 名称 | 意味・意図 | 必須 | 形式参照 |
+| :--- | :--- | :--- | :--- | :--- |
+| `INT-AUT-003-OUT01` | サイクル実行結果 | 更新後の状態管理辞書、生成レポート一覧、処理対象Issue結果、および生成PRドラフトパス | 必須 | [[06_data_structure_specification#2.11 DAT-TYP-011 DaemonStateConfig|DAT-TYP-011]] |
+
+### 2.9.3 例外
+| 発生条件 | 送出エラーコード |
+| :--- | :--- |
+| 自己承認試行またはゲート審査違反時 | `ERR-VAL-005` |
